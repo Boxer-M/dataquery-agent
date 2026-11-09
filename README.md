@@ -1,0 +1,54 @@
+# DataQuery Agent
+
+DataQuery Agent（智能问数系统）是一个用于学习和求职展示的独立 Python 项目，目标是基于可合法使用的公开数据，逐步实现自然语言查询、SQL 生成与只读执行、结果分析和可视化。
+
+## 当前状态
+
+已完成 D1：
+
+- Python 3.12 独立虚拟环境和项目骨架；
+- 从 Kaggle 官方来源下载 Olist Brazilian E-Commerce Public Dataset；
+- 核验发布者、CC BY-NC-SA 4.0 许可证和官方版本元数据；
+- 对 9 个原始 CSV 运行可复现的字段、数据质量、候选键和关系审计；
+- 生成机器可读报告并为核心审计逻辑添加标准库单元测试。
+
+尚未完成 MySQL 建表/导入、指标语义层、RAG、Text-to-SQL、Agent、API 或可视化。详细进度见 `PROJECT_PLAN.md`。
+
+## Python 版本
+
+- Python 3.12
+- 项目虚拟环境：`.venv`
+
+## 激活虚拟环境
+
+在项目根目录执行：
+
+```bash
+source .venv/bin/activate
+python --version
+```
+
+退出虚拟环境：
+
+```bash
+deactivate
+```
+
+## 复现 D1 审计
+
+原始数据下载方法见 `data/README.md`。数据准备完成后运行：
+
+```bash
+PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
+PYTHONPATH=src .venv/bin/python -m dataquery_agent.data_audit \
+  --raw-dir data/raw \
+  --output reports/d1_data_audit.json
+```
+
+审计脚本只读 `data/raw/`，不会自动删除、去重、补值或覆盖源文件。
+
+## D1 文档
+
+- 数据来源、字段、关系及能力边界：`docs/DATA_SOURCE.md`
+- 机器可读审计结果：`reports/d1_data_audit.json`
+- 当前计划与验收状态：`PROJECT_PLAN.md`

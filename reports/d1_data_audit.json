@@ -1,0 +1,602 @@
+{
+  "report_schema_version": "1.0",
+  "generated_at": "2026-11-09T08:41:58.373060+00:00",
+  "source": {
+    "dataset_title": "Brazilian E-Commerce Public Dataset by Olist",
+    "publisher": "Olist",
+    "owner_ref": "olistbr",
+    "official_page": "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+    "official_metadata_api": "https://www.kaggle.com/api/v1/datasets/view/olistbr/brazilian-ecommerce",
+    "license": "CC BY-NC-SA 4.0",
+    "kaggle_current_version_number": 2,
+    "kaggle_last_updated": "2021-10-01T19:08:27.97Z",
+    "kaggle_version_note": "Data Update 2021/10/01",
+    "kaggle_reported_total_bytes": 126186995,
+    "version_metadata_note": "The official API reports currentVersionNumber=2 for the 2021 update while its versions array also contains older records numbered through 7; this report preserves the current API value without inferring a new version.",
+    "downloaded_at": "2026-11-09T16:34:28.642592+08:00",
+    "archive_file": "olist_brazilian_ecommerce_kaggle.zip",
+    "archive_size_bytes": 44717580,
+    "archive_sha256": "967e41e04fc306fe604e2a693f488995a8b41e5047418f8a5c8e4abd6deca784"
+  },
+  "files": {
+    "olist_customers_dataset.csv": {
+      "file_name": "olist_customers_dataset.csv",
+      "size_bytes": 9033957,
+      "sha256": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+      "fields": [
+        "customer_id",
+        "customer_unique_id",
+        "customer_zip_code_prefix",
+        "customer_city",
+        "customer_state"
+      ],
+      "row_count": 99441,
+      "null_counts": {
+        "customer_id": 0,
+        "customer_unique_id": 0,
+        "customer_zip_code_prefix": 0,
+        "customer_city": 0,
+        "customer_state": 0
+      },
+      "candidate_keys": {
+        "customer_id": {
+          "columns": [
+            "customer_id"
+          ],
+          "distinct_non_null_keys": 99441,
+          "duplicate_rows": 0,
+          "rows_with_null_key": 0
+        },
+        "customer_unique_id": {
+          "columns": [
+            "customer_unique_id"
+          ],
+          "distinct_non_null_keys": 96096,
+          "duplicate_rows": 3345,
+          "rows_with_null_key": 0
+        }
+      },
+      "date_fields": {},
+      "money_fields": {}
+    },
+    "olist_geolocation_dataset.csv": {
+      "file_name": "olist_geolocation_dataset.csv",
+      "size_bytes": 61273883,
+      "sha256": "b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6",
+      "fields": [
+        "geolocation_zip_code_prefix",
+        "geolocation_lat",
+        "geolocation_lng",
+        "geolocation_city",
+        "geolocation_state"
+      ],
+      "row_count": 1000163,
+      "null_counts": {
+        "geolocation_zip_code_prefix": 0,
+        "geolocation_lat": 0,
+        "geolocation_lng": 0,
+        "geolocation_city": 0,
+        "geolocation_state": 0
+      },
+      "candidate_keys": {},
+      "date_fields": {},
+      "money_fields": {}
+    },
+    "olist_order_items_dataset.csv": {
+      "file_name": "olist_order_items_dataset.csv",
+      "size_bytes": 15438671,
+      "sha256": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+      "fields": [
+        "order_id",
+        "order_item_id",
+        "product_id",
+        "seller_id",
+        "shipping_limit_date",
+        "price",
+        "freight_value"
+      ],
+      "row_count": 112650,
+      "null_counts": {
+        "order_id": 0,
+        "order_item_id": 0,
+        "product_id": 0,
+        "seller_id": 0,
+        "shipping_limit_date": 0,
+        "price": 0,
+        "freight_value": 0
+      },
+      "candidate_keys": {
+        "order_id+order_item_id": {
+          "columns": [
+            "order_id",
+            "order_item_id"
+          ],
+          "distinct_non_null_keys": 112650,
+          "duplicate_rows": 0,
+          "rows_with_null_key": 0
+        }
+      },
+      "date_fields": {
+        "shipping_limit_date": {
+          "null_count": 0,
+          "parsed_count": 112650,
+          "parse_error_count": 0,
+          "minimum": "2016-09-19 00:15:34",
+          "maximum": "2020-04-09 22:35:08"
+        }
+      },
+      "money_fields": {
+        "price": {
+          "null_count": 0,
+          "parsed_count": 112650,
+          "parse_error_count": 0,
+          "negative_count": 0,
+          "minimum": "0.85",
+          "maximum": "6735.00"
+        },
+        "freight_value": {
+          "null_count": 0,
+          "parsed_count": 112650,
+          "parse_error_count": 0,
+          "negative_count": 0,
+          "minimum": "0.00",
+          "maximum": "409.68"
+        }
+      }
+    },
+    "olist_order_payments_dataset.csv": {
+      "file_name": "olist_order_payments_dataset.csv",
+      "size_bytes": 5777138,
+      "sha256": "4f713964f2815dbbaa40b9488268c55aac3627bfce5aa96cf58d1f3616de3cc0",
+      "fields": [
+        "order_id",
+        "payment_sequential",
+        "payment_type",
+        "payment_installments",
+        "payment_value"
+      ],
+      "row_count": 103886,
+      "null_counts": {
+        "order_id": 0,
+        "payment_sequential": 0,
+        "payment_type": 0,
+        "payment_installments": 0,
+        "payment_value": 0
+      },
+      "candidate_keys": {
+        "order_id+payment_sequential": {
+          "columns": [
+            "order_id",
+            "payment_sequential"
+          ],
+          "distinct_non_null_keys": 103886,
+          "duplicate_rows": 0,
+          "rows_with_null_key": 0
+        }
+      },
+      "date_fields": {},
+      "money_fields": {
+        "payment_value": {
+          "null_count": 0,
+          "parsed_count": 103886,
+          "parse_error_count": 0,
+          "negative_count": 0,
+          "minimum": "0.00",
+          "maximum": "13664.08"
+        }
+      }
+    },
+    "olist_order_reviews_dataset.csv": {
+      "file_name": "olist_order_reviews_dataset.csv",
+      "size_bytes": 14451670,
+      "sha256": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+      "fields": [
+        "review_id",
+        "order_id",
+        "review_score",
+        "review_comment_title",
+        "review_comment_message",
+        "review_creation_date",
+        "review_answer_timestamp"
+      ],
+      "row_count": 99224,
+      "null_counts": {
+        "review_id": 0,
+        "order_id": 0,
+        "review_score": 0,
+        "review_comment_title": 87658,
+        "review_comment_message": 58274,
+        "review_creation_date": 0,
+        "review_answer_timestamp": 0
+      },
+      "candidate_keys": {
+        "review_id": {
+          "columns": [
+            "review_id"
+          ],
+          "distinct_non_null_keys": 98410,
+          "duplicate_rows": 814,
+          "rows_with_null_key": 0
+        },
+        "review_id+order_id": {
+          "columns": [
+            "review_id",
+            "order_id"
+          ],
+          "distinct_non_null_keys": 99224,
+          "duplicate_rows": 0,
+          "rows_with_null_key": 0
+        }
+      },
+      "date_fields": {
+        "review_creation_date": {
+          "null_count": 0,
+          "parsed_count": 99224,
+          "parse_error_count": 0,
+          "minimum": "2016-10-02 00:00:00",
+          "maximum": "2018-08-31 00:00:00"
+        },
+        "review_answer_timestamp": {
+          "null_count": 0,
+          "parsed_count": 99224,
+          "parse_error_count": 0,
+          "minimum": "2016-10-07 18:32:28",
+          "maximum": "2018-10-29 12:27:35"
+        }
+      },
+      "money_fields": {}
+    },
+    "olist_orders_dataset.csv": {
+      "file_name": "olist_orders_dataset.csv",
+      "size_bytes": 17654914,
+      "sha256": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+      "fields": [
+        "order_id",
+        "customer_id",
+        "order_status",
+        "order_purchase_timestamp",
+        "order_approved_at",
+        "order_delivered_carrier_date",
+        "order_delivered_customer_date",
+        "order_estimated_delivery_date"
+      ],
+      "row_count": 99441,
+      "null_counts": {
+        "order_id": 0,
+        "customer_id": 0,
+        "order_status": 0,
+        "order_purchase_timestamp": 0,
+        "order_approved_at": 160,
+        "order_delivered_carrier_date": 1783,
+        "order_delivered_customer_date": 2965,
+        "order_estimated_delivery_date": 0
+      },
+      "candidate_keys": {
+        "order_id": {
+          "columns": [
+            "order_id"
+          ],
+          "distinct_non_null_keys": 99441,
+          "duplicate_rows": 0,
+          "rows_with_null_key": 0
+        }
+      },
+      "date_fields": {
+        "order_purchase_timestamp": {
+          "null_count": 0,
+          "parsed_count": 99441,
+          "parse_error_count": 0,
+          "minimum": "2016-09-04 21:15:19",
+          "maximum": "2018-10-17 17:30:18"
+        },
+        "order_approved_at": {
+          "null_count": 160,
+          "parsed_count": 99281,
+          "parse_error_count": 0,
+          "minimum": "2016-09-15 12:16:38",
+          "maximum": "2018-09-03 17:40:06"
+        },
+        "order_delivered_carrier_date": {
+          "null_count": 1783,
+          "parsed_count": 97658,
+          "parse_error_count": 0,
+          "minimum": "2016-10-08 10:34:01",
+          "maximum": "2018-09-11 19:48:28"
+        },
+        "order_delivered_customer_date": {
+          "null_count": 2965,
+          "parsed_count": 96476,
+          "parse_error_count": 0,
+          "minimum": "2016-10-11 13:46:32",
+          "maximum": "2018-10-17 13:22:46"
+        },
+        "order_estimated_delivery_date": {
+          "null_count": 0,
+          "parsed_count": 99441,
+          "parse_error_count": 0,
+          "minimum": "2016-09-30 00:00:00",
+          "maximum": "2018-11-12 00:00:00"
+        }
+      },
+      "money_fields": {},
+      "status_distribution": {
+        "approved": 2,
+        "canceled": 625,
+        "created": 5,
+        "delivered": 96478,
+        "invoiced": 314,
+        "processing": 301,
+        "shipped": 1107,
+        "unavailable": 609
+      }
+    },
+    "olist_products_dataset.csv": {
+      "file_name": "olist_products_dataset.csv",
+      "size_bytes": 2379446,
+      "sha256": "3e6569628a17fbc75fd206ee357b59e20364b9afa90f5b6cd5b4d624c58aa9cc",
+      "fields": [
+        "product_id",
+        "product_category_name",
+        "product_name_lenght",
+        "product_description_lenght",
+        "product_photos_qty",
+        "product_weight_g",
+        "product_length_cm",
+        "product_height_cm",
+        "product_width_cm"
+      ],
+      "row_count": 32951,
+      "null_counts": {
+        "product_id": 0,
+        "product_category_name": 610,
+        "product_name_lenght": 610,
+        "product_description_lenght": 610,
+        "product_photos_qty": 610,
+        "product_weight_g": 2,
+        "product_length_cm": 2,
+        "product_height_cm": 2,
+        "product_width_cm": 2
+      },
+      "candidate_keys": {
+        "product_id": {
+          "columns": [
+            "product_id"
+          ],
+          "distinct_non_null_keys": 32951,
+          "duplicate_rows": 0,
+          "rows_with_null_key": 0
+        }
+      },
+      "date_fields": {},
+      "money_fields": {}
+    },
+    "olist_sellers_dataset.csv": {
+      "file_name": "olist_sellers_dataset.csv",
+      "size_bytes": 174703,
+      "sha256": "1f643d2b950373b85735e7794b20986f528d7a000432e7c6f9bcbb44d0846a0e",
+      "fields": [
+        "seller_id",
+        "seller_zip_code_prefix",
+        "seller_city",
+        "seller_state"
+      ],
+      "row_count": 3095,
+      "null_counts": {
+        "seller_id": 0,
+        "seller_zip_code_prefix": 0,
+        "seller_city": 0,
+        "seller_state": 0
+      },
+      "candidate_keys": {
+        "seller_id": {
+          "columns": [
+            "seller_id"
+          ],
+          "distinct_non_null_keys": 3095,
+          "duplicate_rows": 0,
+          "rows_with_null_key": 0
+        }
+      },
+      "date_fields": {},
+      "money_fields": {}
+    },
+    "product_category_name_translation.csv": {
+      "file_name": "product_category_name_translation.csv",
+      "size_bytes": 2613,
+      "sha256": "a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278",
+      "fields": [
+        "product_category_name",
+        "product_category_name_english"
+      ],
+      "row_count": 71,
+      "null_counts": {
+        "product_category_name": 0,
+        "product_category_name_english": 0
+      },
+      "candidate_keys": {
+        "product_category_name": {
+          "columns": [
+            "product_category_name"
+          ],
+          "distinct_non_null_keys": 71,
+          "duplicate_rows": 0,
+          "rows_with_null_key": 0
+        }
+      },
+      "date_fields": {},
+      "money_fields": {}
+    }
+  },
+  "relationships": [
+    {
+      "relationship": "orders.customer_id -> customers.customer_id",
+      "child_non_null_rows": 99441,
+      "child_distinct_keys": 99441,
+      "parent_distinct_keys": 99441,
+      "orphan_row_count": 0,
+      "orphan_distinct_key_count": 0,
+      "orphan_key_samples": []
+    },
+    {
+      "relationship": "order_items.order_id -> orders.order_id",
+      "child_non_null_rows": 112650,
+      "child_distinct_keys": 98666,
+      "parent_distinct_keys": 99441,
+      "orphan_row_count": 0,
+      "orphan_distinct_key_count": 0,
+      "orphan_key_samples": []
+    },
+    {
+      "relationship": "order_items.product_id -> products.product_id",
+      "child_non_null_rows": 112650,
+      "child_distinct_keys": 32951,
+      "parent_distinct_keys": 32951,
+      "orphan_row_count": 0,
+      "orphan_distinct_key_count": 0,
+      "orphan_key_samples": []
+    },
+    {
+      "relationship": "order_items.seller_id -> sellers.seller_id",
+      "child_non_null_rows": 112650,
+      "child_distinct_keys": 3095,
+      "parent_distinct_keys": 3095,
+      "orphan_row_count": 0,
+      "orphan_distinct_key_count": 0,
+      "orphan_key_samples": []
+    },
+    {
+      "relationship": "payments.order_id -> orders.order_id",
+      "child_non_null_rows": 103886,
+      "child_distinct_keys": 99440,
+      "parent_distinct_keys": 99441,
+      "orphan_row_count": 0,
+      "orphan_distinct_key_count": 0,
+      "orphan_key_samples": []
+    },
+    {
+      "relationship": "reviews.order_id -> orders.order_id",
+      "child_non_null_rows": 99224,
+      "child_distinct_keys": 98673,
+      "parent_distinct_keys": 99441,
+      "orphan_row_count": 0,
+      "orphan_distinct_key_count": 0,
+      "orphan_key_samples": []
+    }
+  ],
+  "semantic_checks": {
+    "customer_identifiers": {
+      "customer_id_distinct_count": 99441,
+      "customer_unique_id_distinct_count": 96096,
+      "unique_ids_linked_to_multiple_customer_ids": 2997,
+      "maximum_customer_ids_per_unique_id": 17,
+      "customer_ids_linked_to_multiple_unique_ids": 0,
+      "interpretation": "customer_id identifies a customer record used by an order; customer_unique_id links repeat purchases by the same logical customer."
+    },
+    "order_child_cardinality": {
+      "items": {
+        "order_count": 99441,
+        "orders_with_zero_records": 775,
+        "orders_with_one_record": 88863,
+        "orders_with_multiple_records": 9803,
+        "minimum_records_per_order": 0,
+        "maximum_records_per_order": 21,
+        "average_records_per_order": "1.132833",
+        "record_count_histogram": {
+          "0": 775,
+          "1": 88863,
+          "2": 7516,
+          "3": 1322,
+          "4": 505,
+          "5": 204,
+          "6": 198,
+          "7": 22,
+          "8": 8,
+          "9": 3,
+          "10": 8,
+          "11": 4,
+          "12": 5,
+          "13": 1,
+          "14": 2,
+          "15": 2,
+          "20": 2,
+          "21": 1
+        }
+      },
+      "payments": {
+        "order_count": 99441,
+        "orders_with_zero_records": 1,
+        "orders_with_one_record": 96479,
+        "orders_with_multiple_records": 2961,
+        "minimum_records_per_order": 0,
+        "maximum_records_per_order": 29,
+        "average_records_per_order": "1.044700",
+        "record_count_histogram": {
+          "0": 1,
+          "1": 96479,
+          "2": 2382,
+          "3": 301,
+          "4": 108,
+          "5": 52,
+          "6": 36,
+          "7": 28,
+          "8": 11,
+          "9": 9,
+          "10": 5,
+          "11": 8,
+          "12": 8,
+          "13": 3,
+          "14": 2,
+          "15": 2,
+          "19": 2,
+          "21": 1,
+          "22": 1,
+          "26": 1,
+          "29": 1
+        }
+      },
+      "reviews": {
+        "order_count": 99441,
+        "orders_with_zero_records": 768,
+        "orders_with_one_record": 98126,
+        "orders_with_multiple_records": 547,
+        "minimum_records_per_order": 0,
+        "maximum_records_per_order": 3,
+        "average_records_per_order": "0.997818",
+        "record_count_histogram": {
+          "0": 768,
+          "1": 98126,
+          "2": 543,
+          "3": 4
+        }
+      }
+    },
+    "geolocation_zip_prefix": {
+      "non_null_row_count": 1000163,
+      "distinct_prefix_count": 19015,
+      "duplicate_rows_by_prefix": 981148,
+      "prefixes_with_multiple_rows": 17972,
+      "maximum_rows_for_one_prefix": 1146,
+      "is_unique": false
+    },
+    "refund_and_payment_fields": {
+      "refund_amount": {
+        "available": false,
+        "matching_fields": []
+      },
+      "refund_completion_time": {
+        "available": false,
+        "matching_fields": []
+      },
+      "payment_time": {
+        "available": false,
+        "matching_fields": []
+      },
+      "related_but_not_equivalent_fields": [
+        "olist_orders_dataset.csv.order_approved_at",
+        "olist_orders_dataset.csv.order_status",
+        "olist_order_payments_dataset.csv.payment_value"
+      ],
+      "interpretation": "Order approval, cancellation status, and payment value do not prove a completed refund or provide a payment event timestamp."
+    }
+  }
+}
