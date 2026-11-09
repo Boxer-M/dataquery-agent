@@ -10,9 +10,10 @@ DataQuery Agent（智能问数系统）是一个用于学习和求职展示的�
 - 从 Kaggle 官方来源下载 Olist Brazilian E-Commerce Public Dataset；
 - 核验发布者、CC BY-NC-SA 4.0 许可证和官方版本元数据；
 - 对 9 个原始 CSV 运行可复现的字段、数据质量、候选键和关系审计；
-- 生成机器可读报告并为核心审计逻辑添加标准库单元测试。
+- 生成机器可读报告并为核心审计逻辑添加标准库单元测试；
+- 使用 PostgreSQL 16 建立 9 张 ODS 表，并通过单事务 `\copy` 导入全部原始记录。
 
-尚未完成 MySQL 建表/导入、指标语义层、RAG、Text-to-SQL、Agent、API 或可视化。详细进度见 `PROJECT_PLAN.md`。
+尚未完成指标语义层、RAG、Text-to-SQL、Agent、API 或可视化。详细进度见 `PROJECT_PLAN.md`。
 
 ## Python 版本
 
@@ -52,3 +53,34 @@ PYTHONPATH=src .venv/bin/python -m dataquery_agent.data_audit \
 - 数据来源、字段、关系及能力边界：`docs/DATA_SOURCE.md`
 - 机器可读审计结果：`reports/d1_data_audit.json`
 - 当前计划与验收状态：`PROJECT_PLAN.md`
+
+## PostgreSQL ODS
+
+本地数据库使用 Docker Compose 管理的 PostgreSQL 16，只映射到 `127.0.0.1:5433`。本地密码保存在不进入 Git 的 `.env`。
+
+| ODS 表 | 记录数 |
+|---|---:|
+| `ods_customers` | 99,441 |
+| `ods_geolocation` | 1,000,163 |
+| `ods_order_items` | 112,650 |
+| `ods_order_payments` | 103,886 |
+| `ods_order_reviews` | 99,224 |
+| `ods_orders` | 99,441 |
+| `ods_products` | 32,951 |
+| `ods_sellers` | 3,095 |
+| `ods_product_category_name_translation` | 71 |
+
+在空数据库中复现建表和导入：
+
+```bash
+docker compose up -d db
+scripts/import_olist_ods.sh
+```
+
+导入脚本发现任一目标表已存在时会停止，不会删除、清空或重复追加。只读验证命令：
+
+```bash
+docker compose exec -T db sh -c \
+  'PGPASSWORD="$POSTGRES_PASSWORD" psql -h 127.0.0.1 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -w -f -' \
+  < sql/validate_olist_ods.sql
+```
