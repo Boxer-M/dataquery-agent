@@ -1,0 +1,4 @@
+psycopg[binary]==3.3.8
+psycopg-binary==3.3.8
+python-dotenv==1.2.4
+typing-extensions==4.16.0
