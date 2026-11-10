@@ -1,6 +1,6 @@
 {
-  "catalog_version": "1.0.0-design",
-  "design_only": true,
+  "catalog_version": "1.1.0-dws",
+  "design_only": false,
   "approved_base": {
     "path": "metrics/ecommerce_v1.json",
     "version": "1.0.0",
@@ -10,10 +10,10 @@
   "defaults": {
     "window": "[start,end)，源无时区时间；日期分组支持day/month",
     "as_of": "排他观察截止；队列as_of>=end，固定同一观察点；没有入库可知时间",
-    "summary_availability": "本轮没有任何DWS/ADS；planned_summary不表示已有表或可用路由",
+    "summary_availability": "六张DWS已验收；has_existing_summary仅对dws_validation精确日粒度、维度、状态及观察截止有效，ADS/Agent未实现。",
     "dimension_semantics": "商品/品类/客户属性为当前快照；跨事实的商品支付分摊不支持；显式过滤必须记录且不得覆盖固定状态口径",
     "source_fields_semantics": "source_fields均为真实源字段；维度附加血缘见dimension_lineage；planned表示尚未创建的逻辑对象。",
-    "validation": "扩展指标均defined_unverified；剖面观察不等于全套GT已验收"
+    "validation": "原8项定义未变；新增18项仅在已验证DWS范围available；4项defined_unverified/not_available_in_dws，原8项unsupported保持。"
   },
   "metrics": [
     {
@@ -48,7 +48,7 @@
         "dwd.order_fact",
         "dim.customer"
       ],
-      "has_existing_summary": false,
+      "has_existing_summary": true,
       "planned_summary": "dws.order_day",
       "dynamic_sql": "computable; query-service routing not implemented",
       "data_quality_limits": "不是付款订单数、有效成交单数或商品件数。; inherit approved defaults.null_and_anomalies",
@@ -56,6 +56,25 @@
         "status": "verified_original_8",
         "method": "sql/metrics/ecommerce_v1.sql#order_count",
         "evidence": "reports/ecommerce_metrics_v1.json"
+      },
+      "existing_summary": "dws.order_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "order_count",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel"
+        ],
+        "checks": 8,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
       }
     },
     {
@@ -99,7 +118,7 @@
         "dim.category",
         "dim.customer"
       ],
-      "has_existing_summary": false,
+      "has_existing_summary": true,
       "planned_summary": "dws.order_day or dws.product_sales_day",
       "dynamic_sql": "computable; query-service routing not implemented",
       "data_quality_limits": "discount_amount 按整行折扣扣一次；不是成功支付额、确认收入或扣退款后的收入；不用商品现价。; inherit approved defaults.null_and_anomalies",
@@ -107,6 +126,28 @@
         "status": "verified_original_8",
         "method": "sql/metrics/ecommerce_v1.sql#item_net_sales_amount",
         "evidence": "reports/ecommerce_metrics_v1.json"
+      },
+      "existing_summary": "dws.product_sales_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "item_net_sales_amount",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "category_id_current",
+          "product_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel",
+          "category_id_current"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
       }
     },
     {
@@ -142,7 +183,7 @@
         "dwd.order_fact",
         "dim.customer"
       ],
-      "has_existing_summary": false,
+      "has_existing_summary": true,
       "planned_summary": "dws.payment_day",
       "dynamic_sql": "computable; query-service routing not implemented",
       "data_quality_limits": "不是尝试支付的订单数；失败记录的 paid_at 仅作源事件时间，不证明到账。; inherit approved defaults.null_and_anomalies",
@@ -150,6 +191,27 @@
         "status": "verified_original_8",
         "method": "sql/metrics/ecommerce_v1.sql#payment_attempt_count",
         "evidence": "reports/ecommerce_metrics_v1.json"
+      },
+      "existing_summary": "dws.payment_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "payment_attempt_count",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "payment_method",
+          "payment_status"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel"
+        ],
+        "checks": 12,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
       }
     },
     {
@@ -185,7 +247,7 @@
         "dwd.payment_attempt_fact",
         "dwd.order_fact"
       ],
-      "has_existing_summary": false,
+      "has_existing_summary": true,
       "planned_summary": "dws.payment_day",
       "dynamic_sql": "computable; query-service routing not implemented",
       "data_quality_limits": "captured 为源成功状态代理；不是银行核销到账证明，不扣退货；同单多笔成功均保留。; inherit approved defaults.null_and_anomalies",
@@ -193,6 +255,27 @@
         "status": "verified_original_8",
         "method": "sql/metrics/ecommerce_v1.sql#captured_payment_amount",
         "evidence": "reports/ecommerce_metrics_v1.json"
+      },
+      "existing_summary": "dws.payment_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "captured_payment_amount",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "payment_method",
+          "payment_status"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel"
+        ],
+        "checks": 12,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
       }
     },
     {
@@ -227,7 +310,7 @@
         "dwd.payment_attempt_fact",
         "dwd.order_fact"
       ],
-      "has_existing_summary": false,
+      "has_existing_summary": true,
       "planned_summary": "dws.payment_day (sum numerator/denominator)",
       "dynamic_sql": "computable; query-service routing not implemented",
       "data_quality_limits": "不是订单最终支付成功率；新增状态仍计入分母并触发枚举审查。; inherit approved defaults.null_and_anomalies",
@@ -235,6 +318,26 @@
         "status": "verified_original_8",
         "method": "sql/metrics/ecommerce_v1.sql#payment_attempt_success_rate",
         "evidence": "reports/ecommerce_metrics_v1.json"
+      },
+      "existing_summary": "dws.payment_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "payment_attempt_success_rate",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "payment_method"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel"
+        ],
+        "checks": 10,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
       }
     },
     {
@@ -270,7 +373,7 @@
         "dwd.order_fact",
         "dim.product"
       ],
-      "has_existing_summary": false,
+      "has_existing_summary": true,
       "planned_summary": "dws.return_day",
       "dynamic_sql": "computable; query-service routing not implemented",
       "data_quality_limits": "不是退货件数或退货订单数；没有退货数量字段。; inherit approved defaults.null_and_anomalies",
@@ -278,6 +381,28 @@
         "status": "verified_original_8",
         "method": "sql/metrics/ecommerce_v1.sql#return_record_count",
         "evidence": "reports/ecommerce_metrics_v1.json"
+      },
+      "existing_summary": "dws.return_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "return_record_count",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "category_id_current",
+          "product_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel",
+          "category_id_current"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
       }
     },
     {
@@ -314,7 +439,7 @@
         "dwd.order_fact",
         "dim.product"
       ],
-      "has_existing_summary": false,
+      "has_existing_summary": true,
       "planned_summary": "dws.return_day",
       "dynamic_sql": "computable; query-service routing not implemented",
       "data_quality_limits": "无退款完成时间及支付流水关联，不能称已完成退款额；超明细金额不截断。; inherit approved defaults.null_and_anomalies",
@@ -322,6 +447,28 @@
         "status": "verified_original_8",
         "method": "sql/metrics/ecommerce_v1.sql#return_record_amount",
         "evidence": "reports/ecommerce_metrics_v1.json"
+      },
+      "existing_summary": "dws.return_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "return_record_amount",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "category_id_current",
+          "product_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel",
+          "category_id_current"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
       }
     },
     {
@@ -363,7 +510,7 @@
         "dwd.order_fact",
         "dim.product"
       ],
-      "has_existing_summary": false,
+      "has_existing_summary": true,
       "planned_summary": "dws.item_return_cohort_day (exact as_of only)",
       "dynamic_sql": "computable; query-service routing not implemented",
       "data_quality_limits": "包含退货早于下单的源异常；不表示有效售后发生率，不按件数加权；新批次观察期较短不可直接排名。; inherit approved defaults.null_and_anomalies",
@@ -371,6 +518,28 @@
         "status": "verified_original_8",
         "method": "sql/metrics/ecommerce_v1.sql#item_return_rate",
         "evidence": "reports/ecommerce_metrics_v1.json"
+      },
+      "existing_summary": "dws.item_return_cohort_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "item_return_rate",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "2026-01-01T00:00:00",
+        "group_by": [
+          "order_channel",
+          "category_id_current",
+          "product_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel",
+          "category_id_current"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
       }
     },
     {
@@ -411,24 +580,47 @@
       "dependencies": [
         "dwd.order_item_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.order_day / dws.product_sales_day",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "不是商品件数。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)"
+      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)",
+      "existing_summary": "dws.product_sales_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "order_item_count",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "category_id_current",
+          "product_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel",
+          "category_id_current"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "ordered_unit_count",
@@ -468,24 +660,47 @@
       "dependencies": [
         "dwd.order_item_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.order_day / dws.product_sales_day",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "保留异常 quantity；不是支付成交件数或退货件数。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)"
+      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)",
+      "existing_summary": "dws.product_sales_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "ordered_unit_count",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "category_id_current",
+          "product_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel",
+          "category_id_current"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "item_gross_sales_amount",
@@ -525,24 +740,47 @@
       "dependencies": [
         "dwd.order_item_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.order_day / dws.product_sales_day",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "按成交单价，不使用商品当前价；非财务收入。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)"
+      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)",
+      "existing_summary": "dws.product_sales_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "item_gross_sales_amount",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "category_id_current",
+          "product_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel",
+          "category_id_current"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "item_discount_amount",
@@ -582,24 +820,47 @@
       "dependencies": [
         "dwd.order_item_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.order_day / dws.product_sales_day",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "每行折扣只减一次；不能推导税费或优惠券拆分。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)"
+      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)",
+      "existing_summary": "dws.product_sales_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "item_discount_amount",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "category_id_current",
+          "product_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel",
+          "category_id_current"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "cancelled_order_count",
@@ -631,24 +892,44 @@
       "dependencies": [
         "dwd.order_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.order_day",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "按下单日统计当前状态，不是取消事件日；无取消时间。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.orders o"
+      "source_relation_note": "ods.orders o",
+      "existing_summary": "dws.order_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "cancelled_order_count",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel"
+        ],
+        "checks": 8,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "cancelled_order_rate",
@@ -677,24 +958,44 @@
       "dependencies": [
         "dwd.order_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.order_day numerator/denominator",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "不是取消事件发生率；状态筛选不可覆盖固定分母。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.orders o"
+      "source_relation_note": "ods.orders o",
+      "existing_summary": "dws.order_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "cancelled_order_rate",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel"
+        ],
+        "checks": 8,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "average_order_record_amount",
@@ -733,24 +1034,44 @@
         "dwd.order_fact",
         "dwd.order_item_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.order_day weighted totals",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "分子缺明细订单按0，分母保留订单；非支付客单价。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "独立ODS先按order_id汇总明细，LEFT JOIN保留全部订单；SUM(COALESCE(net,0))/COUNT(order_id)；增加无明细订单案例。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "独立ODS先按order_id汇总明细，LEFT JOIN保留全部订单；SUM(COALESCE(net,0))/COUNT(order_id)；增加无明细订单案例。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.orders o LEFT JOIN (SELECT order_id,SUM(quantity*unit_price-discount_amount) net FROM ods.order_items GROUP BY order_id) i USING(order_id)"
+      "source_relation_note": "ods.orders o LEFT JOIN (SELECT order_id,SUM(quantity*unit_price-discount_amount) net FROM ods.order_items GROUP BY order_id) i USING(order_id)",
+      "existing_summary": "dws.order_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "average_order_record_amount",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel"
+        ],
+        "checks": 8,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "payment_failed_attempt_count",
@@ -786,24 +1107,46 @@
       "dependencies": [
         "dwd.payment_attempt_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.payment_day",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "不是支付失败订单数；同单重试分别计数。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.payments p"
+      "source_relation_note": "ods.payments p",
+      "existing_summary": "dws.payment_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "payment_failed_attempt_count",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "payment_method",
+          "payment_status"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel"
+        ],
+        "checks": 12,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "payment_failed_attempt_rate",
@@ -837,24 +1180,45 @@
       "dependencies": [
         "dwd.payment_attempt_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.payment_day numerator/denominator",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "新状态出现时成功率+失败率未必为1；不能硬取1-成功率。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.payments p"
+      "source_relation_note": "ods.payments p",
+      "existing_summary": "dws.payment_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "payment_failed_attempt_rate",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "payment_method"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel"
+        ],
+        "checks": 10,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "payment_attempted_order_count",
@@ -891,7 +1255,7 @@
         "dwd.payment_attempt_fact"
       ],
       "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "availability": "not_available_in_dws",
       "has_existing_summary": false,
       "planned_summary": null,
       "dynamic_sql": "computable; implementation and query-service routing pending",
@@ -907,7 +1271,8 @@
           "sum_numerator_denominator_not_average_rates"
         ]
       },
-      "source_relation_note": "ods.payments p"
+      "source_relation_note": "ods.payments p",
+      "deferred_reason": "定义和来源明确，但六张DWS不保留必要明细粒度；受控DWD/后续ADS路径未独立实施验证，不伪标needs_definition或unsupported。"
     },
     {
       "metric_id": "multiple_payment_attempt_order_count",
@@ -941,7 +1306,7 @@
         "dwd.payment_attempt_fact"
       ],
       "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "availability": "not_available_in_dws",
       "has_existing_summary": false,
       "planned_summary": null,
       "dynamic_sql": "computable; implementation and query-service routing pending",
@@ -957,7 +1322,8 @@
           "sum_numerator_denominator_not_average_rates"
         ]
       },
-      "source_relation_note": "ods.payments p"
+      "source_relation_note": "ods.payments p",
+      "deferred_reason": "定义和来源明确，但六张DWS不保留必要明细粒度；受控DWD/后续ADS路径未独立实施验证，不伪标needs_definition或unsupported。"
     },
     {
       "metric_id": "payment_item_amount_mismatch_order_count",
@@ -1000,7 +1366,7 @@
         "dwd.payment_attempt_fact"
       ],
       "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "availability": "not_available_in_dws",
       "has_existing_summary": false,
       "planned_summary": "ads.payment_anomaly_order exact as_of",
       "dynamic_sql": "computable; implementation and query-service routing pending",
@@ -1016,7 +1382,8 @@
           "sum_numerator_denominator_not_average_rates"
         ]
       },
-      "source_relation_note": "ods.orders o + order_items preaggregation + payments captured preaggregation"
+      "source_relation_note": "ods.orders o + order_items preaggregation + payments captured preaggregation",
+      "deferred_reason": "定义和来源明确，但六张DWS不保留必要明细粒度；受控DWD/后续ADS路径未独立实施验证，不伪标needs_definition或unsupported。"
     },
     {
       "metric_id": "return_before_order_count",
@@ -1058,24 +1425,47 @@
       "dependencies": [
         "dwd.return_record_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.return_day quality count",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "只标识源时序异常，不排除主指标。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.returns r JOIN ods.order_items i USING(order_item_id) JOIN ods.orders o USING(order_id)"
+      "source_relation_note": "ods.returns r JOIN ods.order_items i USING(order_item_id) JOIN ods.orders o USING(order_id)",
+      "existing_summary": "dws.return_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "return_before_order_count",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "category_id_current",
+          "product_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel",
+          "category_id_current"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "return_above_item_net_count",
@@ -1117,24 +1507,47 @@
       "dependencies": [
         "dwd.return_record_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.return_day quality count",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "比较整行净额，不假定退款成功，不截断。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.returns r JOIN ods.order_items i USING(order_item_id)"
+      "source_relation_note": "ods.returns r JOIN ods.order_items i USING(order_item_id)",
+      "existing_summary": "dws.return_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "return_above_item_net_count",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "category_id_current",
+          "product_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel",
+          "category_id_current"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "ordering_customer_count",
@@ -1166,24 +1579,47 @@
       "dependencies": [
         "dwd.order_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.customer_order_day regroup customer_id",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "不是支付买家数；跨日/渠道去重不可相加。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "ODS orders按ordered_at筛窗口后COUNT(DISTINCT customer_id)；当前全源8622仅交叉检查。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "ODS orders按ordered_at筛窗口后COUNT(DISTINCT customer_id)；当前全源8622仅交叉检查。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.orders o"
+      "source_relation_note": "ods.orders o",
+      "existing_summary": "dws.customer_order_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "ordering_customer_count",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "customer_country_current",
+          "loyalty_tier_current",
+          "customer_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "repeat_ordering_customer_count",
@@ -1212,24 +1648,47 @@
       "dependencies": [
         "dwd.order_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.customer_order_day regroup customer_id",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "是窗口内>=2单，不是历史复购客户回访；取消单仍计入。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "ODS orders按ordered_at筛窗口后GROUP BY customer_id HAVING COUNT(order_id)>=2，再COUNT组；全源5376仅交叉检查。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "ODS orders按ordered_at筛窗口后GROUP BY customer_id HAVING COUNT(order_id)>=2，再COUNT组；全源5376仅交叉检查。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.orders o"
+      "source_relation_note": "ods.orders o",
+      "existing_summary": "dws.customer_order_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "repeat_ordering_customer_count",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "customer_country_current",
+          "loyalty_tier_current",
+          "customer_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "customer_repeat_order_rate",
@@ -1258,24 +1717,47 @@
       "dependencies": [
         "dwd.order_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.customer_order_day regroup customer_id",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "不得平均日率；跨渠道总率须先合并账户；不代表自然人复购。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "同窗先按账户计订单，COUNT(n>=2)/NULLIF(COUNT(n>=1),0)；跨天/渠道账户测试；不使用日复购率平均。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "同窗先按账户计订单，COUNT(n>=2)/NULLIF(COUNT(n>=1),0)；跨天/渠道账户测试；不使用日复购率平均。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.orders o"
+      "source_relation_note": "ods.orders o",
+      "existing_summary": "dws.customer_order_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "customer_repeat_order_rate",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "customer_country_current",
+          "loyalty_tier_current",
+          "customer_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "first_observed_ordering_customer_count",
@@ -1304,7 +1786,7 @@
         "dwd.order_fact"
       ],
       "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "availability": "not_available_in_dws",
       "has_existing_summary": false,
       "planned_summary": null,
       "dynamic_sql": "computable; implementation and query-service routing pending",
@@ -1320,7 +1802,8 @@
           "sum_numerator_denominator_not_average_rates"
         ]
       },
-      "source_relation_note": "ods.orders o"
+      "source_relation_note": "ods.orders o",
+      "deferred_reason": "定义和来源明确，但六张DWS不保留必要明细粒度；受控DWD/后续ADS路径未独立实施验证，不伪标needs_definition或unsupported。"
     },
     {
       "metric_id": "orders_per_ordering_customer",
@@ -1352,24 +1835,47 @@
       "dependencies": [
         "dwd.order_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.customer_order_day regroup customer_id",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "是账户均值，不是自然人频率。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "同一ODS订单窗口COUNT(order_id)/NULLIF(COUNT(DISTINCT customer_id),0)，独立验证跨日渠道账户去重。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "同一ODS订单窗口COUNT(order_id)/NULLIF(COUNT(DISTINCT customer_id),0)，独立验证跨日渠道账户去重。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.orders o"
+      "source_relation_note": "ods.orders o",
+      "existing_summary": "dws.customer_order_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "orders_per_ordering_customer",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "customer_country_current",
+          "loyalty_tier_current",
+          "customer_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "channel_order_share",
@@ -1396,24 +1902,42 @@
       "dependencies": [
         "dwd.order_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.order_day",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "分母移除渠道筛选，保留时间/授权范围；不把所选渠道份额重标为总市场份额。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "ODS按ordered_at筛窗后分别算每渠道COUNT(order_id)与移除渠道筛选的全授权域COUNT；比较分子分母，不先四舍五入。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "ODS按ordered_at筛窗后分别算每渠道COUNT(order_id)与移除渠道筛选的全授权域COUNT；比较分子分母，不先四舍五入。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.orders"
+      "source_relation_note": "ods.orders",
+      "existing_summary": "dws.order_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "channel_order_share",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [],
+        "required_axis": "order_channel",
+        "filters": [
+          "order_channel"
+        ],
+        "checks": 6,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "ordered_product_count",
@@ -1449,24 +1973,47 @@
       "dependencies": [
         "dwd.order_item_fact"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.product_sales_day distinct product_id",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "不是售出件数；取消单及异常数量记录仍存在。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "ODS明细仅JOIN唯一订单，按ordered_at筛窗后COUNT(DISTINCT product_id)，跨日期出现的商品只计一次。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "ODS明细仅JOIN唯一订单，按ordered_at筛窗后COUNT(DISTINCT product_id)，跨日期出现的商品只计一次。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)"
+      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)",
+      "existing_summary": "dws.product_sales_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "ordered_product_count",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [
+          "order_channel",
+          "category_id_current",
+          "product_id"
+        ],
+        "required_axis": null,
+        "filters": [
+          "order_channel",
+          "category_id_current"
+        ],
+        "checks": 14,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "category_sales_share",
@@ -1504,24 +2051,43 @@
         "dim.product",
         "dim.category"
       ],
-      "definition_status": "defined_unverified",
-      "availability": "可计算但尚未完成独立标准SQL及验收",
-      "has_existing_summary": false,
+      "definition_status": "available",
+      "availability": "available",
+      "has_existing_summary": true,
       "planned_summary": "dws.product_sales_day via dim.product",
-      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "dynamic_sql": "Validated DWS SQL in declared scope; broader controlled-DWD routing not implemented",
       "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
       "data_quality_limits": "分母移除商品/品类筛选，保留时间和渠道；当前分类非历史分类；负净额可能导致份额超0..1。",
       "ground_truth": {
-        "status": "not_run",
-        "method": "ODS明细JOIN唯一订单/当前商品，按ordered_at筛窗后类别SUM净额；分母移除product/category筛选并保留其他限定；同发布品类回总额。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "status": "verified_dws",
+        "method": "ODS明细JOIN唯一订单/当前商品，按ordered_at筛窗后类别SUM净额；分母移除product/category筛选并保留其他限定；同发布品类回总额。 全量/月度/空窗与边界、异常案例均需验收；已执行，见DWS验证报告。",
         "required_checks": [
           "no_fanout",
           "event_time_window",
           "grain_dedup",
           "sum_numerator_denominator_not_average_rates"
-        ]
+        ],
+        "evidence": "reports/warehouse/dws_acceptance.json"
       },
-      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id) JOIN ods.products p USING(product_id)"
+      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id) JOIN ods.products p USING(product_id)",
+      "existing_summary": "dws.product_sales_day",
+      "dws_validation": {
+        "status": "available",
+        "query_id": "category_sales_share",
+        "ods_sql": "sql/warehouse/dws_metrics/ods.sql",
+        "dws_sql": "sql/warehouse/dws_metrics/dws.sql",
+        "report": "reports/warehouse/dws_acceptance.json",
+        "day_aligned_only": true,
+        "as_of": "not_used",
+        "group_by": [],
+        "required_axis": "category_id_current",
+        "filters": [
+          "order_channel",
+          "category_id_current"
+        ],
+        "checks": 8,
+        "scope_note": "其他原声明维度/时刻窗口不自动获得DWS能力；服务和Agent路由尚未实现。"
+      }
     },
     {
       "metric_id": "completed_refund_amount",

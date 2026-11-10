@@ -1,8 +1,8 @@
 # 指标目录、可用性与血缘
 
-机器契约为 `metrics/warehouse_catalog_v1.json`：38 项，包含原批准 8 项、22 项定义待验证扩展、8 项 unsupported。每项记录 ID/中文名、定义/公式、粒度、事件/统计归属、状态、去重、维度、源依赖、是否已有汇总、拟用汇总、动态 SQL 能力、质量限制与独立 Ground Truth 方法。
+机器契约为 `metrics/warehouse_catalog_v1.json`（1.1.0-dws）：38项，原批准8项不变，18项限定DWS范围available，4项明细查询待验证，8项unsupported不变。每项记录 ID/中文名、定义/公式、粒度、事件/统计归属、状态、去重、维度、源依赖、是否已有汇总、拟用汇总、动态 SQL 能力、质量限制与独立 Ground Truth 方法。
 
-**原8项保持不变**：目录复制 `metrics/ecommerce_v1.json` 的全部原字段，并记录原文件 SHA-256；原定义文件和 `sql/metrics/ecommerce_v1.sql` 均不修改。目录增加的路由元数据不是 Agent 已实现能力。扩展公式是设计表达式，不是已执行的标准 SQL；`defined_unverified` 只有完成独立 PostgreSQL 验收后才能成为服务可答指标。
+**原8项保持不变**：目录复制 `metrics/ecommerce_v1.json` 的全部原字段，并记录原文件 SHA-256；原定义文件和 `sql/metrics/ecommerce_v1.sql` 均不修改。目录增加的路由元数据不是 Agent 已实现能力。18项扩展已有独立SQL/真实PostgreSQL验收，路径及312组比较见DWS_ACCEPTANCE。4项defined_unverified不作为可答指标；查询服务/Agent仍未接入。
 
 ## 原批准 8 项（已验证，不改变默认过滤）
 
@@ -19,7 +19,7 @@
 
 窗口 [2023-01-01,2026-01-01)，退货队列 as_of=2026-01-01。包含取消单和源异常；金额不标币种。退货率是记录关联率，不是有效售后件数率；禁止将当月退货记录数/当月明细数替代它。
 
-## 定义待验证的 22 项
+## 原22项扩展的本批处理（18通过，4待明细实现）
 
 | ID / 中文名称 | 计算与时钟 | 血缘与拟用汇总 |
 |---|---|---|
@@ -48,7 +48,7 @@
 
 各指标支持哪些维度见机器目录的 supported_dimensions；这些是可受控计算的维度上限，不表示拟建汇总均包含所有维度。例：订单量按 customer_country_current 可经 customer_order_day+dim.customer 或 DWD 计算；order_day 无 customer_id，不能只 JOIN 客户表硬补分组。payment_method 只适用支付指标，不能用于商品销售额过滤而不声明另一种分析口径。
 
-22项当前全部 `has_existing_summary=false`；未来即便建成汇总，路由仍需检查请求粒度/维度/状态/as_of与汇总完全兼容。channel/product/category 切片优先复用核心金额指标，不另造“渠道销售额/品类销售额”同义 metric_id。原指标固定状态过滤不允许由请求覆盖；显式维度切片需完整回显，未知口径另起澄清。
+18项现为has_existing_summary=true，但仅dws_validation明确的日粒度/维度/状态/as_of可用；其余4项仍无预聚合且未验证。路由必须检查能力兼容。channel/product/category 切片优先复用核心金额指标，不另造“渠道销售额/品类销售额”同义 metric_id。原指标固定状态过滤不允许由请求覆盖；显式维度切片需完整回显，未知口径另起澄清。
 
 ## Unsupported（不产生估计SQL）
 
@@ -75,4 +75,4 @@
 - 份额：验证分母移除指定轴过滤且保留行级授权，空分母NULL；负金额导致份额超0..1时记录限制，不裁剪。
 - 退货：跨月事件、同明细重复退货、异常提前退货、截止时刻等于as_of均按原口径；队列不同as_of严禁合并。
 
-本轮只读观测的 8622 下单账户与 5376 多单账户是数据剖面，不代表22项扩展指标及其全部维度已验收。产品和客户属性只反映当前源快照；数据血缘必须同时记录 metric_version、model_version、source_snapshot_id、release_id、实际逻辑/物理对象、列和最终SQL哈希。
+8622下单账户/5376窗口多单账户及复购率0.62352122已在本批独立ODS/DWS对账通过，但不代表自然人或支付客户指标。其余能力严格按目录dws_validation范围，不泛化到所有旧声明维度。产品和客户属性只反映当前源快照；数据血缘必须同时记录 metric_version、model_version、source_snapshot_id、release_id、实际逻辑/物理对象、列和最终SQL哈希。

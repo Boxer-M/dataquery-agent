@@ -17,23 +17,25 @@ SOURCE_KEYS = dict(categories='category_id', customers='customer_id', products='
 LOGGER = logging.getLogger(__name__)
 
 
-def load_models(path=MANIFEST):
+def load_models(path=MANIFEST, *, allowed_schemas=('dim','dwd'), external_dependencies=()):
     manifest = json.loads(Path(path).read_text())
     models = manifest['models']
-    seen = set()
+    seen = set(external_dependencies)
+    names = set()
     for model in models:
         name = model['name']
-        if not re.fullmatch(r'(dim|dwd)\.[a-z_]+', name) or name in seen:
+        if not re.fullmatch(r'[a-z_]+\.[a-z_]+', name) or name.split('.')[0] not in allowed_schemas or name in names:
             raise ValueError('Invalid or duplicate model name')
         if not set(model['depends_on']) <= seen:
             raise ValueError(f'Missing or unordered dependency: {name}')
-        if model['key'] not in {c['name'] for c in model['columns']}:
+        if not set(model.get('keys',[model['key']])) <= {c['name'] for c in model['columns']}:
             raise ValueError(f'Missing primary key column: {name}')
         for kind in ('ddl','transform'):
             file = (ROOT/model[kind]).resolve()
             if not file.is_relative_to(ROOT) or not file.is_file():
                 raise ValueError(f'Invalid SQL path: {name}')
         seen.add(name)
+        names.add(name)
     return manifest
 
 

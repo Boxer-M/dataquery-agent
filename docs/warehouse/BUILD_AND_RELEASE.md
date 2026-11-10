@@ -1,17 +1,17 @@
 # 加工依赖、SQL规范与运行策略
 
-A批路径已按下列规范落地；DWS/ADS、扩展GT与新版本发布仍为规划。实际入口和报告见BATCH_A_ACCEPTANCE.md，不用空SQL/空表伪造完成。
+A批及DWS路径已落地；ADS、4项明细指标和新源版本发布仍为规划。DWS单独入口scripts/build_dws.py，模型清单warehouse/dws_models.json，见DWS_ACCEPTANCE。实际入口和报告见BATCH_A_ACCEPTANCE.md，不用空SQL/空表伪造完成。
 
 ## SQL目录规范
 
 | 约定位置 | 作用 |
 |---|---|
 | `sql/dwd/order_item_fact.sql`（现有） | 原DDL+SELECT投影，首批保持结果兼容 |
-| `sql/warehouse/ddl/{dim,dwd,dws}/<object>.sql`（DWD/DIM已实现，DWS拟） | 一个对象显式DDL，不混入源数据修复 |
-| `sql/warehouse/transform/{dim,dwd,dws}/<object>.sql`（DWD/DIM已实现，DWS拟） | 单一SELECT模型，不执行TRUNCATE/隐式覆盖 |
+| `sql/warehouse/ddl/{dim,dwd,dws}/<object>.sql`（DWD/DIM/DWS已实现） | 一个对象显式DDL，不混入源数据修复 |
+| `sql/warehouse/transform/{dim,dwd,dws}/<object>.sql`（DWD/DIM/DWS已实现） | 单一SELECT模型，不执行TRUNCATE/隐式覆盖 |
 | `sql/warehouse/ads/<view>.sql`（拟） | 普通视图SELECT与明确依赖 |
 | `sql/warehouse/quality/{relation,batch_a,metrics,legacy_item}.sql`（已实现） | 命名SELECT检查，分别输出阻断错误和业务告警 |
-| `sql/warehouse/ground_truth/<metric_id>.sql`（拟） | 独立ODS参考计算，保留原8项引用已有SQL |
+| `sql/warehouse/ground_truth/dws/models.sql`与`sql/warehouse/dws_metrics/{ods,dws}.sql`（已实现） | 独立ODS参考计算，保留原8项引用已有SQL |
 | `warehouse/models.json`（已实现） | 节点、版本、depends_on、源/目标、字段、约束与索引；实际SQL哈希保存在发布报告 |
 | `scripts/build_warehouse.py`（已实现） | 唯一批量入口，计划/构建/校验/已有版本复用；不把大段业务SQL埋入Python |
 | `tests/test_warehouse_{models,postgres}.py`、`tests/fixtures/sqlshed_batch_a.sql`（已实现） | 主题合成测试及隔离PostgreSQL集成测试，不访问/删除个人现有表 |
@@ -42,7 +42,7 @@ Python负责连接、事务、锁、绑定、拓扑执行、断言和报告。�
 
 第一批沿用当前不可变源快照，取REPEATABLE READ事务；先取得批次级advisory try-lock，再固定快照。确认既有明细表完全匹配已批准投影，仅创建剩余3张DWD和5张DIM。建表、填充、约束与质量验收在同一事务，任一步失败回滚本批新增对象；原明细表不写入、不受回滚实验删除。现有DDL/投影可分文件但不改其14列/业务结果。
 
-第二批新建6张DWS+3个ADS视图，绑定第一批同一源/事实/维度版本。DWS/ADS批次独立事务，失败不影响已验收DWD+DIM；不能标记“完整数仓可用”。默认只预建已批准as_of对应队列，不生成无限日期快照。
+第二批只建6张DWS，绑定同源DWD/DIM，6表及指标校验同一事务；第三批另建ADS并单独PR。失败不影响已验收源层，不声称ADS或完整查询服务已上线。只预建明确as_of队列，不生成无限日期快照。
 
 源业务表自身在本任务只读；若外部源更新发生，快照仍一致但不是最新，发布清单注明快照版本。发布前后对ODS与既有明细核验；一致性由数据库事务保证，不用一个先写成功文件来冒充提交成功。
 

@@ -1,0 +1,251 @@
+{
+  "version": "1.0.0",
+  "metrics": [
+    {
+      "metric_id": "order_count",
+      "family": "orders",
+      "groups": [
+        "channel"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "item_net_sales_amount",
+      "family": "items",
+      "groups": [
+        "channel",
+        "category",
+        "product"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "payment_attempt_count",
+      "family": "payments",
+      "groups": [
+        "channel",
+        "method",
+        "status"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "captured_payment_amount",
+      "family": "payments",
+      "groups": [
+        "channel",
+        "method",
+        "status"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "payment_attempt_success_rate",
+      "family": "payments",
+      "groups": [
+        "channel",
+        "method"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "return_record_count",
+      "family": "returns",
+      "groups": [
+        "channel",
+        "category",
+        "product"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "return_record_amount",
+      "family": "returns",
+      "groups": [
+        "channel",
+        "category",
+        "product"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "item_return_rate",
+      "family": "cohort",
+      "groups": [
+        "channel",
+        "category",
+        "product"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "order_item_count",
+      "family": "items",
+      "groups": [
+        "channel",
+        "category",
+        "product"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "ordered_unit_count",
+      "family": "items",
+      "groups": [
+        "channel",
+        "category",
+        "product"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "item_gross_sales_amount",
+      "family": "items",
+      "groups": [
+        "channel",
+        "category",
+        "product"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "item_discount_amount",
+      "family": "items",
+      "groups": [
+        "channel",
+        "category",
+        "product"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "ordered_product_count",
+      "family": "items",
+      "groups": [
+        "channel",
+        "category",
+        "product"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "cancelled_order_count",
+      "family": "orders",
+      "groups": [
+        "channel"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "cancelled_order_rate",
+      "family": "orders",
+      "groups": [
+        "channel"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "average_order_record_amount",
+      "family": "average",
+      "groups": [
+        "channel"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "payment_failed_attempt_count",
+      "family": "payments",
+      "groups": [
+        "channel",
+        "method",
+        "status"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "payment_failed_attempt_rate",
+      "family": "payments",
+      "groups": [
+        "channel",
+        "method"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "return_before_order_count",
+      "family": "returns",
+      "groups": [
+        "channel",
+        "category",
+        "product"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "return_above_item_net_count",
+      "family": "returns",
+      "groups": [
+        "channel",
+        "category",
+        "product"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "ordering_customer_count",
+      "family": "customers",
+      "groups": [
+        "channel",
+        "country",
+        "loyalty",
+        "customer"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "repeat_ordering_customer_count",
+      "family": "customers",
+      "groups": [
+        "channel",
+        "country",
+        "loyalty",
+        "customer"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "customer_repeat_order_rate",
+      "family": "customers",
+      "groups": [
+        "channel",
+        "country",
+        "loyalty",
+        "customer"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "orders_per_ordering_customer",
+      "family": "customers",
+      "groups": [
+        "channel",
+        "country",
+        "loyalty",
+        "customer"
+      ],
+      "share": false
+    },
+    {
+      "metric_id": "channel_order_share",
+      "family": "orders",
+      "groups": [],
+      "share": true
+    },
+    {
+      "metric_id": "category_sales_share",
+      "family": "items",
+      "groups": [],
+      "share": true
+    }
+  ]
+}

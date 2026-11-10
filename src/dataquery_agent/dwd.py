@@ -39,13 +39,18 @@ def validate_relation(pg, model, projection):
         projection=sql.SQL(projection.strip().rstrip(';')), target=relation_identifier(name))).fetchone()[0]
     if differences:
         raise ValueError(f'Target/source full-row mismatch ({differences}): {name}; refusing overwrite')
+    keys = model.get('keys', [model['key']])
+    key_sql = sql.Identifier(keys[0]) if len(keys)==1 else sql.SQL('ROW({})').format(
+        sql.SQL(',').join(sql.Identifier(k) for k in keys))
     rows, distinct, nulls = pg.execute(sql.SQL(checks['summary']).format(
-        key=sql.Identifier(model['key']), target=relation_identifier(name))).fetchone()
+        key=key_sql, key_nulls=sql.SQL(' OR ').join(
+            sql.SQL('{} IS NULL').format(sql.Identifier(k)) for k in keys),
+        target=relation_identifier(name))).fetchone()
     if rows != distinct or nulls:
         raise ValueError(f'Invalid target keys: {name}')
     flags = {}
     for col in model['columns']:
-        if col['name'].startswith('dq_'):
+        if col['name'].startswith('dq_') and col['type']=='boolean':
             flags[col['name']] = pg.execute(sql.SQL(checks['flags']).format(
                 target=relation_identifier(name), flag=sql.Identifier(col['name']))).fetchone()[0]
     return dict(rows=rows, unique_keys=distinct, null_keys=nulls, full_row_differences=differences,
