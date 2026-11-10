@@ -32,7 +32,7 @@
 6. 拟建read_warehouse角色只获指定发布对象SELECT/必要schema USAGE，无INSERT/UPDATE/DELETE/TRUNCATE/CREATE、无ODS默认读取、无维度PII列。写入角色只交给构建任务，不能由Agent切换身份获得。
 7. 引擎执行只读事务、服务端绑定参数、白名单Identifier、statement_timeout、结果行数上限；LIMIT仅限制返回组，不在原始聚合前截断事实。相同参数和release可缓存，不能跨授权域缓存。
 
-planned_summary不代表已有结果；本轮所有DWS/ADS仍未创建。即使原8项已有SQL，新的查询服务也尚未实现；原Agent链路不因本设计自动获得DWD/DIM访问。
+planned_summary不代表任意请求均有已有结果；6张DWS已通过独立验收，必须遵守目录dws_validation范围，ADS仍未创建。查询服务尚未实现，原Agent不因数仓上线自动获得DWD/DIM/DWS访问或新的SQL生成权限。
 
 ## 响应
 

@@ -1,6 +1,6 @@
 # 表清单与字段级设计
 
-下列为逻辑名称；A批4张DWD及5张DIM已实现，DWS/ADS仍未实施。所有表属于独立sqlshed库。PK、NN、? 分别表示主键、非空、可空；未标?的字段均NN。整数源键INTEGER，计数BIGINT，源金额M=NUMERIC(12,2)，派生/汇总金额N=不限精度NUMERIC，事件T=TIMESTAMP WITHOUT TIME ZONE，技术时间TZ=TIMESTAMPTZ。不存在币种字段，不添加猜测值。实际列/约束以warehouse/models.json及SQL为准，验收见BATCH_A_ACCEPTANCE。
+下列为逻辑名称；A批4张DWD/5张DIM及B批6张DWS已实现，ADS仍未实施。所有表属于独立sqlshed库。PK、NN、? 分别表示主键、非空、可空；未标?的字段均NN。整数源键INTEGER，计数BIGINT，源金额M=NUMERIC(12,2)，派生/汇总金额N=不限精度NUMERIC，事件T=TIMESTAMP WITHOUT TIME ZONE，技术时间TZ=TIMESTAMPTZ。不存在币种字段，不添加猜测值。实际列/约束以warehouse/models.json及SQL为准，验收见BATCH_A_ACCEPTANCE。
 
 发布级 source_snapshot_id、release_id、code_commit、model_version、metric_version、构建时间与对象映射放发布清单，适用于整个不可变批次，不在每张表重复填一套无业务意义字段。清单不包含密码、源客户明细或绝对个人目录。
 
@@ -87,7 +87,7 @@ DIM 仅当前快照，不伪装 SCD2；同一发布内键唯一。order_fact.cus
 
 保留 12000 行；不能声明 order_item_id UNIQUE 来固化当前“每明细最多一退货”的偶然分布。无退货数量字段，不推导 unit_return_rate。当前 5962/1849 个前两类异常标记必须保留。
 
-## DWS：6 张主题表，初期只存日级
+## DWS：6 张主题表（已实现，仅日级）
 
 计数与金额均 NN；不存预先平均后的率。下列日期为 DATE、channel 为 VARCHAR、product_id/customer_id 为 INTEGER、status/method 为 VARCHAR；金额 N、计数 BIGINT。字段列表即全量业务列。
 
@@ -104,7 +104,7 @@ DIM 仅当前快照，不伪装 SCD2；同一发布内键唯一。order_fact.cus
 
 cohort 首次只预聚合已批准 as_of=2026-01-01 的样本窗口；未来请求不同 as_of 时由受控 DWD 计算，不近似取最近快照。不为任意未来日期预建大量重复 cohort 分区。
 
-## ADS：3 个普通视图，暂不物化
+## ADS：独立后续批次，3 个候选普通视图（未实施）
 
 | 视图 / 粒度 | 全部业务字段及类型 | 逻辑依赖与使用边界 |
 |---|---|---|

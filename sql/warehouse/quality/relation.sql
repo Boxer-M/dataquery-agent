@@ -18,7 +18,7 @@ SELECT count(*) FROM (
 ) differences;
 
 -- check: summary
-SELECT count(*),count(DISTINCT {key}),count(*) FILTER(WHERE {key} IS NULL) FROM {target};
+SELECT count(*),count(DISTINCT {key}),count(*) FILTER(WHERE {key_nulls}) FROM {target};
 
 -- check: flags
 SELECT count(*) FROM {target} WHERE {flag};

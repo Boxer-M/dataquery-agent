@@ -1,0 +1,2362 @@
+{
+  "status": "accepted_dws_only",
+  "executed_at_utc": "2026-11-10T15:36:58.657650+00:00",
+  "tested_base_commit": "90fbdba973f22e7e89e129e62e55bc75ac6fbc80",
+  "tested_artifact_sha256": {
+    "metrics/ecommerce_v1.json": "5ee56c86e73b00c0c9e0526ace8644ad2bf3f94c542e527c8e19ee48e45fedc6",
+    "scripts/build_dws.py": "ecf2851a4f50c62349eb9cd3b3945301ee1918aa0cc771adfb2fab3dec1948bc",
+    "scripts/build_warehouse.py": "6f9562490c2ab4b0b6907f90f2145780a714870226af1b95754252417df278ca",
+    "sql/metrics/ecommerce_v1.sql": "db05389913557f546578a4d2fde8c4bc60c9a99b5351b1ddec28ac91e23e5e2a",
+    "sql/warehouse/ddl/dws/customer_order_day.sql": "51c4374a02eac35810b2974c03e302a6b542455691f49a65471220c2bcbe16ea",
+    "sql/warehouse/ddl/dws/item_return_cohort_day.sql": "413465aaf31f5ee3fa23bc9f218d60f90a01b4d3cd8805a12c312a4a6a1ebf8c",
+    "sql/warehouse/ddl/dws/order_day.sql": "83964828241477698f49b59427c51c065c9fce72fb59d6cb2638f980e802df3e",
+    "sql/warehouse/ddl/dws/payment_day.sql": "67845861ceb03ad966377743121322d52124c05d627f5e03638fda8fc7ca2393",
+    "sql/warehouse/ddl/dws/product_sales_day.sql": "056e1d7f0431848f4a51e923810643d52a0124a4613053836ea3377930d2faaf",
+    "sql/warehouse/ddl/dws/return_day.sql": "fd950637ecfd0420230fb43cba43aa8b2d63f23992929a48ef09f52c435ce939",
+    "sql/warehouse/dws_metrics/dws.sql": "85f0598aea31f9fba616b935dec7faacd502013f57fc18bff1e0c972448f4eb8",
+    "sql/warehouse/dws_metrics/ods.sql": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+    "sql/warehouse/ground_truth/dws/models.sql": "adecba99b9b81709d1eaee56dc62e9e9a2a3cec3b78fc9bff79ad9c738b90fe3",
+    "sql/warehouse/quality/dws.sql": "9463d3368e05aac767e888e3231bf1fa1b0dc228dc009d7a3088856c82f80a9c",
+    "sql/warehouse/quality/relation.sql": "5ff651f042b084178e80af686f3bb20061194740bc7b164dc1b12e324be81e48",
+    "sql/warehouse/transform/dws/customer_order_day.sql": "16829f740040a37563f05e596b03ad94715f8b783bf786221caeb47e3b6b344c",
+    "sql/warehouse/transform/dws/item_return_cohort_day.sql": "c0cbb945b3c8d96fff184b8f4d1217ed0b3f490a3e02db245cf859510a245ecd",
+    "sql/warehouse/transform/dws/order_day.sql": "f01b6158ec4c7708abbfcc1abe1dab27dead25e07697b0a2b5552e6aa12e0cb2",
+    "sql/warehouse/transform/dws/payment_day.sql": "72f124742a00ac9365bc4d6f792295a9d0aa3bab3df3846b017e75a3aeac0c36",
+    "sql/warehouse/transform/dws/product_sales_day.sql": "26ddfefeab696fb9e3d8a169561dc2bd5b7dd16ac9fb45e159d76ff6dc962f6e",
+    "sql/warehouse/transform/dws/return_day.sql": "e3c9c4e961f8138ad9118f3f306a09f253933fb7f4b4511467fbdedaeb6fa41d",
+    "src/dataquery_agent/dwd.py": "67390cdb2befb24232ae005961a19684e94cdf13e07eb28fb279fa4959ca0079",
+    "src/dataquery_agent/dws.py": "cb06ee22b7432e0c8c05f13ef8baa0e40846bc506eb773e45923a85e958d87b4",
+    "src/dataquery_agent/warehouse.py": "4d54b00ef48147335eaca206820ea2d6190e02b9d9a1abd5ddb8d8059eefc398",
+    "warehouse/dws_metrics.json": "bf7537de763a7a66ec6eb80ff84efec68ae75616bfcd397860cb2234a8d3d314",
+    "warehouse/dws_models.json": "9b568027715e468425b5c5aed4135bbde4e80156cfe0284525f64f81deda8691"
+  },
+  "first_actions": {
+    "dws.order_day": "verified_existing",
+    "dws.product_sales_day": "verified_existing",
+    "dws.payment_day": "verified_existing",
+    "dws.return_day": "verified_existing",
+    "dws.item_return_cohort_day": "verified_existing",
+    "dws.customer_order_day": "verified_existing"
+  },
+  "repeat_verified": true,
+  "validation": {
+    "model_version": "1.0.0",
+    "metric_version": "1.0.0",
+    "as_of": "2026-01-01 00:00:00",
+    "models": {
+      "dws.order_day": {
+        "rows": 13913,
+        "unique_keys": 13913,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {},
+        "independent_ods_differences": 0
+      },
+      "dws.product_sales_day": {
+        "rows": 121595,
+        "unique_keys": 121595,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {},
+        "independent_ods_differences": 0
+      },
+      "dws.payment_day": {
+        "rows": 15820,
+        "unique_keys": 15820,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {},
+        "independent_ods_differences": 0
+      },
+      "dws.return_day": {
+        "rows": 10697,
+        "unique_keys": 10697,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {},
+        "independent_ods_differences": 0
+      },
+      "dws.item_return_cohort_day": {
+        "rows": 121595,
+        "unique_keys": 121595,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {},
+        "independent_ods_differences": 0
+      },
+      "dws.customer_order_day": {
+        "rows": 72292,
+        "unique_keys": 72292,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {},
+        "independent_ods_differences": 0
+      }
+    },
+    "input_fingerprints": {
+      "ods.categories": "52b5ebe6b0aaeebfc28af4051e6aee25b8493e32d8d59012abd20fd2a1493912",
+      "ods.customers": "b6351d38c946222140e1ddfc4c094a32ca51f509149438d14fff59e7d87d094f",
+      "ods.products": "50855f196157bd3b9aa3f63ff3d9e77c4faa4ca8dbe139c257910fc17ed7e9cf",
+      "ods.orders": "92ee3a3d56dbb29deb8400ae5d0b568b8c413acedd94a1224b76996705f3b0ca",
+      "ods.order_items": "b5a8e18946ea2315ef064b678eaa33949077e12c27387987e51d14a75305841e",
+      "ods.payments": "8fa7ee717dd8945e57965e66dee77b2b3ba522593afef69d3b3ed9e35b223707",
+      "ods.returns": "e997d03eba309947dcc9d9f8018cd15c4e15fb8c3456e340cea265e48b5c7a80",
+      "dim.customer": "edf1c71b733b3526558aaa8eae84201f99292c9f1026f787ed51dfabad94c423",
+      "dim.category": "52b5ebe6b0aaeebfc28af4051e6aee25b8493e32d8d59012abd20fd2a1493912",
+      "dim.channel": "c32f7bfc2bb627985919669f4b36fc7d3af426e484b17a44537696e058907e82",
+      "dim.date": "0e505bf0104ee800c18ffbced9370618459fb505a375ea30a074095400259852",
+      "dim.product": "50855f196157bd3b9aa3f63ff3d9e77c4faa4ca8dbe139c257910fc17ed7e9cf",
+      "dwd.order_fact": "fd6e8054a892726a9a727dd5a569ba29c3e1f6c747476b7cba6f6679089804a6",
+      "dwd.order_item_fact": "e924edebfc73a106e2ce0e7b81d35dd1c1f5c6e0cac6fd265dcab14a9678776a",
+      "dwd.payment_attempt_fact": "e6c45039b22c5a15ced288c5edded988026d1e70c16186b368f2ebc555fe0300",
+      "dwd.return_record_fact": "0689fac6230fc20dca9f39c2b3a7b116060af84f576702858d8d89311ad79fac"
+    },
+    "input_unchanged": true,
+    "ads_objects_unchanged": true,
+    "source_snapshot_id": "6a92fefffaa1e746731221358d1c38b1ffa24e6d6d53e3de56a1f5a4a9b329c9",
+    "source": {
+      "rows": {
+        "categories": 24,
+        "products": 2000,
+        "returns": 12000,
+        "customers": 12000,
+        "orders": 90000,
+        "payments": 95000,
+        "order_items": 215000
+      },
+      "date_min": "2023-01-01",
+      "date_max": "2026-01-04",
+      "date_days": 1100
+    },
+    "totals": {
+      "orders": "90000",
+      "items": "215000",
+      "order_net": "9024059.76",
+      "product_net": "9024059.76",
+      "customer_net": "9024059.76",
+      "attempts": "95000",
+      "captured": "8998225.89",
+      "returns": "12000",
+      "return_amount": "498266.03",
+      "before_order": "5962",
+      "above_item_net": "1849",
+      "cohort_items": "215000",
+      "returned_items": "12000",
+      "anomalous_return_items": "6885"
+    },
+    "metrics": {
+      "order_count": {
+        "checks": 8,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "90000"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "2312"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "77"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "5c667546064a8c19b26a013f06ee579308f82745cdfa5bc99064935d2b0322e2"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "75fb57900060da2e5e7aa14cf4e3968310e16660b3cac5e5554d47973887d649"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "d81715f09858768c13c6d839fa5d3107fb21c7301a3354716ecbffbd6a81a179"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "56ab51dc2be37e857d2f6d453c313d2b12f1be28b5aa351ca42f18fa4e266005"
+          }
+        }
+      },
+      "item_net_sales_amount": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "9024059.76"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "231920.18"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "7352.81"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "aa1da165a8d779bb71d74575cc13e0afa075b914ac8cc2d9589b57ad9c074ce6"
+          },
+          "full/category": {
+            "groups": 24,
+            "sha256": "984708c428e61470739c2632e192ab02aed6f141e5ca144bc25933f5be8698fd"
+          },
+          "full/product": {
+            "groups": 2000,
+            "sha256": "0ae6ce283e1a8332f072e4e4729846a4b0fed795be802f20f79fdab7adee467c"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "17c3e87b8b16b03b201718cce6bfc0c1f0ab769add0beb1e792c7d9153e3048e"
+          },
+          "full/category_filter": {
+            "groups": 1,
+            "sha256": "f4653a34d6588413ad9bcb24a3bccc38b9a31abc5523819f4402e254db25e675"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "3e12b012329eaf3eaff450d9f4cc9ace98a2b12d7610e9220ea6cf63f4a1f0fb"
+          },
+          "january_2025/category": {
+            "groups": 24,
+            "sha256": "0d96e9f7d83d2df1a962a0291cadfb19f1a71c463132c0dbf9764ac46ef49a45"
+          },
+          "january_2025/product": {
+            "groups": 844,
+            "sha256": "33ee971a44f634b45defc8391f14ef8645b5c036d2acfd09c74d13c96d4fdf40"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "1bedb2d8c98c821c5ae985e23f2e374c8333b5b7ba37e59ea14619e1d8a7d88b"
+          },
+          "january_2025/category_filter": {
+            "groups": 1,
+            "sha256": "6b32d6f11a603c1ec9044a12da4c62b5c5c6e6dd63a7558f4f5c1698051545f9"
+          }
+        }
+      },
+      "payment_attempt_count": {
+        "checks": 12,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "95000"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "2438"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "81"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "e6d8db55df715a60c8a7755c09ede0062fcac1f03157996d546de8803aec4920"
+          },
+          "full/method": {
+            "groups": 4,
+            "sha256": "42debf2662abd3320b12ef3e969b0cad16f8b6f72c45dc8687a2c25e03665960"
+          },
+          "full/status": {
+            "groups": 2,
+            "sha256": "14189fd777a4ee2a73a2b0e982f46d7d4f130567feadaabc3757693babce06be"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "d5ec5d1d00d627530668486e7fcd68e3daacfaa9ee5aa3885c1437448c1d68cc"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "66f15186eb94d889824256bf8ca97e0bfa16a230829e75c404f1ed5c28247758"
+          },
+          "january_2025/method": {
+            "groups": 4,
+            "sha256": "e6a49ee52d7c51e3da8e47b743f2243644d5b7d2e96a1c44e912a89cfc365ee4"
+          },
+          "january_2025/status": {
+            "groups": 2,
+            "sha256": "cb6f9504b55fd537f4fc32fe1d84d998989474cc8573aef9c2aee546de613a1c"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "9c8e25ab125016e7e5ea23885979eb380ddbd352252414ec9c5a46dce911bf64"
+          }
+        }
+      },
+      "captured_payment_amount": {
+        "checks": 12,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "8998225.89"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "230864.57"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "7352.81"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "806d129c1e8dc47ae8cf44f1b8df597edca6d5ec220f53c02f9ea7e0b03e9870"
+          },
+          "full/method": {
+            "groups": 4,
+            "sha256": "b96551edc3d3c3cb5c8c0b52e370f998ac884e1e5d5d5dd7577d94e28e011a0c"
+          },
+          "full/status": {
+            "groups": 1,
+            "sha256": "e888192730bd4346b014b785241ab77bcd83dba6f4345851f4193d694b67d61d"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "b831249f6b5fc550fd47481d2cbac36b3271f7b3e166a887007d57b730dbe35d"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "5e668418e6278093c39948093067bc5e41a0d335f9ed6109d135063e132f990a"
+          },
+          "january_2025/method": {
+            "groups": 4,
+            "sha256": "5f5278db353e92f58212a1c6a8bfaaee18c5c0d48f6f4630530bf8e7a484890b"
+          },
+          "january_2025/status": {
+            "groups": 1,
+            "sha256": "c62655b1f4ec92e02fe66a073eda2eb6c2cdc69dd7ede6477dd54ab3b428d9be"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "e1e9d27573dbcf01e625f16af55030c0bf6c2ef01af423cca49d7003079d8896"
+          }
+        }
+      },
+      "payment_attempt_success_rate": {
+        "checks": 10,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "0.94471579",
+              "numerator": "89748",
+              "denominator": "95000"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "0.94503692",
+              "numerator": "2304",
+              "denominator": "2438"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "0.95061728",
+              "numerator": "77",
+              "denominator": "81"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": null,
+              "numerator": "0",
+              "denominator": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "5e6f9c875de7a1c7d0bd5828f8723dad4787406d9225d2dadb8cc3443c00eeae"
+          },
+          "full/method": {
+            "groups": 4,
+            "sha256": "d71742d02932fb981bb21a33b2aa8bbaf548f5ed916aa0b33189bb66a2e3aeac"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "80f2651491fe85457b1a5db0faa88815f9bc625d85530e7662f76be7b2ee4c62"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "d62d7c30e0bf47340944cc692adb2d82ed1959307af4f5f16fc53342485b6f2c"
+          },
+          "january_2025/method": {
+            "groups": 4,
+            "sha256": "f44f8d0506093000a009771f65a3f239f1e5871eb0d4e99d313cd038c8bb98a9"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "3bd89ee702bee727ab1731edec865a001b2b7eb0995f70252d4c8f239f8b11b8"
+          }
+        }
+      },
+      "return_record_count": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "12000"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "329"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "18"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "e70d2257c19c56607970f21885d124b6247a81fa34839492708c6fb35053757a"
+          },
+          "full/category": {
+            "groups": 24,
+            "sha256": "e773141fa1ce7099bf78ed73cf8495e7b1c04399430b1e4b4c4189e5dca9f5ef"
+          },
+          "full/product": {
+            "groups": 1252,
+            "sha256": "86b5c9190aeb92d683b885f78ea7f7d0ecc30c7f58986ba03ed36d8a33b4714d"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "fb73de1b3e91c4aced333bfd35aeee442dada741383e7f41fc9ea255aa3ef6fa"
+          },
+          "full/category_filter": {
+            "groups": 1,
+            "sha256": "78bfdf7f4c712aa93be1f375dbd8da40d94e89ff499aab27cbaaccf424afdb02"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "fd4fb1ddb4987b15e2126d143b3e965fcf738e2d85ec9c70cc523bc02267e4d8"
+          },
+          "january_2025/category": {
+            "groups": 24,
+            "sha256": "4f31f9b27e26c5d61b7c845b42837797a993f6a805563ebda2164e10232334ce"
+          },
+          "january_2025/product": {
+            "groups": 120,
+            "sha256": "75267a1d1996bd49a443891eab898040453308801ce2a9ace1f74825b17d5bcb"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "c8bc4a3cbd58a7e421d2fda4ffde6e50a7d67a0530d84d779f9a909b52a4128c"
+          },
+          "january_2025/category_filter": {
+            "groups": 1,
+            "sha256": "1c1f75cff600b4ad975e2dd05335c96fd9394bedf4ebc2e8a2486f27a4df3717"
+          }
+        }
+      },
+      "return_record_amount": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "498266.03"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "12833.47"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "996.87"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "cfec2476c249bc6b7518055cdc0eaa0136f20454ad9781dbf7ed53224d2a9f89"
+          },
+          "full/category": {
+            "groups": 24,
+            "sha256": "c963f8512c6aad759c89029560dc98997ca4b43bcb676f3f1e1161955658c5ea"
+          },
+          "full/product": {
+            "groups": 1252,
+            "sha256": "5dbf8d4c254a84925af6a472f86fbf89b8e4f243529a4bb51de068ce7d99deee"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "81e02a8a59753d1a815b9b9d4182262fd7e1e5c9e474b4704e52eb51580a6e7b"
+          },
+          "full/category_filter": {
+            "groups": 1,
+            "sha256": "992459262dee0576b208b4965c061c62f205fb20be026cac9604bd94ed1176dc"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "7fff99fb8ce98851a638b2b100b0907df253dba72f4710f044258e30abada79d"
+          },
+          "january_2025/category": {
+            "groups": 24,
+            "sha256": "e424feaa6a498dc5e188f7d66380f86820250d7f2917413071b45a3f8e06de47"
+          },
+          "january_2025/product": {
+            "groups": 120,
+            "sha256": "d813773c6e4fb10910fd0a8cf99d0623b6936a9d54f20af2133fc3f8de4d92ae"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "772fc091be486811360870384fb2f99e0b12609232af158fc0f000d845ec543d"
+          },
+          "january_2025/category_filter": {
+            "groups": 1,
+            "sha256": "5ddca6db63fd825546e080d3a7c50ac4cdafd3493fc61a2fcb0bcfcf34ec06f6"
+          }
+        }
+      },
+      "item_return_rate": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "0.05581395",
+              "numerator": "12000",
+              "denominator": "215000"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "0.05669917",
+              "numerator": "314",
+              "denominator": "5538"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "0.10555556",
+              "numerator": "19",
+              "denominator": "180"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": null,
+              "numerator": "0",
+              "denominator": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "8c919568e42088f036cd56e0d2e601148d496b606114ef051d08e14b079898f9"
+          },
+          "full/category": {
+            "groups": 24,
+            "sha256": "d821835f6733144af07ee4e9a7769681b86d3d1bea0f3c985d91039bbfb1aa1a"
+          },
+          "full/product": {
+            "groups": 2000,
+            "sha256": "0c0d85eec72fcd1de2dda08933c901b994861f7dfa979fe2ae27f5e75e29030c"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "1da38824c60e16ffec4f698f91f446a20e0674d762af26b770331c27dc591ea8"
+          },
+          "full/category_filter": {
+            "groups": 1,
+            "sha256": "86828d25190fd399e1acfef5f1074cf76c77f14ff896b3fd3a8b02e46ca8b1ec"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "27b8089809730d86a7eb99a444b7e55236c31916e1d3a865714e37f3f62eb704"
+          },
+          "january_2025/category": {
+            "groups": 24,
+            "sha256": "2c6e95d3a65351aca08ebf9a3ea0c119a239459d490dfee804e176fd905b13a0"
+          },
+          "january_2025/product": {
+            "groups": 844,
+            "sha256": "a8d97290575c866cf9f1cd7b9a15445239d1c076d62e4f33e60aca927feec09c"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "d478cc09f2222e3eb2635bb31d015eb3bc724d28f6497575e4938d28527ae565"
+          },
+          "january_2025/category_filter": {
+            "groups": 1,
+            "sha256": "6362bdd7c205e59ec0f71c1a7e7cb289c224b5cf78bac59869f977b71df950be"
+          }
+        }
+      },
+      "order_item_count": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "215000"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "5538"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "180"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "ad2694272feacd3afc0b7461216a698d906e91c8e990288e9b4df762ad196fb0"
+          },
+          "full/category": {
+            "groups": 24,
+            "sha256": "18e7bd1ad8c65b1f199d5febb374b0d2f8a9cbf4b9b6fbcd4da5ffc34b995c9e"
+          },
+          "full/product": {
+            "groups": 2000,
+            "sha256": "089f6c2c5f89d89ecbaa1a16b6e3a38d42ce9b36db2a6c71358ef87265380a49"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "44f5001cfb1cffce116ff457158f56f49145151b524d266892a9d553d5113583"
+          },
+          "full/category_filter": {
+            "groups": 1,
+            "sha256": "f82b2e165316b4e7bc3dc1eb1b976206f1b19479363ae5587809761414eb3d23"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "a1dcac427c6122a7d6f52770070d2d51a78143e1d377059a431334ad72ead8ca"
+          },
+          "january_2025/category": {
+            "groups": 24,
+            "sha256": "cacae9c273f213e84292977ec48495c7fd0df75fe75df814be9c7bdccc6d79b3"
+          },
+          "january_2025/product": {
+            "groups": 844,
+            "sha256": "02b1789ca9362ab6d5558b1b1cefd882986d343dc71e390f7703c9e6eb85e8c6"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "e61f9e76ca31fb9dc8ebecea08a4144b74076e60dc6aca43fb0e53f3747d5256"
+          },
+          "january_2025/category_filter": {
+            "groups": 1,
+            "sha256": "3765d244b7537fd5de361eb91d1218b14993f7461eb1dc8f467da4888bb90623"
+          }
+        }
+      },
+      "ordered_unit_count": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "352075"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "9076"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "278"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "c48483a2ba4d881795b03df2ea8fe9f75272e5844e201385f587edf7c4f09fb4"
+          },
+          "full/category": {
+            "groups": 24,
+            "sha256": "01802649e72f8958bd4e657ce716da24038c5d47cdfb694100eadbaeb526e2c6"
+          },
+          "full/product": {
+            "groups": 2000,
+            "sha256": "34479ff9120caffe39f9fdbde2b98012efd0c1d6c3b91a13a0ba5e0fe2f4f68c"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "0b8604b65d679f7c335ff6ae40628546bd4edfe3f34eb4e23cfea2e22e057cf3"
+          },
+          "full/category_filter": {
+            "groups": 1,
+            "sha256": "40077c3dbbb14de1fc0e16027192b988b8a8ce18363dfa98aa6fdaa028e47a4a"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "1954b6db16a9151d5c78e8d3851eb76d055fc42cc1e48805ed88b3cff1a47e77"
+          },
+          "january_2025/category": {
+            "groups": 24,
+            "sha256": "ef9b1a5c5ca1495abcae4c83ffe8db2a8a6353f0c1e891dff7383e724c37aee5"
+          },
+          "january_2025/product": {
+            "groups": 844,
+            "sha256": "926c8b272b9a549e8851822d56d97874e6e59c00d6eef0649e249681116defcd"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "e189e81e01694559ee52a78ffa06de176d7af4dc95e88aa4243afeebdd311063"
+          },
+          "january_2025/category_filter": {
+            "groups": 1,
+            "sha256": "01f5a7e156b4f891c357c46f04ccce090c231c1d1be5d2f771c3407f2a48bff5"
+          }
+        }
+      },
+      "item_gross_sales_amount": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "9107788.58"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "233883.10"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "7427.71"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "e421661c3992457e9d0fa62a3a39e1cee8526444c1cb674ae8cc358d3d965398"
+          },
+          "full/category": {
+            "groups": 24,
+            "sha256": "17384b65f75470fbda432cbdc2b0e5ff37f59228133f5527fb49d8fed91526d4"
+          },
+          "full/product": {
+            "groups": 2000,
+            "sha256": "e991279b4116a5d3a0e5f525b765c9dc597e85d0f75e85fa6b5c8908b5f1e701"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "0a74a1f3183ff917d73de31fec08b48854e6fa303eb303edd64a7aa7df63c301"
+          },
+          "full/category_filter": {
+            "groups": 1,
+            "sha256": "fb50be869669c8ae65e0536d51de32dd9f314ae7e0da1312cb1589ed97934109"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "933ea973b353f6b27450a5312fe78a763f06a756db8889fc5265f1ae01c00eb6"
+          },
+          "january_2025/category": {
+            "groups": 24,
+            "sha256": "ec83718f37c4a4b684cf8925ad13fed7f37dabfc4d918857e1190366b04770e9"
+          },
+          "january_2025/product": {
+            "groups": 844,
+            "sha256": "0a46e9069df20fc81ee84fc7b4f4be844d1cd0edca8680797d2f346232952add"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "d334e3d7adc4386f02cd2575c635bd9f2516585a06f19b43dfe792346f3f734b"
+          },
+          "january_2025/category_filter": {
+            "groups": 1,
+            "sha256": "f38117ca42766016c05b87a2e58ac2d9179f2186572f6733ba37c20cbd5a145e"
+          }
+        }
+      },
+      "item_discount_amount": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "83728.82"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "1962.92"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "74.90"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "681a71410a9eeeb9e855ad4f596bcbca035fad1e5cc1e0f7d9065b2c15931c82"
+          },
+          "full/category": {
+            "groups": 24,
+            "sha256": "fe85f1c4fc3c3306281f0f6d8ca2f0aa15a8f5e6f8966562ffd75e56440df82c"
+          },
+          "full/product": {
+            "groups": 2000,
+            "sha256": "0b1a13f7095cf9a9f32a4a221d0716228789cb571d28a615609a9c796739ce38"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "d44ddc06b4a5f121a8baf682f1e19fc74fcc9e8f1ff3039f479f086e053eed82"
+          },
+          "full/category_filter": {
+            "groups": 1,
+            "sha256": "3140e7c4cd6ca1d79bf22727559e491d657c40e711f1c93fde8fad2a0b2cdf1a"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "bf74c4f7455ab315c2512746797489ca3320cfe203362bf5a5f8b7352543fe16"
+          },
+          "january_2025/category": {
+            "groups": 24,
+            "sha256": "0a8dd8a298d6af4d2e249141bd39b3f879a2771e5ed8f723d16a5564ce56fa0a"
+          },
+          "january_2025/product": {
+            "groups": 844,
+            "sha256": "ccbf9ccd43c361f4c2ef8e84a6d9846cba758418ed557190de83283f96beb267"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "f5b3f038045aa4bec430307f855d995e0987e7251ada071de992a5f691e6fe51"
+          },
+          "january_2025/category_filter": {
+            "groups": 1,
+            "sha256": "54510a0563a67dfba0a553ab83c9dc5a5974eb99d00dcaa545c7f34e53ccdab6"
+          }
+        }
+      },
+      "ordered_product_count": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": 2000
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": 844
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": 80
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": 0
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "70fc449bebc79262f87f714d7965403656d9d541d28602227a2255d2bef32514"
+          },
+          "full/category": {
+            "groups": 24,
+            "sha256": "290956e35316cc162d5b063d4b9c95d84e6fc8c0a08c5b357f451c69250176d4"
+          },
+          "full/product": {
+            "groups": 2000,
+            "sha256": "9d05538d4aa78437ecb536fda8b2b5949270cf0a8571988eae3a1a7bfeb68f09"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "ab545aeec8976111f506d9114979e54324341821cca6d50cfe18cdc6f5086dfc"
+          },
+          "full/category_filter": {
+            "groups": 1,
+            "sha256": "5ddb81c451e45eeaa4c06f6ce0d72f0c839aeb5fe79bdfd8af5050f13c6797b9"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "831dce29e2191e71dbb711de178b90ee4d9ed03ddf3fc870843febfe0bdd5520"
+          },
+          "january_2025/category": {
+            "groups": 24,
+            "sha256": "d8a44f39542738d46d834f8ff87da6a2a842d6f98238f4710a0a390fa6a33d9a"
+          },
+          "january_2025/product": {
+            "groups": 844,
+            "sha256": "0e6c4563fbc4f0cec19a2997385a7211446fd5c264b457f447588d846686f475"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "d731c5e40000fc2f0b47d874010be4b12c9ea2955dfcabe6e5d4a3292b663da7"
+          },
+          "january_2025/category_filter": {
+            "groups": 1,
+            "sha256": "46971a8a4ca059fae0fdd3b2e157d863b3043ae72d2c94d18bb44e6a74ada856"
+          }
+        }
+      },
+      "cancelled_order_count": {
+        "checks": 8,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "5407"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "156"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "6"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "19d0aad2b6bf20cf9d9e25c90309715da6abd598c3fedab4783367855a191101"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "8a687f8c2164c38cce581f4ef014576fdbd8343cabcb9bcb466e670e7c04a723"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "4161f4359c6fcf26310884a2bdeffda7b6a3ee01133c669f66e6f134ea0b54c6"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "918036d3d16dd32abd415ecab679e0ba2e9730f9b459666531b1b210809c761d"
+          }
+        }
+      },
+      "cancelled_order_rate": {
+        "checks": 8,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "0.06007778",
+              "numerator": "5407",
+              "denominator": "90000"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "0.06747405",
+              "numerator": "156",
+              "denominator": "2312"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "0.07792208",
+              "numerator": "6",
+              "denominator": "77"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": null,
+              "numerator": "0",
+              "denominator": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "de40b906658d3c760e5512510ab8d0e2369987c61daa8fc3d048142d83a68897"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "2a7d223eeeb04ea3a4b91e04551681080d3be3b53471fc28221c1b4b269a0ab3"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "1c985191ddeee936757fd4d9d43e77cab177ac6be0d85539caf9487d222bb770"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "36dbdbfeeb49fd0473f13d7e57569a1603e1c55e0e967bf94cb19c1c4e42bb68"
+          }
+        }
+      },
+      "average_order_record_amount": {
+        "checks": 8,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "100.26733067",
+              "numerator": "9024059.76",
+              "denominator": "90000"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "100.31149654",
+              "numerator": "231920.18",
+              "denominator": "2312"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "95.49103896",
+              "numerator": "7352.81",
+              "denominator": "77"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": null,
+              "numerator": "0",
+              "denominator": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "206fc2cbd127e8f73373f01ae0c9b29a8f08331afad132584ca61d86d7e21dd3"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "b8620a9b68f0e1ea18dd729e26ce77a1bd5a840cec7e4ceeff397b704187e741"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "bb393ef4668c5a37c820b62787bac7b7298c2f6982d2c2ca6b80a8966269c207"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "cc690818072d378b3a5f2768cb5105b310813d6894253a0a1a6163bf19ee94ae"
+          }
+        }
+      },
+      "payment_failed_attempt_count": {
+        "checks": 12,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "5252"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "134"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "4"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "b629e4d9b61ed7d4ac0a524f6d13e6aef0eb1afe3bc46df75a3295a760a52087"
+          },
+          "full/method": {
+            "groups": 4,
+            "sha256": "672319939af14ddba44b5fcec3352e87d3cc944070a227f3a9ff91c71b615885"
+          },
+          "full/status": {
+            "groups": 1,
+            "sha256": "abdee66494eabdc7f9263bc8b7331633a02baea43523cf105d7babf5816550bd"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "a1e96d42aa7b964e03d8553f48e120b42cc6b5fe571b8f82e81d55ff9fbf3a6e"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "3b9744e9b64cf98d2c5e15955898c78eb1f0227b213b8d2de1284a8ce0eaf668"
+          },
+          "january_2025/method": {
+            "groups": 4,
+            "sha256": "592dde9a5c04e5b2194af8dceb13bfade08e4762861e6c0089df442178a8fe9e"
+          },
+          "january_2025/status": {
+            "groups": 1,
+            "sha256": "dfe5dd55956e84a8049c915628a0e0a6415bc87256cedfba4ace84d0838882b9"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "918036d3d16dd32abd415ecab679e0ba2e9730f9b459666531b1b210809c761d"
+          }
+        }
+      },
+      "payment_failed_attempt_rate": {
+        "checks": 10,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "0.05528421",
+              "numerator": "5252",
+              "denominator": "95000"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "0.05496308",
+              "numerator": "134",
+              "denominator": "2438"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "0.04938272",
+              "numerator": "4",
+              "denominator": "81"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": null,
+              "numerator": "0",
+              "denominator": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "2f0a14560192cc102719e9e795b72ca702123917f565ec1c4cd3f1f75451151a"
+          },
+          "full/method": {
+            "groups": 4,
+            "sha256": "bc46d816e46fb4634ec1791fd8c0e3ac58a684264d5d2d5a86e208ca9e4bf7d9"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "eccf266623c57afe839a6f0c02ea875f95fc28350e4438766affd90441184a94"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "1c1b07c3765cb5487c3612e5a3a545e0b348169e7d8990d264e1febc01a77c42"
+          },
+          "january_2025/method": {
+            "groups": 4,
+            "sha256": "8bcfd20249574ed710c22860b8b62da2b3aa194074676d8de542eb7f00eeca51"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "602fda4b9bd4a48d17fb332db0336c86f11dfa4993b555a5d30760b18c55ea7d"
+          }
+        }
+      },
+      "return_before_order_count": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "5962"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "103"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "4"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "617bad027233e6ca5910068e2c3688921701a3a100d7fe67fc176fc95fcf05c7"
+          },
+          "full/category": {
+            "groups": 24,
+            "sha256": "b8878616c0bf89259142a3fbfff98b7779f9a499e6a1dc9f3f16df7d0fc4317f"
+          },
+          "full/product": {
+            "groups": 1252,
+            "sha256": "a6fed5f0c064aa190995e58be3b3014e2735ea7e9e25d7683580b8ed5542a55b"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "deb1db9b113dd8bea14709b26ef3711359ce75e754340e97bcb142e7a243c971"
+          },
+          "full/category_filter": {
+            "groups": 1,
+            "sha256": "dcca37add8c8aae2692281daba3704772625ed7379d34bedd3877b657a90fdf7"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "96421a8dde30f8ee9bc58158458a11f1d0c6524341e665f9a28e97b9a04bebd4"
+          },
+          "january_2025/category": {
+            "groups": 24,
+            "sha256": "5f0cb94072d31968d38b421df32cd130a3cda061addac7c741db90dcecac2444"
+          },
+          "january_2025/product": {
+            "groups": 120,
+            "sha256": "c80bfd862040ac913989bdab7b7280144a2b69974241032c5126be14fb6c4556"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "39598f32004195fda1cda0918034ddc28d9d9aa4b76676e92f4335453f868cdf"
+          },
+          "january_2025/category_filter": {
+            "groups": 1,
+            "sha256": "906ba2e9a3bb0cbed8b30e333d2d878cc5a4f8907b38ae6086f027341cd72709"
+          }
+        }
+      },
+      "return_above_item_net_count": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "1849"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "50"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "4"
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": "0"
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "9c77ac524706cb9146a26f74151d4ee60794e0f15c102aeb6dfd4a970ad7baa3"
+          },
+          "full/category": {
+            "groups": 24,
+            "sha256": "37060b7f25bf205d361cc081ae80f7abfeb7bebe62c9345cca15f275e1e495e8"
+          },
+          "full/product": {
+            "groups": 1252,
+            "sha256": "a87fd3fca7ce80244262ef11570da6f8e19b8f2ff11e4b60be16ab7dfb7c4985"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "037ad94d5d4e5c7fdc11cb8d8da0b993f0778ff7965ca9cd20f0b9507d5713ee"
+          },
+          "full/category_filter": {
+            "groups": 1,
+            "sha256": "143590212ef042cc53f7249b57ee8a4d19af8015a96436b0786784105621ec02"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "d03622f5291df9b9b42c9d6533c724ce35d8f65093d5ee026caaaa1bf6c94192"
+          },
+          "january_2025/category": {
+            "groups": 24,
+            "sha256": "e8d0f64f492416a63d205223e059404b579f47a58e53d251571ad8960678a4d9"
+          },
+          "january_2025/product": {
+            "groups": 120,
+            "sha256": "207da4d36a3ae370add9b66ef68e19b6b747eee7a0fbd64930bc8840dedd0a3d"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "b82824001b66b8d1472826fabf5290fd563be6bfbae7dbb06f88c795f994ec88"
+          },
+          "january_2025/category_filter": {
+            "groups": 1,
+            "sha256": "55089b6d056bde6367a6e91451f0b3960161242821d371b02e5e1ad72328c7d3"
+          }
+        }
+      },
+      "ordering_customer_count": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": 8622
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": 898
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": 59
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": 0
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "8c6215385762f15eedac2f9b1e0fb3eab131ea55ccee1c699c8decfe5d3e1250"
+          },
+          "full/country": {
+            "groups": 17,
+            "sha256": "2fccb6b03ffc8486c3b5e5d0c07a91fba6d2c5bd16ab63bcd7c320e04a22b712"
+          },
+          "full/loyalty": {
+            "groups": 4,
+            "sha256": "96c5a5ed3e3824cbccb82961a1c33c0b19d80525125edf66e83c2e9f5915ee8f"
+          },
+          "full/customer": {
+            "groups": 8622,
+            "sha256": "1c7791c71e1aa01a01ea85407e39e7029b7c1a18a09d5be35a679bae9a3b2b8f"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "d4b7c7e2830f2e51b21cfb66d3be2f9c128fc0097ae923a936b1fff8101f0061"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "b2ba8d4bbf562b73b32c554969655a2347b07fc8feec631f7557bc1941e552bd"
+          },
+          "january_2025/country": {
+            "groups": 17,
+            "sha256": "cb9de9d70cca0a113c6b4b7b74d5826c9f83336e4efb6663eec5967c0fa406cb"
+          },
+          "january_2025/loyalty": {
+            "groups": 4,
+            "sha256": "0463eef1dd6923bc4a70100ad637011c4dc4b100bed37ed8bae9282f9c592e7d"
+          },
+          "january_2025/customer": {
+            "groups": 898,
+            "sha256": "05167abef7442e53aebafa45433755cc68703de4d04cb49f7e20c703067fdd0e"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "4b3ff8679c26f9d53239d4f8ec27cdf82c591f64835d35ae48e83f2535f0c7aa"
+          }
+        }
+      },
+      "repeat_ordering_customer_count": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": 5376
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": 216
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": 7
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": 0
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "2fc256c4ac449bdf4058d2860fd7ed7f030efadc7ab56295cf89a7f99d343d6b"
+          },
+          "full/country": {
+            "groups": 17,
+            "sha256": "109891e7b435d6f6f442a601e3727270c59d20ffe85fd1762d9e1f1a93468add"
+          },
+          "full/loyalty": {
+            "groups": 4,
+            "sha256": "2fee3ab083e4c0471a43ce42f9486bbbd9f9abb3e84e4d06b96b3988402903b7"
+          },
+          "full/customer": {
+            "groups": 8622,
+            "sha256": "d1aeebfb7214f90f9176cb121611e83feee420e302400cc4bf1e91895859083d"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "41ade8c8c9ff5c0ee7501e30912b06f59909335d8f5abfd7e6d20c37590a6077"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "59a8decaaf8befc7aef0bec57b8a4140ce53f9cc202c458650216db70281f1d4"
+          },
+          "january_2025/country": {
+            "groups": 17,
+            "sha256": "eda4f7d9f5c9f2d39833943c6a11959a120f518addd99f59577c1762bba6e2d6"
+          },
+          "january_2025/loyalty": {
+            "groups": 4,
+            "sha256": "01328a8473dda63eee620e52c873b4280bce5e1097f3a0e39530aa2425db2aee"
+          },
+          "january_2025/customer": {
+            "groups": 898,
+            "sha256": "760206e934f02dd84faa3b0a606648f875ba7f3a41d4272f7c64546fa06d9b65"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "1287e85a26ffdc4c29451d31b3dd367ba614cfa3ab3776d4adb27d4ac0e2b472"
+          }
+        }
+      },
+      "customer_repeat_order_rate": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "0.62352122",
+              "numerator": 5376,
+              "denominator": 8622
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "0.24053452",
+              "numerator": 216,
+              "denominator": 898
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "0.11864407",
+              "numerator": 7,
+              "denominator": 59
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": null,
+              "numerator": 0,
+              "denominator": 0
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "283016e8d3f34a0cb441cb607d09bec8372845645ec8c23d01e7177871858508"
+          },
+          "full/country": {
+            "groups": 17,
+            "sha256": "ba47db38db795ff601332abe0ebe399ba3a60374c140c9cd4da1e778df1504de"
+          },
+          "full/loyalty": {
+            "groups": 4,
+            "sha256": "9438f57c2a9854e0465cdfdffd71cc54cfbdda802c8c655088fee80de87d88ab"
+          },
+          "full/customer": {
+            "groups": 8622,
+            "sha256": "48afca902214af5838827c2884ec8701cef22a19d7a812f7f2374f53cec14819"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "10afece20fe2de4c5dd566efb60d262b60ed2db2d83b7273f930d8306969f590"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "bb377074652fa3eae74ed7e69f246be9104ab8461946188d88b838ae9dbccc64"
+          },
+          "january_2025/country": {
+            "groups": 17,
+            "sha256": "da0d8bc88be391ace50d13000f2d94d8e233ba796246b8871dab01e655a7dbb6"
+          },
+          "january_2025/loyalty": {
+            "groups": 4,
+            "sha256": "039ea652d7dfb482c33a5758ae2b0330327851b09e5dd2ef00e58c9c42ad49e5"
+          },
+          "january_2025/customer": {
+            "groups": 898,
+            "sha256": "b0708b66858b7f08b799783f6b7899ecda0e699084c51155a66541bf5e18d6d7"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "97f17abb01f530079ed7117669978797da805f665dd376798be6de92e33e73bf"
+          }
+        }
+      },
+      "orders_per_ordering_customer": {
+        "checks": 14,
+        "windows": {
+          "full": [
+            {
+              "bucket": "all",
+              "value": "10.43841336",
+              "numerator": "90000",
+              "denominator": 8622
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "all",
+              "value": "2.57461024",
+              "numerator": "2312",
+              "denominator": 898
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "all",
+              "value": "1.30508475",
+              "numerator": "77",
+              "denominator": 59
+            }
+          ],
+          "empty": [
+            {
+              "bucket": "all",
+              "value": null,
+              "numerator": "0",
+              "denominator": 0
+            }
+          ]
+        },
+        "dimensions": {
+          "full/channel": {
+            "groups": 4,
+            "sha256": "e3deebb4ff053af6655317c5fd83bf5295ce1294da0f631cb3b1c696e4e8e47b"
+          },
+          "full/country": {
+            "groups": 17,
+            "sha256": "2613b2637c2a3288438a5c4e4c67015ccf40b78dad837f2dd53966da61b0a4b7"
+          },
+          "full/loyalty": {
+            "groups": 4,
+            "sha256": "62c71f49ff8b513ab989b4e0deef63f8738512659fd956f6a6dcfba5c0d0f243"
+          },
+          "full/customer": {
+            "groups": 8622,
+            "sha256": "e2f73f1a64989cc412dacf6b5307862b2619f823677e9217a1d3d2caa18cd918"
+          },
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "ec865dd29714e341655dc2dbdecae43985b776512d8d1876721215cbc59cfa5b"
+          },
+          "january_2025/channel": {
+            "groups": 4,
+            "sha256": "c1128ae12c2261c94e8825ae51c57a9865c9c4a26bc503c1e9533b1286c3460d"
+          },
+          "january_2025/country": {
+            "groups": 17,
+            "sha256": "ed0820e8567b2ab4d32a0679de462f20404881311f578b6d3f220ef46f57fc6f"
+          },
+          "january_2025/loyalty": {
+            "groups": 4,
+            "sha256": "f7d7cb1bba3a9b287083f2c4d7f240471b47b5429715e84acd288ea2ba1ca33a"
+          },
+          "january_2025/customer": {
+            "groups": 898,
+            "sha256": "eaee8360d7c8b81d363fb2465006bcdc1692d4b21181d41163a1a552db1d31a2"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "13cc9024fdc88329ac93bdb97ee9530cc72537adb0b773c983508a8357825fd8"
+          }
+        }
+      },
+      "channel_order_share": {
+        "checks": 6,
+        "windows": {
+          "full": [
+            {
+              "bucket": "mobile",
+              "value": "0.31086667",
+              "numerator": "27978",
+              "denominator": "90000"
+            },
+            {
+              "bucket": "partner",
+              "value": "0.07027778",
+              "numerator": "6325",
+              "denominator": "90000"
+            },
+            {
+              "bucket": "phone",
+              "value": "0.03887778",
+              "numerator": "3499",
+              "denominator": "90000"
+            },
+            {
+              "bucket": "web",
+              "value": "0.57997778",
+              "numerator": "52198",
+              "denominator": "90000"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "mobile",
+              "value": "0.29628028",
+              "numerator": "685",
+              "denominator": "2312"
+            },
+            {
+              "bucket": "partner",
+              "value": "0.08953287",
+              "numerator": "207",
+              "denominator": "2312"
+            },
+            {
+              "bucket": "phone",
+              "value": "0.03589965",
+              "numerator": "83",
+              "denominator": "2312"
+            },
+            {
+              "bucket": "web",
+              "value": "0.57828720",
+              "numerator": "1337",
+              "denominator": "2312"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "mobile",
+              "value": "0.42857143",
+              "numerator": "33",
+              "denominator": "77"
+            },
+            {
+              "bucket": "partner",
+              "value": "0.10389610",
+              "numerator": "8",
+              "denominator": "77"
+            },
+            {
+              "bucket": "web",
+              "value": "0.46753247",
+              "numerator": "36",
+              "denominator": "77"
+            }
+          ],
+          "empty": []
+        },
+        "dimensions": {
+          "full/channel_filter": {
+            "groups": 1,
+            "sha256": "bc06ad93d0dd80fd9de17e9c23fa0ddcc36ee0b9851085ee47e3a9c586665347"
+          },
+          "january_2025/channel_filter": {
+            "groups": 1,
+            "sha256": "c0d288691cd3694cf47fd99399c49d97dd8682594d470389ea0099134e462f54"
+          }
+        }
+      },
+      "category_sales_share": {
+        "checks": 8,
+        "windows": {
+          "full": [
+            {
+              "bucket": "1",
+              "value": "0.06827173",
+              "numerator": "616088.14",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "10",
+              "value": "0.02324226",
+              "numerator": "209739.52",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "11",
+              "value": "0.01531985",
+              "numerator": "138247.21",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "12",
+              "value": "0.08044881",
+              "numerator": "725974.87",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "13",
+              "value": "0.00977545",
+              "numerator": "88214.27",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "14",
+              "value": "0.01251434",
+              "numerator": "112930.15",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "15",
+              "value": "0.13260176",
+              "numerator": "1196606.19",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "16",
+              "value": "0.08489610",
+              "numerator": "766107.46",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "17",
+              "value": "0.02360272",
+              "numerator": "212992.33",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "18",
+              "value": "0.01632496",
+              "numerator": "147317.39",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "19",
+              "value": "0.07639585",
+              "numerator": "689400.69",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "2",
+              "value": "0.03813517",
+              "numerator": "344134.05",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "20",
+              "value": "0.17010831",
+              "numerator": "1535067.56",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "21",
+              "value": "0.02823502",
+              "numerator": "254794.49",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "22",
+              "value": "0.01999665",
+              "numerator": "180450.97",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "23",
+              "value": "0.02195477",
+              "numerator": "198121.12",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "24",
+              "value": "0.02716359",
+              "numerator": "245125.84",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "3",
+              "value": "0.01645374",
+              "numerator": "148479.49",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "4",
+              "value": "0.03106582",
+              "numerator": "280339.78",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "5",
+              "value": "0.01977595",
+              "numerator": "178459.37",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "6",
+              "value": "0.01773907",
+              "numerator": "160078.45",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "7",
+              "value": "0.03346114",
+              "numerator": "301955.33",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "8",
+              "value": "0.01312988",
+              "numerator": "118484.82",
+              "denominator": "9024059.76"
+            },
+            {
+              "bucket": "9",
+              "value": "0.01938709",
+              "numerator": "174950.27",
+              "denominator": "9024059.76"
+            }
+          ],
+          "january_2025": [
+            {
+              "bucket": "1",
+              "value": "0.06730622",
+              "numerator": "15609.67",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "10",
+              "value": "0.02492806",
+              "numerator": "5781.32",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "11",
+              "value": "0.01456173",
+              "numerator": "3377.16",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "12",
+              "value": "0.08588200",
+              "numerator": "19917.77",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "13",
+              "value": "0.01081842",
+              "numerator": "2509.01",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "14",
+              "value": "0.01602090",
+              "numerator": "3715.57",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "15",
+              "value": "0.13240068",
+              "numerator": "30706.39",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "16",
+              "value": "0.09181978",
+              "numerator": "21294.86",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "17",
+              "value": "0.02278655",
+              "numerator": "5284.66",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "18",
+              "value": "0.01756397",
+              "numerator": "4073.44",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "19",
+              "value": "0.06673882",
+              "numerator": "15478.08",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "2",
+              "value": "0.04031081",
+              "numerator": "9348.89",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "20",
+              "value": "0.16429890",
+              "numerator": "38104.23",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "21",
+              "value": "0.02358721",
+              "numerator": "5470.35",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "22",
+              "value": "0.02166681",
+              "numerator": "5024.97",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "23",
+              "value": "0.02536222",
+              "numerator": "5882.01",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "24",
+              "value": "0.02989559",
+              "numerator": "6933.39",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "3",
+              "value": "0.01584821",
+              "numerator": "3675.52",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "4",
+              "value": "0.03133332",
+              "numerator": "7266.83",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "5",
+              "value": "0.01719803",
+              "numerator": "3988.57",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "6",
+              "value": "0.01307941",
+              "numerator": "3033.38",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "7",
+              "value": "0.03437415",
+              "numerator": "7972.06",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "8",
+              "value": "0.01202172",
+              "numerator": "2788.08",
+              "denominator": "231920.18"
+            },
+            {
+              "bucket": "9",
+              "value": "0.02019647",
+              "numerator": "4683.97",
+              "denominator": "231920.18"
+            }
+          ],
+          "boundary_day": [
+            {
+              "bucket": "1",
+              "value": "0.02814162",
+              "numerator": "206.92",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "10",
+              "value": "0.02058941",
+              "numerator": "151.39",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "11",
+              "value": "0.02039764",
+              "numerator": "149.98",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "12",
+              "value": "0.10835177",
+              "numerator": "796.69",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "14",
+              "value": "0.02379226",
+              "numerator": "174.94",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "15",
+              "value": "0.17021384",
+              "numerator": "1251.55",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "16",
+              "value": "0.05507826",
+              "numerator": "404.98",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "17",
+              "value": "0.00248884",
+              "numerator": "18.30",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "18",
+              "value": "0.00112882",
+              "numerator": "8.30",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "19",
+              "value": "0.09682557",
+              "numerator": "711.94",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "2",
+              "value": "0.02869107",
+              "numerator": "210.96",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "20",
+              "value": "0.16928494",
+              "numerator": "1244.72",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "21",
+              "value": "0.02794306",
+              "numerator": "205.46",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "22",
+              "value": "0.03203945",
+              "numerator": "235.58",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "23",
+              "value": "0.01488411",
+              "numerator": "109.44",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "24",
+              "value": "0.04348270",
+              "numerator": "319.72",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "3",
+              "value": "0.00307773",
+              "numerator": "22.63",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "4",
+              "value": "0.03025782",
+              "numerator": "222.48",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "5",
+              "value": "0.00908360",
+              "numerator": "66.79",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "6",
+              "value": "0.00522113",
+              "numerator": "38.39",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "7",
+              "value": "0.03264602",
+              "numerator": "240.04",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "8",
+              "value": "0.03829012",
+              "numerator": "281.54",
+              "denominator": "7352.81"
+            },
+            {
+              "bucket": "9",
+              "value": "0.03809020",
+              "numerator": "280.07",
+              "denominator": "7352.81"
+            }
+          ],
+          "empty": []
+        },
+        "dimensions": {
+          "full/channel_filter": {
+            "groups": 24,
+            "sha256": "d0129e88ea3ec2ea296b2d39925ade9ed6452813715e7501f12ac07028177381"
+          },
+          "full/category_filter": {
+            "groups": 1,
+            "sha256": "a0c9b9bbbefe6376913632594830b300139abc5db4d546ddc68aadc787802e27"
+          },
+          "january_2025/channel_filter": {
+            "groups": 24,
+            "sha256": "8897e1ebc601f09cbf6b37ab7f42c211149298c73d70fc897a2d54f011220e22"
+          },
+          "january_2025/category_filter": {
+            "groups": 1,
+            "sha256": "69a5efc44cc48e1dc89f98c101b96dcde3607bf8ffb24322b2c915f497862f1f"
+          }
+        }
+      }
+    },
+    "available_extensions": [
+      "order_item_count",
+      "ordered_unit_count",
+      "item_gross_sales_amount",
+      "item_discount_amount",
+      "ordered_product_count",
+      "cancelled_order_count",
+      "cancelled_order_rate",
+      "average_order_record_amount",
+      "payment_failed_attempt_count",
+      "payment_failed_attempt_rate",
+      "return_before_order_count",
+      "return_above_item_net_count",
+      "ordering_customer_count",
+      "repeat_ordering_customer_count",
+      "customer_repeat_order_rate",
+      "orders_per_ordering_customer",
+      "channel_order_share",
+      "category_sales_share"
+    ],
+    "deferred_extensions": [
+      "payment_attempted_order_count",
+      "multiple_payment_attempt_order_count",
+      "payment_item_amount_mismatch_order_count",
+      "first_observed_ordering_customer_count"
+    ]
+  },
+  "olist_before": {
+    "orders": 99441,
+    "orders_sha256": "97fb6a065239d753187b8532d534659eb7445f11c39ccfd2439520099c68aa90"
+  },
+  "olist_after": {
+    "orders": 99441,
+    "orders_sha256": "97fb6a065239d753187b8532d534659eb7445f11c39ccfd2439520099c68aa90"
+  },
+  "reader": {
+    "present": true,
+    "role_attributes_unchanged": true,
+    "memberships": 0,
+    "dws_select": {
+      "dws.order_day": true,
+      "dws.product_sales_day": true,
+      "dws.payment_day": true,
+      "dws.return_day": true,
+      "dws.item_return_cohort_day": true,
+      "dws.customer_order_day": true
+    },
+    "dws_write": false,
+    "create_temp": false,
+    "tcp": {
+      "tcp_select_tables": 6,
+      "zero_row_writes_denied": true,
+      "password_printed": false
+    }
+  },
+  "limitations": [
+    "day-aligned windows only",
+    "fixed cohort cutoff",
+    "no ADS or Agent change",
+    "4 extensions deferred; 8 unsupported unchanged"
+  ]
+}

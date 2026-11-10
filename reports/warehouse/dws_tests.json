@@ -1,0 +1,15 @@
+{
+  "executed_at_utc": "2026-11-10T15:43:36.884243+00:00",
+  "command": "WAREHOUSE_POSTGRES_TESTS=1 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v",
+  "tests_run": 59,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "existing_tests": 48,
+  "new_contract_tests": 4,
+  "new_postgres_tests": 7,
+  "metric_comparisons": 312,
+  "independent_model_comparisons": 6,
+  "default_entry_real_rerun_all_verified_existing": true,
+  "report": "reports/warehouse/dws_acceptance.json"
+}

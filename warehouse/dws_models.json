@@ -1,0 +1,406 @@
+{
+  "model_version": "1.0.0",
+  "batch": "B-DWS",
+  "as_of": "2026-01-01T00:00:00",
+  "models": [
+    {
+      "name": "dws.order_day",
+      "key": "order_date",
+      "keys": [
+        "order_date",
+        "channel",
+        "status"
+      ],
+      "columns": [
+        {
+          "name": "order_date",
+          "type": "date",
+          "nullable": false
+        },
+        {
+          "name": "channel",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "order_count",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "order_item_count",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "ordered_unit_count",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "item_gross_amount",
+          "type": "numeric",
+          "nullable": false
+        },
+        {
+          "name": "item_discount_amount",
+          "type": "numeric",
+          "nullable": false
+        },
+        {
+          "name": "item_net_sales_amount",
+          "type": "numeric",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (order_date, channel, status)"
+      ],
+      "depends_on": [
+        "dwd.order_fact",
+        "dwd.order_item_fact"
+      ],
+      "source_table": null,
+      "ddl": "sql/warehouse/ddl/dws/order_day.sql",
+      "transform": "sql/warehouse/transform/dws/order_day.sql",
+      "reuse_only": false,
+      "indexes": []
+    },
+    {
+      "name": "dws.product_sales_day",
+      "key": "order_date",
+      "keys": [
+        "order_date",
+        "channel",
+        "product_id"
+      ],
+      "columns": [
+        {
+          "name": "order_date",
+          "type": "date",
+          "nullable": false
+        },
+        {
+          "name": "channel",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "product_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "order_item_count",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "ordered_unit_count",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "item_gross_amount",
+          "type": "numeric",
+          "nullable": false
+        },
+        {
+          "name": "item_discount_amount",
+          "type": "numeric",
+          "nullable": false
+        },
+        {
+          "name": "item_net_sales_amount",
+          "type": "numeric",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (order_date, channel, product_id)"
+      ],
+      "depends_on": [
+        "dwd.order_fact",
+        "dwd.order_item_fact",
+        "dim.product"
+      ],
+      "source_table": null,
+      "ddl": "sql/warehouse/ddl/dws/product_sales_day.sql",
+      "transform": "sql/warehouse/transform/dws/product_sales_day.sql",
+      "reuse_only": false,
+      "indexes": [
+        {
+          "name": "product_sales_day_product_date_idx",
+          "columns": [
+            "product_id",
+            "order_date"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "dws.payment_day",
+      "key": "payment_date",
+      "keys": [
+        "payment_date",
+        "channel",
+        "method",
+        "status"
+      ],
+      "columns": [
+        {
+          "name": "payment_date",
+          "type": "date",
+          "nullable": false
+        },
+        {
+          "name": "channel",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "method",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "payment_attempt_count",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "attempt_amount",
+          "type": "numeric",
+          "nullable": false
+        },
+        {
+          "name": "dq_payment_before_order_count",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "dq_negative_amount_count",
+          "type": "numeric",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (payment_date, channel, method, status)"
+      ],
+      "depends_on": [
+        "dwd.order_fact",
+        "dwd.payment_attempt_fact"
+      ],
+      "source_table": null,
+      "ddl": "sql/warehouse/ddl/dws/payment_day.sql",
+      "transform": "sql/warehouse/transform/dws/payment_day.sql",
+      "reuse_only": false,
+      "indexes": []
+    },
+    {
+      "name": "dws.return_day",
+      "key": "return_date",
+      "keys": [
+        "return_date",
+        "channel",
+        "product_id"
+      ],
+      "columns": [
+        {
+          "name": "return_date",
+          "type": "date",
+          "nullable": false
+        },
+        {
+          "name": "channel",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "product_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "return_record_count",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "return_record_amount",
+          "type": "numeric",
+          "nullable": false
+        },
+        {
+          "name": "dq_return_before_order_count",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "dq_refund_above_item_net_count",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "dq_negative_amount_count",
+          "type": "numeric",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (return_date, channel, product_id)"
+      ],
+      "depends_on": [
+        "dwd.order_fact",
+        "dwd.return_record_fact",
+        "dim.product"
+      ],
+      "source_table": null,
+      "ddl": "sql/warehouse/ddl/dws/return_day.sql",
+      "transform": "sql/warehouse/transform/dws/return_day.sql",
+      "reuse_only": false,
+      "indexes": []
+    },
+    {
+      "name": "dws.item_return_cohort_day",
+      "key": "order_date",
+      "keys": [
+        "order_date",
+        "channel",
+        "product_id",
+        "as_of"
+      ],
+      "columns": [
+        {
+          "name": "order_date",
+          "type": "date",
+          "nullable": false
+        },
+        {
+          "name": "channel",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "product_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "as_of",
+          "type": "timestamp without time zone",
+          "nullable": false
+        },
+        {
+          "name": "cohort_item_count",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "returned_item_count",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "anomalous_return_item_count",
+          "type": "bigint",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (order_date, channel, product_id, as_of)"
+      ],
+      "depends_on": [
+        "dwd.order_fact",
+        "dwd.order_item_fact",
+        "dwd.return_record_fact"
+      ],
+      "source_table": null,
+      "ddl": "sql/warehouse/ddl/dws/item_return_cohort_day.sql",
+      "transform": "sql/warehouse/transform/dws/item_return_cohort_day.sql",
+      "reuse_only": false,
+      "indexes": [
+        {
+          "name": "item_return_cohort_day_cutoff_date_idx",
+          "columns": [
+            "as_of",
+            "order_date",
+            "channel"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "dws.customer_order_day",
+      "key": "order_date",
+      "keys": [
+        "order_date",
+        "customer_id",
+        "channel"
+      ],
+      "columns": [
+        {
+          "name": "order_date",
+          "type": "date",
+          "nullable": false
+        },
+        {
+          "name": "customer_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "channel",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "order_count",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "order_item_count",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "item_net_sales_amount",
+          "type": "numeric",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (order_date, customer_id, channel)"
+      ],
+      "depends_on": [
+        "dwd.order_fact",
+        "dwd.order_item_fact",
+        "dim.customer"
+      ],
+      "source_table": null,
+      "ddl": "sql/warehouse/ddl/dws/customer_order_day.sql",
+      "transform": "sql/warehouse/transform/dws/customer_order_day.sql",
+      "reuse_only": false,
+      "indexes": [
+        {
+          "name": "customer_order_day_customer_date_idx",
+          "columns": [
+            "customer_id",
+            "order_date"
+          ]
+        }
+      ]
+    }
+  ]
+}
