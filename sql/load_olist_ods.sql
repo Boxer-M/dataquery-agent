@@ -8,19 +8,19 @@ DECLARE
     existing_rows BIGINT;
 BEGIN
     FOREACH target_table IN ARRAY ARRAY[
-        'ods_customers',
-        'ods_geolocation',
-        'ods_order_items',
-        'ods_order_payments',
-        'ods_order_reviews',
-        'ods_orders',
-        'ods_products',
-        'ods_sellers',
-        'ods_product_category_name_translation'
+        'customers',
+        'geolocation',
+        'order_items',
+        'order_payments',
+        'order_reviews',
+        'orders',
+        'products',
+        'sellers',
+        'product_category_name_translation'
     ]
     LOOP
-        IF to_regclass('public.' || target_table) IS NOT NULL THEN
-            EXECUTE format('SELECT count(*) FROM %I', target_table)
+        IF to_regclass('ods.' || target_table) IS NOT NULL THEN
+            EXECUTE format('SELECT count(*) FROM ods.%I', target_table)
                 INTO existing_rows;
             RAISE EXCEPTION 'Target table % already exists with % rows',
                 target_table, existing_rows;
@@ -29,7 +29,7 @@ BEGIN
 END
 $guard$;
 
-CREATE TABLE ods_customers (
+CREATE TABLE ods.customers (
     customer_id TEXT,
     customer_unique_id TEXT,
     customer_zip_code_prefix TEXT,
@@ -37,7 +37,7 @@ CREATE TABLE ods_customers (
     customer_state TEXT
 );
 
-CREATE TABLE ods_geolocation (
+CREATE TABLE ods.geolocation (
     geolocation_zip_code_prefix TEXT,
     geolocation_lat NUMERIC(23, 20),
     geolocation_lng NUMERIC(23, 20),
@@ -45,7 +45,7 @@ CREATE TABLE ods_geolocation (
     geolocation_state TEXT
 );
 
-CREATE TABLE ods_order_items (
+CREATE TABLE ods.order_items (
     order_id TEXT,
     order_item_id SMALLINT,
     product_id TEXT,
@@ -55,7 +55,7 @@ CREATE TABLE ods_order_items (
     freight_value NUMERIC(12, 2)
 );
 
-CREATE TABLE ods_order_payments (
+CREATE TABLE ods.order_payments (
     order_id TEXT,
     payment_sequential SMALLINT,
     payment_type TEXT,
@@ -63,7 +63,7 @@ CREATE TABLE ods_order_payments (
     payment_value NUMERIC(12, 2)
 );
 
-CREATE TABLE ods_order_reviews (
+CREATE TABLE ods.order_reviews (
     review_id TEXT,
     order_id TEXT,
     review_score SMALLINT,
@@ -73,7 +73,7 @@ CREATE TABLE ods_order_reviews (
     review_answer_timestamp TIMESTAMP
 );
 
-CREATE TABLE ods_orders (
+CREATE TABLE ods.orders (
     order_id TEXT,
     customer_id TEXT,
     order_status TEXT,
@@ -84,7 +84,7 @@ CREATE TABLE ods_orders (
     order_estimated_delivery_date TIMESTAMP
 );
 
-CREATE TABLE ods_products (
+CREATE TABLE ods.products (
     product_id TEXT,
     product_category_name TEXT,
     product_name_lenght SMALLINT,
@@ -96,26 +96,26 @@ CREATE TABLE ods_products (
     product_width_cm SMALLINT
 );
 
-CREATE TABLE ods_sellers (
+CREATE TABLE ods.sellers (
     seller_id TEXT,
     seller_zip_code_prefix TEXT,
     seller_city TEXT,
     seller_state TEXT
 );
 
-CREATE TABLE ods_product_category_name_translation (
+CREATE TABLE ods.product_category_name_translation (
     product_category_name TEXT,
     product_category_name_english TEXT
 );
 
-\copy ods_customers FROM '/tmp/dataquery_agent_olist/olist_customers_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
-\copy ods_geolocation FROM '/tmp/dataquery_agent_olist/olist_geolocation_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
-\copy ods_order_items FROM '/tmp/dataquery_agent_olist/olist_order_items_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
-\copy ods_order_payments FROM '/tmp/dataquery_agent_olist/olist_order_payments_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
-\copy ods_order_reviews FROM '/tmp/dataquery_agent_olist/olist_order_reviews_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
-\copy ods_orders FROM '/tmp/dataquery_agent_olist/olist_orders_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
-\copy ods_products FROM '/tmp/dataquery_agent_olist/olist_products_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
-\copy ods_sellers FROM '/tmp/dataquery_agent_olist/olist_sellers_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
-\copy ods_product_category_name_translation FROM '/tmp/dataquery_agent_olist/product_category_name_translation.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
+\copy ods.customers FROM '/tmp/dataquery_agent_olist/olist_customers_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
+\copy ods.geolocation FROM '/tmp/dataquery_agent_olist/olist_geolocation_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
+\copy ods.order_items FROM '/tmp/dataquery_agent_olist/olist_order_items_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
+\copy ods.order_payments FROM '/tmp/dataquery_agent_olist/olist_order_payments_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
+\copy ods.order_reviews FROM '/tmp/dataquery_agent_olist/olist_order_reviews_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
+\copy ods.orders FROM '/tmp/dataquery_agent_olist/olist_orders_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
+\copy ods.products FROM '/tmp/dataquery_agent_olist/olist_products_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
+\copy ods.sellers FROM '/tmp/dataquery_agent_olist/olist_sellers_dataset.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
+\copy ods.product_category_name_translation FROM '/tmp/dataquery_agent_olist/product_category_name_translation.csv' WITH (FORMAT csv, HEADER true, NULL '', ENCODING 'UTF8')
 
 COMMIT;

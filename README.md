@@ -4,16 +4,18 @@ DataQuery Agent（智能问数系统）是一个用于学习和求职展示的�
 
 ## 当前状态
 
-已完成 D1：
+当前已完成：
 
 - Python 3.12 独立虚拟环境和项目骨架；
 - 从 Kaggle 官方来源下载 Olist Brazilian E-Commerce Public Dataset；
 - 核验发布者、CC BY-NC-SA 4.0 许可证和官方版本元数据；
 - 对 9 个原始 CSV 运行可复现的字段、数据质量、候选键和关系审计；
 - 生成机器可读报告并为核心审计逻辑添加标准库单元测试；
-- 使用 PostgreSQL 16 建立 9 张 ODS 表，并通过单事务 `\copy` 导入全部原始记录。
+- 使用 PostgreSQL 16 建立独立 `olist` 数据库和 `ods` Schema；
+- 将 9 张 ODS 表无损迁移到 `olist.ods`，全量内容校验与旧库一致；
+- 建立 Gemini SQL 生成、SQL 安全校验和只读执行的首个 NL2SQL 闭环。
 
-尚未完成指标语义层、RAG、Text-to-SQL、Agent、API 或可视化。详细进度见 `PROJECT_PLAN.md`。
+尚未完成指标语义层、RAG、LangGraph Agent、API、可视化或系统评测。
 
 ## Python 版本
 
@@ -60,17 +62,17 @@ PYTHONPATH=src .venv/bin/python -m dataquery_agent.data_audit \
 
 | ODS 表 | 记录数 |
 |---|---:|
-| `ods_customers` | 99,441 |
-| `ods_geolocation` | 1,000,163 |
-| `ods_order_items` | 112,650 |
-| `ods_order_payments` | 103,886 |
-| `ods_order_reviews` | 99,224 |
-| `ods_orders` | 99,441 |
-| `ods_products` | 32,951 |
-| `ods_sellers` | 3,095 |
-| `ods_product_category_name_translation` | 71 |
+| `ods.customers` | 99,441 |
+| `ods.geolocation` | 1,000,163 |
+| `ods.order_items` | 112,650 |
+| `ods.order_payments` | 103,886 |
+| `ods.order_reviews` | 99,224 |
+| `ods.orders` | 99,441 |
+| `ods.products` | 32,951 |
+| `ods.sellers` | 3,095 |
+| `ods.product_category_name_translation` | 71 |
 
-在空数据库中复现建表和导入：
+在已创建 `ods` Schema 的空 `olist` 数据库中复现建表和导入：
 
 ```bash
 docker compose up -d db
@@ -81,6 +83,6 @@ scripts/import_olist_ods.sh
 
 ```bash
 docker compose exec -T db sh -c \
-  'PGPASSWORD="$POSTGRES_PASSWORD" psql -h 127.0.0.1 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -w -f -' \
+  'PGPASSWORD="$POSTGRES_PASSWORD" psql -h 127.0.0.1 -U "$POSTGRES_USER" -d olist -w -f -' \
   < sql/validate_olist_ods.sql
 ```
