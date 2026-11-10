@@ -42,3 +42,7 @@ reports/sqlshed_ingestion.json
 # Mac-local planning and learning notes (keep on disk, never publish)
 PROJECT_PLAN.md
 LEARNING_MAP.md
+
+# Local warehouse release pointer; immutable aggregate reports are versioned
+reports/warehouse/current.json
+reports/warehouse/*.json.part

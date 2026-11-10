@@ -1,5 +1,7 @@
 # 9d979c9 代码与数据库核查
 
+这是设计阶段的历史审计快照，以下路径/行号针对9d979c9；当前A批实现已把SQL整理到sql/warehouse，新增正式PostgreSQL集成测试，见[BATCH_A_ACCEPTANCE](BATCH_A_ACCEPTANCE.md)。不将历史审计状态当作当前表清单。
+
 2026-11-10：工作区核查起点为 feature/ecommerce-dwd，HEAD 9d979c9，与 origin/feature/ecommerce-dwd 一致且初始干净。本轮不把“已推送分支”当成“已合入 main”；不依赖创建 PR 才能审查代码。
 
 ## 已存在并受 Git 管理的路径

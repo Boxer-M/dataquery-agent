@@ -1,21 +1,21 @@
 # 加工依赖、SQL规范与运行策略
 
-**以下路径除明确标记“现有”外均为下一轮约定，不是已经存在的文件。** 不通过创建空SQL或空表伪造进度。
+A批路径已按下列规范落地；DWS/ADS、扩展GT与新版本发布仍为规划。实际入口和报告见BATCH_A_ACCEPTANCE.md，不用空SQL/空表伪造完成。
 
 ## SQL目录规范
 
 | 约定位置 | 作用 |
 |---|---|
 | `sql/dwd/order_item_fact.sql`（现有） | 原DDL+SELECT投影，首批保持结果兼容 |
-| `sql/warehouse/ddl/{dim,dwd,dws}/<object>.sql`（拟） | 一个对象显式DDL，不混入源数据修复 |
-| `sql/warehouse/transform/{dim,dwd,dws}/<object>.sql`（拟） | 单一SELECT模型，不执行TRUNCATE/隐式覆盖 |
+| `sql/warehouse/ddl/{dim,dwd,dws}/<object>.sql`（DWD/DIM已实现，DWS拟） | 一个对象显式DDL，不混入源数据修复 |
+| `sql/warehouse/transform/{dim,dwd,dws}/<object>.sql`（DWD/DIM已实现，DWS拟） | 单一SELECT模型，不执行TRUNCATE/隐式覆盖 |
 | `sql/warehouse/ads/<view>.sql`（拟） | 普通视图SELECT与明确依赖 |
-| `sql/warehouse/quality/<theme>.sql`（拟） | 命名SELECT检查，分别输出阻断错误和业务告警 |
+| `sql/warehouse/quality/{relation,batch_a,metrics,legacy_item}.sql`（已实现） | 命名SELECT检查，分别输出阻断错误和业务告警 |
 | `sql/warehouse/ground_truth/<metric_id>.sql`（拟） | 独立ODS参考计算，保留原8项引用已有SQL |
-| `warehouse/models.json`（拟） | 节点、版本、depends_on、目标schema/对象类型、字段、检查列表与有序SQL哈希 |
-| `scripts/build_warehouse.py`（拟） | 唯一批量入口，计划/构建/校验/已有版本复用；不把大段业务SQL埋入Python |
-| `tests/warehouse/`（拟） | 主题合成测试及隔离PostgreSQL集成测试，不访问/删除个人现有表 |
-| `reports/warehouse/<release_id>.json`（拟） | 已提交的脱敏验收摘要；原始快照、临时提取文件、失败详细源行留忽略目录 |
+| `warehouse/models.json`（已实现） | 节点、版本、depends_on、源/目标、字段、约束与索引；实际SQL哈希保存在发布报告 |
+| `scripts/build_warehouse.py`（已实现） | 唯一批量入口，计划/构建/校验/已有版本复用；不把大段业务SQL埋入Python |
+| `tests/test_warehouse_{models,postgres}.py`、`tests/fixtures/sqlshed_batch_a.sql`（已实现） | 主题合成测试及隔离PostgreSQL集成测试，不访问/删除个人现有表 |
+| `reports/warehouse/<release_id>.json`（A批已实现） | 已提交的脱敏验收摘要；原始快照、临时提取文件、失败详细源行留忽略目录 |
 
 Python负责连接、事务、锁、绑定、拓扑执行、断言和报告。关键SQL全部纳管；常量阈值放源快照验收清单，不散落为每个表的硬编码。动态schema只能由服务器生成/受控映射，并用Identifier绑定，不能拼接用户输入。
 
@@ -65,4 +65,4 @@ Python负责连接、事务、锁、绑定、拓扑执行、断言和报告。�
 
 未来获得可靠增量来源后才引入：按源PK+变更序列去重、删除事件、迟到窗口、受影响日期重算及发布版本。订单状态更正会影响所有关联明细/客户/渠道汇总；退货迟到或更正会影响其退货事件日以及对应下单批次所有已发布as_of；品类更正影响按当前分类的商品汇总；更换观察截止需重算cohort。不存在一个简单“只重算昨天”就正确的通用策略。
 
-本轮只设计策略，不创建发布目录指针、模型文件或运行新管道。
+A批已实现模型清单、共享执行、脱敏内容构建键报告和本地原子指针；有序依赖清单保证执行顺序，当前无需引入调度框架。测试沿用仓库平铺unittest发现方式，不为目录约定创建空测试包。新快照物理schema发布/增量仍未实现，遇到不同现有数据仍拒绝覆盖。

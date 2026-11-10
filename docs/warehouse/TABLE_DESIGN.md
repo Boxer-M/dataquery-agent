@@ -1,6 +1,6 @@
 # 表清单与字段级设计
 
-下列为逻辑名称；除标注“已存在”外均未实施。所有表属于独立 sqlshed 库。PK、NN、? 分别表示主键、非空、可空；未标 ? 的业务字段均 NN。整数源键 INTEGER，计数 BIGINT，源金额 M=NUMERIC(12,2)，派生/汇总金额 N=不限精度 NUMERIC，事件 T=TIMESTAMP WITHOUT TIME ZONE，技术时间 TZ=TIMESTAMPTZ。不存在币种字段，不添加猜测值。
+下列为逻辑名称；A批4张DWD及5张DIM已实现，DWS/ADS仍未实施。所有表属于独立sqlshed库。PK、NN、? 分别表示主键、非空、可空；未标?的字段均NN。整数源键INTEGER，计数BIGINT，源金额M=NUMERIC(12,2)，派生/汇总金额N=不限精度NUMERIC，事件T=TIMESTAMP WITHOUT TIME ZONE，技术时间TZ=TIMESTAMPTZ。不存在币种字段，不添加猜测值。实际列/约束以warehouse/models.json及SQL为准，验收见BATCH_A_ACCEPTANCE。
 
 发布级 source_snapshot_id、release_id、code_commit、model_version、metric_version、构建时间与对象映射放发布清单，适用于整个不可变批次，不在每张表重复填一套无业务意义字段。清单不包含密码、源客户明细或绝对个人目录。
 
@@ -32,7 +32,7 @@ DIM 仅当前快照，不伪装 SCD2；同一发布内键唯一。order_fact.cus
 
 ## DWD：4 张独立事实
 
-### dwd.order_fact（拟建，一订单，PK order_id）
+### dwd.order_fact（已实现，一订单，PK order_id）
 
 | 字段 | 类型 | 映射 |
 |---|---|---|
@@ -53,7 +53,7 @@ DIM 仅当前快照，不伪装 SCD2；同一发布内键唯一。order_fact.cus
 
 除 PK 外均 NN。净额 quantity*unit_price-discount_amount；order_purchase_time/order_status 来自源订单。order_id 逻辑关联 order_fact；product_id→dim.product。首批只读验证既有表，不 ALTER、不重命名、不扩列、不覆盖。需要 customer/channel 时通过唯一 order_fact 取得。新发布如沿用该模型也保持同样列名与公式。
 
-### dwd.payment_attempt_fact（拟建，一尝试，PK payment_id）
+### dwd.payment_attempt_fact（已实现，一尝试，PK payment_id）
 
 | 字段 | 类型 | 映射 |
 |---|---|---|
@@ -70,7 +70,7 @@ DIM 仅当前快照，不伪装 SCD2；同一发布内键唯一。order_fact.cus
 
 唯一订单关联只用于验证/标记，不按 order_id 去重支付尝试，不跨商品分摊，保留 95000 行。没有退款完成字段，不添加虚构时间。
 
-### dwd.return_record_fact（拟建，一退货记录，PK return_id）
+### dwd.return_record_fact（已实现，一退货记录，PK return_id）
 
 | 字段 | 类型 | 映射 |
 |---|---|---|
