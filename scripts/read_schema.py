@@ -12,12 +12,16 @@ def get_order_schema() -> str:
         host="127.0.0.1",
         port=5433,
         dbname=os.environ["POSTGRES_DB"],
-        user=os.environ["POSTGRES_USER"],
-        password=os.environ["POSTGRES_PASSWORD"],
+        user=os.environ["AGENT_DB_USER"],
+        password=os.environ["AGENT_DB_PASSWORD"],
         connect_timeout=5,
         options="-c default_transaction_read_only=on",
     ) as connection:
         with connection.cursor() as cursor:
+            cursor.execute("SELECT current_user;")
+            if cursor.fetchone()[0] != "dataquery_reader":
+                raise RuntimeError("Schema 读取必须使用 dataquery_reader")
+
             cursor.execute(
                 """
                 SELECT column_name, data_type
