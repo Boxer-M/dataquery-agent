@@ -6,7 +6,7 @@ from google import genai
 
 from dataquery_agent.nl2sql import answer_question
 from preview_prompt import build_prompt
-from read_schema import get_order_schema
+from read_schema import get_ods_schema
 
 
 def generate_sql(prompt: str) -> str | None:
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     question = "数据集中共有多少条订单记录？包含所有状态，不限定时间。"
     result = answer_question(
         question,
-        schema_reader=get_order_schema,
+        schema_reader=get_ods_schema,
         prompt_builder=build_prompt,
         sql_generator=generate_sql,
     )
