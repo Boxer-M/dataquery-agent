@@ -38,3 +38,7 @@ data/staging/
 docs/local/
 learning/
 reports/sqlshed_ingestion.json
+
+# Mac-local planning and learning notes (keep on disk, never publish)
+PROJECT_PLAN.md
+LEARNING_MAP.md

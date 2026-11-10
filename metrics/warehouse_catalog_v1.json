@@ -1,0 +1,1785 @@
+{
+  "catalog_version": "1.0.0-design",
+  "design_only": true,
+  "approved_base": {
+    "path": "metrics/ecommerce_v1.json",
+    "version": "1.0.0",
+    "sha256": "5ee56c86e73b00c0c9e0526ace8644ad2bf3f94c542e527c8e19ee48e45fedc6",
+    "rule": "原8项完整复制且不改已有键值；新目录仅增加依赖/路由/验证元数据"
+  },
+  "defaults": {
+    "window": "[start,end)，源无时区时间；日期分组支持day/month",
+    "as_of": "排他观察截止；队列as_of>=end，固定同一观察点；没有入库可知时间",
+    "summary_availability": "本轮没有任何DWS/ADS；planned_summary不表示已有表或可用路由",
+    "dimension_semantics": "商品/品类/客户属性为当前快照；跨事实的商品支付分摊不支持；显式过滤必须记录且不得覆盖固定状态口径",
+    "source_fields_semantics": "source_fields均为真实源字段；维度附加血缘见dimension_lineage；planned表示尚未创建的逻辑对象。",
+    "validation": "扩展指标均defined_unverified；剖面观察不等于全套GT已验收"
+  },
+  "metrics": [
+    {
+      "metric_id": "order_count",
+      "name_zh": "订单量",
+      "definition": "时间窗内创建的订单记录数，含取消订单。",
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.ordered_at"
+      ],
+      "grain": "一行一个 order_id",
+      "formula": "COUNT(*)",
+      "event_time": "orders.ordered_at",
+      "status_filter": "不筛订单状态",
+      "deduplication": "order_id 唯一；不按客户去重",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；空时间窗计数/金额返回 0。",
+      "availability": "可用",
+      "limitations": "不是付款订单数、有效成交单数或商品件数。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#order_count",
+      "subject": "orders_sales",
+      "definition_status": "approved_v1_unchanged",
+      "time_attribution": "orders.ordered_at",
+      "supported_dimensions": [
+        "order_channel",
+        "order_status",
+        "customer_id",
+        "customer_country_current",
+        "loyalty_tier_current",
+        "shipping_country"
+      ],
+      "dependencies": [
+        "dwd.order_fact",
+        "dim.customer"
+      ],
+      "has_existing_summary": false,
+      "planned_summary": "dws.order_day",
+      "dynamic_sql": "computable; query-service routing not implemented",
+      "data_quality_limits": "不是付款订单数、有效成交单数或商品件数。; inherit approved defaults.null_and_anomalies",
+      "ground_truth": {
+        "status": "verified_original_8",
+        "method": "sql/metrics/ecommerce_v1.sql#order_count",
+        "evidence": "reports/ecommerce_metrics_v1.json"
+      }
+    },
+    {
+      "metric_id": "item_net_sales_amount",
+      "name_zh": "折扣后商品销售金额",
+      "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+      "source_fields": [
+        "ods.order_items.order_item_id",
+        "ods.order_items.order_id",
+        "ods.order_items.quantity",
+        "ods.order_items.unit_price",
+        "ods.order_items.discount_amount",
+        "ods.orders.ordered_at"
+      ],
+      "grain": "一行一个 order_item_id",
+      "formula": "SUM(quantity * unit_price - discount_amount)",
+      "event_time": "orders.ordered_at（明细继承订单时间）",
+      "status_filter": "不筛订单状态",
+      "deduplication": "order_item_id 唯一；只 JOIN 唯一订单",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；空时间窗计数/金额返回 0。",
+      "availability": "可用（记录金额）",
+      "limitations": "discount_amount 按整行折扣扣一次；不是成功支付额、确认收入或扣退款后的收入；不用商品现价。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#item_net_sales_amount",
+      "subject": "orders_sales",
+      "definition_status": "approved_v1_unchanged",
+      "time_attribution": "orders.ordered_at（明细继承订单时间）",
+      "supported_dimensions": [
+        "order_channel",
+        "order_status",
+        "customer_id",
+        "customer_country_current",
+        "loyalty_tier_current",
+        "shipping_country",
+        "product_id",
+        "category_id_current"
+      ],
+      "dependencies": [
+        "dwd.order_item_fact",
+        "dwd.order_fact",
+        "dim.product",
+        "dim.category",
+        "dim.customer"
+      ],
+      "has_existing_summary": false,
+      "planned_summary": "dws.order_day or dws.product_sales_day",
+      "dynamic_sql": "computable; query-service routing not implemented",
+      "data_quality_limits": "discount_amount 按整行折扣扣一次；不是成功支付额、确认收入或扣退款后的收入；不用商品现价。; inherit approved defaults.null_and_anomalies",
+      "ground_truth": {
+        "status": "verified_original_8",
+        "method": "sql/metrics/ecommerce_v1.sql#item_net_sales_amount",
+        "evidence": "reports/ecommerce_metrics_v1.json"
+      }
+    },
+    {
+      "metric_id": "payment_attempt_count",
+      "name_zh": "支付尝试次数",
+      "definition": "支付事件时间窗内的全部尝试记录，包括失败及重试。",
+      "source_fields": [
+        "ods.payments.payment_id",
+        "ods.payments.paid_at",
+        "ods.payments.status"
+      ],
+      "grain": "一行一个 payment_id",
+      "formula": "COUNT(*)",
+      "event_time": "payments.paid_at（失败记录也使用该源时间）",
+      "status_filter": "全部支付状态",
+      "deduplication": "payment_id 唯一；同 order_id 重试不去重",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；空时间窗计数/金额返回 0。",
+      "availability": "可用",
+      "limitations": "不是尝试支付的订单数；失败记录的 paid_at 仅作源事件时间，不证明到账。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#payment_attempt_count",
+      "subject": "payments",
+      "definition_status": "approved_v1_unchanged",
+      "time_attribution": "payments.paid_at（失败记录也使用该源时间）",
+      "supported_dimensions": [
+        "order_channel",
+        "customer_id",
+        "customer_country_current",
+        "payment_method",
+        "payment_status"
+      ],
+      "dependencies": [
+        "dwd.payment_attempt_fact",
+        "dwd.order_fact",
+        "dim.customer"
+      ],
+      "has_existing_summary": false,
+      "planned_summary": "dws.payment_day",
+      "dynamic_sql": "computable; query-service routing not implemented",
+      "data_quality_limits": "不是尝试支付的订单数；失败记录的 paid_at 仅作源事件时间，不证明到账。; inherit approved defaults.null_and_anomalies",
+      "ground_truth": {
+        "status": "verified_original_8",
+        "method": "sql/metrics/ecommerce_v1.sql#payment_attempt_count",
+        "evidence": "reports/ecommerce_metrics_v1.json"
+      }
+    },
+    {
+      "metric_id": "captured_payment_amount",
+      "name_zh": "成功支付金额",
+      "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+      "source_fields": [
+        "ods.payments.payment_id",
+        "ods.payments.amount",
+        "ods.payments.paid_at",
+        "ods.payments.status"
+      ],
+      "grain": "一行一个 payment_id",
+      "formula": "SUM(amount) FILTER (WHERE status = 'captured')",
+      "event_time": "payments.paid_at",
+      "status_filter": "payments.status = 'captured'；不筛订单状态",
+      "deduplication": "payment_id 唯一；不按订单取最大或最后一次",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；空时间窗计数/金额返回 0。",
+      "availability": "可用（状态口径）",
+      "limitations": "captured 为源成功状态代理；不是银行核销到账证明，不扣退货；同单多笔成功均保留。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#captured_payment_amount",
+      "subject": "payments",
+      "definition_status": "approved_v1_unchanged",
+      "time_attribution": "payments.paid_at",
+      "supported_dimensions": [
+        "order_channel",
+        "customer_id",
+        "customer_country_current",
+        "payment_method",
+        "payment_status"
+      ],
+      "dependencies": [
+        "dwd.payment_attempt_fact",
+        "dwd.order_fact"
+      ],
+      "has_existing_summary": false,
+      "planned_summary": "dws.payment_day",
+      "dynamic_sql": "computable; query-service routing not implemented",
+      "data_quality_limits": "captured 为源成功状态代理；不是银行核销到账证明，不扣退货；同单多笔成功均保留。; inherit approved defaults.null_and_anomalies",
+      "ground_truth": {
+        "status": "verified_original_8",
+        "method": "sql/metrics/ecommerce_v1.sql#captured_payment_amount",
+        "evidence": "reports/ecommerce_metrics_v1.json"
+      }
+    },
+    {
+      "metric_id": "payment_attempt_success_rate",
+      "name_zh": "支付成功率",
+      "definition": "同一支付事件时间窗内成功尝试数除以全部尝试数。",
+      "source_fields": [
+        "ods.payments.payment_id",
+        "ods.payments.paid_at",
+        "ods.payments.status"
+      ],
+      "grain": "支付尝试",
+      "formula": "COUNT(captured attempts) / COUNT(all attempts)",
+      "event_time": "payments.paid_at",
+      "status_filter": "分子 captured；分母全部状态",
+      "deduplication": "按 payment_id 计数；重试属于独立尝试",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；零分母返回 NULL，结果为 0..1 比值，保留 8 位小数。",
+      "availability": "可用",
+      "limitations": "不是订单最终支付成功率；新增状态仍计入分母并触发枚举审查。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#payment_attempt_success_rate",
+      "subject": "payments",
+      "definition_status": "approved_v1_unchanged",
+      "time_attribution": "payments.paid_at",
+      "supported_dimensions": [
+        "order_channel",
+        "customer_id",
+        "customer_country_current",
+        "payment_method",
+        "payment_status"
+      ],
+      "dependencies": [
+        "dwd.payment_attempt_fact",
+        "dwd.order_fact"
+      ],
+      "has_existing_summary": false,
+      "planned_summary": "dws.payment_day (sum numerator/denominator)",
+      "dynamic_sql": "computable; query-service routing not implemented",
+      "data_quality_limits": "不是订单最终支付成功率；新增状态仍计入分母并触发枚举审查。; inherit approved defaults.null_and_anomalies",
+      "ground_truth": {
+        "status": "verified_original_8",
+        "method": "sql/metrics/ecommerce_v1.sql#payment_attempt_success_rate",
+        "evidence": "reports/ecommerce_metrics_v1.json"
+      }
+    },
+    {
+      "metric_id": "return_record_count",
+      "name_zh": "退货记录数",
+      "definition": "按退货事件时间统计源退货记录。",
+      "source_fields": [
+        "ods.returns.return_id",
+        "ods.returns.returned_at"
+      ],
+      "grain": "一行一个 return_id",
+      "formula": "COUNT(*)",
+      "event_time": "returns.returned_at",
+      "status_filter": "无退货状态字段；不筛订单状态或 restocked",
+      "deduplication": "return_id 唯一；不按订单或商品去重",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；空时间窗计数/金额返回 0。",
+      "availability": "可用（记录口径）",
+      "limitations": "不是退货件数或退货订单数；没有退货数量字段。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#return_record_count",
+      "subject": "returns",
+      "definition_status": "approved_v1_unchanged",
+      "time_attribution": "returns.returned_at",
+      "supported_dimensions": [
+        "order_channel",
+        "customer_id",
+        "product_id",
+        "category_id_current",
+        "return_reason",
+        "restocked"
+      ],
+      "dependencies": [
+        "dwd.return_record_fact",
+        "dwd.order_fact",
+        "dim.product"
+      ],
+      "has_existing_summary": false,
+      "planned_summary": "dws.return_day",
+      "dynamic_sql": "computable; query-service routing not implemented",
+      "data_quality_limits": "不是退货件数或退货订单数；没有退货数量字段。; inherit approved defaults.null_and_anomalies",
+      "ground_truth": {
+        "status": "verified_original_8",
+        "method": "sql/metrics/ecommerce_v1.sql#return_record_count",
+        "evidence": "reports/ecommerce_metrics_v1.json"
+      }
+    },
+    {
+      "metric_id": "return_record_amount",
+      "name_zh": "退货记录金额",
+      "definition": "按退货事件时间合计源 refund_amount。",
+      "source_fields": [
+        "ods.returns.return_id",
+        "ods.returns.refund_amount",
+        "ods.returns.returned_at"
+      ],
+      "grain": "一行一个 return_id",
+      "formula": "SUM(refund_amount)",
+      "event_time": "returns.returned_at",
+      "status_filter": "无退款成功状态；不筛 restocked",
+      "deduplication": "return_id 唯一；多条记录分别保留",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；空时间窗计数/金额返回 0。",
+      "availability": "可用（记录金额）",
+      "limitations": "无退款完成时间及支付流水关联，不能称已完成退款额；超明细金额不截断。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#return_record_amount",
+      "subject": "returns",
+      "definition_status": "approved_v1_unchanged",
+      "time_attribution": "returns.returned_at",
+      "supported_dimensions": [
+        "order_channel",
+        "customer_id",
+        "product_id",
+        "category_id_current",
+        "return_reason",
+        "restocked"
+      ],
+      "dependencies": [
+        "dwd.return_record_fact",
+        "dwd.order_fact",
+        "dim.product"
+      ],
+      "has_existing_summary": false,
+      "planned_summary": "dws.return_day",
+      "dynamic_sql": "computable; query-service routing not implemented",
+      "data_quality_limits": "无退款完成时间及支付流水关联，不能称已完成退款额；超明细金额不截断。; inherit approved defaults.null_and_anomalies",
+      "ground_truth": {
+        "status": "verified_original_8",
+        "method": "sql/metrics/ecommerce_v1.sql#return_record_amount",
+        "evidence": "reports/ecommerce_metrics_v1.json"
+      }
+    },
+    {
+      "metric_id": "item_return_rate",
+      "name_zh": "商品明细退货率",
+      "definition": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。",
+      "source_fields": [
+        "ods.order_items.order_item_id",
+        "ods.order_items.order_id",
+        "ods.orders.ordered_at",
+        "ods.returns.order_item_id",
+        "ods.returns.returned_at"
+      ],
+      "grain": "订单下单批次中的唯一商品明细",
+      "formula": "COUNT(items WHERE EXISTS return before as_of) / COUNT(cohort items)",
+      "event_time": "按 orders.ordered_at 归属批次；returns.returned_at < as_of 为观察截止",
+      "status_filter": "全部订单状态；不筛退货原因或 restocked",
+      "deduplication": "EXISTS 保证一条明细最多贡献一次分子；不是退货记录数比明细数",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；零分母返回 NULL，结果为 0..1 比值，保留 8 位小数。",
+      "availability": "有条件可用（源记录关联率）",
+      "limitations": "包含退货早于下单的源异常；不表示有效售后发生率，不按件数加权；新批次观察期较短不可直接排名。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#item_return_rate",
+      "subject": "returns",
+      "definition_status": "approved_v1_unchanged",
+      "time_attribution": "按 orders.ordered_at 归属批次；returns.returned_at < as_of 为观察截止",
+      "supported_dimensions": [
+        "order_channel",
+        "order_status",
+        "customer_id",
+        "customer_country_current",
+        "loyalty_tier_current",
+        "shipping_country",
+        "product_id",
+        "category_id_current"
+      ],
+      "dependencies": [
+        "dwd.order_item_fact",
+        "dwd.return_record_fact",
+        "dwd.order_fact",
+        "dim.product"
+      ],
+      "has_existing_summary": false,
+      "planned_summary": "dws.item_return_cohort_day (exact as_of only)",
+      "dynamic_sql": "computable; query-service routing not implemented",
+      "data_quality_limits": "包含退货早于下单的源异常；不表示有效售后发生率，不按件数加权；新批次观察期较短不可直接排名。; inherit approved defaults.null_and_anomalies",
+      "ground_truth": {
+        "status": "verified_original_8",
+        "method": "sql/metrics/ecommerce_v1.sql#item_return_rate",
+        "evidence": "reports/ecommerce_metrics_v1.json"
+      }
+    },
+    {
+      "metric_id": "order_item_count",
+      "name_zh": "订单商品明细数",
+      "subject": "orders_sales",
+      "definition": "按下单时间统计的商品明细记录数，每个明细主键计一次。",
+      "formula": "COUNT(*)",
+      "grain": "一商品明细",
+      "event_time": "orders.ordered_at",
+      "time_attribution": "orders.ordered_at",
+      "status_filter": "全部订单状态",
+      "deduplication": "order_item_id",
+      "supported_dimensions": [
+        "order_channel",
+        "order_status",
+        "customer_id",
+        "customer_country_current",
+        "loyalty_tier_current",
+        "shipping_country",
+        "product_id",
+        "category_id_current"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country",
+        "ods.order_items.order_item_id",
+        "ods.order_items.order_id",
+        "ods.order_items.product_id",
+        "ods.order_items.quantity",
+        "ods.order_items.unit_price",
+        "ods.order_items.discount_amount"
+      ],
+      "dependencies": [
+        "dwd.order_item_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.order_day / dws.product_sales_day",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "不是商品件数。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)"
+    },
+    {
+      "metric_id": "ordered_unit_count",
+      "name_zh": "下单商品件数",
+      "subject": "orders_sales",
+      "definition": "按下单时间合计源明细记录的商品数量，保留取消单和异常数量。",
+      "formula": "SUM(i.quantity)",
+      "grain": "一商品明细",
+      "event_time": "orders.ordered_at",
+      "time_attribution": "orders.ordered_at",
+      "status_filter": "全部订单状态",
+      "deduplication": "order_item_id",
+      "supported_dimensions": [
+        "order_channel",
+        "order_status",
+        "customer_id",
+        "customer_country_current",
+        "loyalty_tier_current",
+        "shipping_country",
+        "product_id",
+        "category_id_current"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country",
+        "ods.order_items.order_item_id",
+        "ods.order_items.order_id",
+        "ods.order_items.product_id",
+        "ods.order_items.quantity",
+        "ods.order_items.unit_price",
+        "ods.order_items.discount_amount"
+      ],
+      "dependencies": [
+        "dwd.order_item_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.order_day / dws.product_sales_day",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "保留异常 quantity；不是支付成交件数或退货件数。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)"
+    },
+    {
+      "metric_id": "item_gross_sales_amount",
+      "name_zh": "折扣前商品记录金额",
+      "subject": "orders_sales",
+      "definition": "按下单时间合计成交数量乘明细成交单价，尚未扣除行折扣。",
+      "formula": "SUM(i.quantity*i.unit_price)",
+      "grain": "一商品明细",
+      "event_time": "orders.ordered_at",
+      "time_attribution": "orders.ordered_at",
+      "status_filter": "全部订单状态",
+      "deduplication": "order_item_id",
+      "supported_dimensions": [
+        "order_channel",
+        "order_status",
+        "customer_id",
+        "customer_country_current",
+        "loyalty_tier_current",
+        "shipping_country",
+        "product_id",
+        "category_id_current"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country",
+        "ods.order_items.order_item_id",
+        "ods.order_items.order_id",
+        "ods.order_items.product_id",
+        "ods.order_items.quantity",
+        "ods.order_items.unit_price",
+        "ods.order_items.discount_amount"
+      ],
+      "dependencies": [
+        "dwd.order_item_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.order_day / dws.product_sales_day",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "按成交单价，不使用商品当前价；非财务收入。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)"
+    },
+    {
+      "metric_id": "item_discount_amount",
+      "name_zh": "商品行折扣金额",
+      "subject": "orders_sales",
+      "definition": "按下单时间合计每条商品明细的整行折扣金额，不再乘数量。",
+      "formula": "SUM(i.discount_amount)",
+      "grain": "一商品明细",
+      "event_time": "orders.ordered_at",
+      "time_attribution": "orders.ordered_at",
+      "status_filter": "全部订单状态",
+      "deduplication": "order_item_id",
+      "supported_dimensions": [
+        "order_channel",
+        "order_status",
+        "customer_id",
+        "customer_country_current",
+        "loyalty_tier_current",
+        "shipping_country",
+        "product_id",
+        "category_id_current"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country",
+        "ods.order_items.order_item_id",
+        "ods.order_items.order_id",
+        "ods.order_items.product_id",
+        "ods.order_items.quantity",
+        "ods.order_items.unit_price",
+        "ods.order_items.discount_amount"
+      ],
+      "dependencies": [
+        "dwd.order_item_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.order_day / dws.product_sales_day",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "每行折扣只减一次；不能推导税费或优惠券拆分。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)"
+    },
+    {
+      "metric_id": "cancelled_order_count",
+      "name_zh": "取消状态订单数",
+      "subject": "orders_sales",
+      "definition": "在下单窗口中，当前源状态为取消的订单记录数。",
+      "formula": "COUNT(*) FILTER(WHERE o.status='cancelled')",
+      "grain": "一订单",
+      "event_time": "orders.ordered_at",
+      "time_attribution": "orders.ordered_at",
+      "status_filter": "仅当前 cancelled",
+      "deduplication": "order_id",
+      "supported_dimensions": [
+        "order_channel",
+        "order_status",
+        "customer_id",
+        "customer_country_current",
+        "loyalty_tier_current",
+        "shipping_country"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country"
+      ],
+      "dependencies": [
+        "dwd.order_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.order_day",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "按下单日统计当前状态，不是取消事件日；无取消时间。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.orders o"
+    },
+    {
+      "metric_id": "cancelled_order_rate",
+      "name_zh": "取消状态订单占比",
+      "subject": "orders_sales",
+      "definition": "在同一下单窗口中，当前为取消状态的订单记录占全部订单的比例。",
+      "formula": "COUNT(*) FILTER(WHERE o.status='cancelled') / NULLIF(COUNT(*),0)",
+      "grain": "一订单",
+      "event_time": "orders.ordered_at",
+      "time_attribution": "orders.ordered_at",
+      "status_filter": "分子当前 cancelled；分母全部",
+      "deduplication": "order_id",
+      "supported_dimensions": [
+        "order_channel",
+        "customer_country_current",
+        "shipping_country"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country"
+      ],
+      "dependencies": [
+        "dwd.order_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.order_day numerator/denominator",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "不是取消事件发生率；状态筛选不可覆盖固定分母。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.orders o"
+    },
+    {
+      "metric_id": "average_order_record_amount",
+      "name_zh": "每单商品记录金额",
+      "subject": "orders_sales",
+      "definition": "下单窗口内全部商品明细净额除以全部订单数，包含取消单和无明细订单。",
+      "formula": "SUM(item_net_sales_amount) / NULLIF(COUNT(order_id),0)",
+      "grain": "一订单；明细先聚合到订单",
+      "event_time": "orders.ordered_at",
+      "time_attribution": "orders.ordered_at",
+      "status_filter": "全部订单状态",
+      "deduplication": "order_id（含无明细订单）",
+      "supported_dimensions": [
+        "order_channel",
+        "order_status",
+        "customer_id",
+        "customer_country_current",
+        "loyalty_tier_current",
+        "shipping_country"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country",
+        "ods.order_items.order_item_id",
+        "ods.order_items.order_id",
+        "ods.order_items.product_id",
+        "ods.order_items.quantity",
+        "ods.order_items.unit_price",
+        "ods.order_items.discount_amount"
+      ],
+      "dependencies": [
+        "dwd.order_fact",
+        "dwd.order_item_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.order_day weighted totals",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "分子缺明细订单按0，分母保留订单；非支付客单价。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "独立ODS先按order_id汇总明细，LEFT JOIN保留全部订单；SUM(COALESCE(net,0))/COUNT(order_id)；增加无明细订单案例。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.orders o LEFT JOIN (SELECT order_id,SUM(quantity*unit_price-discount_amount) net FROM ods.order_items GROUP BY order_id) i USING(order_id)"
+    },
+    {
+      "metric_id": "payment_failed_attempt_count",
+      "name_zh": "失败支付尝试次数",
+      "subject": "payments",
+      "definition": "支付事件窗口内，源状态为失败的支付尝试记录数。",
+      "formula": "COUNT(*) FILTER(WHERE p.status='failed')",
+      "grain": "一支付尝试",
+      "event_time": "payments.paid_at",
+      "time_attribution": "payments.paid_at",
+      "status_filter": "仅 failed",
+      "deduplication": "payment_id",
+      "supported_dimensions": [
+        "order_channel",
+        "customer_id",
+        "customer_country_current",
+        "payment_method",
+        "payment_status"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country",
+        "ods.payments.payment_id",
+        "ods.payments.order_id",
+        "ods.payments.paid_at",
+        "ods.payments.status",
+        "ods.payments.amount"
+      ],
+      "dependencies": [
+        "dwd.payment_attempt_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.payment_day",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "不是支付失败订单数；同单重试分别计数。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.payments p"
+    },
+    {
+      "metric_id": "payment_failed_attempt_rate",
+      "name_zh": "失败支付尝试率",
+      "subject": "payments",
+      "definition": "同一支付事件窗口中失败尝试占全部尝试的比例。",
+      "formula": "COUNT(*) FILTER(WHERE p.status='failed') / NULLIF(COUNT(*),0)",
+      "grain": "一支付尝试",
+      "event_time": "payments.paid_at",
+      "time_attribution": "payments.paid_at",
+      "status_filter": "分子 failed；分母全部",
+      "deduplication": "payment_id",
+      "supported_dimensions": [
+        "order_channel",
+        "payment_method",
+        "customer_id"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country",
+        "ods.payments.payment_id",
+        "ods.payments.order_id",
+        "ods.payments.paid_at",
+        "ods.payments.status",
+        "ods.payments.amount"
+      ],
+      "dependencies": [
+        "dwd.payment_attempt_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.payment_day numerator/denominator",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "新状态出现时成功率+失败率未必为1；不能硬取1-成功率。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.payments p"
+    },
+    {
+      "metric_id": "payment_attempted_order_count",
+      "name_zh": "有支付尝试的订单数",
+      "subject": "payments",
+      "definition": "支付事件窗口内出现过至少一条支付尝试的不同订单数。",
+      "formula": "COUNT(DISTINCT p.order_id)",
+      "grain": "支付事件窗内的不同订单",
+      "event_time": "payments.paid_at",
+      "time_attribution": "payments.paid_at",
+      "status_filter": "全部支付状态",
+      "deduplication": "order_id 在请求窗口内去重",
+      "supported_dimensions": [
+        "order_channel",
+        "customer_id",
+        "customer_country_current",
+        "payment_method",
+        "payment_status"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country",
+        "ods.payments.payment_id",
+        "ods.payments.order_id",
+        "ods.payments.paid_at",
+        "ods.payments.status",
+        "ods.payments.amount"
+      ],
+      "dependencies": [
+        "dwd.payment_attempt_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": null,
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "不能相加每日/支付方式的 distinct 订单数。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "先按paid_at筛窗口，再COUNT(DISTINCT order_id)；跨日/方式重复订单验证不能累加日去重。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.payments p"
+    },
+    {
+      "metric_id": "multiple_payment_attempt_order_count",
+      "name_zh": "多次支付尝试订单数",
+      "subject": "payments",
+      "definition": "支付事件窗口内具有至少两条支付尝试记录的订单数。",
+      "formula": "COUNT(order_id HAVING COUNT(payment_id)>=2)",
+      "grain": "支付事件窗内每订单",
+      "event_time": "payments.paid_at",
+      "time_attribution": "payments.paid_at",
+      "status_filter": "全部支付状态",
+      "deduplication": "先按order_id聚合",
+      "supported_dimensions": [
+        "order_channel",
+        "customer_id"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country",
+        "ods.payments.payment_id",
+        "ods.payments.order_id",
+        "ods.payments.paid_at",
+        "ods.payments.status",
+        "ods.payments.amount"
+      ],
+      "dependencies": [
+        "dwd.payment_attempt_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": null,
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "仅所选窗内>=2次，不称失败重试次数或最终失败订单数。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "先按paid_at筛窗口，GROUP BY order_id HAVING COUNT(payment_id)>=2，再COUNT组；不在分组前用DISTINCT删尝试。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.payments p"
+    },
+    {
+      "metric_id": "payment_item_amount_mismatch_order_count",
+      "name_zh": "支付与商品净额不一致订单数",
+      "subject": "payments",
+      "definition": "所选下单队列中，截至观察日的成功支付记录金额合计与商品明细净额不一致的订单数。",
+      "formula": "COUNT(order WHERE captured_sum_before_as_of <> item_net_sum)",
+      "grain": "一下单批次订单",
+      "event_time": "orders.ordered_at；payments.paid_at < as_of",
+      "time_attribution": "orders.ordered_at；payments.paid_at < as_of",
+      "status_filter": "全部订单；仅 captured 金额",
+      "deduplication": "明细、支付分别先按order_id聚合",
+      "supported_dimensions": [
+        "order_channel",
+        "order_status",
+        "customer_id"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country",
+        "ods.order_items.order_item_id",
+        "ods.order_items.order_id",
+        "ods.order_items.product_id",
+        "ods.order_items.quantity",
+        "ods.order_items.unit_price",
+        "ods.order_items.discount_amount",
+        "ods.payments.payment_id",
+        "ods.payments.order_id",
+        "ods.payments.paid_at",
+        "ods.payments.status",
+        "ods.payments.amount"
+      ],
+      "dependencies": [
+        "dwd.order_fact",
+        "dwd.order_item_fact",
+        "dwd.payment_attempt_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "ads.payment_anomaly_order exact as_of",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "as_of>=end；当前快照观察，金额差不直接称欠款或财务损失。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "ODS订单按ordered_at取队列，明细和paid_at<as_of的captured分别按订单SUM后LEFT JOIN；COALESCE空值0，COUNT不等订单；比较净差与250单全源剖面但不假定所有窗口均250。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.orders o + order_items preaggregation + payments captured preaggregation"
+    },
+    {
+      "metric_id": "return_before_order_count",
+      "name_zh": "早于下单的退货记录数",
+      "subject": "returns",
+      "definition": "退货事件窗口内，源退货时间早于对应订单下单时间的记录数。",
+      "formula": "COUNT(*) FILTER(WHERE r.returned_at<o.ordered_at)",
+      "grain": "一退货记录",
+      "event_time": "returns.returned_at",
+      "time_attribution": "returns.returned_at",
+      "status_filter": "无额外过滤",
+      "deduplication": "return_id",
+      "supported_dimensions": [
+        "order_channel",
+        "customer_id",
+        "product_id",
+        "category_id_current",
+        "return_reason",
+        "restocked"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country",
+        "ods.returns.return_id",
+        "ods.returns.order_item_id",
+        "ods.returns.returned_at",
+        "ods.returns.refund_amount",
+        "ods.order_items.order_item_id",
+        "ods.order_items.order_id",
+        "ods.order_items.product_id",
+        "ods.order_items.quantity",
+        "ods.order_items.unit_price",
+        "ods.order_items.discount_amount"
+      ],
+      "dependencies": [
+        "dwd.return_record_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.return_day quality count",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "只标识源时序异常，不排除主指标。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.returns r JOIN ods.order_items i USING(order_item_id) JOIN ods.orders o USING(order_id)"
+    },
+    {
+      "metric_id": "return_above_item_net_count",
+      "name_zh": "退款记录超明细净额数",
+      "subject": "returns",
+      "definition": "退货事件窗口内，源退款记录金额超过对应整行商品净额的记录数。",
+      "formula": "COUNT(*) FILTER(WHERE r.refund_amount>i.quantity*i.unit_price-i.discount_amount)",
+      "grain": "一退货记录",
+      "event_time": "returns.returned_at",
+      "time_attribution": "returns.returned_at",
+      "status_filter": "无额外过滤",
+      "deduplication": "return_id",
+      "supported_dimensions": [
+        "order_channel",
+        "customer_id",
+        "product_id",
+        "category_id_current",
+        "return_reason",
+        "restocked"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country",
+        "ods.returns.return_id",
+        "ods.returns.order_item_id",
+        "ods.returns.returned_at",
+        "ods.returns.refund_amount",
+        "ods.order_items.order_item_id",
+        "ods.order_items.order_id",
+        "ods.order_items.product_id",
+        "ods.order_items.quantity",
+        "ods.order_items.unit_price",
+        "ods.order_items.discount_amount"
+      ],
+      "dependencies": [
+        "dwd.return_record_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.return_day quality count",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "比较整行净额，不假定退款成功，不截断。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "在列明的ODS源按该指标公式、事件时间、状态及主键粒度独立SELECT计算；与未来DWD/DWS同窗口逐组双向比较。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.returns r JOIN ods.order_items i USING(order_item_id)"
+    },
+    {
+      "metric_id": "ordering_customer_count",
+      "name_zh": "下单账户数",
+      "subject": "customers",
+      "definition": "下单窗口内至少有一单的不同客户账户数。",
+      "formula": "COUNT(DISTINCT o.customer_id)",
+      "grain": "窗口内不同账户",
+      "event_time": "orders.ordered_at",
+      "time_attribution": "orders.ordered_at",
+      "status_filter": "全部订单状态",
+      "deduplication": "customer_id；不按email或自然人合并",
+      "supported_dimensions": [
+        "order_channel",
+        "order_status",
+        "customer_id",
+        "customer_country_current",
+        "loyalty_tier_current",
+        "shipping_country"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country"
+      ],
+      "dependencies": [
+        "dwd.order_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.customer_order_day regroup customer_id",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "不是支付买家数；跨日/渠道去重不可相加。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "ODS orders按ordered_at筛窗口后COUNT(DISTINCT customer_id)；当前全源8622仅交叉检查。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.orders o"
+    },
+    {
+      "metric_id": "repeat_ordering_customer_count",
+      "name_zh": "窗口内多次下单账户数",
+      "subject": "customers",
+      "definition": "下单窗口内累计至少两单的不同客户账户数，跨所选日期和渠道按账户合并。",
+      "formula": "COUNT(customer_id HAVING COUNT(order_id)>=2)",
+      "grain": "窗口内每账户",
+      "event_time": "orders.ordered_at",
+      "time_attribution": "orders.ordered_at",
+      "status_filter": "全部订单状态",
+      "deduplication": "先跨所选日期/渠道按customer_id聚合",
+      "supported_dimensions": [
+        "order_channel",
+        "customer_country_current",
+        "loyalty_tier_current"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country"
+      ],
+      "dependencies": [
+        "dwd.order_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.customer_order_day regroup customer_id",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "是窗口内>=2单，不是历史复购客户回访；取消单仍计入。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "ODS orders按ordered_at筛窗口后GROUP BY customer_id HAVING COUNT(order_id)>=2，再COUNT组；全源5376仅交叉检查。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.orders o"
+    },
+    {
+      "metric_id": "customer_repeat_order_rate",
+      "name_zh": "窗口内账户复购率",
+      "subject": "customers",
+      "definition": "同一下单窗口中，至少两单账户数除以至少一单账户数。",
+      "formula": "COUNT(accounts with >=2 orders) / NULLIF(COUNT(accounts with >=1 order),0)",
+      "grain": "窗口内每账户",
+      "event_time": "orders.ordered_at",
+      "time_attribution": "orders.ordered_at",
+      "status_filter": "全部订单状态",
+      "deduplication": "customer_id 在整个请求窗口去重",
+      "supported_dimensions": [
+        "order_channel",
+        "customer_country_current",
+        "loyalty_tier_current"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country"
+      ],
+      "dependencies": [
+        "dwd.order_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.customer_order_day regroup customer_id",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "不得平均日率；跨渠道总率须先合并账户；不代表自然人复购。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "同窗先按账户计订单，COUNT(n>=2)/NULLIF(COUNT(n>=1),0)；跨天/渠道账户测试；不使用日复购率平均。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.orders o"
+    },
+    {
+      "metric_id": "first_observed_ordering_customer_count",
+      "name_zh": "首次观测下单账户数",
+      "subject": "customers",
+      "definition": "在完整已知历史截至观察日前识别账户首单，再统计首单时间落入所选窗口的账户数。",
+      "formula": "COUNT(customer whose MIN(ordered_at) is in [start,end))",
+      "grain": "账户首次观测订单",
+      "event_time": "全源截至as_of的MIN(orders.ordered_at)",
+      "time_attribution": "全源截至as_of的MIN(orders.ordered_at)",
+      "status_filter": "全部订单状态",
+      "deduplication": "customer_id；同时间按order_id确定归因订单",
+      "supported_dimensions": [
+        "order_channel",
+        "customer_country_current"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country"
+      ],
+      "dependencies": [
+        "dwd.order_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": null,
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "先从完整已知历史找首次，再筛窗口；渠道属于首次订单，不是客户永久渠道；截断历史不等于真实新客。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "在全量ODS订单中先筛ordered_at<as_of，按customer_id/ordered_at/order_id选择首单，再按首单时间筛[start,end)及首单渠道；前窗已有首单案例必须排除。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.orders o"
+    },
+    {
+      "metric_id": "orders_per_ordering_customer",
+      "name_zh": "下单账户人均订单数",
+      "subject": "customers",
+      "definition": "下单窗口内订单记录总数除以下单账户去重数。",
+      "formula": "COUNT(order_id) / NULLIF(COUNT(DISTINCT customer_id),0)",
+      "grain": "窗口内账户与订单",
+      "event_time": "orders.ordered_at",
+      "time_attribution": "orders.ordered_at",
+      "status_filter": "全部订单状态",
+      "deduplication": "订单唯一、账户去重",
+      "supported_dimensions": [
+        "order_channel",
+        "order_status",
+        "customer_id",
+        "customer_country_current",
+        "loyalty_tier_current",
+        "shipping_country"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country"
+      ],
+      "dependencies": [
+        "dwd.order_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.customer_order_day regroup customer_id",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "是账户均值，不是自然人频率。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "同一ODS订单窗口COUNT(order_id)/NULLIF(COUNT(DISTINCT customer_id),0)，独立验证跨日渠道账户去重。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.orders o"
+    },
+    {
+      "metric_id": "channel_order_share",
+      "name_zh": "渠道订单占比",
+      "subject": "channels",
+      "definition": "所选渠道的订单数占同窗全部授权渠道订单数的比例。",
+      "formula": "channel order_count / NULLIF(all-channel order_count,0)",
+      "grain": "窗口内渠道",
+      "event_time": "orders.ordered_at",
+      "time_attribution": "orders.ordered_at",
+      "status_filter": "全部订单状态",
+      "deduplication": "order_id",
+      "supported_dimensions": [
+        "order_channel"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country"
+      ],
+      "dependencies": [
+        "dwd.order_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.order_day",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "分母移除渠道筛选，保留时间/授权范围；不把所选渠道份额重标为总市场份额。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "ODS按ordered_at筛窗后分别算每渠道COUNT(order_id)与移除渠道筛选的全授权域COUNT；比较分子分母，不先四舍五入。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.orders"
+    },
+    {
+      "metric_id": "ordered_product_count",
+      "name_zh": "有下单明细的商品数",
+      "subject": "products_categories",
+      "definition": "下单窗口内出现过商品明细的不同商品主键数。",
+      "formula": "COUNT(DISTINCT i.product_id)",
+      "grain": "窗口内不同商品",
+      "event_time": "orders.ordered_at",
+      "time_attribution": "orders.ordered_at",
+      "status_filter": "全部订单状态",
+      "deduplication": "product_id 在整个请求窗口去重",
+      "supported_dimensions": [
+        "order_channel",
+        "category_id_current"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country",
+        "ods.order_items.order_item_id",
+        "ods.order_items.order_id",
+        "ods.order_items.product_id",
+        "ods.order_items.quantity",
+        "ods.order_items.unit_price",
+        "ods.order_items.discount_amount",
+        "ods.products.product_id",
+        "ods.products.category_id"
+      ],
+      "dependencies": [
+        "dwd.order_item_fact"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.product_sales_day distinct product_id",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "不是售出件数；取消单及异常数量记录仍存在。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "ODS明细仅JOIN唯一订单，按ordered_at筛窗后COUNT(DISTINCT product_id)，跨日期出现的商品只计一次。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id)"
+    },
+    {
+      "metric_id": "category_sales_share",
+      "name_zh": "当前品类商品金额占比",
+      "subject": "products_categories",
+      "definition": "当前品类商品明细净额占同窗全部授权品类商品明细净额的比例。",
+      "formula": "category item_net_sales_amount / NULLIF(all-category item_net_sales_amount,0)",
+      "grain": "窗口内当前品类",
+      "event_time": "orders.ordered_at",
+      "time_attribution": "orders.ordered_at",
+      "status_filter": "全部订单状态",
+      "deduplication": "明细唯一；product→category唯一",
+      "supported_dimensions": [
+        "order_channel",
+        "category_id_current"
+      ],
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.customer_id",
+        "ods.orders.ordered_at",
+        "ods.orders.status",
+        "ods.orders.channel",
+        "ods.orders.shipping_country",
+        "ods.order_items.order_item_id",
+        "ods.order_items.order_id",
+        "ods.order_items.product_id",
+        "ods.order_items.quantity",
+        "ods.order_items.unit_price",
+        "ods.order_items.discount_amount",
+        "ods.products.product_id",
+        "ods.products.category_id"
+      ],
+      "dependencies": [
+        "dwd.order_item_fact",
+        "dim.product",
+        "dim.category"
+      ],
+      "definition_status": "defined_unverified",
+      "availability": "可计算但尚未完成独立标准SQL及验收",
+      "has_existing_summary": false,
+      "planned_summary": "dws.product_sales_day via dim.product",
+      "dynamic_sql": "computable; implementation and query-service routing pending",
+      "null_and_anomalies": "计数/金额空窗0；比率零分母NULL、NUMERIC除法ROUND到8位；业务异常保留；结构错误阻断。",
+      "data_quality_limits": "分母移除商品/品类筛选，保留时间和渠道；当前分类非历史分类；负净额可能导致份额超0..1。",
+      "ground_truth": {
+        "status": "not_run",
+        "method": "ODS明细JOIN唯一订单/当前商品，按ordered_at筛窗后类别SUM净额；分母移除product/category筛选并保留其他限定；同发布品类回总额。 全量/月度/空窗与边界、异常案例均需验收；尚未执行。",
+        "required_checks": [
+          "no_fanout",
+          "event_time_window",
+          "grain_dedup",
+          "sum_numerator_denominator_not_average_rates"
+        ]
+      },
+      "source_relation_note": "ods.order_items i JOIN ods.orders o USING(order_id) JOIN ods.products p USING(product_id)"
+    },
+    {
+      "metric_id": "completed_refund_amount",
+      "name_zh": "已完成退款金额",
+      "subject": "unsupported",
+      "definition": "缺退款成功状态、完成时间和退款流水。",
+      "formula": null,
+      "grain": "未建立可靠业务粒度",
+      "event_time": null,
+      "time_attribution": "无可靠事件语义",
+      "status_filter": "未定义",
+      "deduplication": "不适用",
+      "supported_dimensions": [],
+      "source_fields": [],
+      "dependencies": [],
+      "definition_status": "unsupported",
+      "availability": "unsupported",
+      "has_existing_summary": false,
+      "planned_summary": null,
+      "dynamic_sql": "unsupported; do not generate estimated SQL",
+      "null_and_anomalies": "返回UNSUPPORTED，不返回0或推算值",
+      "data_quality_limits": "缺退款成功状态、完成时间和退款流水。",
+      "ground_truth": {
+        "status": "unsupported",
+        "method": "补充真实来源与业务审批后定义新指标版本；当前不可验收为数值。"
+      }
+    },
+    {
+      "metric_id": "net_recognized_revenue",
+      "name_zh": "财务净收入",
+      "subject": "unsupported",
+      "definition": "缺收入确认、币种、税费运费及退款完成语义；不能机械相减三类金额。",
+      "formula": null,
+      "grain": "未建立可靠业务粒度",
+      "event_time": null,
+      "time_attribution": "无可靠事件语义",
+      "status_filter": "未定义",
+      "deduplication": "不适用",
+      "supported_dimensions": [],
+      "source_fields": [],
+      "dependencies": [],
+      "definition_status": "unsupported",
+      "availability": "unsupported",
+      "has_existing_summary": false,
+      "planned_summary": null,
+      "dynamic_sql": "unsupported; do not generate estimated SQL",
+      "null_and_anomalies": "返回UNSUPPORTED，不返回0或推算值",
+      "data_quality_limits": "缺收入确认、币种、税费运费及退款完成语义；不能机械相减三类金额。",
+      "ground_truth": {
+        "status": "unsupported",
+        "method": "补充真实来源与业务审批后定义新指标版本；当前不可验收为数值。"
+      }
+    },
+    {
+      "metric_id": "unit_return_rate",
+      "name_zh": "商品件数退货率",
+      "subject": "unsupported",
+      "definition": "returns 无退货数量，不能用记录数替代件数。",
+      "formula": null,
+      "grain": "未建立可靠业务粒度",
+      "event_time": null,
+      "time_attribution": "无可靠事件语义",
+      "status_filter": "未定义",
+      "deduplication": "不适用",
+      "supported_dimensions": [],
+      "source_fields": [],
+      "dependencies": [],
+      "definition_status": "unsupported",
+      "availability": "unsupported",
+      "has_existing_summary": false,
+      "planned_summary": null,
+      "dynamic_sql": "unsupported; do not generate estimated SQL",
+      "null_and_anomalies": "返回UNSUPPORTED，不返回0或推算值",
+      "data_quality_limits": "returns 无退货数量，不能用记录数替代件数。",
+      "ground_truth": {
+        "status": "unsupported",
+        "method": "补充真实来源与业务审批后定义新指标版本；当前不可验收为数值。"
+      }
+    },
+    {
+      "metric_id": "customer_lifetime_value",
+      "name_zh": "客户终身价值",
+      "subject": "unsupported",
+      "definition": "缺生命周期完整历史、稳定身份、可验证利润与预测模型。",
+      "formula": null,
+      "grain": "未建立可靠业务粒度",
+      "event_time": null,
+      "time_attribution": "无可靠事件语义",
+      "status_filter": "未定义",
+      "deduplication": "不适用",
+      "supported_dimensions": [],
+      "source_fields": [],
+      "dependencies": [],
+      "definition_status": "unsupported",
+      "availability": "unsupported",
+      "has_existing_summary": false,
+      "planned_summary": null,
+      "dynamic_sql": "unsupported; do not generate estimated SQL",
+      "null_and_anomalies": "返回UNSUPPORTED，不返回0或推算值",
+      "data_quality_limits": "缺生命周期完整历史、稳定身份、可验证利润与预测模型。",
+      "ground_truth": {
+        "status": "unsupported",
+        "method": "补充真实来源与业务审批后定义新指标版本；当前不可验收为数值。"
+      }
+    },
+    {
+      "metric_id": "customer_entity_repeat_rate",
+      "name_zh": "自然人复购率",
+      "subject": "unsupported",
+      "definition": "账户email重复，缺可靠自然人标识及授权归并规则。",
+      "formula": null,
+      "grain": "未建立可靠业务粒度",
+      "event_time": null,
+      "time_attribution": "无可靠事件语义",
+      "status_filter": "未定义",
+      "deduplication": "不适用",
+      "supported_dimensions": [],
+      "source_fields": [],
+      "dependencies": [],
+      "definition_status": "unsupported",
+      "availability": "unsupported",
+      "has_existing_summary": false,
+      "planned_summary": null,
+      "dynamic_sql": "unsupported; do not generate estimated SQL",
+      "null_and_anomalies": "返回UNSUPPORTED，不返回0或推算值",
+      "data_quality_limits": "账户email重复，缺可靠自然人标识及授权归并规则。",
+      "ground_truth": {
+        "status": "unsupported",
+        "method": "补充真实来源与业务审批后定义新指标版本；当前不可验收为数值。"
+      }
+    },
+    {
+      "metric_id": "historical_gross_margin_amount",
+      "name_zh": "历史商品毛利",
+      "subject": "unsupported",
+      "definition": "仅当前商品成本，不是下单时成本；不可回填历史毛利。",
+      "formula": null,
+      "grain": "未建立可靠业务粒度",
+      "event_time": null,
+      "time_attribution": "无可靠事件语义",
+      "status_filter": "未定义",
+      "deduplication": "不适用",
+      "supported_dimensions": [],
+      "source_fields": [],
+      "dependencies": [],
+      "definition_status": "unsupported",
+      "availability": "unsupported",
+      "has_existing_summary": false,
+      "planned_summary": null,
+      "dynamic_sql": "unsupported; do not generate estimated SQL",
+      "null_and_anomalies": "返回UNSUPPORTED，不返回0或推算值",
+      "data_quality_limits": "仅当前商品成本，不是下单时成本；不可回填历史毛利。",
+      "ground_truth": {
+        "status": "unsupported",
+        "method": "补充真实来源与业务审批后定义新指标版本；当前不可验收为数值。"
+      }
+    },
+    {
+      "metric_id": "product_captured_payment_amount",
+      "name_zh": "商品分摊成功支付金额",
+      "subject": "unsupported",
+      "definition": "支付只有order_id，无明细分摊规则；禁止按多对多JOIN分配。",
+      "formula": null,
+      "grain": "未建立可靠业务粒度",
+      "event_time": null,
+      "time_attribution": "无可靠事件语义",
+      "status_filter": "未定义",
+      "deduplication": "不适用",
+      "supported_dimensions": [],
+      "source_fields": [],
+      "dependencies": [],
+      "definition_status": "unsupported",
+      "availability": "unsupported",
+      "has_existing_summary": false,
+      "planned_summary": null,
+      "dynamic_sql": "unsupported; do not generate estimated SQL",
+      "null_and_anomalies": "返回UNSUPPORTED，不返回0或推算值",
+      "data_quality_limits": "支付只有order_id，无明细分摊规则；禁止按多对多JOIN分配。",
+      "ground_truth": {
+        "status": "unsupported",
+        "method": "补充真实来源与业务审批后定义新指标版本；当前不可验收为数值。"
+      }
+    },
+    {
+      "metric_id": "currency_converted_sales_amount",
+      "name_zh": "统一币种销售金额",
+      "subject": "unsupported",
+      "definition": "无币种与汇率来源。",
+      "formula": null,
+      "grain": "未建立可靠业务粒度",
+      "event_time": null,
+      "time_attribution": "无可靠事件语义",
+      "status_filter": "未定义",
+      "deduplication": "不适用",
+      "supported_dimensions": [],
+      "source_fields": [],
+      "dependencies": [],
+      "definition_status": "unsupported",
+      "availability": "unsupported",
+      "has_existing_summary": false,
+      "planned_summary": null,
+      "dynamic_sql": "unsupported; do not generate estimated SQL",
+      "null_and_anomalies": "返回UNSUPPORTED，不返回0或推算值",
+      "data_quality_limits": "无币种与汇率来源。",
+      "ground_truth": {
+        "status": "unsupported",
+        "method": "补充真实来源与业务审批后定义新指标版本；当前不可验收为数值。"
+      }
+    }
+  ],
+  "dimension_lineage": {
+    "order_channel": {
+      "source": "ods.orders.channel",
+      "planned": "dwd.order_fact.channel / dim.channel.channel_code"
+    },
+    "order_status": {
+      "source": "ods.orders.status",
+      "planned": "dwd.order_fact.status"
+    },
+    "customer_id": {
+      "source": "ods.orders.customer_id",
+      "planned": "dwd.order_fact.customer_id / dim.customer.customer_id"
+    },
+    "customer_country_current": {
+      "source": "ods.customers.country",
+      "planned": "dim.customer.country"
+    },
+    "loyalty_tier_current": {
+      "source": "ods.customers.loyalty_tier",
+      "planned": "dim.customer.loyalty_tier"
+    },
+    "shipping_country": {
+      "source": "ods.orders.shipping_country",
+      "planned": "dwd.order_fact.shipping_country"
+    },
+    "product_id": {
+      "source": "ods.order_items.product_id",
+      "planned": "dwd.order_item_fact.product_id / dim.product.product_id"
+    },
+    "category_id_current": {
+      "source": "ods.products.category_id",
+      "planned": "dim.product.category_id / dim.category.category_id"
+    },
+    "payment_method": {
+      "source": "ods.payments.method",
+      "planned": "dwd.payment_attempt_fact.method"
+    },
+    "payment_status": {
+      "source": "ods.payments.status",
+      "planned": "dwd.payment_attempt_fact.status"
+    },
+    "return_reason": {
+      "source": "ods.returns.reason",
+      "planned": "dwd.return_record_fact.reason"
+    },
+    "restocked": {
+      "source": "ods.returns.restocked",
+      "planned": "dwd.return_record_fact.restocked"
+    }
+  }
+}

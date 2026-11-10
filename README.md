@@ -4,6 +4,8 @@ SQL Shed 七表完整数据接入与质量检查见 [接入说明](docs/SQLSHED_
 
 第一版 8 项电商指标、标准 SQL 与数仓模型建议见 [指标口径](docs/ECOMMERCE_METRICS.md)。首张 `dwd.order_item_fact` 已实现，见 [建模与验收](docs/DWD_ORDER_ITEM_FACT.md)；其他数仓表仍为规划。
 
+当前采用[完整数仓优先路线](docs/warehouse/README.md)：先批量完成 DWD/DIM，再完成主题 DWS/ADS，最后接经营分析 Agent。[38 项指标设计目录](metrics/warehouse_catalog_v1.json) 区分已验证、待验证和 unsupported；本轮只完成设计，未创建新表。学习与本地进度文件不公开。
+
 DataQuery Agent（智能问数系统）是一个用于学习和求职展示的独立 Python 项目，目标是基于可合法使用的公开数据，逐步实现自然语言查询、SQL 生成与只读执行、结果分析和可视化。
 
 ## 当前状态
@@ -58,7 +60,7 @@ PYTHONPATH=src .venv/bin/python -m dataquery_agent.data_audit \
 
 - 数据来源、字段、关系及能力边界：`docs/DATA_SOURCE.md`
 - 机器可读审计结果：`reports/d1_data_audit.json`
-- 当前计划与验收状态：`PROJECT_PLAN.md`
+- 当前公开设计与实施分组：[数仓设计](docs/warehouse/README.md)；`PROJECT_PLAN.md` 仅为 Mac 本地进度，不纳入 Git。
 
 ## PostgreSQL ODS
 
