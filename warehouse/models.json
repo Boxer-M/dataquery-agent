@@ -1,0 +1,525 @@
+{
+  "model_version": "1.0.0",
+  "batch": "A",
+  "models": [
+    {
+      "name": "dim.customer",
+      "key": "customer_id",
+      "columns": [
+        {
+          "name": "customer_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "city",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "country",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "signup_date",
+          "type": "date",
+          "nullable": false
+        },
+        {
+          "name": "loyalty_tier",
+          "type": "character varying",
+          "nullable": true
+        },
+        {
+          "name": "marketing_opt_in",
+          "type": "boolean",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (customer_id)"
+      ],
+      "depends_on": [],
+      "source_table": "ods.customers",
+      "ddl": "sql/warehouse/ddl/dim/customer.sql",
+      "transform": "sql/warehouse/transform/dim/customer.sql",
+      "reuse_only": false,
+      "indexes": []
+    },
+    {
+      "name": "dim.category",
+      "key": "category_id",
+      "columns": [
+        {
+          "name": "category_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "category_name",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "parent_category_id",
+          "type": "integer",
+          "nullable": true
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (category_id)",
+        "FOREIGN KEY (parent_category_id) REFERENCES dim.category(category_id)"
+      ],
+      "depends_on": [],
+      "source_table": "ods.categories",
+      "ddl": "sql/warehouse/ddl/dim/category.sql",
+      "transform": "sql/warehouse/transform/dim/category.sql",
+      "reuse_only": false,
+      "indexes": []
+    },
+    {
+      "name": "dim.channel",
+      "key": "channel_code",
+      "columns": [
+        {
+          "name": "channel_code",
+          "type": "character varying",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (channel_code)"
+      ],
+      "depends_on": [],
+      "source_table": null,
+      "ddl": "sql/warehouse/ddl/dim/channel.sql",
+      "transform": "sql/warehouse/transform/dim/channel.sql",
+      "reuse_only": false,
+      "indexes": []
+    },
+    {
+      "name": "dim.date",
+      "key": "date_value",
+      "columns": [
+        {
+          "name": "date_value",
+          "type": "date",
+          "nullable": false
+        },
+        {
+          "name": "calendar_year",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "calendar_month",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "month_start",
+          "type": "date",
+          "nullable": false
+        },
+        {
+          "name": "iso_week_year",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "iso_week",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "iso_weekday",
+          "type": "integer",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (date_value)"
+      ],
+      "depends_on": [],
+      "source_table": null,
+      "ddl": "sql/warehouse/ddl/dim/date.sql",
+      "transform": "sql/warehouse/transform/dim/date.sql",
+      "reuse_only": false,
+      "indexes": []
+    },
+    {
+      "name": "dim.product",
+      "key": "product_id",
+      "columns": [
+        {
+          "name": "product_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "sku",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "product_name",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "category_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "current_unit_price",
+          "type": "numeric(12,2)",
+          "nullable": false
+        },
+        {
+          "name": "current_unit_cost",
+          "type": "numeric(12,2)",
+          "nullable": false
+        },
+        {
+          "name": "discontinued_at",
+          "type": "date",
+          "nullable": true
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (product_id)",
+        "FOREIGN KEY (category_id) REFERENCES dim.category(category_id)"
+      ],
+      "depends_on": [
+        "dim.category"
+      ],
+      "source_table": "ods.products",
+      "ddl": "sql/warehouse/ddl/dim/product.sql",
+      "transform": "sql/warehouse/transform/dim/product.sql",
+      "reuse_only": false,
+      "indexes": []
+    },
+    {
+      "name": "dwd.order_fact",
+      "key": "order_id",
+      "columns": [
+        {
+          "name": "order_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "customer_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "ordered_at",
+          "type": "timestamp without time zone",
+          "nullable": false
+        },
+        {
+          "name": "shipped_at",
+          "type": "timestamp without time zone",
+          "nullable": true
+        },
+        {
+          "name": "status",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "channel",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "shipping_country",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "coupon_code",
+          "type": "character varying",
+          "nullable": true
+        },
+        {
+          "name": "dq_shipping_before_order",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "dq_unknown_order_status",
+          "type": "boolean",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (order_id)",
+        "FOREIGN KEY (customer_id) REFERENCES dim.customer(customer_id)",
+        "FOREIGN KEY (channel) REFERENCES dim.channel(channel_code)"
+      ],
+      "depends_on": [
+        "dim.customer",
+        "dim.channel",
+        "dim.date"
+      ],
+      "source_table": "ods.orders",
+      "ddl": "sql/warehouse/ddl/dwd/order_fact.sql",
+      "transform": "sql/warehouse/transform/dwd/order_fact.sql",
+      "reuse_only": false,
+      "indexes": []
+    },
+    {
+      "name": "dwd.order_item_fact",
+      "key": "order_item_id",
+      "columns": [
+        {
+          "name": "order_item_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "order_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "product_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "quantity",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "unit_price",
+          "type": "numeric(12,2)",
+          "nullable": false
+        },
+        {
+          "name": "discount_amount",
+          "type": "numeric(12,2)",
+          "nullable": false
+        },
+        {
+          "name": "net_item_amount",
+          "type": "numeric",
+          "nullable": false
+        },
+        {
+          "name": "order_purchase_time",
+          "type": "timestamp without time zone",
+          "nullable": false
+        },
+        {
+          "name": "order_status",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "dq_nonpositive_quantity",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "dq_negative_amount",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "dq_discount_exceeds_gross",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "dq_unknown_order_status",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "dq_invalid_order_time",
+          "type": "boolean",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (order_item_id)"
+      ],
+      "depends_on": [
+        "dwd.order_fact",
+        "dim.product",
+        "dim.date"
+      ],
+      "source_table": "ods.order_items",
+      "ddl": "sql/warehouse/ddl/dwd/order_item_fact.sql",
+      "transform": "sql/warehouse/transform/dwd/order_item_fact.sql",
+      "reuse_only": true,
+      "indexes": []
+    },
+    {
+      "name": "dwd.payment_attempt_fact",
+      "key": "payment_id",
+      "columns": [
+        {
+          "name": "payment_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "order_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "method",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "amount",
+          "type": "numeric(12,2)",
+          "nullable": false
+        },
+        {
+          "name": "paid_at",
+          "type": "timestamp without time zone",
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "failure_reason",
+          "type": "character varying",
+          "nullable": true
+        },
+        {
+          "name": "dq_payment_before_order",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "dq_negative_amount",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "dq_unknown_payment_status",
+          "type": "boolean",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (payment_id)",
+        "FOREIGN KEY (order_id) REFERENCES dwd.order_fact(order_id)"
+      ],
+      "depends_on": [
+        "dwd.order_fact",
+        "dim.date"
+      ],
+      "source_table": "ods.payments",
+      "ddl": "sql/warehouse/ddl/dwd/payment_attempt_fact.sql",
+      "transform": "sql/warehouse/transform/dwd/payment_attempt_fact.sql",
+      "reuse_only": false,
+      "indexes": [
+        {
+          "name": "payment_attempt_fact_order_id_idx",
+          "columns": [
+            "order_id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "dwd.return_record_fact",
+      "key": "return_id",
+      "columns": [
+        {
+          "name": "return_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "order_item_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "returned_at",
+          "type": "timestamp without time zone",
+          "nullable": false
+        },
+        {
+          "name": "reason",
+          "type": "character varying",
+          "nullable": false
+        },
+        {
+          "name": "refund_amount",
+          "type": "numeric(12,2)",
+          "nullable": false
+        },
+        {
+          "name": "restocked",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "order_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "product_id",
+          "type": "integer",
+          "nullable": false
+        },
+        {
+          "name": "dq_return_before_order",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "dq_refund_above_item_net",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "dq_negative_amount",
+          "type": "boolean",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        "PRIMARY KEY (return_id)",
+        "FOREIGN KEY (order_id) REFERENCES dwd.order_fact(order_id)",
+        "FOREIGN KEY (product_id) REFERENCES dim.product(product_id)"
+      ],
+      "depends_on": [
+        "dwd.order_item_fact",
+        "dwd.order_fact",
+        "dim.product",
+        "dim.date"
+      ],
+      "source_table": "ods.returns",
+      "ddl": "sql/warehouse/ddl/dwd/return_record_fact.sql",
+      "transform": "sql/warehouse/transform/dwd/return_record_fact.sql",
+      "reuse_only": false,
+      "indexes": [
+        {
+          "name": "return_record_fact_order_item_id_idx",
+          "columns": [
+            "order_item_id"
+          ]
+        }
+      ]
+    }
+  ]
+}

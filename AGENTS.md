@@ -1,9 +1,9 @@
 # DataQuery Agent 开发约束
 
 - 本仓库只开发 DataQuery Agent；SQL Copilot 必须保留为另一个独立项目和独立 Git 仓库。
-- 开始任务前读取 `README.md`、`PROJECT_PLAN.md`、适用的 `AGENTS.md` 和真实 Git 状态。
+- 开始任务前读取 `README.md`、正式设计 `docs/warehouse/README.md`、本地存在时的 `PROJECT_PLAN.md`、适用的 `AGENTS.md` 和真实 Git 状态。`PROJECT_PLAN.md` 与 `LEARNING_MAP.md` 仅保存在 Mac 本地，不纳入 Git。
 - 使用项目 `.venv` 中的 Python 3.12，保留包名 `src/dataquery_agent`，不修改全局 Python。
-- 一次只完成一个可验收里程碑；先解释新概念和设计，再实现、测试、复盘和提交。
+- 按业务主题或完整批次完成一个可验收里程碑；数仓优先于 Agent，不按单表零散建模或创建 PR。先完整设计和说明实施分组，再实现、测试、复盘和提交；当前路线见 `docs/warehouse/IMPLEMENTATION_BATCHES.md`。
 - 实现前用通俗语言说明目标、输入、输出、核心调用链和风险；完成后解释关键代码及面试讲法，不能只交付大段代码。
 - `data/raw/` 中的公开源数据只读且不提交；不得把测试样本或模拟数据冒充真实业务数据。
 - 计划、已完成和未验证事项必须明确区分；测试结果、指标和 Git 历史必须来自真实执行。

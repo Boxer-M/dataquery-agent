@@ -1,0 +1,12 @@
+{
+  "executed_at_utc": "2026-11-10T12:47:29.848552+00:00",
+  "fault": "validation failure after INSERT before commit",
+  "target_absent_after_rollback": true,
+  "source_rows": 215000,
+  "source_amount": "9024059.76",
+  "source_summary_unchanged": true,
+  "existing_mismatch_rejected_read_only": true,
+  "correct_projection_verified_after_mismatch": true,
+  "olist_orders": 99441,
+  "final_verified_at_utc": "2026-11-10T12:49:33.098165+00:00"
+}

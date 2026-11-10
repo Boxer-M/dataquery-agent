@@ -1,0 +1,324 @@
+{
+  "status": "accepted_batch_a",
+  "build_key": "811b1be2327536114749f2d95b5551fe3442f45402ce2d31e8d47fba0b2eec36",
+  "release_id": "batch_a_811b1be2327536114749f2d95b5551fe3442f45402ce2d31e8d47fba0b2eec36",
+  "executed_at_utc": "2026-11-10T13:59:03.113204+00:00",
+  "tested_base_commit": "d3540414fb70e55dc0af8e9b229625e6f3fb8af4",
+  "tested_artifact_sha256": {
+    "metrics/ecommerce_v1.json": "5ee56c86e73b00c0c9e0526ace8644ad2bf3f94c542e527c8e19ee48e45fedc6",
+    "scripts/build_warehouse.py": "6f9562490c2ab4b0b6907f90f2145780a714870226af1b95754252417df278ca",
+    "sql/metrics/ecommerce_profile.sql": "f9b50a92e562a66075b7fab04dab60090d778dc713a0c11e0ff501b7b246a711",
+    "sql/metrics/ecommerce_v1.sql": "db05389913557f546578a4d2fde8c4bc60c9a99b5351b1ddec28ac91e23e5e2a",
+    "sql/warehouse/ddl/dim/category.sql": "89529fa02fac9e83a127df1d7e2edfb83dcba9f5ed45cc35076fa160d142d077",
+    "sql/warehouse/ddl/dim/channel.sql": "2d0cb061647650a5ff94934ce70eb9ef23502952fc84c6f1b0a83cdbb2cc617e",
+    "sql/warehouse/ddl/dim/customer.sql": "67821f6ae7eba0d799f4e7bcc8506a7449eefa2b277561bc42e47cc4d45097ce",
+    "sql/warehouse/ddl/dim/date.sql": "4fdbc3bc2cb050353164319bf43dec2508d721689dc53a9c533be71a07d9658e",
+    "sql/warehouse/ddl/dim/product.sql": "27e4afcbde347e950f45cde37907398ce29f00fec850d3df57ff76f76e71180b",
+    "sql/warehouse/ddl/dwd/order_fact.sql": "72805c1dab011407b2ad30f49b94e7a47264bdd79063a82c8e4e236ce766aa01",
+    "sql/warehouse/ddl/dwd/order_item_fact.sql": "081af104bdec5c387650426c640b7dca4a986646cd6c72882e8861e47acd3547",
+    "sql/warehouse/ddl/dwd/payment_attempt_fact.sql": "34d80157249e9eb63164a0d5d4e17f440ae2558e5e1f0f4c955e290d3c883113",
+    "sql/warehouse/ddl/dwd/return_record_fact.sql": "af48bad284871ca2c6187ea51ae3627f524f76180ae1e339184aba0ee3ffec9b",
+    "sql/warehouse/quality/batch_a.sql": "992293f21e3f3ffe75c71b0784e08d218884e5aa18f32b9e29ae92f984a20a64",
+    "sql/warehouse/quality/legacy_item.sql": "9c89e8298844d907ab6a3ab848dfb21b66f446a25d119dc338778a71437a96bd",
+    "sql/warehouse/quality/metrics.sql": "45966642bd93de0297a422e43133c182b19a321281b2dc4cd6aa9b241de24852",
+    "sql/warehouse/quality/relation.sql": "44aad26b86be7ecd8d7a9d19f4604e8ddb5bc0334ce337187af20dbea43e80e7",
+    "sql/warehouse/transform/dim/category.sql": "06874ce2e52abc1ecdf632ed491cd41feedd30a79a391fd1082f32ef24efec54",
+    "sql/warehouse/transform/dim/channel.sql": "c114ea106d9d1738e788ea12ca26d00cbc4714229e4be00677a6eee67dc47852",
+    "sql/warehouse/transform/dim/customer.sql": "358848fb0406628c517bb553ab96e5edd55740450975d76c98631da64c21a157",
+    "sql/warehouse/transform/dim/date.sql": "df48992a448724418eb08fdc40932c7fd1bd5c94b7ed0f6c546d270e1210cfed",
+    "sql/warehouse/transform/dim/product.sql": "636df237b659a1f4086758a7bd70c409ea5e5d090dfdf013d65640f6e0900f2f",
+    "sql/warehouse/transform/dwd/order_fact.sql": "fec9c4835e9eac3f147abd8e339456d42407e7c56c4818b643784bafbd23f3eb",
+    "sql/warehouse/transform/dwd/order_item_fact.sql": "534ee280a62b6fbb2b69301f145f13dd9ee362c0a4763f2dc4f7a2939a3177f1",
+    "sql/warehouse/transform/dwd/payment_attempt_fact.sql": "14447723ca178cc94f57dae160ca294a882208a857decd46d11afbc8f0fd6eff",
+    "sql/warehouse/transform/dwd/return_record_fact.sql": "147ea069b9a440c4f20306f9429ad296be4c8d22ceecf0fa115d34ba9bf2ecd1",
+    "src/dataquery_agent/dwd.py": "c3bbaeba57534cda6e71f50ec39e5973289454f3fb93683bffa6b41402f005d3",
+    "src/dataquery_agent/warehouse.py": "4699a038122642049ca8204793dd62cbdf2a22391011d7e48a2016599c17995c",
+    "warehouse/models.json": "976168750cf04849b72d8a631c29493d53fcbd06612a63930be719fb5889d685"
+  },
+  "raw_file_manifest_sha256": "bf26173517a4df69c21f7742a42edb37cd47d26e2f0888821674dcf649ac2b6d",
+  "first_actions": {
+    "dim.customer": "created",
+    "dim.category": "created",
+    "dim.channel": "created",
+    "dim.date": "created",
+    "dim.product": "created",
+    "dwd.order_fact": "created",
+    "dwd.order_item_fact": "verified_existing",
+    "dwd.payment_attempt_fact": "created",
+    "dwd.return_record_fact": "created"
+  },
+  "repeat_actions": {
+    "dim.customer": "verified_existing",
+    "dim.category": "verified_existing",
+    "dim.channel": "verified_existing",
+    "dim.date": "verified_existing",
+    "dim.product": "verified_existing",
+    "dwd.order_fact": "verified_existing",
+    "dwd.order_item_fact": "verified_existing",
+    "dwd.payment_attempt_fact": "verified_existing",
+    "dwd.return_record_fact": "verified_existing"
+  },
+  "repeat_verified": true,
+  "olist_before": {
+    "orders": 99441,
+    "orders_sha256": "97fb6a065239d753187b8532d534659eb7445f11c39ccfd2439520099c68aa90"
+  },
+  "olist_after": {
+    "orders": 99441,
+    "orders_sha256": "97fb6a065239d753187b8532d534659eb7445f11c39ccfd2439520099c68aa90"
+  },
+  "validation": {
+    "model_version": "1.0.0",
+    "source": {
+      "rows": {
+        "categories": 24,
+        "products": 2000,
+        "returns": 12000,
+        "customers": 12000,
+        "orders": 90000,
+        "payments": 95000,
+        "order_items": 215000
+      },
+      "date_min": "2023-01-01",
+      "date_max": "2026-01-04",
+      "date_days": 1100
+    },
+    "models": {
+      "dim.customer": {
+        "rows": 12000,
+        "unique_keys": 12000,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {}
+      },
+      "dim.category": {
+        "rows": 24,
+        "unique_keys": 24,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {}
+      },
+      "dim.channel": {
+        "rows": 4,
+        "unique_keys": 4,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {}
+      },
+      "dim.date": {
+        "rows": 1100,
+        "unique_keys": 1100,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {}
+      },
+      "dim.product": {
+        "rows": 2000,
+        "unique_keys": 2000,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {}
+      },
+      "dwd.order_fact": {
+        "rows": 90000,
+        "unique_keys": 90000,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {
+          "dq_shipping_before_order": 0,
+          "dq_unknown_order_status": 0
+        }
+      },
+      "dwd.order_item_fact": {
+        "rows": 215000,
+        "unique_keys": 215000,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {
+          "dq_nonpositive_quantity": 0,
+          "dq_negative_amount": 0,
+          "dq_discount_exceeds_gross": 0,
+          "dq_unknown_order_status": 0,
+          "dq_invalid_order_time": 0
+        }
+      },
+      "dwd.payment_attempt_fact": {
+        "rows": 95000,
+        "unique_keys": 95000,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {
+          "dq_payment_before_order": 0,
+          "dq_negative_amount": 0,
+          "dq_unknown_payment_status": 0
+        }
+      },
+      "dwd.return_record_fact": {
+        "rows": 12000,
+        "unique_keys": 12000,
+        "null_keys": 0,
+        "full_row_differences": 0,
+        "quality_flags": {
+          "dq_return_before_order": 5962,
+          "dq_refund_above_item_net": 1849,
+          "dq_negative_amount": 0
+        }
+      }
+    },
+    "source_fingerprints": {
+      "ods.categories": "52b5ebe6b0aaeebfc28af4051e6aee25b8493e32d8d59012abd20fd2a1493912",
+      "ods.customers": "b6351d38c946222140e1ddfc4c094a32ca51f509149438d14fff59e7d87d094f",
+      "ods.products": "50855f196157bd3b9aa3f63ff3d9e77c4faa4ca8dbe139c257910fc17ed7e9cf",
+      "ods.orders": "92ee3a3d56dbb29deb8400ae5d0b568b8c413acedd94a1224b76996705f3b0ca",
+      "ods.order_items": "b5a8e18946ea2315ef064b678eaa33949077e12c27387987e51d14a75305841e",
+      "ods.payments": "8fa7ee717dd8945e57965e66dee77b2b3ba522593afef69d3b3ed9e35b223707",
+      "ods.returns": "e997d03eba309947dcc9d9f8018cd15c4e15fb8c3456e340cea265e48b5c7a80"
+    },
+    "source_snapshot_id": "ae83a1aeb5d93554f8a825db21a7de1f914b142e50ae931bdcd34b2951594e84",
+    "existing_item_fingerprint": "e924edebfc73a106e2ce0e7b81d35dd1c1f5c6e0cac6fd265dcab14a9678776a",
+    "source_and_existing_item_unchanged": true,
+    "relationship_orphans": {
+      "products.category": 0,
+      "orders.channel": 0,
+      "orders.customer": 0,
+      "payments.order": 0,
+      "items.product": 0,
+      "returns.derived_keys": 0,
+      "returns.item": 0,
+      "items.order": 0
+    },
+    "date_orphans": 0,
+    "metrics": {
+      "full": {
+        "start": "2023-01-01",
+        "end": "2026-01-01",
+        "as_of": "2026-01-01",
+        "results": {
+          "order_count": {
+            "value": 90000
+          },
+          "item_net_sales_amount": {
+            "value": "9024059.76"
+          },
+          "payment_attempt_count": {
+            "value": 95000
+          },
+          "captured_payment_amount": {
+            "value": "8998225.89"
+          },
+          "payment_attempt_success_rate": {
+            "value": "0.94471579",
+            "numerator": 89748,
+            "denominator": 95000
+          },
+          "return_record_count": {
+            "value": 12000
+          },
+          "return_record_amount": {
+            "value": "498266.03"
+          },
+          "item_return_rate": {
+            "value": "0.05581395",
+            "numerator": 12000,
+            "denominator": 215000
+          }
+        },
+        "ods_dwd_equal": true,
+        "approved_baseline_checked": true
+      },
+      "january_2025": {
+        "start": "2025-01-01",
+        "end": "2025-02-01",
+        "as_of": "2026-01-01",
+        "results": {
+          "order_count": {
+            "value": 2312
+          },
+          "item_net_sales_amount": {
+            "value": "231920.18"
+          },
+          "payment_attempt_count": {
+            "value": 2438
+          },
+          "captured_payment_amount": {
+            "value": "230864.57"
+          },
+          "payment_attempt_success_rate": {
+            "value": "0.94503692",
+            "numerator": 2304,
+            "denominator": 2438
+          },
+          "return_record_count": {
+            "value": 329
+          },
+          "return_record_amount": {
+            "value": "12833.47"
+          },
+          "item_return_rate": {
+            "value": "0.05669917",
+            "numerator": 314,
+            "denominator": 5538
+          }
+        },
+        "ods_dwd_equal": true,
+        "approved_baseline_checked": true
+      },
+      "empty": {
+        "start": "2030-01-01",
+        "end": "2030-02-01",
+        "as_of": "2030-02-01",
+        "results": {
+          "order_count": {
+            "value": 0
+          },
+          "item_net_sales_amount": {
+            "value": "0"
+          },
+          "payment_attempt_count": {
+            "value": 0
+          },
+          "captured_payment_amount": {
+            "value": "0"
+          },
+          "payment_attempt_success_rate": {
+            "value": null,
+            "numerator": 0,
+            "denominator": 0
+          },
+          "return_record_count": {
+            "value": 0
+          },
+          "return_record_amount": {
+            "value": "0"
+          },
+          "item_return_rate": {
+            "value": null,
+            "numerator": 0,
+            "denominator": 0
+          }
+        },
+        "ods_dwd_equal": true,
+        "approved_baseline_checked": true
+      }
+    },
+    "cancelled_item_rows": 12829,
+    "cancelled_item_amount": "544649.08",
+    "payment_statuses": [
+      {
+        "status": "captured",
+        "count": 89748,
+        "sum": "8998225.89"
+      },
+      {
+        "status": "failed",
+        "count": 5252,
+        "sum": "517197.15"
+      }
+    ]
+  },
+  "boundaries": [
+    "DWS/ADS not built",
+    "22 extended metrics not validated",
+    "8 unsupported metrics unchanged"
+  ]
+}

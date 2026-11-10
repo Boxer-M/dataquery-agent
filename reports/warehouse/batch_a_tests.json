@@ -1,0 +1,19 @@
+{
+  "executed_at_utc": "2026-11-10T14:05:03.011705+00:00",
+  "command": "WAREHOUSE_POSTGRES_TESTS=1 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v",
+  "tests_run": 48,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "existing_tests": 36,
+  "model_contract_tests": 4,
+  "isolated_postgres_tests": 8,
+  "environment": "Project Python 3.12; existing PostgreSQL 16; generated isolated test databases; no new dependencies",
+  "live_acceptance_report": "reports/warehouse/batch_a_811b1be2327536114749f2d95b5551fe3442f45402ce2d31e8d47fba0b2eec36.json",
+  "live_default_entry_rerun": {
+    "all_nine_verified_existing": true,
+    "repeat_verified": true,
+    "report": "reports/warehouse/batch_a_811b1be2327536114749f2d95b5551fe3442f45402ce2d31e8d47fba0b2eec36.json",
+    "olist_orders": 99441
+  }
+}
