@@ -48,3 +48,7 @@
 - ODS 之上的清洗层、业务主外键、索引和数据字典。
 - Agent 专用只读数据库账号和权限。
 - 指标语义层、RAG、Text-to-SQL、Agent、API、可视化和评测。
+
+## SQL Shed 完整 ODS 接入
+
+2026-11-10：已下载官方七表完整 Parquet 和 Schema SQL；426024 行已事务导入独立 sqlshed.ods，逐行与源文件一致。主外键和字段类型检查通过；业务异常保留并记录于 docs/SQLSHED_INGESTION.md。Olist 订单数仍为 99441。SQL Shed 是官方合成练习数据。重复执行与最终测试结果见接入说明；不表示已完成跨数据集 NL2SQL 或语义层。
