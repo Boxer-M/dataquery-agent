@@ -30,3 +30,11 @@ htmlcov/
 
 # Downloaded source datasets
 data/raw/
+data/staging/
+*.csv.part
+*.parquet.part
+*.dump
+*.backup
+docs/local/
+learning/
+reports/sqlshed_ingestion.json
