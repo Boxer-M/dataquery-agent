@@ -2,6 +2,8 @@
 
 SQL Shed 七表完整数据接入与质量检查见 [接入说明](docs/SQLSHED_INGESTION.md)。这是 CC0 合成练习数据，独立存放于 `sqlshed.ods`。
 
+第一版 8 项电商指标、标准 SQL 与数仓模型建议见 [指标口径](docs/ECOMMERCE_METRICS.md)；指标已只读验证，DWD/DWS 尚未建表。
+
 DataQuery Agent（智能问数系统）是一个用于学习和求职展示的独立 Python 项目，目标是基于可合法使用的公开数据，逐步实现自然语言查询、SQL 生成与只读执行、结果分析和可视化。
 
 ## 当前状态
