@@ -23,6 +23,25 @@ FORBIDDEN_WRITE_NODES = (
     exp.Merge,
     exp.Into,
 )
+ALLOWED_FUNCTION_NODES = frozenset(
+    {
+        exp.Count,
+        exp.Sum,
+        exp.Coalesce,
+    }
+)
+
+
+def _validate_functions(statement: exp.Select) -> tuple[bool, str]:
+    for function in statement.find_all(exp.Func):
+        if isinstance(function.parent, exp.Dot):
+            return False, "不允许带 Schema 的函数调用"
+        if isinstance(function, exp.Anonymous):
+            return False, f"不允许未知函数：{function.name}"
+        if type(function) not in ALLOWED_FUNCTION_NODES:
+            return False, f"函数不在白名单：{type(function).__name__.upper()}"
+
+    return True, "函数通过白名单检查"
 
 
 def _validate_query_tables(statement: exp.Select) -> tuple[bool, str]:
@@ -80,5 +99,9 @@ def validate_sql(sql: str) -> tuple[bool, str]:
 
     if statement.find(exp.Lock):
         return False, "不允许 FOR UPDATE 等锁定语义"
+
+    functions_allowed, reason = _validate_functions(statement)
+    if not functions_allowed:
+        return False, reason
 
     return _validate_query_tables(statement)

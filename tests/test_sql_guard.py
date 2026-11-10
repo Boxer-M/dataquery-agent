@@ -102,6 +102,49 @@ class ValidateSqlTests(unittest.TestCase):
                 self.assertEqual(allowed, expected_allowed)
                 self.assertIn(expected_reason, reason)
 
+    def test_function_allowlist(self) -> None:
+        cases = [
+            ("SELECT COUNT(*) FROM public.ods_orders;", True, "通过"),
+            ("SELECT SUM(price) FROM public.ods_order_items;", True, "通过"),
+            (
+                "SELECT COALESCE(order_approved_at, order_purchase_timestamp) "
+                "FROM public.ods_orders;",
+                True,
+                "通过",
+            ),
+            (
+                "SELECT COALESCE(SUM(price), 0) FROM public.ods_order_items;",
+                True,
+                "通过",
+            ),
+            ("SELECT pg_sleep(1) FROM public.ods_orders;", False, "未知函数"),
+            (
+                "SELECT set_config('search_path', 'public', false) "
+                "FROM public.ods_orders;",
+                False,
+                "未知函数",
+            ),
+            ("SELECT mystery(order_id) FROM public.ods_orders;", False, "未知函数"),
+            (
+                "SELECT pg_catalog.pg_sleep(1) FROM public.ods_orders;",
+                False,
+                "带 Schema",
+            ),
+            (
+                "SELECT COALESCE(pg_sleep(1), 0) FROM public.ods_orders;",
+                False,
+                "未知函数",
+            ),
+            ("SELECT CAST(order_id AS TEXT) FROM public.ods_orders;", False, "CAST"),
+            ("SELECT order_id::text FROM public.ods_orders;", False, "CAST"),
+        ]
+
+        for sql, expected_allowed, expected_reason in cases:
+            with self.subTest(sql=sql):
+                allowed, reason = validate_sql(sql)
+                self.assertEqual(allowed, expected_allowed)
+                self.assertIn(expected_reason, reason)
+
 
 if __name__ == "__main__":
     unittest.main()
