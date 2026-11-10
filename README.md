@@ -2,9 +2,9 @@
 
 SQL Shed 七表完整数据接入与质量检查见 [接入说明](docs/SQLSHED_INGESTION.md)。这是 CC0 合成练习数据，独立存放于 `sqlshed.ods`。
 
-第一版 8 项电商指标、标准 SQL 与数仓模型建议见 [指标口径](docs/ECOMMERCE_METRICS.md)。4 张 DWD 和 5 张 DIM 已验收，见 [A 批报告](docs/warehouse/BATCH_A_ACCEPTANCE.md)；6 张 DWS 已独立构建并验收，见 [DWS 报告](docs/warehouse/DWS_ACCEPTANCE.md)，ADS 尚未建设。
+第一版 8 项电商指标、标准 SQL 与数仓模型建议见 [指标口径](docs/ECOMMERCE_METRICS.md)。4 张 DWD 和 5 张 DIM 已验收，见 [A 批报告](docs/warehouse/BATCH_A_ACCEPTANCE.md)；6 张 DWS 已独立构建并验收，见 [DWS 报告](docs/warehouse/DWS_ACCEPTANCE.md)，3个ADS普通视图见[ADS契约与验收](docs/warehouse/ADS_ACCEPTANCE.md)。
 
-当前采用[完整数仓优先路线](docs/warehouse/README.md)：DWD/DIM、DWS 已完成，接下来独立建设 ADS，最后接经营分析 Agent。[38 项指标设计目录](metrics/warehouse_catalog_v1.json) 保留原 8 项，新增 18 项在限定 DWS 范围 available、4 项明细查询待验证、8 项 unsupported。学习与本地进度文件不公开。
+当前采用[完整数仓优先路线](docs/warehouse/README.md)：DWD/DIM、DWS、ADS 已完成，下一步建设查询服务，再接经营分析 Agent。[38 项指标设计目录](metrics/warehouse_catalog_v1.json) 保留原 8 项，新增 18 项在限定 DWS 范围 available、4 项明细查询待验证、8 项 unsupported。学习与本地进度文件不公开。
 
 DataQuery Agent（智能问数系统）是一个用于学习和求职展示的独立 Python 项目，目标是基于可合法使用的公开数据，逐步实现自然语言查询、SQL 生成与只读执行、结果分析和可视化。
 

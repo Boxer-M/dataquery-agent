@@ -1,0 +1,360 @@
+{
+  "status": "accepted_ads",
+  "executed_at_utc": "2026-11-10T16:42:28.115594+00:00",
+  "tested_base_commit": "8cfce7178e09cf8b67b785ba505829199b9934b2",
+  "tested_artifact_sha256": {
+    "src/dataquery_agent/ads.py": "98e29fb88df3b8d239ee50bc8679044a797cc955cc83d82bc0b44f9cae40f2b4",
+    "scripts/build_ads.py": "5bd6d30cdd1aaf869444d97309ae538bce279bfeff4b619fdfbd5fb17a7d3b3a",
+    "warehouse/ads_models.json": "39438e316d2238e5f61b4c3375316be85abee48b822070d91d4d7ec80bac668d",
+    "sql/warehouse/ads_checks.sql": "5905b5d151294c62724821ea31583538a68fc0554dc890cfb62a705587ea595d",
+    "sql/warehouse/ground_truth/ads/models.sql": "d46ce048fdddafe54b2615a26a5d6977080b908d73d5151b8941442e7ae9433a",
+    "metrics/warehouse_catalog_v1.json": "babae18d458b751e071c147f152cadde2e56477e521787d04c438fd75df0307b",
+    "sql/warehouse/ads/payment_anomaly_order.sql": "43d361d51050987e89b80feb5e59ebe1a969c66b8daa53b247bacf2ea4c1f19d",
+    "sql/warehouse/ads/product_return_cohort.sql": "36c0c960e22639d65c7aa27d54ded6e19c17b4da94b363ff595776c8aad28c99",
+    "sql/warehouse/ads/business_overview_day.sql": "6e20354ad9f041192017b62171184d4a1dfc603fc43c95e6418e7df02160755e",
+    "sql/warehouse/ddl/ads/payment_anomaly_order.sql": "b386d397f842925ba00494bd61a0ecfa1aa293897042c6aaeb1034eecddda3fc",
+    "sql/warehouse/ddl/ads/product_return_cohort.sql": "9dd0334cdabb95e5ee21a4c0e8a492300278a29edf312e683e347eb690ae7403",
+    "sql/warehouse/ddl/ads/business_overview_day.sql": "85c12e47f285db23347b4d3ff141a5b0ba1352527b99c5ad835ab274a18377b2"
+  },
+  "first_actions": {
+    "ads.business_overview_day": "verified_existing",
+    "ads.payment_anomaly_order": "verified_existing",
+    "ads.product_return_cohort": "verified_existing"
+  },
+  "repeat_verified": true,
+  "validation": {
+    "models": {
+      "ads.business_overview_day": {
+        "rows": 4316,
+        "unique_keys": 4316,
+        "null_keys": 0,
+        "independent_ods_differences": 0,
+        "definition_sha256": "fb4bedce4a1b965a4754d153d7d9d390a226985f818192fb48db2055003f46c6"
+      },
+      "ads.payment_anomaly_order": {
+        "rows": 90000,
+        "unique_keys": 90000,
+        "null_keys": 0,
+        "independent_ods_differences": 0,
+        "definition_sha256": "d28d50f4cd4f2ef6a09db663d4c744b5c7f4044b406ae12f641ae168e92131a5"
+      },
+      "ads.product_return_cohort": {
+        "rows": 121595,
+        "unique_keys": 121595,
+        "null_keys": 0,
+        "independent_ods_differences": 0,
+        "definition_sha256": "235a1b67a91a938642a4d1b8529bae7621cbcf63c10564a0492e22cebb20ee79"
+      }
+    },
+    "as_of": "2026-01-01 00:00:00",
+    "input_fingerprints": {
+      "ods.categories": "52b5ebe6b0aaeebfc28af4051e6aee25b8493e32d8d59012abd20fd2a1493912",
+      "ods.customers": "b6351d38c946222140e1ddfc4c094a32ca51f509149438d14fff59e7d87d094f",
+      "ods.products": "50855f196157bd3b9aa3f63ff3d9e77c4faa4ca8dbe139c257910fc17ed7e9cf",
+      "ods.orders": "92ee3a3d56dbb29deb8400ae5d0b568b8c413acedd94a1224b76996705f3b0ca",
+      "ods.order_items": "b5a8e18946ea2315ef064b678eaa33949077e12c27387987e51d14a75305841e",
+      "ods.payments": "8fa7ee717dd8945e57965e66dee77b2b3ba522593afef69d3b3ed9e35b223707",
+      "ods.returns": "e997d03eba309947dcc9d9f8018cd15c4e15fb8c3456e340cea265e48b5c7a80",
+      "dim.customer": "edf1c71b733b3526558aaa8eae84201f99292c9f1026f787ed51dfabad94c423",
+      "dim.category": "52b5ebe6b0aaeebfc28af4051e6aee25b8493e32d8d59012abd20fd2a1493912",
+      "dim.channel": "c32f7bfc2bb627985919669f4b36fc7d3af426e484b17a44537696e058907e82",
+      "dim.date": "0e505bf0104ee800c18ffbced9370618459fb505a375ea30a074095400259852",
+      "dim.product": "50855f196157bd3b9aa3f63ff3d9e77c4faa4ca8dbe139c257910fc17ed7e9cf",
+      "dwd.order_fact": "fd6e8054a892726a9a727dd5a569ba29c3e1f6c747476b7cba6f6679089804a6",
+      "dwd.order_item_fact": "e924edebfc73a106e2ce0e7b81d35dd1c1f5c6e0cac6fd265dcab14a9678776a",
+      "dwd.payment_attempt_fact": "e6c45039b22c5a15ced288c5edded988026d1e70c16186b368f2ebc555fe0300",
+      "dwd.return_record_fact": "0689fac6230fc20dca9f39c2b3a7b116060af84f576702858d8d89311ad79fac",
+      "dws.order_day": "ce71a20d81e60918c23934dd8f7e60d949a92e49a21972685fed26fd644b3f57",
+      "dws.product_sales_day": "783215d9412377ed0b5e61a1d283254ebef0ea0b965f54b4818da81b93877855",
+      "dws.payment_day": "1287a2b5d34f71579fe393c3ee2f90c1cb46b2e131aaa2a48598e5cb3d9804fe",
+      "dws.return_day": "4991e8909ef81a916aa8f2042f2f92243002b76a1aeec3d471aaa1340560ce23",
+      "dws.item_return_cohort_day": "6436d39b0d3c03567137378910bf52e32821cfaa731474aaa1ae033a306cb853",
+      "dws.customer_order_day": "bc1e9700a3c4d0277f1a6eb9fb8deae1be0568e48dce6e179f4055042bf19ae0"
+    },
+    "input_unchanged": true,
+    "windows": {
+      "full/business_overview_day": {
+        "groups": 4316,
+        "orders": "90000",
+        "item_net": "9024059.76",
+        "attempts": "95000",
+        "captured": "89748",
+        "paid": "8998225.89",
+        "returns": "12000",
+        "return_amount": "498266.03",
+        "early_returns": "5962",
+        "excessive_returns": "1849"
+      },
+      "full/business_overview_day/channel": {
+        "groups": 1096,
+        "orders": "27978",
+        "item_net": "2811957.70",
+        "attempts": "29500",
+        "captured": "27909",
+        "paid": "2805254.76",
+        "returns": "3824",
+        "return_amount": "160858.57",
+        "early_returns": "1894",
+        "excessive_returns": "601"
+      },
+      "full/payment_anomaly_order": {
+        "orders": 90000,
+        "item_net": "9024059.76",
+        "attempts": "95000",
+        "captured": "89748",
+        "failed": "5252",
+        "paid": "8998225.89",
+        "multiple_attempt_orders": 5230,
+        "mismatch_orders": 250,
+        "failed_rate": "0.05528421",
+        "no_attempt_orders": 230
+      },
+      "full/payment_anomaly_order/channel": {
+        "orders": 27978,
+        "item_net": "2811957.70",
+        "attempts": "29500",
+        "captured": "27909",
+        "failed": "1591",
+        "paid": "2805254.76",
+        "multiple_attempt_orders": 1589,
+        "mismatch_orders": 69,
+        "failed_rate": "0.05393220",
+        "no_attempt_orders": 67
+      },
+      "full/product_return_cohort": {
+        "groups": 121595,
+        "denominator": "215000",
+        "numerator": "12000",
+        "anomalous": "6885",
+        "item_return_rate": "0.05581395"
+      },
+      "full/product_return_cohort/channel": {
+        "groups": 39227,
+        "denominator": "66852",
+        "numerator": "3824",
+        "anomalous": "2196",
+        "item_return_rate": "0.05720098"
+      },
+      "january_2025/business_overview_day": {
+        "groups": 120,
+        "orders": "2312",
+        "item_net": "231920.18",
+        "attempts": "2438",
+        "captured": "2304",
+        "paid": "230864.57",
+        "returns": "329",
+        "return_amount": "12833.47",
+        "early_returns": "103",
+        "excessive_returns": "50"
+      },
+      "january_2025/business_overview_day/channel": {
+        "groups": 31,
+        "orders": "685",
+        "item_net": "71273.19",
+        "attempts": "726",
+        "captured": "681",
+        "paid": "70777.76",
+        "returns": "105",
+        "return_amount": "4494.05",
+        "early_returns": "27",
+        "excessive_returns": "17"
+      },
+      "january_2025/payment_anomaly_order": {
+        "orders": 2312,
+        "item_net": "231920.18",
+        "attempts": "2438",
+        "captured": "2304",
+        "failed": "134",
+        "paid": "230864.57",
+        "multiple_attempt_orders": 133,
+        "mismatch_orders": 8,
+        "failed_rate": "0.05496308",
+        "no_attempt_orders": 7
+      },
+      "january_2025/payment_anomaly_order/channel": {
+        "orders": 685,
+        "item_net": "71273.19",
+        "attempts": "726",
+        "captured": "681",
+        "failed": "45",
+        "paid": "70777.76",
+        "multiple_attempt_orders": 45,
+        "mismatch_orders": 4,
+        "failed_rate": "0.06198347",
+        "no_attempt_orders": 4
+      },
+      "january_2025/product_return_cohort": {
+        "groups": 3245,
+        "denominator": "5538",
+        "numerator": "314",
+        "anomalous": "221",
+        "item_return_rate": "0.05669917"
+      },
+      "january_2025/product_return_cohort/channel": {
+        "groups": 1025,
+        "denominator": "1656",
+        "numerator": "95",
+        "anomalous": "67",
+        "item_return_rate": "0.05736715"
+      },
+      "boundary_day/business_overview_day": {
+        "groups": 3,
+        "orders": "77",
+        "item_net": "7352.81",
+        "attempts": "81",
+        "captured": "77",
+        "paid": "7352.81",
+        "returns": "18",
+        "return_amount": "996.87",
+        "early_returns": "4",
+        "excessive_returns": "4"
+      },
+      "boundary_day/business_overview_day/channel": {
+        "groups": 1,
+        "orders": "33",
+        "item_net": "3570.29",
+        "attempts": "35",
+        "captured": "33",
+        "paid": "3570.29",
+        "returns": "7",
+        "return_amount": "495.82",
+        "early_returns": "0",
+        "excessive_returns": "1"
+      },
+      "boundary_day/payment_anomaly_order": {
+        "orders": 77,
+        "item_net": "7352.81",
+        "attempts": "81",
+        "captured": "77",
+        "failed": "4",
+        "paid": "7352.81",
+        "multiple_attempt_orders": 4,
+        "mismatch_orders": 0,
+        "failed_rate": "0.04938272",
+        "no_attempt_orders": 0
+      },
+      "boundary_day/payment_anomaly_order/channel": {
+        "orders": 33,
+        "item_net": "3570.29",
+        "attempts": "35",
+        "captured": "33",
+        "failed": "2",
+        "paid": "3570.29",
+        "multiple_attempt_orders": 2,
+        "mismatch_orders": 0,
+        "failed_rate": "0.05714286",
+        "no_attempt_orders": 0
+      },
+      "boundary_day/product_return_cohort": {
+        "groups": 100,
+        "denominator": "180",
+        "numerator": "19",
+        "anomalous": "15",
+        "item_return_rate": "0.10555556"
+      },
+      "boundary_day/product_return_cohort/channel": {
+        "groups": 49,
+        "denominator": "90",
+        "numerator": "11",
+        "anomalous": "9",
+        "item_return_rate": "0.12222222"
+      },
+      "empty/business_overview_day": {
+        "groups": 0,
+        "orders": "0",
+        "item_net": "0",
+        "attempts": "0",
+        "captured": "0",
+        "paid": "0",
+        "returns": "0",
+        "return_amount": "0",
+        "early_returns": "0",
+        "excessive_returns": "0"
+      },
+      "empty/business_overview_day/channel": {
+        "groups": 0,
+        "orders": "0",
+        "item_net": "0",
+        "attempts": "0",
+        "captured": "0",
+        "paid": "0",
+        "returns": "0",
+        "return_amount": "0",
+        "early_returns": "0",
+        "excessive_returns": "0"
+      },
+      "empty/payment_anomaly_order": {
+        "orders": 0,
+        "item_net": "0",
+        "attempts": "0",
+        "captured": "0",
+        "failed": "0",
+        "paid": "0",
+        "multiple_attempt_orders": 0,
+        "mismatch_orders": 0,
+        "failed_rate": null,
+        "no_attempt_orders": 0
+      },
+      "empty/payment_anomaly_order/channel": {
+        "orders": 0,
+        "item_net": "0",
+        "attempts": "0",
+        "captured": "0",
+        "failed": "0",
+        "paid": "0",
+        "multiple_attempt_orders": 0,
+        "mismatch_orders": 0,
+        "failed_rate": null,
+        "no_attempt_orders": 0
+      },
+      "empty/product_return_cohort": {
+        "groups": 0,
+        "denominator": "0",
+        "numerator": "0",
+        "anomalous": "0",
+        "item_return_rate": null
+      },
+      "empty/product_return_cohort/channel": {
+        "groups": 0,
+        "denominator": "0",
+        "numerator": "0",
+        "anomalous": "0",
+        "item_return_rate": null
+      }
+    },
+    "ground_truth_comparisons": 24,
+    "metric_catalog_unchanged": true
+  },
+  "reader": {
+    "ads_select": {
+      "ads.business_overview_day": true,
+      "ads.payment_anomaly_order": true,
+      "ads.product_return_cohort": true
+    },
+    "role_attributes_unchanged": true,
+    "no_memberships": true,
+    "business_write": false,
+    "business_ownership": false,
+    "create_temp": false,
+    "tcp": {
+      "tcp_select_views": 3,
+      "view_dml_denied": true,
+      "base_table_zero_row_update_acl_denied": true,
+      "create_and_temp_denied": true
+    }
+  },
+  "dws_metric_comparisons": 312,
+  "olist_before": {
+    "orders": 99441,
+    "orders_sha256": "97fb6a065239d753187b8532d534659eb7445f11c39ccfd2439520099c68aa90"
+  },
+  "olist_after": {
+    "orders": 99441,
+    "orders_sha256": "97fb6a065239d753187b8532d534659eb7445f11c39ccfd2439520099c68aa90"
+  },
+  "limitations": [
+    "fixed exclusive cutoff",
+    "no Agent changes",
+    "26 available / 4 deferred / 8 unsupported unchanged"
+  ]
+}

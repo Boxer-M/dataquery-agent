@@ -1,6 +1,6 @@
 # 表清单与字段级设计
 
-下列为逻辑名称；A批4张DWD/5张DIM及B批6张DWS已实现，ADS仍未实施。所有表属于独立sqlshed库。PK、NN、? 分别表示主键、非空、可空；未标?的字段均NN。整数源键INTEGER，计数BIGINT，源金额M=NUMERIC(12,2)，派生/汇总金额N=不限精度NUMERIC，事件T=TIMESTAMP WITHOUT TIME ZONE，技术时间TZ=TIMESTAMPTZ。不存在币种字段，不添加猜测值。实际列/约束以warehouse/models.json及SQL为准，验收见BATCH_A_ACCEPTANCE。
+下列为逻辑名称；A批4张DWD/5张DIM及B批6张DWS已实现，C批3个ADS普通视图已实现。所有表属于独立sqlshed库。PK、NN、? 分别表示主键、非空、可空；未标?的字段均NN。整数源键INTEGER，计数BIGINT，源金额M=NUMERIC(12,2)，派生/汇总金额N=不限精度NUMERIC，事件T=TIMESTAMP WITHOUT TIME ZONE，技术时间TZ=TIMESTAMPTZ。不存在币种字段，不添加猜测值。实际列/约束以warehouse/models.json及SQL为准，验收见BATCH_A_ACCEPTANCE。
 
 发布级 source_snapshot_id、release_id、code_commit、model_version、metric_version、构建时间与对象映射放发布清单，适用于整个不可变批次，不在每张表重复填一套无业务意义字段。清单不包含密码、源客户明细或绝对个人目录。
 
@@ -104,12 +104,14 @@ DIM 仅当前快照，不伪装 SCD2；同一发布内键唯一。order_fact.cus
 
 cohort 首次只预聚合已批准 as_of=2026-01-01 的样本窗口；未来请求不同 as_of 时由受控 DWD 计算，不近似取最近快照。不为任意未来日期预建大量重复 cohort 分区。
 
-## ADS：独立后续批次，3 个候选普通视图（未实施）
+## ADS：C批3个普通视图（已实现）
 
 | 视图 / 粒度 | 全部业务字段及类型 | 逻辑依赖与使用边界 |
 |---|---|---|
-| ads.business_overview_day / (event_date DATE,channel VARCHAR) | order_count BIGINT、item_net_sales_amount N、payment_attempt_count BIGINT、captured_attempt_count BIGINT、captured_payment_amount N、return_record_count BIGINT、return_record_amount N | order_day/payment_day/return_day 各自先归并到日渠道后 FULL JOIN；列分别表示下单日、支付日、退货日。独立列不能解释同批订单收支；不存“净收入”或日 distinct 买家用于月累计 |
-| ads.payment_anomaly_order / order_id INTEGER | ordered_at T、customer_id INTEGER、channel VARCHAR、order_status VARCHAR、item_net_amount N、payment_attempt_count BIGINT、failed_attempt_count BIGINT、captured_payment_amount N、captured_minus_item_net N、has_amount_mismatch BOOLEAN、first_payment_at T?、last_payment_at T?、as_of T | order_fact LEFT JOIN 按订单预聚合的明细和尝试，都是1:1；as_of 固定为该发布观察截止，过滤尝试 paid_at<as_of、订单 ordered_at<as_of；无记录金额/次数按0。仅用于当前快照订单队列差异，非“支付失败损失/未付欠款”结论；不同截止走动态SQL |
+| ads.business_overview_day / (event_date DATE,channel VARCHAR) | order_count BIGINT、item_net_sales_amount N、payment_attempt_count BIGINT、captured_attempt_count BIGINT、captured_payment_amount N、return_record_count BIGINT、return_record_amount N、dq_return_before_order_count BIGINT、dq_refund_above_item_net_count BIGINT | order_day/payment_day/return_day 各自先归并到日渠道后 FULL JOIN；列分别表示下单日、支付日、退货日。独立列不能解释同批订单收支；不存“净收入”或日 distinct 买家用于月累计 |
+| ads.payment_anomaly_order / order_id INTEGER | ordered_at T、customer_id INTEGER、channel VARCHAR、order_status VARCHAR、item_net_amount N、payment_attempt_count BIGINT、failed_attempt_count BIGINT、captured_payment_amount N、captured_minus_item_net N、has_amount_mismatch BOOLEAN、first_payment_at T?、last_payment_at T?、as_of T、captured_attempt_count BIGINT、payment_failed_attempt_rate NUMERIC?、has_multiple_attempts BOOLEAN | order_fact LEFT JOIN 按订单预聚合的明细和尝试，都是1:1；as_of 固定为该发布观察截止，过滤尝试 paid_at<as_of、订单 ordered_at<as_of；无记录金额/次数按0。仅用于当前快照订单队列差异，非“支付失败损失/未付欠款”结论；不同截止走动态SQL |
 | ads.product_return_cohort / (order_date DATE,channel VARCHAR,product_id INTEGER,as_of T) | category_id INTEGER、cohort_item_count BIGINT、returned_item_count BIGINT、anomalous_return_item_count BIGINT、item_return_rate NUMERIC? | cohort DWS→唯一当前 product；率 ROUND(num/NULLIF(den,0),8)。退货事件金额另查 return_day，接口分结果块返回，禁止把事件月退货金额塞进同月下单队列当净额 |
 
 ADS 结果中的 as_of 与来源清单一起输出，不把视图当前结果视作历史快照。支付异常仅限账户ID，失败原因按授权的 payment_attempt_fact 明细聚合另查；不在 ADS 暴露姓名/email。商品退货队列不依赖支付事实。
+
+C批三个新增支付字段与两个概览退货质量计数的业务语义、空窗及安全边界见[ADS_CONTRACTS](ADS_CONTRACTS.md)。视图无物理PK，以上为验收唯一键；DDL和SELECT均版本化。

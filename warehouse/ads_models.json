@@ -1,0 +1,205 @@
+{
+  "model_version": "1.0.0",
+  "as_of": "2026-01-01T00:00:00",
+  "models": [
+    {
+      "name": "ads.business_overview_day",
+      "key": "event_date",
+      "keys": [
+        "event_date",
+        "channel"
+      ],
+      "depends_on": [
+        "dws.order_day",
+        "dws.payment_day",
+        "dws.return_day"
+      ],
+      "sql": "sql/warehouse/ads/business_overview_day.sql",
+      "columns": [
+        {
+          "name": "event_date",
+          "type": "date"
+        },
+        {
+          "name": "channel",
+          "type": "character varying"
+        },
+        {
+          "name": "order_count",
+          "type": "bigint"
+        },
+        {
+          "name": "item_net_sales_amount",
+          "type": "numeric"
+        },
+        {
+          "name": "payment_attempt_count",
+          "type": "bigint"
+        },
+        {
+          "name": "captured_attempt_count",
+          "type": "bigint"
+        },
+        {
+          "name": "captured_payment_amount",
+          "type": "numeric"
+        },
+        {
+          "name": "return_record_count",
+          "type": "bigint"
+        },
+        {
+          "name": "return_record_amount",
+          "type": "numeric"
+        },
+        {
+          "name": "dq_return_before_order_count",
+          "type": "bigint"
+        },
+        {
+          "name": "dq_refund_above_item_net_count",
+          "type": "bigint"
+        }
+      ],
+      "ddl": "sql/warehouse/ddl/ads/business_overview_day.sql"
+    },
+    {
+      "name": "ads.payment_anomaly_order",
+      "key": "order_id",
+      "keys": [
+        "order_id"
+      ],
+      "depends_on": [
+        "dwd.order_fact",
+        "dwd.order_item_fact",
+        "dwd.payment_attempt_fact"
+      ],
+      "sql": "sql/warehouse/ads/payment_anomaly_order.sql",
+      "columns": [
+        {
+          "name": "order_id",
+          "type": "integer"
+        },
+        {
+          "name": "ordered_at",
+          "type": "timestamp without time zone"
+        },
+        {
+          "name": "customer_id",
+          "type": "integer"
+        },
+        {
+          "name": "channel",
+          "type": "character varying"
+        },
+        {
+          "name": "order_status",
+          "type": "character varying"
+        },
+        {
+          "name": "item_net_amount",
+          "type": "numeric"
+        },
+        {
+          "name": "payment_attempt_count",
+          "type": "bigint"
+        },
+        {
+          "name": "captured_attempt_count",
+          "type": "bigint"
+        },
+        {
+          "name": "failed_attempt_count",
+          "type": "bigint"
+        },
+        {
+          "name": "captured_payment_amount",
+          "type": "numeric"
+        },
+        {
+          "name": "captured_minus_item_net",
+          "type": "numeric"
+        },
+        {
+          "name": "has_amount_mismatch",
+          "type": "boolean"
+        },
+        {
+          "name": "first_payment_at",
+          "type": "timestamp without time zone"
+        },
+        {
+          "name": "last_payment_at",
+          "type": "timestamp without time zone"
+        },
+        {
+          "name": "as_of",
+          "type": "timestamp without time zone"
+        },
+        {
+          "name": "payment_failed_attempt_rate",
+          "type": "numeric"
+        },
+        {
+          "name": "has_multiple_attempts",
+          "type": "boolean"
+        }
+      ],
+      "ddl": "sql/warehouse/ddl/ads/payment_anomaly_order.sql"
+    },
+    {
+      "name": "ads.product_return_cohort",
+      "key": "order_date",
+      "keys": [
+        "order_date",
+        "channel",
+        "product_id",
+        "as_of"
+      ],
+      "depends_on": [
+        "dws.item_return_cohort_day",
+        "dim.product"
+      ],
+      "sql": "sql/warehouse/ads/product_return_cohort.sql",
+      "columns": [
+        {
+          "name": "order_date",
+          "type": "date"
+        },
+        {
+          "name": "channel",
+          "type": "character varying"
+        },
+        {
+          "name": "product_id",
+          "type": "integer"
+        },
+        {
+          "name": "as_of",
+          "type": "timestamp without time zone"
+        },
+        {
+          "name": "category_id",
+          "type": "integer"
+        },
+        {
+          "name": "cohort_item_count",
+          "type": "bigint"
+        },
+        {
+          "name": "returned_item_count",
+          "type": "bigint"
+        },
+        {
+          "name": "anomalous_return_item_count",
+          "type": "bigint"
+        },
+        {
+          "name": "item_return_rate",
+          "type": "numeric"
+        }
+      ],
+      "ddl": "sql/warehouse/ddl/ads/product_return_cohort.sql"
+    }
+  ]
+}

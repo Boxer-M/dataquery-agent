@@ -1,6 +1,6 @@
 # 指标目录、可用性与血缘
 
-机器契约为 `metrics/warehouse_catalog_v1.json`（1.1.0-dws）：38项，原批准8项不变，18项限定DWS范围available，4项明细查询待验证，8项unsupported不变。每项记录 ID/中文名、定义/公式、粒度、事件/统计归属、状态、去重、维度、源依赖、是否已有汇总、拟用汇总、动态 SQL 能力、质量限制与独立 Ground Truth 方法。
+机器契约为 `metrics/warehouse_catalog_v1.json`（1.1.1-ads）：38项，原批准8项不变，18项限定DWS范围available，4项明细查询待验证，8项unsupported不变。每项记录 ID/中文名、定义/公式、粒度、事件/统计归属、状态、去重、维度、源依赖、是否已有汇总、拟用汇总、动态 SQL 能力、质量限制与独立 Ground Truth 方法。
 
 **原8项保持不变**：目录复制 `metrics/ecommerce_v1.json` 的全部原字段，并记录原文件 SHA-256；原定义文件和 `sql/metrics/ecommerce_v1.sql` 均不修改。目录增加的路由元数据不是 Agent 已实现能力。18项扩展已有独立SQL/真实PostgreSQL验收，路径及312组比较见DWS_ACCEPTANCE。4项defined_unverified不作为可答指标；查询服务/Agent仍未接入。
 
@@ -76,3 +76,5 @@
 - 退货：跨月事件、同明细重复退货、异常提前退货、截止时刻等于as_of均按原口径；队列不同as_of严禁合并。
 
 8622下单账户/5376窗口多单账户及复购率0.62352122已在本批独立ODS/DWS对账通过，但不代表自然人或支付客户指标。其余能力严格按目录dws_validation范围，不泛化到所有旧声明维度。产品和客户属性只反映当前源快照；数据血缘必须同时记录 metric_version、model_version、source_snapshot_id、release_id、实际逻辑/物理对象、列和最终SQL哈希。
+
+C批3个ADS视图已验收，字段级能力及来源见ADS_CONTRACTS，24组应用窗口检查见ADS_ACCEPTANCE；目录指标对象保持DWS版原样，不将4项待验证指标升级为available。
