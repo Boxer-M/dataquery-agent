@@ -2,43 +2,43 @@
 
 SELECT table_name, expected_rows, actual_rows, expected_rows = actual_rows AS matches
 FROM (
-    SELECT 'ods_customers' AS table_name, 99441::BIGINT AS expected_rows, count(*) AS actual_rows FROM ods_customers
+    SELECT 'customers' AS table_name, 99441::BIGINT AS expected_rows, count(*) AS actual_rows FROM ods.customers
     UNION ALL
-    SELECT 'ods_geolocation', 1000163, count(*) FROM ods_geolocation
+    SELECT 'geolocation', 1000163, count(*) FROM ods.geolocation
     UNION ALL
-    SELECT 'ods_order_items', 112650, count(*) FROM ods_order_items
+    SELECT 'order_items', 112650, count(*) FROM ods.order_items
     UNION ALL
-    SELECT 'ods_order_payments', 103886, count(*) FROM ods_order_payments
+    SELECT 'order_payments', 103886, count(*) FROM ods.order_payments
     UNION ALL
-    SELECT 'ods_order_reviews', 99224, count(*) FROM ods_order_reviews
+    SELECT 'order_reviews', 99224, count(*) FROM ods.order_reviews
     UNION ALL
-    SELECT 'ods_orders', 99441, count(*) FROM ods_orders
+    SELECT 'orders', 99441, count(*) FROM ods.orders
     UNION ALL
-    SELECT 'ods_products', 32951, count(*) FROM ods_products
+    SELECT 'products', 32951, count(*) FROM ods.products
     UNION ALL
-    SELECT 'ods_sellers', 3095, count(*) FROM ods_sellers
+    SELECT 'sellers', 3095, count(*) FROM ods.sellers
     UNION ALL
-    SELECT 'ods_product_category_name_translation', 71, count(*) FROM ods_product_category_name_translation
+    SELECT 'product_category_name_translation', 71, count(*) FROM ods.product_category_name_translation
 ) AS row_counts
 ORDER BY table_name;
 
-SELECT 'ods_customers' AS table_name, to_jsonb(sample) AS sample FROM (SELECT * FROM ods_customers LIMIT 1) AS sample
+SELECT 'customers' AS table_name, to_jsonb(sample) AS sample FROM (SELECT * FROM ods.customers LIMIT 1) AS sample
 UNION ALL
-SELECT 'ods_geolocation', to_jsonb(sample) FROM (SELECT * FROM ods_geolocation LIMIT 1) AS sample
+SELECT 'geolocation', to_jsonb(sample) FROM (SELECT * FROM ods.geolocation LIMIT 1) AS sample
 UNION ALL
-SELECT 'ods_order_items', to_jsonb(sample) FROM (SELECT * FROM ods_order_items LIMIT 1) AS sample
+SELECT 'order_items', to_jsonb(sample) FROM (SELECT * FROM ods.order_items LIMIT 1) AS sample
 UNION ALL
-SELECT 'ods_order_payments', to_jsonb(sample) FROM (SELECT * FROM ods_order_payments LIMIT 1) AS sample
+SELECT 'order_payments', to_jsonb(sample) FROM (SELECT * FROM ods.order_payments LIMIT 1) AS sample
 UNION ALL
-SELECT 'ods_order_reviews', to_jsonb(sample) FROM (SELECT * FROM ods_order_reviews LIMIT 1) AS sample
+SELECT 'order_reviews', to_jsonb(sample) FROM (SELECT * FROM ods.order_reviews LIMIT 1) AS sample
 UNION ALL
-SELECT 'ods_orders', to_jsonb(sample) FROM (SELECT * FROM ods_orders LIMIT 1) AS sample
+SELECT 'orders', to_jsonb(sample) FROM (SELECT * FROM ods.orders LIMIT 1) AS sample
 UNION ALL
-SELECT 'ods_products', to_jsonb(sample) FROM (SELECT * FROM ods_products LIMIT 1) AS sample
+SELECT 'products', to_jsonb(sample) FROM (SELECT * FROM ods.products LIMIT 1) AS sample
 UNION ALL
-SELECT 'ods_sellers', to_jsonb(sample) FROM (SELECT * FROM ods_sellers LIMIT 1) AS sample
+SELECT 'sellers', to_jsonb(sample) FROM (SELECT * FROM ods.sellers LIMIT 1) AS sample
 UNION ALL
-SELECT 'ods_product_category_name_translation', to_jsonb(sample) FROM (SELECT * FROM ods_product_category_name_translation LIMIT 1) AS sample;
+SELECT 'product_category_name_translation', to_jsonb(sample) FROM (SELECT * FROM ods.product_category_name_translation LIMIT 1) AS sample;
 
 SELECT
     table_name,
@@ -47,8 +47,7 @@ SELECT
     numeric_precision,
     numeric_scale
 FROM information_schema.columns
-WHERE table_schema = current_schema()
-  AND table_name LIKE 'ods_%'
+WHERE table_schema = 'ods'
   AND (
       column_name IN ('price', 'freight_value', 'payment_value')
       OR data_type = 'timestamp without time zone'

@@ -28,5 +28,5 @@ for file_name in $files; do
 done
 
 docker compose exec -T db sh -c \
-    'PGPASSWORD="$POSTGRES_PASSWORD" psql -h 127.0.0.1 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -w -f -' \
+    'PGPASSWORD="$POSTGRES_PASSWORD" psql -h 127.0.0.1 -U "$POSTGRES_USER" -d olist -w -f -' \
     < sql/load_olist_ods.sql

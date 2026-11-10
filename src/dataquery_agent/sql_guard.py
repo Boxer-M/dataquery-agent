@@ -5,15 +5,15 @@ from sqlglot.optimizer.scope import Scope, traverse_scope
 
 ALLOWED_TABLES = frozenset(
     {
-        ("public", "ods_customers"),
-        ("public", "ods_geolocation"),
-        ("public", "ods_order_items"),
-        ("public", "ods_order_payments"),
-        ("public", "ods_order_reviews"),
-        ("public", "ods_orders"),
-        ("public", "ods_products"),
-        ("public", "ods_sellers"),
-        ("public", "ods_product_category_name_translation"),
+        ("ods", "customers"),
+        ("ods", "geolocation"),
+        ("ods", "order_items"),
+        ("ods", "order_payments"),
+        ("ods", "order_reviews"),
+        ("ods", "orders"),
+        ("ods", "products"),
+        ("ods", "sellers"),
+        ("ods", "product_category_name_translation"),
     }
 )
 FORBIDDEN_WRITE_NODES = (

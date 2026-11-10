@@ -10,8 +10,8 @@ from dataquery_agent.sql_executor import QueryResult
 
 
 QUESTION = "全部状态、不限时间的订单记录数是多少？"
-SCHEMA_CONTEXT = "表：public.ods_orders\n字段：\n- order_id: text"
-COUNT_SQL = "SELECT COUNT(*) FROM public.ods_orders;"
+SCHEMA_CONTEXT = "表：ods.orders\n字段：\n- order_id: text"
+COUNT_SQL = "SELECT COUNT(*) FROM ods.orders;"
 
 
 class AnswerQuestionTests(unittest.TestCase):
@@ -48,7 +48,7 @@ class AnswerQuestionTests(unittest.TestCase):
         self.assertFalse(result.truncated)
 
     def test_guard_rejection_does_not_execute_sql(self) -> None:
-        self.sql_generator.return_value = "DELETE FROM public.ods_orders;"
+        self.sql_generator.return_value = "DELETE FROM ods.orders;"
 
         with self.assertRaisesRegex(SqlValidationError, "只允许 SELECT"):
             self.call_answer_question()
@@ -66,8 +66,8 @@ class AnswerQuestionTests(unittest.TestCase):
 
     def test_rejects_multiple_statements(self) -> None:
         self.sql_generator.return_value = (
-            "SELECT COUNT(*) FROM public.ods_orders; "
-            "SELECT COUNT(*) FROM public.ods_customers;"
+            "SELECT COUNT(*) FROM ods.orders; "
+            "SELECT COUNT(*) FROM ods.customers;"
         )
 
         with self.assertRaisesRegex(SqlValidationError, "只允许一条"):

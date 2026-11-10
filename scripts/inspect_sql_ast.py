@@ -2,8 +2,8 @@ from sqlglot import exp, parse
 
 
 sql_samples = [
-    "SELECT COUNT(*) FROM public.ods_orders;",
-    "DELETE FROM public.ods_orders;",
+    "SELECT COUNT(*) FROM ods.orders;",
+    "DELETE FROM ods.orders;",
     "SELECT 1; SELECT 2;",
 ]
 

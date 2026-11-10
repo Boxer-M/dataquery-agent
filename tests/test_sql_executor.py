@@ -8,9 +8,9 @@ import psycopg
 from dataquery_agent.sql_executor import QueryExecutionError, execute_readonly_query
 
 
-VALID_SQL = "SELECT order_id FROM public.ods_orders;"
+VALID_SQL = "SELECT order_id FROM ods.orders;"
 TEST_ENV = {
-    "POSTGRES_DB": "dataquery",
+    "POSTGRES_DB": "olist",
     "AGENT_DB_USER": "dataquery_reader",
     "AGENT_DB_PASSWORD": "test-only-password",
 }
@@ -47,7 +47,7 @@ class ExecuteReadonlyQueryTests(unittest.TestCase):
         mock_connect.assert_called_once_with(
             host="127.0.0.1",
             port=5433,
-            dbname="dataquery",
+            dbname="olist",
             user="dataquery_reader",
             password="test-only-password",
             connect_timeout=5,
@@ -76,7 +76,7 @@ class ExecuteReadonlyQueryTests(unittest.TestCase):
     @patch("dataquery_agent.sql_executor.psycopg.connect")
     def test_rejects_unsafe_sql_before_connecting(self, mock_connect):
         with self.assertRaisesRegex(ValueError, "SQL 安全校验失败"):
-            execute_readonly_query("DELETE FROM public.ods_orders;")
+            execute_readonly_query("DELETE FROM ods.orders;")
 
         mock_connect.assert_not_called()
 
