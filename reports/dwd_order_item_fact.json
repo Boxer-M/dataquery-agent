@@ -1,0 +1,42 @@
+{
+  "executed_at_utc": "2026-11-10T12:47:31.806468+00:00",
+  "database": "sqlshed",
+  "table": "dwd.order_item_fact",
+  "first_action": "created",
+  "repeat_action": "verified_existing",
+  "validation": {
+    "rows": 215000,
+    "unique_keys": 215000,
+    "null_keys": 0,
+    "full_row_differences": 0,
+    "net_item_amount": "9024059.76",
+    "source_amount": "9024059.76",
+    "standard_sql_amount": "9024059.76",
+    "baseline_amount": "9024059.76",
+    "cancelled_item_rows": 12829,
+    "cancelled_net_amount": "544649.08",
+    "quality_flags": {
+      "dq_nonpositive_quantity": 0,
+      "dq_negative_amount": 0,
+      "dq_discount_exceeds_gross": 0,
+      "dq_unknown_order_status": 0,
+      "dq_invalid_order_time": 0
+    },
+    "columns": {
+      "order_item_id": "integer",
+      "order_id": "integer",
+      "product_id": "integer",
+      "quantity": "integer",
+      "unit_price": "numeric(12,2)",
+      "discount_amount": "numeric(12,2)",
+      "net_item_amount": "numeric",
+      "order_purchase_time": "timestamp without time zone",
+      "order_status": "character varying",
+      "dq_nonpositive_quantity": "boolean",
+      "dq_negative_amount": "boolean",
+      "dq_discount_exceeds_gross": "boolean",
+      "dq_unknown_order_status": "boolean",
+      "dq_invalid_order_time": "boolean"
+    }
+  }
+}
