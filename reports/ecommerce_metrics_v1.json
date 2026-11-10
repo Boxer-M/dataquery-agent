@@ -1,0 +1,731 @@
+{
+  "version": "1.0.0",
+  "executed_at_utc": "2026-11-10T12:20:46.425139+00:00",
+  "transaction_read_only": "on",
+  "profile": {
+    "columns": [
+      {
+        "table_name": "categories",
+        "fields": {
+          "category_id": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "NO",
+            "precision": 32
+          },
+          "category_name": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "parent_category_id": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "YES",
+            "precision": 32
+          }
+        }
+      },
+      {
+        "table_name": "customers",
+        "fields": {
+          "city": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "email": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "country": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "last_name": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "first_name": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "customer_id": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "NO",
+            "precision": 32
+          },
+          "signup_date": {
+            "type": "date",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "loyalty_tier": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "YES",
+            "precision": null
+          },
+          "marketing_opt_in": {
+            "type": "boolean",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          }
+        }
+      },
+      {
+        "table_name": "order_items",
+        "fields": {
+          "order_id": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "NO",
+            "precision": 32
+          },
+          "quantity": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "NO",
+            "precision": 32
+          },
+          "product_id": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "NO",
+            "precision": 32
+          },
+          "unit_price": {
+            "type": "numeric",
+            "scale": 2,
+            "nullable": "NO",
+            "precision": 12
+          },
+          "order_item_id": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "NO",
+            "precision": 32
+          },
+          "discount_amount": {
+            "type": "numeric",
+            "scale": 2,
+            "nullable": "NO",
+            "precision": 12
+          }
+        }
+      },
+      {
+        "table_name": "orders",
+        "fields": {
+          "status": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "channel": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "order_id": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "NO",
+            "precision": 32
+          },
+          "ordered_at": {
+            "type": "timestamp without time zone",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "shipped_at": {
+            "type": "timestamp without time zone",
+            "scale": null,
+            "nullable": "YES",
+            "precision": null
+          },
+          "coupon_code": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "YES",
+            "precision": null
+          },
+          "customer_id": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "NO",
+            "precision": 32
+          },
+          "shipping_country": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          }
+        }
+      },
+      {
+        "table_name": "payments",
+        "fields": {
+          "amount": {
+            "type": "numeric",
+            "scale": 2,
+            "nullable": "NO",
+            "precision": 12
+          },
+          "method": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "status": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "paid_at": {
+            "type": "timestamp without time zone",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "order_id": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "NO",
+            "precision": 32
+          },
+          "payment_id": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "NO",
+            "precision": 32
+          },
+          "failure_reason": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "YES",
+            "precision": null
+          }
+        }
+      },
+      {
+        "table_name": "products",
+        "fields": {
+          "sku": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "unit_cost": {
+            "type": "numeric",
+            "scale": 2,
+            "nullable": "NO",
+            "precision": 12
+          },
+          "product_id": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "NO",
+            "precision": 32
+          },
+          "unit_price": {
+            "type": "numeric",
+            "scale": 2,
+            "nullable": "NO",
+            "precision": 12
+          },
+          "category_id": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "NO",
+            "precision": 32
+          },
+          "product_name": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "discontinued_at": {
+            "type": "date",
+            "scale": null,
+            "nullable": "YES",
+            "precision": null
+          }
+        }
+      },
+      {
+        "table_name": "returns",
+        "fields": {
+          "reason": {
+            "type": "character varying",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "restocked": {
+            "type": "boolean",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "return_id": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "NO",
+            "precision": 32
+          },
+          "returned_at": {
+            "type": "timestamp without time zone",
+            "scale": null,
+            "nullable": "NO",
+            "precision": null
+          },
+          "order_item_id": {
+            "type": "integer",
+            "scale": 0,
+            "nullable": "NO",
+            "precision": 32
+          },
+          "refund_amount": {
+            "type": "numeric",
+            "scale": 2,
+            "nullable": "NO",
+            "precision": 12
+          }
+        }
+      }
+    ],
+    "keys": [
+      {
+        "table_name": "categories",
+        "rows": 24,
+        "invalid_keys": 0
+      },
+      {
+        "table_name": "products",
+        "rows": 2000,
+        "invalid_keys": 0
+      },
+      {
+        "table_name": "returns",
+        "rows": 12000,
+        "invalid_keys": 0
+      },
+      {
+        "table_name": "customers",
+        "rows": 12000,
+        "invalid_keys": 0
+      },
+      {
+        "table_name": "orders",
+        "rows": 90000,
+        "invalid_keys": 0
+      },
+      {
+        "table_name": "payments",
+        "rows": 95000,
+        "invalid_keys": 0
+      },
+      {
+        "table_name": "order_items",
+        "rows": 215000,
+        "invalid_keys": 0
+      }
+    ],
+    "orphans": [
+      {
+        "relation": "categories.parent_category_id",
+        "orphans": 0
+      },
+      {
+        "relation": "products.category_id",
+        "orphans": 0
+      },
+      {
+        "relation": "orders.customer_id",
+        "orphans": 0
+      },
+      {
+        "relation": "order_items.product_id",
+        "orphans": 0
+      },
+      {
+        "relation": "order_items.order_id",
+        "orphans": 0
+      },
+      {
+        "relation": "payments.order_id",
+        "orphans": 0
+      },
+      {
+        "relation": "returns.order_item_id",
+        "orphans": 0
+      }
+    ],
+    "event_times": [
+      {
+        "field": "products.discontinued_at",
+        "first_event": "2023-01-03",
+        "last_event": "2025-12-25",
+        "nulls": 1847,
+        "nonfinite": 0
+      },
+      {
+        "field": "returns.returned_at",
+        "first_event": "2023-01-01 11:56:26",
+        "last_event": "2025-12-31 22:52:37",
+        "nulls": 0,
+        "nonfinite": 0
+      },
+      {
+        "field": "customers.signup_date",
+        "first_event": "2023-01-01",
+        "last_event": "2025-12-31",
+        "nulls": 0,
+        "nonfinite": 0
+      },
+      {
+        "field": "orders.ordered_at",
+        "first_event": "2023-01-01 01:38:09",
+        "last_event": "2025-12-31 23:39:43",
+        "nulls": 0,
+        "nonfinite": 0
+      },
+      {
+        "field": "orders.shipped_at",
+        "first_event": "2023-01-01 13:37:49",
+        "last_event": "2026-01-04 18:28:00",
+        "nulls": 10769,
+        "nonfinite": 0
+      },
+      {
+        "field": "payments.paid_at",
+        "first_event": "2023-01-01 01:38:09",
+        "last_event": "2025-12-31 23:39:43",
+        "nulls": 0,
+        "nonfinite": 0
+      }
+    ],
+    "money": [
+      {
+        "field": "products.unit_price",
+        "minimum": "2.63",
+        "maximum": "219.50",
+        "nulls": 0,
+        "negative": 0,
+        "nonfinite": 0
+      },
+      {
+        "field": "products.unit_cost",
+        "minimum": "1.21",
+        "maximum": "152.26",
+        "nulls": 0,
+        "negative": 0,
+        "nonfinite": 0
+      },
+      {
+        "field": "returns.refund_amount",
+        "minimum": "3.21",
+        "maximum": "900.50",
+        "nulls": 0,
+        "negative": 0,
+        "nonfinite": 0
+      },
+      {
+        "field": "payments.amount",
+        "minimum": "0.00",
+        "maximum": "1201.33",
+        "nulls": 0,
+        "negative": 0,
+        "nonfinite": 0
+      },
+      {
+        "field": "order_items.unit_price",
+        "minimum": "2.24",
+        "maximum": "231.90",
+        "nulls": 0,
+        "negative": 0,
+        "nonfinite": 0
+      },
+      {
+        "field": "order_items.discount_amount",
+        "minimum": "0.00",
+        "maximum": "38.57",
+        "nulls": 0,
+        "negative": 0,
+        "nonfinite": 0
+      }
+    ],
+    "order_statuses": [
+      {
+        "status": "cancelled",
+        "rows": 5407
+      },
+      {
+        "status": "delivered",
+        "rows": 64897
+      },
+      {
+        "status": "processing",
+        "rows": 5362
+      },
+      {
+        "status": "returned",
+        "rows": 4399
+      },
+      {
+        "status": "shipped",
+        "rows": 9935
+      }
+    ],
+    "payment_statuses": [
+      {
+        "status": "captured",
+        "rows": 89748,
+        "amount": "8998225.89"
+      },
+      {
+        "status": "failed",
+        "rows": 5252,
+        "amount": "517197.15"
+      }
+    ],
+    "channels": [
+      {
+        "channel": "mobile",
+        "rows": 27978
+      },
+      {
+        "channel": "partner",
+        "rows": 6325
+      },
+      {
+        "channel": "phone",
+        "rows": 3499
+      },
+      {
+        "channel": "web",
+        "rows": 52198
+      }
+    ],
+    "payment_methods": [
+      {
+        "method": "bank_transfer",
+        "rows": 8577
+      },
+      {
+        "method": "card",
+        "rows": 64212
+      },
+      {
+        "method": "gift_card",
+        "rows": 4872
+      },
+      {
+        "method": "paypal",
+        "rows": 17339
+      }
+    ],
+    "multiplicity": [
+      {
+        "multi_item_orders": 60227,
+        "multi_payment_orders": 5230,
+        "multi_return_items": 0
+      }
+    ],
+    "return_anomalies": [
+      {
+        "before_order": 5962,
+        "above_item_net": 1849
+      }
+    ],
+    "other_anomalies": [
+      {
+        "shipping_before_order": 0,
+        "payment_before_order": 0,
+        "invalid_item_amount": 0
+      }
+    ],
+    "fanout": [
+      {
+        "joined_rows": 227035,
+        "inflated_item_net": "9515423.04",
+        "inflated_captured_amount": "29047100.55",
+        "inflated_return_amount": "526408.81"
+      }
+    ],
+    "constraints": [
+      {
+        "table_name": "categories",
+        "kind": "p",
+        "definition": "PRIMARY KEY (category_id)"
+      },
+      {
+        "table_name": "customers",
+        "kind": "p",
+        "definition": "PRIMARY KEY (customer_id)"
+      },
+      {
+        "table_name": "order_items",
+        "kind": "f",
+        "definition": "FOREIGN KEY (order_id) REFERENCES ods.orders(order_id)"
+      },
+      {
+        "table_name": "order_items",
+        "kind": "f",
+        "definition": "FOREIGN KEY (product_id) REFERENCES ods.products(product_id)"
+      },
+      {
+        "table_name": "order_items",
+        "kind": "p",
+        "definition": "PRIMARY KEY (order_item_id)"
+      },
+      {
+        "table_name": "orders",
+        "kind": "f",
+        "definition": "FOREIGN KEY (customer_id) REFERENCES ods.customers(customer_id)"
+      },
+      {
+        "table_name": "orders",
+        "kind": "p",
+        "definition": "PRIMARY KEY (order_id)"
+      },
+      {
+        "table_name": "payments",
+        "kind": "f",
+        "definition": "FOREIGN KEY (order_id) REFERENCES ods.orders(order_id)"
+      },
+      {
+        "table_name": "payments",
+        "kind": "p",
+        "definition": "PRIMARY KEY (payment_id)"
+      },
+      {
+        "table_name": "products",
+        "kind": "f",
+        "definition": "FOREIGN KEY (category_id) REFERENCES ods.categories(category_id)"
+      },
+      {
+        "table_name": "products",
+        "kind": "p",
+        "definition": "PRIMARY KEY (product_id)"
+      },
+      {
+        "table_name": "returns",
+        "kind": "f",
+        "definition": "FOREIGN KEY (order_item_id) REFERENCES ods.order_items(order_item_id)"
+      },
+      {
+        "table_name": "returns",
+        "kind": "p",
+        "definition": "PRIMARY KEY (return_id)"
+      }
+    ],
+    "optional_dimension_nulls": [
+      {
+        "missing_loyalty_tier": 5296,
+        "active_product_date_null": 1847,
+        "missing_coupon": 70285,
+        "root_categories": 6
+      }
+    ]
+  },
+  "windows": {
+    "full": {
+      "start": "2023-01-01",
+      "end": "2026-01-01",
+      "as_of": "2026-01-01",
+      "values": {
+        "order_count": 90000,
+        "item_net_sales_amount": "9024059.76",
+        "payment_attempt_count": 95000,
+        "captured_payment_amount": "8998225.89",
+        "payment_attempt_success_rate": "0.94471579",
+        "return_record_count": 12000,
+        "return_record_amount": "498266.03",
+        "item_return_rate": "0.05581395"
+      },
+      "components": {
+        "payment_attempt_success_rate": {
+          "numerator": 89748,
+          "denominator": 95000
+        },
+        "item_return_rate": {
+          "numerator": 12000,
+          "denominator": 215000
+        }
+      }
+    },
+    "january_2025": {
+      "start": "2025-01-01",
+      "end": "2025-02-01",
+      "as_of": "2026-01-01",
+      "values": {
+        "order_count": 2312,
+        "item_net_sales_amount": "231920.18",
+        "payment_attempt_count": 2438,
+        "captured_payment_amount": "230864.57",
+        "payment_attempt_success_rate": "0.94503692",
+        "return_record_count": 329,
+        "return_record_amount": "12833.47",
+        "item_return_rate": "0.05669917"
+      },
+      "components": {
+        "payment_attempt_success_rate": {
+          "numerator": 2304,
+          "denominator": 2438
+        },
+        "item_return_rate": {
+          "numerator": 314,
+          "denominator": 5538
+        }
+      }
+    },
+    "empty": {
+      "start": "2030-01-01",
+      "end": "2030-02-01",
+      "as_of": "2030-02-01",
+      "values": {
+        "order_count": 0,
+        "item_net_sales_amount": "0",
+        "payment_attempt_count": 0,
+        "captured_payment_amount": "0",
+        "payment_attempt_success_rate": null,
+        "return_record_count": 0,
+        "return_record_amount": "0",
+        "item_return_rate": null
+      },
+      "components": {
+        "payment_attempt_success_rate": {
+          "numerator": 0,
+          "denominator": 0
+        },
+        "item_return_rate": {
+          "numerator": 0,
+          "denominator": 0
+        }
+      }
+    }
+  }
+}

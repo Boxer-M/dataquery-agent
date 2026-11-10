@@ -1,0 +1,170 @@
+{
+  "version": "1.0.0",
+  "dataset": "sqlshed",
+  "source_kind": "官方 CC0 合成练习数据",
+  "defaults": {
+    "time_window": "[start, end)，源无时区时间；不转换为 UTC 或北京时间",
+    "observation": "item_return_rate 要求 as_of >= end；仅表示当前快照中事件时间早于截止的已知记录，没有数据入库时间，无法重建历史可知状态",
+    "currency": "源无币种字段，仅能称源金额单位，不假定人民币或美元",
+    "null_and_anomalies": "PK/关系/必填时间/必填金额异常阻止 Ground Truth 验收，不将缺失金额补零；可空维度保留未知组；业务异常原样纳入并单独计数，不删行、不去重源主键、不截断退款",
+    "aggregation": "不同事实先各自聚合再连接；SUM(DISTINCT amount) 不能代替按主键控制粒度；比率跨期汇总必须合并分子分母，不能平均比率"
+  },
+  "metrics": [
+    {
+      "metric_id": "order_count",
+      "name_zh": "订单量",
+      "definition": "时间窗内创建的订单记录数，含取消订单。",
+      "source_fields": [
+        "ods.orders.order_id",
+        "ods.orders.ordered_at"
+      ],
+      "grain": "一行一个 order_id",
+      "formula": "COUNT(*)",
+      "event_time": "orders.ordered_at",
+      "status_filter": "不筛订单状态",
+      "deduplication": "order_id 唯一；不按客户去重",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；空时间窗计数/金额返回 0。",
+      "availability": "可用",
+      "limitations": "不是付款订单数、有效成交单数或商品件数。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#order_count"
+    },
+    {
+      "metric_id": "item_net_sales_amount",
+      "name_zh": "折扣后商品销售金额",
+      "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+      "source_fields": [
+        "ods.order_items.order_item_id",
+        "ods.order_items.order_id",
+        "ods.order_items.quantity",
+        "ods.order_items.unit_price",
+        "ods.order_items.discount_amount",
+        "ods.orders.ordered_at"
+      ],
+      "grain": "一行一个 order_item_id",
+      "formula": "SUM(quantity * unit_price - discount_amount)",
+      "event_time": "orders.ordered_at（明细继承订单时间）",
+      "status_filter": "不筛订单状态",
+      "deduplication": "order_item_id 唯一；只 JOIN 唯一订单",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；空时间窗计数/金额返回 0。",
+      "availability": "可用（记录金额）",
+      "limitations": "discount_amount 按整行折扣扣一次；不是成功支付额、确认收入或扣退款后的收入；不用商品现价。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#item_net_sales_amount"
+    },
+    {
+      "metric_id": "payment_attempt_count",
+      "name_zh": "支付尝试次数",
+      "definition": "支付事件时间窗内的全部尝试记录，包括失败及重试。",
+      "source_fields": [
+        "ods.payments.payment_id",
+        "ods.payments.paid_at",
+        "ods.payments.status"
+      ],
+      "grain": "一行一个 payment_id",
+      "formula": "COUNT(*)",
+      "event_time": "payments.paid_at（失败记录也使用该源时间）",
+      "status_filter": "全部支付状态",
+      "deduplication": "payment_id 唯一；同 order_id 重试不去重",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；空时间窗计数/金额返回 0。",
+      "availability": "可用",
+      "limitations": "不是尝试支付的订单数；失败记录的 paid_at 仅作源事件时间，不证明到账。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#payment_attempt_count"
+    },
+    {
+      "metric_id": "captured_payment_amount",
+      "name_zh": "成功支付金额",
+      "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+      "source_fields": [
+        "ods.payments.payment_id",
+        "ods.payments.amount",
+        "ods.payments.paid_at",
+        "ods.payments.status"
+      ],
+      "grain": "一行一个 payment_id",
+      "formula": "SUM(amount) FILTER (WHERE status = 'captured')",
+      "event_time": "payments.paid_at",
+      "status_filter": "payments.status = 'captured'；不筛订单状态",
+      "deduplication": "payment_id 唯一；不按订单取最大或最后一次",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；空时间窗计数/金额返回 0。",
+      "availability": "可用（状态口径）",
+      "limitations": "captured 为源成功状态代理；不是银行核销到账证明，不扣退货；同单多笔成功均保留。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#captured_payment_amount"
+    },
+    {
+      "metric_id": "payment_attempt_success_rate",
+      "name_zh": "支付成功率",
+      "definition": "同一支付事件时间窗内成功尝试数除以全部尝试数。",
+      "source_fields": [
+        "ods.payments.payment_id",
+        "ods.payments.paid_at",
+        "ods.payments.status"
+      ],
+      "grain": "支付尝试",
+      "formula": "COUNT(captured attempts) / COUNT(all attempts)",
+      "event_time": "payments.paid_at",
+      "status_filter": "分子 captured；分母全部状态",
+      "deduplication": "按 payment_id 计数；重试属于独立尝试",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；零分母返回 NULL，结果为 0..1 比值，保留 8 位小数。",
+      "availability": "可用",
+      "limitations": "不是订单最终支付成功率；新增状态仍计入分母并触发枚举审查。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#payment_attempt_success_rate"
+    },
+    {
+      "metric_id": "return_record_count",
+      "name_zh": "退货记录数",
+      "definition": "按退货事件时间统计源退货记录。",
+      "source_fields": [
+        "ods.returns.return_id",
+        "ods.returns.returned_at"
+      ],
+      "grain": "一行一个 return_id",
+      "formula": "COUNT(*)",
+      "event_time": "returns.returned_at",
+      "status_filter": "无退货状态字段；不筛订单状态或 restocked",
+      "deduplication": "return_id 唯一；不按订单或商品去重",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；空时间窗计数/金额返回 0。",
+      "availability": "可用（记录口径）",
+      "limitations": "不是退货件数或退货订单数；没有退货数量字段。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#return_record_count"
+    },
+    {
+      "metric_id": "return_record_amount",
+      "name_zh": "退货记录金额",
+      "definition": "按退货事件时间合计源 refund_amount。",
+      "source_fields": [
+        "ods.returns.return_id",
+        "ods.returns.refund_amount",
+        "ods.returns.returned_at"
+      ],
+      "grain": "一行一个 return_id",
+      "formula": "SUM(refund_amount)",
+      "event_time": "returns.returned_at",
+      "status_filter": "无退款成功状态；不筛 restocked",
+      "deduplication": "return_id 唯一；多条记录分别保留",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；空时间窗计数/金额返回 0。",
+      "availability": "可用（记录金额）",
+      "limitations": "无退款完成时间及支付流水关联，不能称已完成退款额；超明细金额不截断。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#return_record_amount"
+    },
+    {
+      "metric_id": "item_return_rate",
+      "name_zh": "商品明细退货率",
+      "definition": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。",
+      "source_fields": [
+        "ods.order_items.order_item_id",
+        "ods.order_items.order_id",
+        "ods.orders.ordered_at",
+        "ods.returns.order_item_id",
+        "ods.returns.returned_at"
+      ],
+      "grain": "订单下单批次中的唯一商品明细",
+      "formula": "COUNT(items WHERE EXISTS return before as_of) / COUNT(cohort items)",
+      "event_time": "按 orders.ordered_at 归属批次；returns.returned_at < as_of 为观察截止",
+      "status_filter": "全部订单状态；不筛退货原因或 restocked",
+      "deduplication": "EXISTS 保证一条明细最多贡献一次分子；不是退货记录数比明细数",
+      "null_and_anomalies": "继承 defaults.null_and_anomalies；零分母返回 NULL，结果为 0..1 比值，保留 8 位小数。",
+      "availability": "有条件可用（源记录关联率）",
+      "limitations": "包含退货早于下单的源异常；不表示有效售后发生率，不按件数加权；新批次观察期较短不可直接排名。",
+      "standard_sql": "sql/metrics/ecommerce_v1.sql#item_return_rate"
+    }
+  ]
+}
