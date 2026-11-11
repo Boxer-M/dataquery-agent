@@ -14,6 +14,8 @@ DataQuery Agent（智能问数系统）是一个用于学习和求职展示的�
 
 经营分析可将中文问题拆成多个标准指标请求，支持跨期变化、排行和阈值筛选。见 [经营查询规划](docs/warehouse/BUSINESS_QUERY_PLANNING.md)。
 
+结构化业务需求可检查标准指标、明细候选及禁止路径。见 [元数据与能力判断](docs/warehouse/METADATA_CAPABILITY.md)。
+
 ## 当前状态
 
 当前已完成：

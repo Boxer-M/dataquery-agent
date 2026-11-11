@@ -1,0 +1,294 @@
+{
+  "version": "1.0.0",
+  "contracts": [
+    "docs/warehouse/TABLE_DESIGN.md",
+    "docs/warehouse/DWS_CONTRACTS.md",
+    "docs/warehouse/ADS_CONTRACTS.md",
+    "docs/warehouse/QUALITY_AND_ACCEPTANCE.md"
+  ],
+  "event_times": {
+    "dwd.order_fact": {
+      "order_time": "ordered_at"
+    },
+    "dwd.order_item_fact": {
+      "order_time": "order_purchase_time"
+    },
+    "dwd.payment_attempt_fact": {
+      "payment_attempt_time": "paid_at"
+    },
+    "dwd.return_record_fact": {
+      "return_record_time": "returned_at"
+    },
+    "dws.order_day": {
+      "order_time": "order_date"
+    },
+    "dws.product_sales_day": {
+      "order_time": "order_date"
+    },
+    "dws.payment_day": {
+      "payment_attempt_time": "payment_date"
+    },
+    "dws.return_day": {
+      "return_record_time": "return_date"
+    },
+    "dws.item_return_cohort_day": {
+      "order_time": "order_date",
+      "observation_cutoff": "as_of"
+    },
+    "dws.customer_order_day": {
+      "order_time": "order_date"
+    },
+    "ads.business_overview_day": {
+      "order_time": "event_date",
+      "payment_attempt_time": "event_date",
+      "return_record_time": "event_date"
+    },
+    "ads.payment_anomaly_order": {
+      "order_time": "ordered_at",
+      "observation_cutoff": "as_of"
+    },
+    "ads.product_return_cohort": {
+      "order_time": "order_date",
+      "observation_cutoff": "as_of"
+    }
+  },
+  "logical_joins": [
+    {
+      "from": "dwd.order_item_fact",
+      "to": "dwd.order_fact",
+      "from_column": "order_id",
+      "to_column": "order_id"
+    },
+    {
+      "from": "dwd.order_item_fact",
+      "to": "dim.product",
+      "from_column": "product_id",
+      "to_column": "product_id"
+    },
+    {
+      "from": "dwd.return_record_fact",
+      "to": "dwd.order_item_fact",
+      "from_column": "order_item_id",
+      "to_column": "order_item_id"
+    },
+    {
+      "from": "dws.product_sales_day",
+      "to": "dim.product",
+      "from_column": "product_id",
+      "to_column": "product_id"
+    },
+    {
+      "from": "dws.return_day",
+      "to": "dim.product",
+      "from_column": "product_id",
+      "to_column": "product_id"
+    },
+    {
+      "from": "dws.item_return_cohort_day",
+      "to": "dim.product",
+      "from_column": "product_id",
+      "to_column": "product_id"
+    },
+    {
+      "from": "dws.customer_order_day",
+      "to": "dim.customer",
+      "from_column": "customer_id",
+      "to_column": "customer_id"
+    },
+    {
+      "from": "ads.product_return_cohort",
+      "to": "dim.product",
+      "from_column": "product_id",
+      "to_column": "product_id"
+    }
+  ],
+  "quality": {
+    "dwd.payment_attempt_fact": [
+      "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+    ],
+    "dwd.return_record_fact": [
+      "保留早于下单、金额超出明细净额和负金额的退货记录；退货事件不代表退款到账。"
+    ],
+    "dws.payment_day": [
+      "支付尝试可能早于下单，金额与状态采用源记录口径。"
+    ],
+    "dws.return_day": [
+      "退货事件不代表退款到账，源记录的时间与金额异常保留。"
+    ],
+    "dws.item_return_cohort_day": [
+      "包含源退货异常；分子按有退货的不同商品明细计数，固定观察截止。"
+    ],
+    "dim.product": [
+      "品类关联采用当前快照属性。"
+    ]
+  },
+  "details": {
+    "payment_failure_then_capture": {
+      "source": "dwd.payment_attempt_fact",
+      "grain": [
+        "order_id"
+      ],
+      "dimensions": {
+        "order_id": "dwd.payment_attempt_fact.order_id",
+        "channel": "dwd.order_fact.channel"
+      },
+      "fields": {
+        "dwd.payment_attempt_fact": [
+          "payment_id",
+          "order_id",
+          "paid_at",
+          "status"
+        ]
+      },
+      "event_time": "payment_attempt_time",
+      "constraints": [
+        "在同一订单内，窗口中存在 failed 后严格较晚的 captured，两个事件均须在请求窗口内。",
+        "同一 paid_at 不推断先后；按订单去重，可用存在性检查，不能直接对尝试自连接计数。"
+      ],
+      "rejected_sources": {
+        "dws.payment_day": "日聚合丢失订单标识和尝试顺序。",
+        "ads.payment_anomaly_order": "首次和末次时间及失败次数不能确定失败事件与成功事件的顺序。"
+      }
+    },
+    "sales_by_order": {
+      "metric_id": "item_net_sales_amount",
+      "source": "dwd.order_item_fact",
+      "grain": [
+        "order_id"
+      ],
+      "dimensions": {
+        "order_id": "dwd.order_item_fact.order_id",
+        "channel": "dwd.order_fact.channel",
+        "category": "dim.product.category_id"
+      },
+      "fields": {
+        "dwd.order_item_fact": [
+          "order_id",
+          "order_purchase_time",
+          "net_item_amount"
+        ]
+      },
+      "event_time": "order_time",
+      "constraints": [
+        "按订单聚合明细净额，保留所有订单状态；无商品明细的订单不属于此明细结果。"
+      ],
+      "rejected_sources": {
+        "dws.product_sales_day": "日渠道商品粒度不保留订单标识。",
+        "ads.business_overview_day": "日渠道概览不保留订单标识。"
+      }
+    }
+  },
+  "unsupported": {
+    "browse_conversion_rate": "现有数仓没有浏览事件或可匹配的访客标识，无法定义浏览转化分母。",
+    "refund_settled_at": "退货记录只有 returned_at，没有退款到账事件或到账时间。",
+    "payment_amount_by_category": "支付尝试关联订单，订单可有多个商品品类；没有已批准的支付分摊规则，直接关联会重复金额。"
+  },
+  "model_fields": {
+    "dim.customer": {
+      "dimensions": [
+        "customer_id",
+        "country",
+        "loyalty_tier"
+      ]
+    },
+    "dim.product": {
+      "dimensions": [
+        "product_id",
+        "category_id"
+      ]
+    },
+    "dim.category": {
+      "dimensions": [
+        "category_id",
+        "parent_category_id"
+      ]
+    },
+    "dim.channel": {
+      "dimensions": [
+        "channel_code"
+      ]
+    },
+    "dim.date": {
+      "dimensions": [
+        "date_value"
+      ]
+    },
+    "dwd.order_fact": {
+      "dimensions": [
+        "order_id",
+        "channel",
+        "customer_id",
+        "status"
+      ]
+    },
+    "dwd.order_item_fact": {
+      "dimensions": [
+        "order_id",
+        "product_id",
+        "order_status"
+      ],
+      "measures": [
+        "quantity",
+        "net_item_amount"
+      ]
+    },
+    "dwd.payment_attempt_fact": {
+      "dimensions": [
+        "order_id",
+        "method",
+        "status"
+      ],
+      "measures": [
+        "amount"
+      ]
+    },
+    "dwd.return_record_fact": {
+      "dimensions": [
+        "order_id",
+        "product_id",
+        "reason"
+      ],
+      "measures": [
+        "refund_amount"
+      ]
+    },
+    "ads.business_overview_day": {
+      "dimensions": [
+        "event_date",
+        "channel"
+      ],
+      "measures": [
+        "order_count",
+        "item_net_sales_amount",
+        "captured_payment_amount",
+        "return_record_amount"
+      ]
+    },
+    "ads.payment_anomaly_order": {
+      "dimensions": [
+        "order_id",
+        "channel",
+        "order_status"
+      ],
+      "measures": [
+        "payment_attempt_count",
+        "failed_attempt_count",
+        "captured_payment_amount"
+      ]
+    },
+    "ads.product_return_cohort": {
+      "dimensions": [
+        "order_date",
+        "channel",
+        "product_id",
+        "category_id",
+        "as_of"
+      ],
+      "measures": [
+        "cohort_item_count",
+        "returned_item_count",
+        "item_return_rate"
+      ]
+    }
+  }
+}
