@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "today": "2025-03-10",
+  "cases": [
+    {"id":"catalog_name","question":"2025年1月的订单量","intent":{"metrics":["订单量"],"time":"2025年1月"},"status":"ready","request":{"metric_id":"order_count","start_date":"2025-01-01","end_date":"2025-02-01"}},
+    {"id":"synonym","question":"去年有多少下单笔数","intent":{"metrics":["下单笔数"],"time":"去年"},"status":"ready","request":{"metric_id":"order_count","start_date":"2024-01-01","end_date":"2025-01-01"}},
+    {"id":"explicit_range","question":"从2025-01-01到2025-01-31的订单量","intent":{"metrics":["订单量"],"time":"从2025-01-01到2025-01-31"},"status":"ready","request":{"metric_id":"order_count","start_date":"2025-01-01","end_date":"2025-02-01"}},
+    {"id":"multiple_periods","question":"去年和今年的订单量","intent":{"metrics":["订单量"],"time":"去年"},"status":"clarify","code":"ambiguous_time"},
+    {"id":"ambiguous_sales","question":"上月销售额是多少","intent":{"metrics":["销售额"],"time":"上月"},"status":"clarify","code":"ambiguous_metric"},
+    {"id":"ambiguous_refund","question":"上月退款金额是多少","intent":{"metrics":["退款金额"],"time":"上月"},"status":"clarify","code":"ambiguous_metric"},
+    {"id":"missing_time","question":"订单量是多少","intent":{"metrics":["订单量"]},"status":"clarify","code":"missing_time"},
+    {"id":"channel","question":"上个月网页端的订单量，按月统计","intent":{"metrics":["订单量"],"time":"上个月","groups":["按月"],"filters":["网页端"]},"status":"ready","request":{"metric_id":"order_count","start_date":"2025-02-01","end_date":"2025-03-01","group_by":["month"],"filters":{"channel":"web"}}},
+    {"id":"category","question":"2025年1月品类ID 12的折扣后商品销售金额，按商品统计","intent":{"metrics":["折扣后商品销售金额"],"time":"2025年1月","groups":["按商品"],"filters":["品类ID 12"]},"status":"ready","request":{"metric_id":"item_net_sales_amount","start_date":"2025-01-01","end_date":"2025-02-01","group_by":["product"],"filters":{"category":12}}},
+    {"id":"unsupported","question":"上月已完成退款金额","intent":{"metrics":["已完成退款金额"],"time":"上月"},"status":"unsupported","code":"unsupported"},
+    {"id":"unverified","question":"上月有支付尝试的订单数","intent":{"metrics":["有支付尝试的订单数"],"time":"上月"},"status":"unsupported","code":"metric_unverified"},
+    {"id":"invalid_axis","question":"上月订单量按商品统计","intent":{"metrics":["订单量"],"time":"上月","groups":["按商品"]},"status":"unsupported","code":"unsupported_grouping"},
+    {"id":"complex","question":"对比上月订单量和成功支付金额并解释变化","intent":{"metrics":["订单量","成功支付金额"],"time":"上月","type":"complex"},"status":"unsupported","code":"complex_request"},
+    {"id":"multiple_metrics_omitted","question":"上月订单量和成功支付金额","intent":{"metrics":["订单量"],"time":"上月"},"status":"unsupported","code":"complex_request"},
+    {"id":"cutoff","question":"2025年1月的商品明细退货率","intent":{"metrics":["商品明细退货率"],"time":"2025年1月"},"status":"ready","request":{"metric_id":"item_return_rate","start_date":"2025-01-01","end_date":"2025-02-01","observation_cutoff":"2026-01-01"}},
+    {"id":"out_of_coverage","question":"2026年1月订单量","intent":{"metrics":["订单量"],"time":"2026年1月"},"status":"unsupported","code":"outside_verified_window"},
+    {"id":"model_invalid","question":"2025年1月订单量","raw":"SELECT * FROM orders","status":"error","code":"invalid_model_output"},
+    {"id":"model_invented","question":"2025年1月订单量","intent":{"metrics":["成功支付金额"],"time":"2025年1月"},"status":"error","code":"invalid_model_output"},
+    {"id":"tool_error","question":"2025年1月订单量","intent":{"metrics":["订单量"],"time":"2025年1月"},"tool_error":true,"status":"error","code":"query_timeout"}
+  ]
+}
