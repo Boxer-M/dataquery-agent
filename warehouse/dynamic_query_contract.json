@@ -1,0 +1,115 @@
+{
+  "version": "1.0.0",
+  "operations": {
+    "attempts_by_order": {
+      "source": "dwd.payment_attempt_fact",
+      "fields": {
+        "dwd.payment_attempt_fact": [
+          "order_id",
+          "paid_at"
+        ]
+      },
+      "event_time": "payment_attempt_time",
+      "time_column": "paid_at",
+      "grain": [
+        "order_id"
+      ],
+      "result_schema": [
+        [
+          "order_id",
+          "integer"
+        ],
+        [
+          "attempt_count",
+          "integer"
+        ]
+      ],
+      "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+      "joins": []
+    },
+    "attempt_rank_by_channel": {
+      "source": "dwd.payment_attempt_fact",
+      "fields": {
+        "dwd.payment_attempt_fact": [
+          "order_id",
+          "paid_at"
+        ],
+        "dwd.order_fact": [
+          "order_id",
+          "channel"
+        ]
+      },
+      "event_time": "payment_attempt_time",
+      "time_column": "paid_at",
+      "grain": [
+        "channel",
+        "order_id"
+      ],
+      "result_schema": [
+        [
+          "channel",
+          "text"
+        ],
+        [
+          "order_id",
+          "integer"
+        ],
+        [
+          "attempt_count",
+          "integer"
+        ],
+        [
+          "rank",
+          "integer"
+        ]
+      ],
+      "definition": "先按渠道和订单汇总支付尝试数，各渠道按次数降序、订单号升序取前 N。",
+      "joins": [
+        [
+          "dwd.payment_attempt_fact",
+          "dwd.order_fact",
+          "order_id",
+          "order_id"
+        ]
+      ]
+    },
+    "return_orders_by_category": {
+      "source": "dwd.return_record_fact",
+      "fields": {
+        "dwd.return_record_fact": [
+          "order_id",
+          "product_id",
+          "returned_at"
+        ],
+        "dim.product": [
+          "product_id",
+          "category_id"
+        ]
+      },
+      "event_time": "return_record_time",
+      "time_column": "returned_at",
+      "grain": [
+        "category_id"
+      ],
+      "result_schema": [
+        [
+          "category_id",
+          "integer"
+        ],
+        [
+          "order_count",
+          "integer"
+        ]
+      ],
+      "definition": "按退货事件时间统计有退货记录的不同订单，每个当前品类内去重；跨品类不可相加。",
+      "joins": [
+        [
+          "dwd.return_record_fact",
+          "dim.product",
+          "product_id",
+          "product_id"
+        ]
+      ]
+    }
+  }
+}

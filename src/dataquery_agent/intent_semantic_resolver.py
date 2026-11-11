@@ -243,7 +243,7 @@ def gemini_generator(config, *, retry_once=False, include_usage=False, schema_fo
             )
             if include_usage:
                 usage = response.usage_metadata
-                return {"text": response.text, "usage": {
+                return {"text": response.text, "model": response.model_version or config["GEMINI_MODEL"], "usage": {
                     "prompt": getattr(usage, "prompt_token_count", None),
                     "output": getattr(usage, "candidates_token_count", None),
                     "total": getattr(usage, "total_token_count", None),
