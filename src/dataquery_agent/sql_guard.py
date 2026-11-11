@@ -32,19 +32,19 @@ ALLOWED_FUNCTION_NODES = frozenset(
 )
 
 
-def _validate_functions(statement: exp.Select) -> tuple[bool, str]:
+def _validate_functions(statement: exp.Select, allowed_functions) -> tuple[bool, str]:
     for function in statement.find_all(exp.Func):
         if isinstance(function.parent, exp.Dot):
             return False, "不允许带 Schema 的函数调用"
         if isinstance(function, exp.Anonymous):
             return False, f"不允许未知函数：{function.name}"
-        if type(function) not in ALLOWED_FUNCTION_NODES:
+        if type(function) not in allowed_functions:
             return False, f"函数不在白名单：{type(function).__name__.upper()}"
 
     return True, "函数通过白名单检查"
 
 
-def _validate_query_tables(statement: exp.Select) -> tuple[bool, str]:
+def _validate_query_tables(statement: exp.Select, allowed_tables, exact_tables) -> tuple[bool, str]:
     try:
         scopes = traverse_scope(statement)
         tables = []
@@ -67,13 +67,16 @@ def _validate_query_tables(statement: exp.Select) -> tuple[bool, str]:
             return False, "不允许跨数据库引用表"
         if not table.db:
             return False, "物理表必须显式指定 Schema"
-        if (table.db, table.name) not in ALLOWED_TABLES:
+        if (table.db, table.name) not in allowed_tables:
             return False, f"表 {table.db}.{table.name} 不在白名单"
 
+    if exact_tables and {(table.db, table.name) for table in tables} != allowed_tables:
+        return False, "模板物理来源与契约不一致"
     return True, "查询对象通过白名单检查"
 
 
-def validate_sql(sql: str) -> tuple[bool, str]:
+def validate_sql(sql: str, *, allowed_tables=ALLOWED_TABLES,
+                 allowed_functions=ALLOWED_FUNCTION_NODES, exact_tables=False) -> tuple[bool, str]:
     if not sql.strip():
         return False, "SQL 不能为空"
 
@@ -100,8 +103,8 @@ def validate_sql(sql: str) -> tuple[bool, str]:
     if statement.find(exp.Lock):
         return False, "不允许 FOR UPDATE 等锁定语义"
 
-    functions_allowed, reason = _validate_functions(statement)
+    functions_allowed, reason = _validate_functions(statement, allowed_functions)
     if not functions_allowed:
         return False, reason
 
-    return _validate_query_tables(statement)
+    return _validate_query_tables(statement, allowed_tables, exact_tables)

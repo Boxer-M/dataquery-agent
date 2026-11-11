@@ -18,6 +18,7 @@ from .business_query_planner import BusinessQueryPlanner
 from .business_results import RATIO_COMPONENT_METRICS, normalize_rows, with_precision
 from .capability_registry import CapabilityRegistry
 from .capability_resolver import CapabilityResolver
+from .detail_executor import DetailQueryExecutor
 from .intent_semantic_resolver import COMPLEX, GROUPS, MODIFIERS, SemanticResolver, gemini_generator, outcome, parse_intent
 from .intent_time import TIME, date_window
 from .metadata_service import MetadataService
@@ -30,7 +31,8 @@ INJECTION = re.compile(
     r"\b(?:select\s+.+?\s+from|drop\s+table|truncate\s+table|insert\s+into)\b",
     re.I | re.S,
 )
-SEQUENCE = re.compile(r"同(?:一|个)?订单.{0,20}失败.{0,10}后.{0,8}成功")
+SEQUENCE = re.compile(r"(?:同(?:一|个)?)?订单.{0,20}失败.{0,10}后.{0,8}成功(?:支付)?|先.{0,8}失败.{0,10}后.{0,8}成功.{0,10}订单")
+DETAIL_CHANNEL = re.compile(r"各渠道|每个渠道")
 ORDER_AXIS = re.compile(r"按订单(?:ID|号)?(?:统计|分组|汇总|查看)?(?=$|[\s，。！？、,.;?]|看|查|列)")
 CLOCK_HINTS = {
     "order_time": re.compile(r"下单的|下单时间|下单日期|下单日"),
@@ -41,9 +43,10 @@ TIME_TAIL = re.compile(r"季度|半年|截至|以来|之前|之后|以前|以后
 
 
 class UnifiedAgent:
-    def __init__(self, service, capability):
+    def __init__(self, service, capability, detail_executor=None):
         self.service = service
         self.capability = capability
+        self.detail_executor = detail_executor
         self.semantic = SemanticResolver(service)
         self.candidates = MetricCandidates(self.semantic)
         self.planner = BusinessQueryPlanner(service)
@@ -118,15 +121,22 @@ class UnifiedAgent:
         predicate = SEQUENCE.search(question) if analysis == "payment_failure_then_capture" else None
         try:
             raw = runtime.call("intent", intent_prompt(question, mentions, predicate.group() if predicate else None))
-            intent = parse_intent(raw, question)
+            intent = self.parse_detail_intent(raw, question, analysis) if analysis else parse_intent(raw, question)
         except (ValueError, TypeError, RecursionError):
             runtime.invalid_output()
             return outcome("error", "invalid_model_output", "模型提取的原文片段不符合约定。")
         intent["groups"] = self.grounded_groups(question, intent["groups"])
         if predicate:
-            intent["filters"] = [phrase for phrase in intent["filters"] if phrase != predicate.group()]
+            intent["filters"] = [
+                phrase for phrase in intent["filters"] if not (
+                    phrase in predicate.group()
+                    and (phrase == predicate.group() or re.fullmatch(
+                        r"先(?:支付)?失败(?:[，,、\s]*(?:后来|然后|后|再)(?:支付)?成功(?:支付)?)?"
+                        r"|(?:后来|然后|后|再)(?:支付)?成功(?:支付)?", phrase))
+                )
+            ]
         if analysis:
-            return self.detail(question, intent, analysis, frame, today)
+            return self.detail(question, intent, analysis, frame, trace, today)
         if intent["type"] == "complex":
             frame["task"] = "business"
             return self.business(question, runtime, frame, trace, today)
@@ -176,6 +186,17 @@ class UnifiedAgent:
                           f"{name}：{values or '无分组结果'}。{self.service.metrics[request['metric_id']]['definition']}"),
         }
 
+    @staticmethod
+    def parse_detail_intent(raw, question, analysis):
+        # The registered sequence already fixes the measure. Gemini may label it
+        # "订单数"; discard only that unused label, never a window or filter.
+        if analysis == "payment_failure_then_capture" and isinstance(raw, str) and len(raw) <= 8192:
+            intent = json.loads(raw)
+            if isinstance(intent, dict) and intent.get("metrics") == ["订单数"] and "订单数" not in question:
+                intent["metrics"] = []
+                raw = json.dumps(intent, ensure_ascii=False)
+        return parse_intent(raw, question)
+
     def grounded_groups(self, question, groups):
         detected = [match.group() for match in self.semantic.group_pattern.finditer(question)]
         return [next((match for match in detected if match.endswith(phrase)), phrase)
@@ -202,7 +223,7 @@ class UnifiedAgent:
             return "sales_by_order"
         return None
 
-    def detail(self, question, intent, analysis, frame, today):
+    def detail(self, question, intent, analysis, frame, trace, today):
         periods = [match.group() for match in TIME.finditer(question)]
         if len(periods) != 1 or intent["time"] != periods[0] or TIME_TAIL.search(TIME.sub("", question)):
             return outcome("clarify", "missing_time", "请选择一个完整的日期窗口。")
@@ -216,16 +237,42 @@ class UnifiedAgent:
             return outcome("unsupported", "unsupported_filter", "该明细契约未登记额外状态条件。")
         grouped_question = ORDER_AXIS.sub("", question) if analysis == "sales_by_order" else question
         phrases = [phrase for phrase in intent["groups"] if not (
-            analysis == "sales_by_order" and ORDER_AXIS.fullmatch(phrase))]
+            analysis == "sales_by_order" and (ORDER_AXIS.fullmatch(phrase) or phrase == "订单"))]
+        if DETAIL_CHANNEL.search(grouped_question):
+            grouped_question = DETAIL_CHANNEL.sub("按渠道", grouped_question)
+            phrases = ["按渠道" if DETAIL_CHANNEL.fullmatch(phrase) or phrase == "渠道" else phrase
+                       for phrase in phrases]
         groups = self.semantic.resolve_groups(grouped_question, phrases)
         filters = self.semantic.resolve_filters(question, intent["filters"])
         if groups is None or filters is None:
             return outcome("unsupported", "unsupported_detail_scope", "明细分组或过滤与已批准路径不一致。")
         if analysis == "sales_by_order":
             groups.insert(0, "order_id")
-        route = self.check_route({"analysis_id": analysis, "start_date": start.isoformat(),
-                                  "end_date": end.isoformat(), "group_by": groups, "filters": filters}, frame)
-        return self.route_outcome(route)
+        parameters = {"start_date": start.isoformat(), "end_date": end.isoformat(), "group_by": groups}
+        route = self.check_route({"analysis_id": analysis, **parameters, "filters": filters}, frame)
+        if (route["status"] != "DETAIL_QUERY" or self.detail_executor is None
+                or not self.detail_executor.supports(analysis, groups)):
+            return self.route_outcome(route)
+        result = self.detail_executor.execute_detail(analysis, parameters, route, trace)
+        trace["tools"].append(result["execution_trace"])
+        if result["status"] != "ok":
+            return result
+        if analysis == "payment_failure_then_capture":
+            count = sum(row["order_count"] for row in result["results"])
+            label = "已展示渠道合计" if result["truncated"] else "符合条件的订单共"
+            summary = f"{label} {count} 笔。"
+            if groups and result["results"]:
+                summary += "按渠道：" + "、".join(
+                    f"{row['channel']} {row['order_count']} 笔" for row in result["results"][:8]) + "。"
+        else:
+            summary = f"返回 {len(result['results'])} 行订单商品净额。"
+            if result["results"]:
+                first = result["results"][0]
+                summary += f"首行订单 {first['order_id']} 的该分组净额为 {first['net_amount']}。"
+        if result["truncated"]:
+            summary += "结果已达到行数上限，当前仅展示排序后的前 100 行。"
+        return {"status": "ok", "detail_result": result,
+                "answer_zh": f"{start} 至 {end}（不含结束日），{result['definition']}。{summary}"}
 
     def business(self, question, runtime, frame, trace, today):
         prepared = self.planner.prepare(
@@ -316,7 +363,7 @@ def main():
         service = MetricQueryService(dotenv_values(ROOT / ".env.metric-query").get("METRIC_QUERY_DSN"))
         capability = CapabilityResolver(CapabilityRegistry(MetadataService.local().snapshot()))
         generate = gemini_generator(dotenv_values(ROOT / ".env"), include_usage=True, schema_for_prompt=schema_for_prompt)
-        result = UnifiedAgent(service, capability).answer(args.question, generate)
+        result = UnifiedAgent(service, capability, DetailQueryExecutor.local()).answer(args.question, generate)
     except (OSError, KeyError, ValueError, psycopg.Error):
         message = "无法初始化指标、模型或只读元数据。"
         result = {

@@ -1,0 +1,571 @@
+{
+  "base_commit": "5a30751",
+  "captured_at_utc": "2026-11-11T06:05:43.302853+00:00",
+  "fixture": "tests/fixtures/controlled_detail_v1.json",
+  "regression": {
+    "discovered": 118,
+    "passed": 117,
+    "skipped_optional_gemini": 1,
+    "failures": 0,
+    "seconds": 13.074
+  },
+  "optional_legacy_gemini_runs": [
+    {
+      "suite_tests": 117,
+      "seconds": 32.441,
+      "failed_subcases": {
+        "ambiguous_sales": "model_unavailable",
+        "channel": "model_unavailable"
+      }
+    },
+    {
+      "suite_tests": 118,
+      "seconds": 35.366,
+      "failed_subcases": {
+        "ambiguous_sales": "model_unavailable",
+        "channel": "unsupported_grouping"
+      }
+    }
+  ],
+  "detail_tests": {
+    "methods": 13,
+    "postgres_methods": 7,
+    "unit_methods": 6,
+    "template_variants_ods_equal": 6,
+    "full_window_sequence_orders": 0,
+    "synthetic_sequence_orders": 2,
+    "synthetic_by_channel": {
+      "mobile": 1,
+      "web": 1
+    },
+    "actual_timeout_enforced": true,
+    "permission_and_drift_checks_passed": true
+  },
+  "live_detail_runs": [
+    {
+      "passed": 1,
+      "total": 3,
+      "cases": [
+        {
+          "id": "payment_total",
+          "passed": true,
+          "status": "ok",
+          "code": null,
+          "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），支付事件窗口内同订单先失败后成功的订单数。符合条件的订单共 0 笔。",
+          "rows": 1,
+          "truncated": false,
+          "sample": [
+            {
+              "order_count": 0
+            }
+          ],
+          "trace": {
+            "trace_id": "97836b05101a4bedbe68c3f4dc46d26f",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {
+                  "prompt": 201,
+                  "output": 57,
+                  "total": 258
+                },
+                "status": "received",
+                "elapsed_ms": 4949
+              }
+            ],
+            "tools": [
+              {
+                "trace_id": "23f245a17c764c2187071c0f34f703f7",
+                "agent_trace_id": "97836b05101a4bedbe68c3f4dc46d26f",
+                "analysis_id": "payment_failure_then_capture",
+                "capability_trace_id": "bf412bfab3eb4312af35c17039cdc1a7",
+                "template_id": "payment_failure_then_capture_total",
+                "template_version": "1.0.0",
+                "sources": [
+                  "dwd.payment_attempt_fact"
+                ],
+                "parameters": {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": []
+                },
+                "status": "ok",
+                "error_code": null,
+                "elapsed_ms": 81
+              }
+            ],
+            "elapsed_ms": 5031
+          },
+          "model_outputs": [
+            {
+              "text": "{\n  \"metrics\": [\n    \"订单\"\n  ],\n  \"groups\": [],\n  \"filters\": [],\n  \"missing\": [],\n  \"time\": \"2025年1月\",\n  \"type\": \"metric\"\n}",
+              "usage": {
+                "prompt": 201,
+                "output": 57,
+                "total": 258
+              }
+            }
+          ]
+        },
+        {
+          "id": "payment_channel",
+          "passed": false,
+          "status": "error",
+          "code": "invalid_model_output",
+          "answer_zh": "模型提取的原文片段不符合约定。",
+          "rows": 0,
+          "truncated": null,
+          "sample": [],
+          "trace": {
+            "trace_id": "c95af0d6b7f34893a04dd695b1bf821a",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {
+                  "prompt": 198,
+                  "output": 30,
+                  "total": 228
+                },
+                "status": "invalid_output",
+                "elapsed_ms": 3374
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 3374
+          },
+          "model_outputs": [
+            {
+              "text": "{\"metrics\":[\"订单数\"],\"groups\":[\"渠道\"],\"filters\":[],\"missing\":[],\"time\":\"2025年1月\",\"type\":\"metric\"}",
+              "usage": {
+                "prompt": 198,
+                "output": 30,
+                "total": 228
+              }
+            }
+          ]
+        },
+        {
+          "id": "sales_order",
+          "passed": false,
+          "status": "unsupported",
+          "code": "unsupported_detail_scope",
+          "answer_zh": "明细分组或过滤与已批准路径不一致。",
+          "rows": 0,
+          "truncated": null,
+          "sample": [],
+          "trace": {
+            "trace_id": "1842a005126249b9a61daa86d1d15fc4",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {
+                  "prompt": 194,
+                  "output": 67,
+                  "total": 261
+                },
+                "status": "received",
+                "elapsed_ms": 2989
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 2989
+          },
+          "model_outputs": [
+            {
+              "text": "{\n  \"metrics\": [\n    \"商品净额\"\n  ],\n  \"groups\": [\n    \"订单\"\n  ],\n  \"filters\": [],\n  \"missing\": [],\n  \"time\": \"2025年1月\",\n  \"type\": \"metric\"\n}",
+              "usage": {
+                "prompt": 194,
+                "output": 67,
+                "total": 261
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "passed": 2,
+      "total": 3,
+      "cases": [
+        {
+          "id": "payment_total",
+          "passed": false,
+          "status": "unsupported",
+          "code": "unsupported_detail_scope",
+          "answer_zh": "明细分组或过滤与已批准路径不一致。",
+          "rows": 0,
+          "truncated": null,
+          "sample": [],
+          "trace": {
+            "trace_id": "7cd5deec7c5e40d48150938c7f6738d5",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v3",
+                "usage": {
+                  "prompt": 224,
+                  "output": 35,
+                  "total": 259
+                },
+                "status": "received",
+                "elapsed_ms": 3875
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 3876
+          },
+          "model_outputs": [
+            {
+              "text": "{\"metrics\":[\"订单\"],\"groups\":[],\"filters\":[\"先支付失败，后来成功支付\"],\"missing\":[],\"time\":\"2025年1月\",\"type\":\"metric\"}",
+              "usage": {
+                "prompt": 224,
+                "output": 35,
+                "total": 259
+              }
+            }
+          ]
+        },
+        {
+          "id": "payment_channel",
+          "passed": true,
+          "status": "ok",
+          "code": null,
+          "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），支付事件窗口内同订单先失败后成功的订单数。符合条件的订单共 0 笔。",
+          "rows": 0,
+          "truncated": false,
+          "sample": [],
+          "trace": {
+            "trace_id": "edc2994a136d40d495c086830eadeaf3",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v3",
+                "usage": {
+                  "prompt": 221,
+                  "output": 30,
+                  "total": 251
+                },
+                "status": "received",
+                "elapsed_ms": 3517
+              }
+            ],
+            "tools": [
+              {
+                "trace_id": "53602ea9f24e4c759b2806d5f73b6ed5",
+                "agent_trace_id": "edc2994a136d40d495c086830eadeaf3",
+                "analysis_id": "payment_failure_then_capture",
+                "capability_trace_id": "d16a406d7cec452fbb0836a8f0341b43",
+                "template_id": "payment_failure_then_capture_channel",
+                "template_version": "1.0.0",
+                "sources": [
+                  "dwd.payment_attempt_fact",
+                  "dwd.order_fact"
+                ],
+                "parameters": {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [
+                    "channel"
+                  ]
+                },
+                "status": "ok",
+                "error_code": null,
+                "elapsed_ms": 98
+              }
+            ],
+            "elapsed_ms": 3617
+          },
+          "model_outputs": [
+            {
+              "text": "{\"metrics\":[\"订单数\"],\"groups\":[\"渠道\"],\"filters\":[],\"missing\":[],\"time\":\"2025年1月\",\"type\":\"metric\"}",
+              "usage": {
+                "prompt": 221,
+                "output": 30,
+                "total": 251
+              }
+            }
+          ]
+        },
+        {
+          "id": "sales_order",
+          "passed": true,
+          "status": "ok",
+          "code": null,
+          "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），按订单及可选品类、渠道汇总折扣后商品净额。返回 100 行订单商品净额。首行订单 13 的该分组净额为 25.40。结果已达到行数上限，当前仅展示排序后的前 100 行。",
+          "rows": 100,
+          "truncated": true,
+          "sample": [
+            {
+              "order_id": 13,
+              "net_amount": "25.40"
+            },
+            {
+              "order_id": 18,
+              "net_amount": "144.23"
+            }
+          ],
+          "trace": {
+            "trace_id": "9a27291f682d47a68540eeee19ebd476",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v3",
+                "usage": {
+                  "prompt": 217,
+                  "output": 31,
+                  "total": 248
+                },
+                "status": "received",
+                "elapsed_ms": 3989
+              }
+            ],
+            "tools": [
+              {
+                "trace_id": "91568f7b814a492c920ff7d97167a736",
+                "agent_trace_id": "9a27291f682d47a68540eeee19ebd476",
+                "analysis_id": "sales_by_order",
+                "capability_trace_id": "612593c16e8940a187a278afe5596b61",
+                "template_id": "sales_by_order_order",
+                "template_version": "1.0.0",
+                "sources": [
+                  "dwd.order_item_fact"
+                ],
+                "parameters": {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [
+                    "order_id"
+                  ]
+                },
+                "status": "ok",
+                "error_code": null,
+                "elapsed_ms": 111
+              }
+            ],
+            "elapsed_ms": 4100
+          },
+          "model_outputs": [
+            {
+              "text": "{\"metrics\":[\"商品净额\"],\"groups\":[\"订单\"],\"filters\":[],\"missing\":[],\"time\":\"2025年1月\",\"type\":\"complex\"}",
+              "usage": {
+                "prompt": 217,
+                "output": 31,
+                "total": 248
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "passed": 3,
+      "total": 3,
+      "cases": [
+        {
+          "id": "payment_total",
+          "passed": true,
+          "status": "ok",
+          "code": null,
+          "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），支付事件窗口内同订单先失败后成功的订单数。符合条件的订单共 0 笔。",
+          "rows": 1,
+          "truncated": false,
+          "sample": [
+            {
+              "order_count": 0
+            }
+          ],
+          "trace": {
+            "trace_id": "30e8e33f9af04ec29d817e7190b0000c",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v3",
+                "usage": {
+                  "prompt": 225,
+                  "output": 57,
+                  "total": 282
+                },
+                "status": "received",
+                "elapsed_ms": 4096
+              }
+            ],
+            "tools": [
+              {
+                "trace_id": "772654a0a89944b999dddd0b09f88112",
+                "agent_trace_id": "30e8e33f9af04ec29d817e7190b0000c",
+                "analysis_id": "payment_failure_then_capture",
+                "capability_trace_id": "8bca85acd14348aa8290becd72104123",
+                "template_id": "payment_failure_then_capture_total",
+                "template_version": "1.0.0",
+                "sources": [
+                  "dwd.payment_attempt_fact"
+                ],
+                "parameters": {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": []
+                },
+                "status": "ok",
+                "error_code": null,
+                "elapsed_ms": 80
+              }
+            ],
+            "elapsed_ms": 4177
+          },
+          "model_outputs": [
+            {
+              "text": "{\n  \"metrics\": [\n    \"订单\"\n  ],\n  \"groups\": [],\n  \"filters\": [],\n  \"missing\": [],\n  \"time\": \"2025年1月\",\n  \"type\": \"metric\"\n}",
+              "usage": {
+                "prompt": 225,
+                "output": 57,
+                "total": 282
+              }
+            }
+          ]
+        },
+        {
+          "id": "payment_channel",
+          "passed": true,
+          "status": "ok",
+          "code": null,
+          "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），支付事件窗口内同订单先失败后成功的订单数。符合条件的订单共 0 笔。",
+          "rows": 0,
+          "truncated": false,
+          "sample": [],
+          "trace": {
+            "trace_id": "18db02288279438ba1c7b94a534ad981",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v3",
+                "usage": {
+                  "prompt": 221,
+                  "output": 30,
+                  "total": 251
+                },
+                "status": "received",
+                "elapsed_ms": 5096
+              }
+            ],
+            "tools": [
+              {
+                "trace_id": "564edf29abd843c1a470def23f635a11",
+                "agent_trace_id": "18db02288279438ba1c7b94a534ad981",
+                "analysis_id": "payment_failure_then_capture",
+                "capability_trace_id": "7cb5a51da74b456ba0a1ad6965013360",
+                "template_id": "payment_failure_then_capture_channel",
+                "template_version": "1.0.0",
+                "sources": [
+                  "dwd.payment_attempt_fact",
+                  "dwd.order_fact"
+                ],
+                "parameters": {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [
+                    "channel"
+                  ]
+                },
+                "status": "ok",
+                "error_code": null,
+                "elapsed_ms": 89
+              }
+            ],
+            "elapsed_ms": 5185
+          },
+          "model_outputs": [
+            {
+              "text": "{\"metrics\":[\"订单数\"],\"groups\":[\"渠道\"],\"filters\":[],\"missing\":[],\"time\":\"2025年1月\",\"type\":\"metric\"}",
+              "usage": {
+                "prompt": 221,
+                "output": 30,
+                "total": 251
+              }
+            }
+          ]
+        },
+        {
+          "id": "sales_order",
+          "passed": true,
+          "status": "ok",
+          "code": null,
+          "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），按订单及可选品类、渠道汇总折扣后商品净额。返回 100 行订单商品净额。首行订单 13 的该分组净额为 25.40。结果已达到行数上限，当前仅展示排序后的前 100 行。",
+          "rows": 100,
+          "truncated": true,
+          "sample": [
+            {
+              "order_id": 13,
+              "net_amount": "25.40"
+            },
+            {
+              "order_id": 18,
+              "net_amount": "144.23"
+            }
+          ],
+          "trace": {
+            "trace_id": "cc2bcdad2c104625a33a26d8605cac48",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v3",
+                "usage": {
+                  "prompt": 217,
+                  "output": 40,
+                  "total": 257
+                },
+                "status": "received",
+                "elapsed_ms": 4283
+              }
+            ],
+            "tools": [
+              {
+                "trace_id": "9051f84f1c3345469654c56e298d6c9b",
+                "agent_trace_id": "cc2bcdad2c104625a33a26d8605cac48",
+                "analysis_id": "sales_by_order",
+                "capability_trace_id": "95cfb20f0dd8438288d62c134ca57431",
+                "template_id": "sales_by_order_order",
+                "template_version": "1.0.0",
+                "sources": [
+                  "dwd.order_item_fact"
+                ],
+                "parameters": {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [
+                    "order_id"
+                  ]
+                },
+                "status": "ok",
+                "error_code": null,
+                "elapsed_ms": 85
+              }
+            ],
+            "elapsed_ms": 4369
+          },
+          "model_outputs": [
+            {
+              "text": "{\"metrics\": [\"商品净额\"], \"groups\": [\"订单\"], \"filters\": [], \"missing\": [], \"time\": \"2025年1月\", \"type\": \"metric\"}",
+              "usage": {
+                "prompt": 217,
+                "output": 40,
+                "total": 257
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
