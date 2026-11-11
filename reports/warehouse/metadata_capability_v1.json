@@ -1,0 +1,492 @@
+{
+  "captured_at_utc": "2026-11-11T03:58:10.118640+00:00",
+  "live_inventory": {
+    "objects": 25,
+    "approved_models": 18,
+    "validated_joins": 15,
+    "schema_errors": {}
+  },
+  "truth": {
+    "payment_success_rate": {
+      "metric_id": "payment_attempt_success_rate",
+      "trace_id": "56a11a71843944fa9514a2ad034efbac",
+      "definition": "同一支付事件时间窗内成功尝试数除以全部尝试数。",
+      "definition_version": "1.0.0",
+      "event_time": "payments.paid_at",
+      "time_semantics": "payments.paid_at",
+      "source_grain": "支付尝试",
+      "group_by": [],
+      "start_date": "2025-01-01",
+      "end_date": "2025-02-01",
+      "observation_cutoff": null,
+      "sources": [
+        "dws.payment_day"
+      ],
+      "status": "ok",
+      "results": [
+        {
+          "bucket": "all",
+          "value": "0.94503692",
+          "numerator": "2304",
+          "denominator": "2438"
+        }
+      ],
+      "error": null
+    },
+    "payment_sequence": {
+      "[2025-01-01,2025-02-01)": {
+        "matched_orders": 0,
+        "ods_dwd_exact_equal": true
+      },
+      "[2023-01-01,2026-01-01)": {
+        "matched_orders": 0,
+        "ods_dwd_exact_equal": true
+      }
+    },
+    "orders_with_both_payment_statuses": 5230,
+    "order_category_sales": {
+      "rows": 5014,
+      "sum_net": "231920.18",
+      "ods_dwd_exact_equal": true
+    }
+  },
+  "model_example": {
+    "model_id": "dwd.payment_attempt_fact",
+    "physical_source": "dwd.payment_attempt_fact",
+    "business_grain": [
+      "payment_id"
+    ],
+    "supported_dimensions": [
+      "channel",
+      "method",
+      "order_id",
+      "status"
+    ],
+    "physical_measures": [
+      "amount"
+    ],
+    "measures": {},
+    "event_time": {
+      "payment_attempt_time": "paid_at"
+    },
+    "join_paths": [
+      {
+        "from": "dwd.payment_attempt_fact",
+        "to": "dwd.order_fact",
+        "from_column": "order_id",
+        "to_column": "order_id",
+        "evidence": "postgresql_foreign_key",
+        "relationship_cardinality": "many_to_one"
+      }
+    ],
+    "relationship_cardinality": [
+      "many_to_one"
+    ],
+    "aggregation_constraints": [
+      "保持声明粒度；比率从分子、分母重算，禁止直接合并不兼容事实。",
+      "在同一订单内，窗口中存在 failed 后严格较晚的 captured，两个事件均须在请求窗口内。",
+      "同一 paid_at 不推断先后；按订单去重，可用存在性检查，不能直接对尝试自连接计数。"
+    ],
+    "quality_limitations": [
+      "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+    ],
+    "access_policy": "detail_planning",
+    "grain_evidence": "postgresql_primary_key",
+    "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+    "manifest": "warehouse/models.json",
+    "model_version": "1.0.0",
+    "lineage": [
+      "dwd.order_fact",
+      "dim.date"
+    ],
+    "schema_error": null
+  },
+  "base_commit": "fed1d3f",
+  "fixture_version": 1,
+  "fixture_cases": 20,
+  "live_business_cases": 18,
+  "standard_route_checks": 26,
+  "regression": {
+    "tests": 100,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 35.13
+  },
+  "initial_regression_issue": "An incorrect nonempty expectation for strict failed-before-captured was replaced after exact ODS and DWD reconciliation.",
+  "routes": {
+    "payment_success": {
+      "trace_id": "dccbea0de17046d1827b3a0f1b371bcb",
+      "metadata_source": "PostgreSQL pg_catalog",
+      "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+      "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+      "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+      "contract_version": "1.0.0",
+      "metric_version": "1.1.1-ads",
+      "selected_source": "dws.payment_day",
+      "candidate_sources": [
+        {
+          "source": "dws.payment_day",
+          "reason": "满足口径、键及权限检查。",
+          "selected": true
+        }
+      ],
+      "required_fields": {
+        "dws.payment_day": [
+          "attempt_amount",
+          "channel",
+          "dq_negative_amount_count",
+          "dq_payment_before_order_count",
+          "method",
+          "payment_attempt_count",
+          "payment_date",
+          "status"
+        ]
+      },
+      "dimensions": [
+        "channel"
+      ],
+      "join_paths": [],
+      "risks": [
+        "支付尝试可能早于下单，金额与状态采用源记录口径。"
+      ],
+      "status": "STANDARD_METRIC",
+      "metric_id": "payment_attempt_success_rate",
+      "metric_request": {
+        "start_date": "2025-01-01",
+        "end_date": "2025-02-01",
+        "metric_id": "payment_attempt_success_rate",
+        "group_by": [
+          "channel"
+        ]
+      },
+      "metric_definition": "同一支付事件时间窗内成功尝试数除以全部尝试数。",
+      "time_constraints": {
+        "event_time": "payment_attempt_time",
+        "start_date": "2025-01-01",
+        "end_date": "2025-02-01",
+        "boundary": "[start_date,end_date)",
+        "physical_fields": {
+          "payment_attempt_time": "payment_date"
+        }
+      },
+      "grain": [
+        "payment_date",
+        "channel",
+        "method",
+        "status"
+      ],
+      "reason_code": "verified_metric_service",
+      "reason": "标准模板满足已验证指标口径、时间和维度。"
+    },
+    "sales_category": {
+      "trace_id": "1d73d0d7da2b4bc090d2a34d4ef0fc23",
+      "metadata_source": "PostgreSQL pg_catalog",
+      "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+      "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+      "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+      "contract_version": "1.0.0",
+      "metric_version": "1.1.1-ads",
+      "selected_source": "dws.product_sales_day",
+      "candidate_sources": [
+        {
+          "source": "dws.product_sales_day",
+          "reason": "满足口径、键及权限检查。",
+          "selected": true
+        }
+      ],
+      "required_fields": {
+        "dws.product_sales_day": [
+          "channel",
+          "item_discount_amount",
+          "item_gross_amount",
+          "item_net_sales_amount",
+          "order_date",
+          "order_item_count",
+          "ordered_unit_count",
+          "product_id"
+        ],
+        "dim.product": [
+          "category_id",
+          "product_id"
+        ]
+      },
+      "dimensions": [
+        "category"
+      ],
+      "join_paths": [
+        {
+          "from": "dws.product_sales_day",
+          "to": "dim.product",
+          "from_column": "product_id",
+          "to_column": "product_id",
+          "evidence": "business_contract",
+          "relationship_cardinality": "many_to_one"
+        }
+      ],
+      "risks": [
+        "品类关联采用当前快照属性。",
+        "逻辑关联来自验收契约，数据库未为所有关联建立物理外键。"
+      ],
+      "status": "STANDARD_METRIC",
+      "metric_id": "item_net_sales_amount",
+      "metric_request": {
+        "start_date": "2025-01-01",
+        "end_date": "2025-02-01",
+        "metric_id": "item_net_sales_amount",
+        "group_by": [
+          "category"
+        ]
+      },
+      "metric_definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+      "time_constraints": {
+        "event_time": "order_time",
+        "start_date": "2025-01-01",
+        "end_date": "2025-02-01",
+        "boundary": "[start_date,end_date)",
+        "physical_fields": {
+          "order_time": "order_date"
+        }
+      },
+      "grain": [
+        "order_date",
+        "channel",
+        "product_id"
+      ],
+      "reason_code": "verified_metric_service",
+      "reason": "标准模板满足已验证指标口径、时间和维度。"
+    },
+    "failure_then_capture": {
+      "trace_id": "3a385becab9e45549898e87a1dbf9ab8",
+      "metadata_source": "PostgreSQL pg_catalog",
+      "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+      "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+      "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+      "contract_version": "1.0.0",
+      "metric_version": "1.1.1-ads",
+      "selected_source": "dwd.payment_attempt_fact",
+      "candidate_sources": [
+        {
+          "source": "dwd.payment_attempt_fact",
+          "reason": "满足口径、键及权限检查。",
+          "selected": true
+        },
+        {
+          "source": "dws.payment_day",
+          "reason": "日聚合丢失订单标识和尝试顺序。",
+          "selected": false
+        },
+        {
+          "source": "ads.payment_anomaly_order",
+          "reason": "首次和末次时间及失败次数不能确定失败事件与成功事件的顺序。",
+          "selected": false
+        }
+      ],
+      "required_fields": {
+        "dwd.payment_attempt_fact": [
+          "order_id",
+          "paid_at",
+          "payment_id",
+          "status"
+        ],
+        "dwd.order_fact": [
+          "channel",
+          "order_id"
+        ]
+      },
+      "dimensions": [
+        "channel"
+      ],
+      "join_paths": [
+        {
+          "from": "dwd.payment_attempt_fact",
+          "to": "dwd.order_fact",
+          "from_column": "order_id",
+          "to_column": "order_id",
+          "evidence": "postgresql_foreign_key",
+          "relationship_cardinality": "many_to_one"
+        }
+      ],
+      "risks": [
+        "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+      ],
+      "status": "DETAIL_QUERY",
+      "analysis_id": "payment_failure_then_capture",
+      "metric_id": null,
+      "time_constraints": {
+        "event_time": "payment_attempt_time",
+        "start_date": "2025-01-01",
+        "end_date": "2025-02-01",
+        "boundary": "[start_date,end_date)",
+        "physical_fields": {
+          "payment_attempt_time": "paid_at"
+        }
+      },
+      "grain": [
+        "order_id",
+        "channel"
+      ],
+      "aggregation_constraints": [
+        "在同一订单内，窗口中存在 failed 后严格较晚的 captured，两个事件均须在请求窗口内。",
+        "同一 paid_at 不推断先后；按订单去重，可用存在性检查，不能直接对尝试自连接计数。"
+      ],
+      "reason_code": "detail_grain_required",
+      "reason": "日汇总不足，已登记的 DWD 路径保留所需键与事件粒度。",
+      "execution_policy": "plan_only"
+    },
+    "order_sales": {
+      "trace_id": "fe3601c0b8ad47c0a4089b2cf58a96be",
+      "metadata_source": "PostgreSQL pg_catalog",
+      "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+      "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+      "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+      "contract_version": "1.0.0",
+      "metric_version": "1.1.1-ads",
+      "selected_source": "dwd.order_item_fact",
+      "candidate_sources": [
+        {
+          "source": "dwd.order_item_fact",
+          "reason": "满足口径、键及权限检查。",
+          "selected": true
+        },
+        {
+          "source": "dws.product_sales_day",
+          "reason": "日渠道商品粒度不保留订单标识。",
+          "selected": false
+        },
+        {
+          "source": "ads.business_overview_day",
+          "reason": "日渠道概览不保留订单标识。",
+          "selected": false
+        }
+      ],
+      "required_fields": {
+        "dwd.order_item_fact": [
+          "net_item_amount",
+          "order_id",
+          "order_purchase_time",
+          "product_id"
+        ],
+        "dim.product": [
+          "category_id",
+          "product_id"
+        ]
+      },
+      "dimensions": [
+        "order_id",
+        "category"
+      ],
+      "join_paths": [
+        {
+          "from": "dwd.order_item_fact",
+          "to": "dim.product",
+          "from_column": "product_id",
+          "to_column": "product_id",
+          "evidence": "business_contract",
+          "relationship_cardinality": "many_to_one"
+        }
+      ],
+      "risks": [
+        "品类关联采用当前快照属性。",
+        "逻辑关联来自验收契约，数据库未为所有关联建立物理外键。"
+      ],
+      "status": "DETAIL_QUERY",
+      "analysis_id": "sales_by_order",
+      "metric_id": "item_net_sales_amount",
+      "time_constraints": {
+        "event_time": "order_time",
+        "start_date": "2025-01-01",
+        "end_date": "2025-02-01",
+        "boundary": "[start_date,end_date)",
+        "physical_fields": {
+          "order_time": "order_purchase_time"
+        }
+      },
+      "grain": [
+        "order_id",
+        "category"
+      ],
+      "aggregation_constraints": [
+        "按订单聚合明细净额，保留所有订单状态；无商品明细的订单不属于此明细结果。"
+      ],
+      "reason_code": "detail_grain_required",
+      "reason": "日汇总不足，已登记的 DWD 路径保留所需键与事件粒度。",
+      "execution_policy": "plan_only"
+    },
+    "payment_category": {
+      "trace_id": "b667278a2941462b9107eb82b7a31707",
+      "metadata_source": "PostgreSQL pg_catalog",
+      "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+      "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+      "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+      "contract_version": "1.0.0",
+      "metric_version": "1.1.1-ads",
+      "selected_source": null,
+      "candidate_sources": [
+        {
+          "source": "dws.payment_day",
+          "reason": "缺少商品和品类粒度。",
+          "selected": false
+        },
+        {
+          "source": "dwd.payment_attempt_fact",
+          "reason": "关联多行商品明细会重复支付金额。",
+          "selected": false
+        }
+      ],
+      "required_fields": {},
+      "dimensions": [],
+      "join_paths": [],
+      "risks": [
+        "订单支付与商品明细为独立事实，按订单号直接拼接后累加会重复支付金额。"
+      ],
+      "status": "UNSUPPORTED",
+      "reason_code": "allocation_missing",
+      "reason": "支付尝试关联订单，订单可有多个商品品类；没有已批准的支付分摊规则，直接关联会重复金额。"
+    },
+    "shared_parent_fanout": {
+      "trace_id": "95e307b5e1a34470900ff43fe4d85366",
+      "metadata_source": "PostgreSQL pg_catalog",
+      "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+      "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+      "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+      "contract_version": "1.0.0",
+      "metric_version": "1.1.1-ads",
+      "selected_source": null,
+      "candidate_sources": [],
+      "required_fields": {},
+      "dimensions": [],
+      "join_paths": [],
+      "risks": [
+        "一对多或多对多关联会重复度量；需要先在相同粒度分别聚合。"
+      ],
+      "status": "UNSUPPORTED",
+      "reason_code": "fanout_risk",
+      "reason": "该关联组合可能放大事实记录，当前没有批准的跨事实聚合路径。"
+    },
+    "ods_forbidden": {
+      "trace_id": "a1f47a7617f74a48948575a4c6b988c0",
+      "metadata_source": "PostgreSQL pg_catalog",
+      "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+      "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+      "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+      "contract_version": "1.0.0",
+      "metric_version": "1.1.1-ads",
+      "selected_source": null,
+      "candidate_sources": [
+        {
+          "source": "ods.orders",
+          "reason": "未授权的查询来源；ODS 仅可读取技术元数据。",
+          "selected": false
+        }
+      ],
+      "required_fields": {},
+      "dimensions": [],
+      "join_paths": [],
+      "risks": [],
+      "status": "UNSUPPORTED",
+      "reason_code": "source_forbidden",
+      "reason": "请求的来源不在查询能力允许清单内。"
+    }
+  }
+}

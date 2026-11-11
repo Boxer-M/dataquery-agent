@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "window": {"start_date": "2025-01-01", "end_date": "2025-02-01"},
+  "cases": [
+    {"id":"payment_success","request":{"metric_id":"payment_attempt_success_rate","group_by":["channel"]},"status":"STANDARD_METRIC","source":"dws.payment_day","code":"verified_metric_service","time":"payment_attempt_time","fields":{"dws.payment_day":["payment_date","payment_attempt_count","status"]},"truth":"ODS 支付事件按成功尝试与总尝试数对账"},
+    {"id":"sales_channel","request":{"metric_id":"item_net_sales_amount","group_by":["channel"]},"status":"STANDARD_METRIC","source":"dws.product_sales_day","code":"verified_metric_service","time":"order_time","fields":{"dws.product_sales_day":["order_date","channel","item_net_sales_amount"]},"truth":"标准 SQL 采用下单日和商品净额"},
+    {"id":"sales_category","request":{"metric_id":"item_net_sales_amount","group_by":["category"]},"status":"STANDARD_METRIC","source":"dws.product_sales_day","code":"verified_metric_service","edge":["dws.product_sales_day","dim.product","product_id","product_id"],"fields":{"dim.product":["product_id","category_id"]},"truth":"商品主键唯一，品类采用当前维度"},
+    {"id":"failure_then_capture","request":{"analysis_id":"payment_failure_then_capture","group_by":["channel"]},"status":"DETAIL_QUERY","source":"dwd.payment_attempt_fact","code":"detail_grain_required","time":"payment_attempt_time","grain":["order_id","channel"],"edge":["dwd.payment_attempt_fact","dwd.order_fact","order_id","order_id"],"fields":{"dwd.payment_attempt_fact":["order_id","paid_at","status"]},"rejected":"ads.payment_anomaly_order","truth":"以严格较晚成功事件为条件，对 ODS 和 DWD 的订单集合对账"},
+    {"id":"payment_category","request":{"metric_id":"captured_payment_amount","group_by":["category"]},"status":"UNSUPPORTED","code":"allocation_missing","risk":"重复","truth":"支付到商品缺少分摊规则"},
+    {"id":"conversion","request":{"analysis_id":"browse_conversion_rate"},"status":"UNSUPPORTED","code":"missing_source_event","reason":"浏览事件","truth":"模型契约没有浏览事实及分母"},
+    {"id":"refund_settlement","request":{"analysis_id":"refund_settled_at"},"status":"UNSUPPORTED","code":"missing_source_event","reason":"到账","truth":"退货表仅有 returned_at"},
+    {"id":"ambiguous_sales","request":{"metric_id":"销售额"},"status":"NEEDS_CLARIFICATION","code":"ambiguous_metric","reason":"成功支付金额","truth":"指标目录与正式同义词规则"},
+    {"id":"order_sales","request":{"metric_id":"item_net_sales_amount","group_by":["order_id","category"]},"status":"DETAIL_QUERY","source":"dwd.order_item_fact","code":"detail_grain_required","grain":["order_id","category"],"fields":{"dwd.order_item_fact":["order_id","net_item_amount","order_purchase_time","product_id"]},"rejected":"dws.product_sales_day","edge":["dwd.order_item_fact","dim.product","product_id","product_id"],"truth":"逐订单商品净额对账，DWS 没有订单号"},
+    {"id":"fanout","request":{"metric_id":"captured_payment_amount","joins":[{"from":"dwd.payment_attempt_fact","to":"dwd.order_item_fact","from_column":"order_id","to_column":"order_id"}]},"status":"UNSUPPORTED","code":"fanout_risk","risk":"重复","truth":"两张事实的订单号均非唯一"},
+    {"id":"shared_parent_fanout","request":{"metric_id":"captured_payment_amount","joins":[{"from":"dwd.payment_attempt_fact","to":"dwd.order_fact","from_column":"order_id","to_column":"order_id"},{"from":"dwd.order_item_fact","to":"dwd.order_fact","from_column":"order_id","to_column":"order_id"}]},"status":"UNSUPPORTED","code":"fanout_risk","risk":"重复","truth":"各事实到订单各自合法，但在同一个请求里沿共同父键组合会交叉相乘"},
+    {"id":"time_conflict","request":{"metric_id":"payment_attempt_success_rate","event_time":"order_time"},"status":"NEEDS_CLARIFICATION","code":"event_time_conflict","reason":"payment_attempt_time","truth":"支付率以支付事件时间为准"},
+    {"id":"quality","request":{"metric_id":"return_record_amount"},"status":"STANDARD_METRIC","source":"dws.return_day","code":"verified_metric_service","risk":"退款到账","time":"return_record_time","truth":"退货金额为源退货记录，异常保留"},
+    {"id":"missing_key","request":{"metric_id":"item_net_sales_amount","joins":[{"from":"dws.product_sales_day","to":"dim.product","from_column":"order_id","to_column":"product_id"}]},"status":"UNSUPPORTED","code":"missing_join_key","reason":"dws.product_sales_day.order_id","truth":"DWS 没有 order_id"},
+    {"id":"ods_forbidden","request":{"metric_id":"order_count","requested_source":"ods.orders"},"status":"UNSUPPORTED","code":"source_forbidden","truth":"ODS 技术元数据可见，能力路由无直读授权"},
+    {"id":"version","request":{"metric_id":"order_count","expected_metadata_version":"stale"},"status":"UNSUPPORTED","code":"metadata_version_mismatch","truth":"比较调用方与当前发布版本"},
+    {"id":"drift","request":{"metric_id":"order_count"},"mutation":"column_type","status":"UNSUPPORTED","code":"schema_drift","truth":"在内存改动列类型，确认漂移阻断"},
+    {"id":"privilege","request":{"metric_id":"order_count"},"mutation":"deny_metric_column","status":"UNSUPPORTED","code":"access_denied","truth":"在内存撤去模板所需列的权限标志"},
+    {"id":"wrong_ads_grain","request":{"analysis_id":"payment_failure_then_capture","requested_source":"ads.payment_anomaly_order"},"status":"UNSUPPORTED","code":"source_incompatible","truth":"订单 ADS 汇总无法证明尝试事件顺序"},
+    {"id":"detail_filter","request":{"analysis_id":"payment_failure_then_capture","filters":{"channel":"web"}},"status":"UNSUPPORTED","code":"unsupported_filter","truth":"明细契约只声明时间和分组，不能忽略过滤条件"}
+  ]
+}
