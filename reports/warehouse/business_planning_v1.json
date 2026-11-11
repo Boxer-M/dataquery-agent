@@ -1,0 +1,904 @@
+{
+  "executed_at_utc": "2026-11-11T02:51:51.164651+00:00",
+  "base_commit": "4cabeb3",
+  "fixture": "tests/fixtures/business_planning_v1.json",
+  "regression": {
+    "tests": 92,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 34.328
+  },
+  "initial_live_sample": {
+    "scores": {
+      "passed": {
+        "passed": 4,
+        "total": 5
+      },
+      "plan_correct": {
+        "passed": 4,
+        "total": 5
+      },
+      "tool_calls_correct": {
+        "passed": 5,
+        "total": 5
+      },
+      "numeric_correct": {
+        "passed": 3,
+        "total": 3
+      },
+      "clarify_or_reject_correct": {
+        "passed": 1,
+        "total": 2
+      }
+    },
+    "failures": {
+      "model_unavailable": 1
+    },
+    "latency_ms": {
+      "max": 11689,
+      "mean": 8292
+    },
+    "failed_cases": [
+      {
+        "id": "detail",
+        "passed": false,
+        "plan_correct": false,
+        "tool_calls_correct": true,
+        "numeric_correct": null,
+        "clarify_or_reject_correct": false,
+        "elapsed_ms": 3064,
+        "status": "error",
+        "code": "model_unavailable",
+        "tool_errors": [],
+        "failures": [
+          "plan",
+          "status"
+        ]
+      }
+    ]
+  },
+  "evaluations": {
+    "fixed": {
+      "mode": "fixed",
+      "fixture_version": 1,
+      "scores": {
+        "passed": {
+          "passed": 19,
+          "total": 19
+        },
+        "plan_correct": {
+          "passed": 10,
+          "total": 10
+        },
+        "tool_calls_correct": {
+          "passed": 19,
+          "total": 19
+        },
+        "numeric_correct": {
+          "passed": 10,
+          "total": 10
+        },
+        "clarify_or_reject_correct": {
+          "passed": 8,
+          "total": 8
+        }
+      },
+      "failures": {},
+      "latency_ms": {
+        "max": 1,
+        "mean": 0
+      },
+      "cases": [
+        {
+          "id": "multi",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 1,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "channel_top",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 0,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "periods",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 0,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "mom",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 0,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "failure_rate",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 0,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "cross",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 0,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "ambiguous",
+          "passed": true,
+          "plan_correct": null,
+          "tool_calls_correct": true,
+          "numeric_correct": null,
+          "clarify_or_reject_correct": true,
+          "elapsed_ms": 0,
+          "status": "clarify",
+          "code": "ambiguous_metric",
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "income",
+          "passed": true,
+          "plan_correct": null,
+          "tool_calls_correct": true,
+          "numeric_correct": null,
+          "clarify_or_reject_correct": true,
+          "elapsed_ms": 0,
+          "status": "clarify",
+          "code": "ambiguous_metric",
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "invalid_group",
+          "passed": true,
+          "plan_correct": null,
+          "tool_calls_correct": true,
+          "numeric_correct": null,
+          "clarify_or_reject_correct": true,
+          "elapsed_ms": 0,
+          "status": "unsupported",
+          "code": "unsupported_grouping",
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "empty",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 0,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "zero",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 0,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "partial",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 0,
+          "status": "partial",
+          "code": null,
+          "tool_errors": [
+            "query_timeout"
+          ],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "invalid_json",
+          "passed": true,
+          "plan_correct": null,
+          "tool_calls_correct": true,
+          "numeric_correct": null,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 0,
+          "status": "error",
+          "code": "invalid_model_output",
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "detail",
+          "passed": true,
+          "plan_correct": null,
+          "tool_calls_correct": true,
+          "numeric_correct": null,
+          "clarify_or_reject_correct": true,
+          "elapsed_ms": 0,
+          "status": "unsupported",
+          "code": "detail_required",
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "unavailable",
+          "passed": true,
+          "plan_correct": null,
+          "tool_calls_correct": true,
+          "numeric_correct": null,
+          "clarify_or_reject_correct": true,
+          "elapsed_ms": 0,
+          "status": "unsupported",
+          "code": "unsupported",
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "omitted_filter",
+          "passed": true,
+          "plan_correct": null,
+          "tool_calls_correct": true,
+          "numeric_correct": null,
+          "clarify_or_reject_correct": true,
+          "elapsed_ms": 0,
+          "status": "unsupported",
+          "code": "unsupported_filter",
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "zero_ratio",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 0,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "step_limit",
+          "passed": true,
+          "plan_correct": null,
+          "tool_calls_correct": true,
+          "numeric_correct": null,
+          "clarify_or_reject_correct": true,
+          "elapsed_ms": 0,
+          "status": "unsupported",
+          "code": "step_limit",
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "grain",
+          "passed": true,
+          "plan_correct": null,
+          "tool_calls_correct": true,
+          "numeric_correct": null,
+          "clarify_or_reject_correct": true,
+          "elapsed_ms": 0,
+          "status": "unsupported",
+          "code": "unsupported_grouping",
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        }
+      ]
+    },
+    "postgres": {
+      "mode": "postgres",
+      "fixture_version": 1,
+      "scores": {
+        "passed": {
+          "passed": 6,
+          "total": 6
+        },
+        "plan_correct": {
+          "passed": 6,
+          "total": 6
+        },
+        "tool_calls_correct": {
+          "passed": 6,
+          "total": 6
+        },
+        "numeric_correct": {
+          "passed": 6,
+          "total": 6
+        },
+        "clarify_or_reject_correct": {
+          "passed": 0,
+          "total": 0
+        }
+      },
+      "failures": {},
+      "latency_ms": {
+        "max": 26,
+        "mean": 14
+      },
+      "cases": [
+        {
+          "id": "multi",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 26,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "channel_top",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 7,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "periods",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 14,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "mom",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 18,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "failure_rate",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 7,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "cross",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 15,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        }
+      ]
+    },
+    "live": {
+      "mode": "live",
+      "fixture_version": 1,
+      "scores": {
+        "passed": {
+          "passed": 6,
+          "total": 6
+        },
+        "plan_correct": {
+          "passed": 4,
+          "total": 4
+        },
+        "tool_calls_correct": {
+          "passed": 6,
+          "total": 6
+        },
+        "numeric_correct": {
+          "passed": 4,
+          "total": 4
+        },
+        "clarify_or_reject_correct": {
+          "passed": 2,
+          "total": 2
+        }
+      },
+      "failures": {},
+      "latency_ms": {
+        "max": 11189,
+        "mean": 8168
+      },
+      "cases": [
+        {
+          "id": "multi",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 8710,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null,
+          "demo": {
+            "plan": {
+              "analysis_type": "summary",
+              "metric_ids": [
+                "order_count",
+                "captured_payment_amount"
+              ],
+              "time_windows": [
+                {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                }
+              ],
+              "group_by": [],
+              "filters": {},
+              "comparison_type": null,
+              "sort_rule": null,
+              "limit": null,
+              "conditions": [],
+              "required_tool_calls": [
+                {
+                  "step": 1,
+                  "window_index": 0,
+                  "request": {
+                    "metric_id": "order_count",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "group_by": [],
+                    "filters": {}
+                  }
+                },
+                {
+                  "step": 2,
+                  "window_index": 0,
+                  "request": {
+                    "metric_id": "captured_payment_amount",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "group_by": [],
+                    "filters": {}
+                  }
+                }
+              ],
+              "unresolved_business_rules": []
+            },
+            "results": [
+              {
+                "month": null,
+                "bucket": "all",
+                "metrics": {
+                  "order_count": {
+                    "value": "2312"
+                  },
+                  "captured_payment_amount": {
+                    "value": "230864.57"
+                  }
+                }
+              }
+            ],
+            "tools": [
+              {
+                "step": 1,
+                "window_index": 0,
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 22,
+                "trace_id": "ac9c812596ec4766981caf304fcf7bce",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "row_count": 1,
+                "definition": "时间窗内创建的订单记录数，含取消订单。",
+                "event_time": "orders.ordered_at"
+              },
+              {
+                "step": 2,
+                "window_index": 0,
+                "request": {
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 18,
+                "trace_id": "992fce273c3443e08e3b17330cde45b4",
+                "sources": [
+                  "dws.payment_day"
+                ],
+                "row_count": 1,
+                "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                "event_time": "payments.paid_at"
+              }
+            ],
+            "answer_zh": "统计窗口 [2025-01-01, 2025-02-01)。\n汇总：订单量 2312；成功支付金额 230864.57。\n订单量按orders.ordered_at统计。时间窗内创建的订单记录数，含取消订单。\n成功支付金额按payments.paid_at统计。支付事件时间窗内 captured 尝试的源金额合计。\n步骤 1 · 来源 dws.order_day · Trace ac9c812596ec4766981caf304fcf7bce\n步骤 2 · 来源 dws.payment_day · Trace 992fce273c3443e08e3b17330cde45b4",
+            "trace_id": "c949c6eddf864080b12204aee9b540bd"
+          }
+        },
+        {
+          "id": "mom",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 11189,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null,
+          "demo": {
+            "plan": {
+              "analysis_type": "comparison",
+              "metric_ids": [
+                "item_net_sales_amount"
+              ],
+              "time_windows": [
+                {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                {
+                  "start_date": "2025-02-01",
+                  "end_date": "2025-03-01"
+                }
+              ],
+              "group_by": [],
+              "filters": {},
+              "comparison_type": "mom",
+              "sort_rule": null,
+              "limit": null,
+              "conditions": [],
+              "required_tool_calls": [
+                {
+                  "step": 1,
+                  "window_index": 0,
+                  "request": {
+                    "metric_id": "item_net_sales_amount",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "group_by": [],
+                    "filters": {}
+                  }
+                },
+                {
+                  "step": 2,
+                  "window_index": 1,
+                  "request": {
+                    "metric_id": "item_net_sales_amount",
+                    "start_date": "2025-02-01",
+                    "end_date": "2025-03-01",
+                    "group_by": [],
+                    "filters": {}
+                  }
+                }
+              ],
+              "unresolved_business_rules": []
+            },
+            "results": [
+              {
+                "month": null,
+                "bucket": "all",
+                "metrics": {
+                  "item_net_sales_amount": {
+                    "baseline": {
+                      "value": "231920.18"
+                    },
+                    "current": {
+                      "value": "207798.37"
+                    },
+                    "change": "-24121.81",
+                    "change_unit": "metric_unit",
+                    "change_pct": "-10.40091035",
+                    "change_pct_reason": null
+                  }
+                }
+              }
+            ],
+            "tools": [
+              {
+                "step": 1,
+                "window_index": 0,
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 21,
+                "trace_id": "74044a7d6336459790fbba10683f88b6",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "row_count": 1,
+                "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                "event_time": "orders.ordered_at（明细继承订单时间）"
+              },
+              {
+                "step": 2,
+                "window_index": 1,
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-02-01",
+                  "end_date": "2025-03-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 18,
+                "trace_id": "4ee040a695a54b90a7b4ca29a361a0fb",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "row_count": 1,
+                "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                "event_time": "orders.ordered_at（明细继承订单时间）"
+              }
+            ],
+            "answer_zh": "统计窗口 [2025-01-01, 2025-02-01)、[2025-02-01, 2025-03-01)。\n汇总：折扣后商品销售金额 231920.18 → 207798.37，变化 -24121.81，变化率 -10.40091035%。\n折扣后商品销售金额按orders.ordered_at（明细继承订单时间）统计。按下单时间统计明细毛额减行折扣，含所有订单状态。\n步骤 1 · 来源 dim.product、dws.product_sales_day · Trace 74044a7d6336459790fbba10683f88b6\n步骤 2 · 来源 dim.product、dws.product_sales_day · Trace 4ee040a695a54b90a7b4ca29a361a0fb",
+            "trace_id": "ac3601c245b1400dad643f163fcb017b"
+          }
+        },
+        {
+          "id": "channel_top",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 2815,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null,
+          "demo": {
+            "plan": {
+              "analysis_type": "ranking",
+              "metric_ids": [
+                "order_count"
+              ],
+              "time_windows": [
+                {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                }
+              ],
+              "group_by": [
+                "channel"
+              ],
+              "filters": {},
+              "comparison_type": null,
+              "sort_rule": {
+                "metric_id": "order_count",
+                "direction": "desc"
+              },
+              "limit": 2,
+              "conditions": [],
+              "required_tool_calls": [
+                {
+                  "step": 1,
+                  "window_index": 0,
+                  "request": {
+                    "metric_id": "order_count",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "group_by": [
+                      "channel"
+                    ],
+                    "filters": {}
+                  }
+                }
+              ],
+              "unresolved_business_rules": []
+            },
+            "results": [
+              {
+                "month": null,
+                "bucket": "web",
+                "metrics": {
+                  "order_count": {
+                    "value": "1337"
+                  }
+                }
+              },
+              {
+                "month": null,
+                "bucket": "mobile",
+                "metrics": {
+                  "order_count": {
+                    "value": "685"
+                  }
+                }
+              }
+            ],
+            "tools": [
+              {
+                "step": 1,
+                "window_index": 0,
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [
+                    "channel"
+                  ],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 23,
+                "trace_id": "1d16fdc69a5c4820acd67b37fb964e5b",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "row_count": 4,
+                "definition": "时间窗内创建的订单记录数，含取消订单。",
+                "event_time": "orders.ordered_at"
+              }
+            ],
+            "answer_zh": "统计窗口 [2025-01-01, 2025-02-01)。\nweb：订单量 1337。\nmobile：订单量 685。\n订单量按orders.ordered_at统计。时间窗内创建的订单记录数，含取消订单。\n步骤 1 · 来源 dws.order_day · Trace 1d16fdc69a5c4820acd67b37fb964e5b",
+            "trace_id": "6fcf63ef8932400b8e60b6c2987c1a45"
+          }
+        },
+        {
+          "id": "failure_rate",
+          "passed": true,
+          "plan_correct": true,
+          "tool_calls_correct": true,
+          "numeric_correct": true,
+          "clarify_or_reject_correct": null,
+          "elapsed_ms": 10592,
+          "status": "ok",
+          "code": null,
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "ambiguous",
+          "passed": true,
+          "plan_correct": null,
+          "tool_calls_correct": true,
+          "numeric_correct": null,
+          "clarify_or_reject_correct": true,
+          "elapsed_ms": 6702,
+          "status": "clarify",
+          "code": "ambiguous_metric",
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        },
+        {
+          "id": "detail",
+          "passed": true,
+          "plan_correct": null,
+          "tool_calls_correct": true,
+          "numeric_correct": null,
+          "clarify_or_reject_correct": true,
+          "elapsed_ms": 8997,
+          "status": "unsupported",
+          "code": "detail_required",
+          "tool_errors": [],
+          "failures": [],
+          "provider_failure": null
+        }
+      ]
+    }
+  }
+}
