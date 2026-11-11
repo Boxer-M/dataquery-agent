@@ -8,6 +8,8 @@ SQL Shed 七表完整数据接入与质量检查见 [接入说明](docs/SQLSHED_
 
 DataQuery Agent（智能问数系统）是一个用于学习和求职展示的独立 Python 项目，目标是基于可合法使用的公开数据，逐步实现自然语言查询、SQL 生成与只读执行、结果分析和可视化。
 
+结构化指标查询可通过 Python 或 CLI 访问 26 项已验证指标。调用示例、支持矩阵和账号配置见 [Metric Query Service](docs/warehouse/METRIC_QUERY_SERVICE.md)。
+
 ## 当前状态
 
 当前已完成：
