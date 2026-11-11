@@ -102,15 +102,18 @@ class SemanticResolver:
                     "available": mid in self.service.registry} for mid in ids]
         return outcome("clarify", "ambiguous_metric", "你想看哪一种口径？", choices=choices)
 
-    def resolve(self, question, intent, today):
+    def resolve(self, question, intent, today, *, binding=None):
         mentions = list(dict.fromkeys(match.group() for match in self.metric_pattern.finditer(question)))
         if COMPLEX.search(question) or intent["type"] == "complex" or len(mentions) > 1:
             return outcome("unsupported", "complex_request", "目前支持一次查询一个指标，请把问题拆成单项查询。")
-        if not mentions or not intent["metrics"]:
+        if binding and (mentions or binding.evidence not in question or binding.metric_id not in self.service.metrics):
+            return outcome("clarify", "unresolved_metric", "指标候选与原文不一致。")
+        if (not mentions and not binding) or not intent["metrics"]:
             return outcome("clarify", "missing_metric", "请告诉我你想查看哪个经营指标。")
-        if any(fragment not in mentions[0] for fragment in intent["metrics"]):
+        evidence = binding.evidence if binding else mentions[0]
+        if any(fragment not in evidence for fragment in intent["metrics"]):
             return outcome("clarify", "unresolved_metric", "请用目录中的明确指标名称重新描述。")
-        ids = self.names[mentions[0]]
+        ids = (binding.metric_id,) if binding else self.names[mentions[0]]
         if len(ids) > 1:
             return self.clarify_metric(ids)
         mid = ids[0]
@@ -219,7 +222,7 @@ class SemanticResolver:
         return {"status": result["status"], "request": request, "query_result": result}
 
 
-def gemini_generator(config, *, retry_once=False):
+def gemini_generator(config, *, retry_once=False, include_usage=False, schema_for_prompt=None):
     from google import genai
     from google.genai import types
 
@@ -233,8 +236,18 @@ def gemini_generator(config, *, retry_once=False):
                           http_options=types.HttpOptions(timeout=20000, retry_options=retries)) as client:
             response = client.models.generate_content(
                 model=config["GEMINI_MODEL"], contents=prompt,
-                config=types.GenerateContentConfig(response_mime_type="application/json"),
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    response_json_schema=schema_for_prompt(prompt) if schema_for_prompt else None,
+                ),
             )
+            if include_usage:
+                usage = response.usage_metadata
+                return {"text": response.text, "usage": {
+                    "prompt": getattr(usage, "prompt_token_count", None),
+                    "output": getattr(usage, "candidates_token_count", None),
+                    "total": getattr(usage, "total_token_count", None),
+                }}
             return response.text
     return generate
 

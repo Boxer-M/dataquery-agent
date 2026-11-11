@@ -1,6 +1,6 @@
 # 电商数仓优先路线：设计 v1.0.0
 
-状态：**A批DWD/DIM与B批6张DWS均已整批构建并验收**。B批从合并后的main 90fbdba创建feature/ecommerce-dws；原8项定义不变，新增18项限定DWS范围available。C批3个ADS普通视图已完成；查询服务与Agent集成尚未实施。[A批证据](BATCH_A_ACCEPTANCE.md)、[DWS证据](DWS_ACCEPTANCE.md)。
+SQL Shed 电商数仓已完成 ODS 接入、DWD/DIM 建模、DWS 汇总和 ADS 视图验收。标准指标服务、自然语言解析、经营查询规划及元数据能力判断已有独立入口和测试报告。
 
 正式设计入口：
 
@@ -18,10 +18,15 @@
 12. [ADS应用契约](ADS_CONTRACTS.md)
 13. [ADS实体及验收](ADS_ACCEPTANCE.md)
 
-当前完成C批ADS；ODS/DWD/DIM/DWS与Olist不作写入，不调整Agent权限。学习角色仅在验收后新增3个ADS视图的SELECT。PROJECT_PLAN.md与LEARNING_MAP.md仅Mac本地保留，停止跟踪不代表清除历史提交，不改写Git历史。
+## 查询能力与测试
 
-按完整批次交付，超过通常200行是为同时提供模型、共享执行、独立真值与隔离事务测试。当前69项测试通过；原8项ODS/DWD/DWS指标不变，新增18项通过，4项保留明细查询待验证，8项unsupported不变。
+- [标准指标查询服务](METRIC_QUERY_SERVICE.md)
+- [自然语言指标解析](INTENT_SEMANTIC_RESOLVER.md)
+- [多指标经营查询规划](BUSINESS_QUERY_PLANNING.md)
+- [元数据与能力判断](METADATA_CAPABILITY.md)
+- [统一 Agent 查询入口](UNIFIED_AGENT.md)
+- [统一 Agent 端到端报告](../../reports/warehouse/unified_agent_v1.json)
 
-开发单位是完整业务批次：A批DWD+DIM，B批仅DWS，C批单独ADS，之后查询服务/Agent；DWS与ADS分开PR。每批内部按依赖执行，不为单表建PR；A批完成后使用一个完整功能PR，浏览器授权受限时提供compare链接，不自动Merge。
+指标目录包含 26 项已验证指标、4 项待验证指标和 8 项不支持指标。测试覆盖数据库结构、字段权限、关联粒度与指标对账。PostgreSQL 只读账号用于查询与对账测试，明细路由结论用于规划。
 
-批准的八项口径和 SQL 保持原文件不变；新增目录只扩展能力和依赖元数据。原始 SQL Shed 是 CC0 合成练习数据，无币种、源时区、CDC、更新水位、真实客户身份归并、历史商品成本或退款完成流水，不能因建成多层数仓就宣称具有这些能力。
+SQL Shed 是采用 CC0 许可的公开合成测试数据。数据契约的已知边界包括币种、源时区、CDC、更新水位、跨账户客户身份、历史商品成本和退款到账记录的缺失。

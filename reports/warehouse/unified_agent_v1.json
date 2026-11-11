@@ -1,0 +1,5001 @@
+{
+  "base_commit": "969a6cd",
+  "captured_at_utc": "2026-11-11T05:33:01.606153+00:00",
+  "fixture": "tests/fixtures/unified_agent_v1.json",
+  "regression": {
+    "tests": 105,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 34.368
+  },
+  "evaluations": {
+    "fixed": {
+      "mode": "fixed",
+      "fixture_version": 1,
+      "passed": 33,
+      "total": 33,
+      "scores": {
+        "task_correct": {
+          "passed": 33,
+          "total": 33
+        },
+        "candidate_recall": {
+          "passed": 13,
+          "total": 13
+        },
+        "metric_selection": {
+          "passed": 13,
+          "total": 13
+        },
+        "ambiguity_correct": {
+          "passed": 5,
+          "total": 5
+        },
+        "route_correct": {
+          "passed": 33,
+          "total": 33
+        },
+        "tool_calls_correct": {
+          "passed": 33,
+          "total": 33
+        },
+        "numeric_correct": {
+          "passed": 11,
+          "total": 11
+        },
+        "end_to_end": {
+          "passed": 33,
+          "total": 33
+        }
+      },
+      "model_attempts": 31,
+      "tokens": {},
+      "latency_ms": {
+        "mean": 0,
+        "max": 1
+      },
+      "cases": [
+        {
+          "id": "order",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "2d803ee32df1472a9fbf17a3d866aa17",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "fixture-query",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "aa7e4901d7a1421fadd1eb1a20e5e0f8",
+                "elapsed_ms": 0
+              }
+            ],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ]
+        },
+        {
+          "id": "synonym",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "464243b60df6469c9bac0fb821fd6478",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "fixture-query",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "eef877ca2f1049b682fc510decdf4d00",
+                "elapsed_ms": 0
+              }
+            ],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "下单笔数"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ]
+        },
+        {
+          "id": "sales",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "0420b44bbd0a4641b8d590280feb7ed5",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "fixture-query",
+                "sources": [
+                  "dws.product_sales_day",
+                  "dim.product"
+                ],
+                "capability_trace_id": "0d1bd1fe75ee47b882f13ff5cacab3ec",
+                "elapsed_ms": 0
+              }
+            ],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "折扣后商品销售金额"
+            ],
+            "candidate_ids": [
+              "item_net_sales_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "item_net_sales_amount"
+            ]
+          },
+          "selected_sources": [
+            "dws.product_sales_day"
+          ]
+        },
+        {
+          "id": "payment",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "f493d1da3d52401481d3c3e1bd0ccab6",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "payment_attempt_success_rate",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "fixture-query",
+                "sources": [
+                  "dws.payment_day"
+                ],
+                "capability_trace_id": "bb33971bfaa440a881abe211893bd4df",
+                "elapsed_ms": 0
+              }
+            ],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "支付成功率"
+            ],
+            "candidate_ids": [
+              "payment_attempt_success_rate"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "payment_attempt_success_rate"
+            ]
+          },
+          "selected_sources": [
+            "dws.payment_day"
+          ]
+        },
+        {
+          "id": "channel",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "d66d7538d01d410ba3aada37de48dff2",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "filters": {
+                    "channel": "web"
+                  }
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "fixture-query",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "8e1c90511e8842b895989948db50008a",
+                "elapsed_ms": 0
+              }
+            ],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ]
+        },
+        {
+          "id": "cohort",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "23e374bde9e64eef90080def8182fcdd",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "item_return_rate",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "observation_cutoff": "2026-01-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "fixture-query",
+                "sources": [
+                  "dws.item_return_cohort_day",
+                  "dim.product"
+                ],
+                "capability_trace_id": "861aa1beb40847eabbe25927dea5a392",
+                "elapsed_ms": 0
+              }
+            ],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "商品明细退货率"
+            ],
+            "candidate_ids": [
+              "item_return_rate"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "item_return_rate"
+            ]
+          },
+          "selected_sources": [
+            "dws.item_return_cohort_day"
+          ]
+        },
+        {
+          "id": "longtail",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 1,
+          "trace": {
+            "trace_id": "4350544069334569a951dd1d4a799d57",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              },
+              {
+                "stage": "resolution",
+                "attempt": 1,
+                "prompt_version": "metric-resolution-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "fixture-query",
+                "sources": [
+                  "dws.payment_day"
+                ],
+                "capability_trace_id": "9b7c20d90487497b8bac9333d7081424",
+                "elapsed_ms": 0
+              }
+            ],
+            "elapsed_ms": 1
+          },
+          "match": {
+            "method": "inferred",
+            "original_evidence": "成功扣款一共多少钱",
+            "candidate_ids": [
+              "captured_payment_amount",
+              "payment_attempt_success_rate",
+              "product_captured_payment_amount",
+              "completed_refund_amount",
+              "order_count",
+              "payment_item_amount_mismatch_order_count"
+            ],
+            "model_proposal": [
+              "captured_payment_amount"
+            ],
+            "confirmed": [
+              "captured_payment_amount"
+            ],
+            "extracted_fragment": "成功扣款"
+          },
+          "selected_sources": [
+            "dws.payment_day"
+          ]
+        },
+        {
+          "id": "longtail_order",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "95dcb5eb7b35457d89fc2896d7faffe9",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              },
+              {
+                "stage": "resolution",
+                "attempt": 1,
+                "prompt_version": "metric-resolution-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "fixture-query",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "f61a78a5abf548cca7a54a04f50fcd18",
+                "elapsed_ms": 0
+              }
+            ],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "inferred",
+            "original_evidence": "下单总共几笔",
+            "candidate_ids": [
+              "order_count",
+              "ordering_customer_count",
+              "ordered_unit_count",
+              "first_observed_ordering_customer_count",
+              "ordered_product_count",
+              "orders_per_ordering_customer"
+            ],
+            "model_proposal": [
+              "order_count"
+            ],
+            "confirmed": [
+              "order_count"
+            ],
+            "extracted_fragment": "下单总共几笔"
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ]
+        },
+        {
+          "id": "inferred_only",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": true,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "clarify",
+          "code": "unconfirmed_metric",
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "1dea847f04a84b1ab8bee46c42ef40f0",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              },
+              {
+                "stage": "resolution",
+                "attempt": 1,
+                "prompt_version": "metric-resolution-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "inferred",
+            "original_evidence": "订单情况",
+            "candidate_ids": [
+              "order_count",
+              "channel_order_share",
+              "cancelled_order_count",
+              "order_item_count",
+              "cancelled_order_rate",
+              "multiple_payment_attempt_order_count"
+            ],
+            "model_proposal": [
+              "order_count"
+            ],
+            "confirmed": [],
+            "extracted_fragment": "订单情况"
+          },
+          "selected_sources": []
+        },
+        {
+          "id": "negated_capture",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": true,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "clarify",
+          "code": "unconfirmed_metric",
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "b5d8b0edfbad4af3a9e28f7b8612e92f",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              },
+              {
+                "stage": "resolution",
+                "attempt": 1,
+                "prompt_version": "metric-resolution-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "inferred",
+            "original_evidence": "成功扣款一共多少钱",
+            "candidate_ids": [
+              "captured_payment_amount",
+              "payment_attempt_success_rate",
+              "product_captured_payment_amount",
+              "completed_refund_amount",
+              "order_count",
+              "payment_item_amount_mismatch_order_count"
+            ],
+            "model_proposal": [
+              "captured_payment_amount"
+            ],
+            "confirmed": [],
+            "extracted_fragment": "成功扣款一共多少钱"
+          },
+          "selected_sources": []
+        },
+        {
+          "id": "invented",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "error",
+          "code": "invalid_metric_proposal",
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "0d9818e3271c4cb484aa0fc004dd5aea",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              },
+              {
+                "stage": "resolution",
+                "attempt": 1,
+                "prompt_version": "metric-resolution-v2",
+                "usage": {},
+                "status": "invalid_output",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "inferred",
+            "original_evidence": "成功扣款一共多少钱",
+            "candidate_ids": [
+              "captured_payment_amount",
+              "payment_attempt_success_rate",
+              "product_captured_payment_amount",
+              "completed_refund_amount",
+              "order_count",
+              "payment_item_amount_mismatch_order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [],
+            "extracted_fragment": "成功扣款一共多少钱"
+          },
+          "selected_sources": []
+        },
+        {
+          "id": "ungrounded",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "error",
+          "code": "invalid_metric_proposal",
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "c9174e24630241ba85ebe2a2854463f6",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              },
+              {
+                "stage": "resolution",
+                "attempt": 1,
+                "prompt_version": "metric-resolution-v2",
+                "usage": {},
+                "status": "invalid_output",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "inferred",
+            "original_evidence": "成功扣款一共多少钱",
+            "candidate_ids": [
+              "captured_payment_amount",
+              "payment_attempt_success_rate",
+              "product_captured_payment_amount",
+              "completed_refund_amount",
+              "order_count",
+              "payment_item_amount_mismatch_order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [],
+            "extracted_fragment": "成功扣款一共多少钱"
+          },
+          "selected_sources": []
+        },
+        {
+          "id": "ambiguous_sales",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": true,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "clarify",
+          "code": "ambiguous_metric",
+          "task": "clarification",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "09c425eaff524ceeab88468da8ff7dfe",
+            "model_attempts": [],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": "销售额",
+            "candidate_ids": [
+              "item_gross_sales_amount",
+              "item_net_sales_amount",
+              "captured_payment_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": []
+          },
+          "selected_sources": []
+        },
+        {
+          "id": "ambiguous_refund",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": true,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "clarify",
+          "code": "ambiguous_metric",
+          "task": "clarification",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "763949e145eb431984487fbf66862d5f",
+            "model_attempts": [],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": "退款金额",
+            "candidate_ids": [
+              "return_record_amount",
+              "completed_refund_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": []
+          },
+          "selected_sources": []
+        },
+        {
+          "id": "income",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": true,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "clarify",
+          "code": "ambiguous_metric",
+          "task": "clarification",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "ce326763877546f0981cbe9157ba8431",
+            "model_attempts": [],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": null,
+          "selected_sources": []
+        },
+        {
+          "id": "profit",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "unsupported",
+          "code": "missing_financial_definition",
+          "task": "unsupported",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "378e5ecb527e48d4bac8ec734c4fb9da",
+            "model_attempts": [],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": null,
+          "selected_sources": []
+        },
+        {
+          "id": "refund_arrival",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "unsupported",
+          "code": "missing_source_event",
+          "task": "unsupported",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "4da5e0e54f524c4189d415382f718c02",
+            "model_attempts": [],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": null,
+          "selected_sources": [
+            null
+          ]
+        },
+        {
+          "id": "browse",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "unsupported",
+          "code": "missing_source_event",
+          "task": "unsupported",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "75b436fd99a8439b9f75cb922031b5ce",
+            "model_attempts": [],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": null,
+          "selected_sources": [
+            null
+          ]
+        },
+        {
+          "id": "unverified",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "unsupported",
+          "code": "metric_unverified",
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "b296db5be9de442eac2cffa4727331ce",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "有支付尝试的订单数"
+            ],
+            "candidate_ids": [
+              "payment_attempted_order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "payment_attempted_order_count"
+            ]
+          },
+          "selected_sources": []
+        },
+        {
+          "id": "clock_conflict",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "clarify",
+          "code": "event_time_conflict",
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "3b504149a7ef460b837daeaeec7eff1e",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "成功支付金额"
+            ],
+            "candidate_ids": [
+              "captured_payment_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "captured_payment_amount"
+            ]
+          },
+          "selected_sources": [
+            null
+          ]
+        },
+        {
+          "id": "no_time",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "clarify",
+          "code": "missing_time",
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "0a4d868ed54a4d548ebcd09ef9b4354e",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": []
+        },
+        {
+          "id": "bad_group",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "unsupported",
+          "code": "unsupported_grouping",
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "8b9c2fff6eed455e9eaac00acd469da3",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": []
+        },
+        {
+          "id": "sequence",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "detail",
+          "code": "detail_grain_required",
+          "task": "detail",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "8aa197d4ab244bf89be95c43df2eb94c",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": null,
+          "selected_sources": [
+            "dwd.payment_attempt_fact"
+          ]
+        },
+        {
+          "id": "order_detail",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "detail",
+          "code": "detail_grain_required",
+          "task": "detail",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "41bf1e705ca14a43a47ef4a0bd153b67",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "商品净额"
+            ],
+            "candidate_ids": [
+              "item_net_sales_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "item_net_sales_amount"
+            ]
+          },
+          "selected_sources": [
+            "dwd.order_item_fact"
+          ]
+        },
+        {
+          "id": "unsupported_order_status",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "unsupported",
+          "code": "unsupported_grouping",
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "5dd6360f220d4d5f8c582cae086bfdbe",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "商品净额"
+            ],
+            "candidate_ids": [
+              "item_net_sales_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "item_net_sales_amount"
+            ]
+          },
+          "selected_sources": []
+        },
+        {
+          "id": "unknown_detail",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "unsupported",
+          "code": "detail_not_registered",
+          "task": "detail",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "4af8a46dd05e4e6bb73745643bee9993",
+            "model_attempts": [],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": null,
+          "selected_sources": []
+        },
+        {
+          "id": "injection",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "unsupported",
+          "code": "unsafe_request",
+          "task": "blocked",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "526a1808899a4bb293af087a63cb0399",
+            "model_attempts": [],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": null,
+          "selected_sources": []
+        },
+        {
+          "id": "broken_json",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "error",
+          "code": "invalid_model_output",
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "48f43b77a1e3470bab5abe31a4d59466",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "invalid_output",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": []
+        },
+        {
+          "id": "tool_down",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "error",
+          "code": "query_timeout",
+          "task": "single",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "c99c6d9f199d42b7b09cea845246d63f",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "error",
+                "code": "query_timeout",
+                "trace_id": "fixture-error",
+                "sources": [],
+                "capability_trace_id": "602e0e5a31284765b2094b118347559a",
+                "elapsed_ms": 0
+              }
+            ],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ]
+        },
+        {
+          "id": "multi",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "business",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "0906890bb9d94a4baab2618d1d23c3d0",
+            "model_attempts": [
+              {
+                "stage": "planning",
+                "attempt": 1,
+                "prompt_version": "business-plan-v1",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "fixed-query",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "c6693df42af14856a0b8407e3f6d3f44",
+                "elapsed_ms": 0
+              },
+              {
+                "request": {
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "fixed-query",
+                "sources": [
+                  "dws.payment_day"
+                ],
+                "capability_trace_id": "0a2d694dca3a4bd1985c68b9b2aa964a",
+                "elapsed_ms": 0
+              }
+            ],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量",
+              "成功支付金额"
+            ],
+            "candidate_ids": [
+              "order_count",
+              "captured_payment_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count",
+              "captured_payment_amount"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day",
+            "dws.payment_day"
+          ]
+        },
+        {
+          "id": "mom",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "business",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "8f1a4f7d5f524d5cab98331586b65ad9",
+            "model_attempts": [
+              {
+                "stage": "planning",
+                "attempt": 1,
+                "prompt_version": "business-plan-v1",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "fixed-query",
+                "sources": [
+                  "dws.product_sales_day",
+                  "dim.product"
+                ],
+                "capability_trace_id": "865318d9584746d89e180af4f37373eb",
+                "elapsed_ms": 0
+              },
+              {
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-02-01",
+                  "end_date": "2025-03-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "fixed-query",
+                "sources": [
+                  "dws.product_sales_day",
+                  "dim.product"
+                ],
+                "capability_trace_id": "72a109ae1f3c42779e7c1e35009b30a1",
+                "elapsed_ms": 0
+              }
+            ],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "折扣后商品销售金额"
+            ],
+            "candidate_ids": [
+              "item_net_sales_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "item_net_sales_amount"
+            ]
+          },
+          "selected_sources": [
+            "dws.product_sales_day",
+            "dws.product_sales_day"
+          ]
+        },
+        {
+          "id": "rank",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "business",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "a2772c8b65b94ddeba491699bdac914f",
+            "model_attempts": [
+              {
+                "stage": "planning",
+                "attempt": 1,
+                "prompt_version": "business-plan-v1",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [
+                    "channel"
+                  ],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "fixed-query",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "9d3d92cd036c4f90a5121970065b58c9",
+                "elapsed_ms": 0
+              }
+            ],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ]
+        },
+        {
+          "id": "partial",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "partial",
+          "code": null,
+          "task": "business",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "0ba723cbb77f47c8a3c728eb7bf25a53",
+            "model_attempts": [
+              {
+                "stage": "planning",
+                "attempt": 1,
+                "prompt_version": "business-plan-v1",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "fixed-query",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "b1305ace78c24ceb8e72dcf7a7022873",
+                "elapsed_ms": 0
+              },
+              {
+                "request": {
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "error",
+                "code": "query_timeout",
+                "trace_id": "fixed-error",
+                "sources": [
+                  "dws.payment_day"
+                ],
+                "capability_trace_id": "b8639d65b49946b5b087d18ab920c5f5",
+                "elapsed_ms": 0
+              }
+            ],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量",
+              "成功支付金额"
+            ],
+            "candidate_ids": [
+              "order_count",
+              "captured_payment_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count",
+              "captured_payment_amount"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day",
+            "dws.payment_day"
+          ]
+        }
+      ]
+    },
+    "postgres": {
+      "mode": "postgres",
+      "fixture_version": 1,
+      "passed": 13,
+      "total": 13,
+      "scores": {
+        "task_correct": {
+          "passed": 13,
+          "total": 13
+        },
+        "candidate_recall": {
+          "passed": 11,
+          "total": 11
+        },
+        "metric_selection": {
+          "passed": 11,
+          "total": 11
+        },
+        "ambiguity_correct": {
+          "passed": 0,
+          "total": 0
+        },
+        "route_correct": {
+          "passed": 13,
+          "total": 13
+        },
+        "tool_calls_correct": {
+          "passed": 13,
+          "total": 13
+        },
+        "numeric_correct": {
+          "passed": 11,
+          "total": 11
+        },
+        "end_to_end": {
+          "passed": 13,
+          "total": 13
+        }
+      },
+      "model_attempts": 15,
+      "tokens": {},
+      "latency_ms": {
+        "mean": 8,
+        "max": 17
+      },
+      "cases": [
+        {
+          "id": "order",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 6,
+          "trace": {
+            "trace_id": "97a511a91890485fa05a343f43415ea4",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "5f0eccc6614d4d3287454fdbf6d38700",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "3b469069ef2e4e8499a65c088ca37947",
+                "elapsed_ms": 6
+              }
+            ],
+            "elapsed_ms": 6
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ]
+        },
+        {
+          "id": "synonym",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 7,
+          "trace": {
+            "trace_id": "29e9208161604d00b2e63f852bd308ee",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "d9b337649e0848f19c685c5ec609b0f3",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "acdb1030a242412aa9233615d46291e2",
+                "elapsed_ms": 7
+              }
+            ],
+            "elapsed_ms": 7
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "下单笔数"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ]
+        },
+        {
+          "id": "sales",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 10,
+          "trace": {
+            "trace_id": "941632bac7fb4551a3929637862c4a28",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "8c27d2bd3d9f4e958f067edbacb2b5f9",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "capability_trace_id": "6e34596c8be9456f8333df5e11cfce2a",
+                "elapsed_ms": 10
+              }
+            ],
+            "elapsed_ms": 10
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "折扣后商品销售金额"
+            ],
+            "candidate_ids": [
+              "item_net_sales_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "item_net_sales_amount"
+            ]
+          },
+          "selected_sources": [
+            "dws.product_sales_day"
+          ]
+        },
+        {
+          "id": "payment",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 7,
+          "trace": {
+            "trace_id": "df71a9092bf340179b871cfb92ee2290",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "payment_attempt_success_rate",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "3aa9ba07c824473f8609394550d48008",
+                "sources": [
+                  "dws.payment_day"
+                ],
+                "capability_trace_id": "4fe8ae348d6f433aa10d45438ffce9a2",
+                "elapsed_ms": 7
+              }
+            ],
+            "elapsed_ms": 7
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "支付成功率"
+            ],
+            "candidate_ids": [
+              "payment_attempt_success_rate"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "payment_attempt_success_rate"
+            ]
+          },
+          "selected_sources": [
+            "dws.payment_day"
+          ]
+        },
+        {
+          "id": "channel",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 6,
+          "trace": {
+            "trace_id": "9e04ae676b1b46088bf8a808838f360d",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "filters": {
+                    "channel": "web"
+                  }
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "88c6d5ff72ef493397e45a4d644d1109",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "74330ac6504842609efce87fd8d08b60",
+                "elapsed_ms": 6
+              }
+            ],
+            "elapsed_ms": 6
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ]
+        },
+        {
+          "id": "cohort",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 8,
+          "trace": {
+            "trace_id": "cd2bb85a14784000ad48db602531167d",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "item_return_rate",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "observation_cutoff": "2026-01-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "de3fb5e7bd9742c5bce224ccef7236ce",
+                "sources": [
+                  "dim.product",
+                  "dws.item_return_cohort_day"
+                ],
+                "capability_trace_id": "ec08c92210e44e50b2e40366a50c771d",
+                "elapsed_ms": 7
+              }
+            ],
+            "elapsed_ms": 8
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "商品明细退货率"
+            ],
+            "candidate_ids": [
+              "item_return_rate"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "item_return_rate"
+            ]
+          },
+          "selected_sources": [
+            "dws.item_return_cohort_day"
+          ]
+        },
+        {
+          "id": "longtail",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 8,
+          "trace": {
+            "trace_id": "fca3289a46b7465fb02032558fdfe2ef",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              },
+              {
+                "stage": "resolution",
+                "attempt": 1,
+                "prompt_version": "metric-resolution-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "a407a83bbf984693a16600c8aac7086c",
+                "sources": [
+                  "dws.payment_day"
+                ],
+                "capability_trace_id": "020326c5e6684919868b7446ca45f972",
+                "elapsed_ms": 7
+              }
+            ],
+            "elapsed_ms": 8
+          },
+          "match": {
+            "method": "inferred",
+            "original_evidence": "成功扣款一共多少钱",
+            "candidate_ids": [
+              "captured_payment_amount",
+              "payment_attempt_success_rate",
+              "product_captured_payment_amount",
+              "completed_refund_amount",
+              "order_count",
+              "payment_item_amount_mismatch_order_count"
+            ],
+            "model_proposal": [
+              "captured_payment_amount"
+            ],
+            "confirmed": [
+              "captured_payment_amount"
+            ],
+            "extracted_fragment": "成功扣款"
+          },
+          "selected_sources": [
+            "dws.payment_day"
+          ]
+        },
+        {
+          "id": "longtail_order",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 9,
+          "trace": {
+            "trace_id": "564d24a489754cdf94a95024571f6c06",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              },
+              {
+                "stage": "resolution",
+                "attempt": 1,
+                "prompt_version": "metric-resolution-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "1484d7e68456434e885d5f3f393e296b",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "ea4c6abdfc3e48dab21b539f5d0447c9",
+                "elapsed_ms": 8
+              }
+            ],
+            "elapsed_ms": 9
+          },
+          "match": {
+            "method": "inferred",
+            "original_evidence": "下单总共几笔",
+            "candidate_ids": [
+              "order_count",
+              "ordering_customer_count",
+              "ordered_unit_count",
+              "first_observed_ordering_customer_count",
+              "ordered_product_count",
+              "orders_per_ordering_customer"
+            ],
+            "model_proposal": [
+              "order_count"
+            ],
+            "confirmed": [
+              "order_count"
+            ],
+            "extracted_fragment": "下单总共几笔"
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ]
+        },
+        {
+          "id": "sequence",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "detail",
+          "code": "detail_grain_required",
+          "task": "detail",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "86949240ff264ba3a4a4265aa814d10b",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": null,
+          "selected_sources": [
+            "dwd.payment_attempt_fact"
+          ]
+        },
+        {
+          "id": "order_detail",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "detail",
+          "code": "detail_grain_required",
+          "task": "detail",
+          "elapsed_ms": 0,
+          "trace": {
+            "trace_id": "236903584dbf46e99b1a5af92c6af708",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 0
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "商品净额"
+            ],
+            "candidate_ids": [
+              "item_net_sales_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "item_net_sales_amount"
+            ]
+          },
+          "selected_sources": [
+            "dwd.order_item_fact"
+          ]
+        },
+        {
+          "id": "multi",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "business",
+          "elapsed_ms": 15,
+          "trace": {
+            "trace_id": "68918e541ad04260a7d4c15f35f3c581",
+            "model_attempts": [
+              {
+                "stage": "planning",
+                "attempt": 1,
+                "prompt_version": "business-plan-v1",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "5bef4302c31f473a86a4e56654cbd6b5",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "91d53aa596fa4c52ba4e4fc29ad30de4",
+                "elapsed_ms": 8
+              },
+              {
+                "request": {
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "7e0219e1713944f689bca728ec35130e",
+                "sources": [
+                  "dws.payment_day"
+                ],
+                "capability_trace_id": "4b885651ec4b410cabf471c3b897b6a8",
+                "elapsed_ms": 6
+              }
+            ],
+            "elapsed_ms": 15
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量",
+              "成功支付金额"
+            ],
+            "candidate_ids": [
+              "order_count",
+              "captured_payment_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count",
+              "captured_payment_amount"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day",
+            "dws.payment_day"
+          ]
+        },
+        {
+          "id": "mom",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "business",
+          "elapsed_ms": 17,
+          "trace": {
+            "trace_id": "ef73da041b1f4804bf331dba3a2333f1",
+            "model_attempts": [
+              {
+                "stage": "planning",
+                "attempt": 1,
+                "prompt_version": "business-plan-v1",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "cc1ac6de8f574e83b9866beed0d06408",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "capability_trace_id": "0dcfd2268cd1434d9df941e40f970fda",
+                "elapsed_ms": 9
+              },
+              {
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-02-01",
+                  "end_date": "2025-03-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "c195c073b45a4e3b92728bdaf56e9fc9",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "capability_trace_id": "180c0ef44ffb46ee962783c12d6c6648",
+                "elapsed_ms": 7
+              }
+            ],
+            "elapsed_ms": 17
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "折扣后商品销售金额"
+            ],
+            "candidate_ids": [
+              "item_net_sales_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "item_net_sales_amount"
+            ]
+          },
+          "selected_sources": [
+            "dws.product_sales_day",
+            "dws.product_sales_day"
+          ]
+        },
+        {
+          "id": "rank",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "business",
+          "elapsed_ms": 7,
+          "trace": {
+            "trace_id": "70c4d373e89f4ce6a110f58528d9994a",
+            "model_attempts": [
+              {
+                "stage": "planning",
+                "attempt": 1,
+                "prompt_version": "business-plan-v1",
+                "usage": {},
+                "status": "received",
+                "elapsed_ms": 0
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [
+                    "channel"
+                  ],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "803f0287a1ae4dc4997ad36c1b5886cf",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "bd703463d535444185f9baf7e55335fe",
+                "elapsed_ms": 6
+              }
+            ],
+            "elapsed_ms": 7
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ]
+        }
+      ]
+    },
+    "initial_live": {
+      "mode": "live",
+      "fixture_version": 1,
+      "passed": 5,
+      "total": 8,
+      "scores": {
+        "task_correct": {
+          "passed": 8,
+          "total": 8
+        },
+        "candidate_recall": {
+          "passed": 6,
+          "total": 7
+        },
+        "metric_selection": {
+          "passed": 6,
+          "total": 7
+        },
+        "ambiguity_correct": {
+          "passed": 0,
+          "total": 0
+        },
+        "route_correct": {
+          "passed": 5,
+          "total": 8
+        },
+        "tool_calls_correct": {
+          "passed": 6,
+          "total": 8
+        },
+        "numeric_correct": {
+          "passed": 5,
+          "total": 7
+        },
+        "end_to_end": {
+          "passed": 5,
+          "total": 8
+        }
+      },
+      "model_attempts": 8,
+      "tokens": {
+        "prompt": 3197,
+        "output": 689,
+        "total": 3886
+      },
+      "latency_ms": {
+        "mean": 3384,
+        "max": 5267
+      },
+      "cases": [
+        {
+          "id": "order",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 3301,
+          "trace": {
+            "trace_id": "b3e75639b3da4246aaae38ea57209876",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v1",
+                "usage": {
+                  "prompt": 160,
+                  "output": 58,
+                  "total": 218
+                },
+                "status": "received",
+                "elapsed_ms": 3282
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "485013bc9794447f9cb876cb00d71ef4",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "174fa326dc3541ea946988675fda6a49",
+                "elapsed_ms": 18
+              }
+            ],
+            "elapsed_ms": 3301
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ],
+          "example": {
+            "status": "ok",
+            "query_result": {
+              "metric_id": "order_count",
+              "trace_id": "485013bc9794447f9cb876cb00d71ef4",
+              "definition": "时间窗内创建的订单记录数，含取消订单。",
+              "definition_version": "1.0.0",
+              "event_time": "orders.ordered_at",
+              "time_semantics": "orders.ordered_at",
+              "source_grain": "一行一个 order_id",
+              "group_by": [],
+              "start_date": "2025-01-01",
+              "end_date": "2025-02-01",
+              "observation_cutoff": null,
+              "sources": [
+                "dws.order_day"
+              ],
+              "status": "ok",
+              "results": [
+                {
+                  "bucket": "all",
+                  "value": "2312"
+                }
+              ],
+              "error": null
+            },
+            "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），订单量：all=2312。时间窗内创建的订单记录数，含取消订单。"
+          }
+        },
+        {
+          "id": "sales",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 2787,
+          "trace": {
+            "trace_id": "da5df660d51a427b84d7b44a77f138a6",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v1",
+                "usage": {
+                  "prompt": 166,
+                  "output": 61,
+                  "total": 227
+                },
+                "status": "received",
+                "elapsed_ms": 2728
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "b93c6fa75ec44888921324da083d7467",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "capability_trace_id": "0dfd8e433d2645239564356a12245d39",
+                "elapsed_ms": 58
+              }
+            ],
+            "elapsed_ms": 2787
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "折扣后商品销售金额"
+            ],
+            "candidate_ids": [
+              "item_net_sales_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "item_net_sales_amount"
+            ]
+          },
+          "selected_sources": [
+            "dws.product_sales_day"
+          ],
+          "example": {
+            "status": "ok",
+            "query_result": {
+              "metric_id": "item_net_sales_amount",
+              "trace_id": "b93c6fa75ec44888921324da083d7467",
+              "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+              "definition_version": "1.0.0",
+              "event_time": "orders.ordered_at（明细继承订单时间）",
+              "time_semantics": "orders.ordered_at（明细继承订单时间）",
+              "source_grain": "一行一个 order_item_id",
+              "group_by": [],
+              "start_date": "2025-01-01",
+              "end_date": "2025-02-01",
+              "observation_cutoff": null,
+              "sources": [
+                "dim.product",
+                "dws.product_sales_day"
+              ],
+              "status": "ok",
+              "results": [
+                {
+                  "bucket": "all",
+                  "value": "231920.18"
+                }
+              ],
+              "error": null
+            },
+            "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），折扣后商品销售金额：all=231920.18。按下单时间统计明细毛额减行折扣，含所有订单状态。"
+          }
+        },
+        {
+          "id": "payment",
+          "passed": false,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": false,
+            "tool_calls_correct": false,
+            "numeric_correct": false,
+            "end_to_end": false
+          },
+          "status": "error",
+          "code": "invalid_model_output",
+          "task": "single",
+          "elapsed_ms": 3063,
+          "trace": {
+            "trace_id": "b77d3850e2e7402c87ff05e209be70c3",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v1",
+                "usage": {
+                  "prompt": 162,
+                  "output": 59,
+                  "total": 221
+                },
+                "status": "invalid_output",
+                "elapsed_ms": 3063
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 3063
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "支付成功率"
+            ],
+            "candidate_ids": [
+              "payment_attempt_success_rate"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "payment_attempt_success_rate"
+            ]
+          },
+          "selected_sources": []
+        },
+        {
+          "id": "longtail",
+          "passed": false,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": false,
+            "metric_selection": false,
+            "ambiguity_correct": null,
+            "route_correct": false,
+            "tool_calls_correct": false,
+            "numeric_correct": false,
+            "end_to_end": false
+          },
+          "status": "error",
+          "code": "invalid_model_output",
+          "task": "single",
+          "elapsed_ms": 3156,
+          "trace": {
+            "trace_id": "081b7c61f5f3468f8d9ac545035975ae",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v1",
+                "usage": {
+                  "prompt": 161,
+                  "output": 60,
+                  "total": 221
+                },
+                "status": "invalid_output",
+                "elapsed_ms": 3156
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 3156
+          },
+          "match": null,
+          "selected_sources": []
+        },
+        {
+          "id": "sequence",
+          "passed": false,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": false,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": false
+          },
+          "status": "unsupported",
+          "code": "unsupported_detail_scope",
+          "task": "detail",
+          "elapsed_ms": 3392,
+          "trace": {
+            "trace_id": "7b3f32b477f94f8583b1b09169e28848",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v1",
+                "usage": {
+                  "prompt": 166,
+                  "output": 78,
+                  "total": 244
+                },
+                "status": "received",
+                "elapsed_ms": 3391
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 3392
+          },
+          "match": null,
+          "selected_sources": []
+        },
+        {
+          "id": "multi",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "business",
+          "elapsed_ms": 3301,
+          "trace": {
+            "trace_id": "2302b38c53534d5ab47ec0c44b3e6646",
+            "model_attempts": [
+              {
+                "stage": "planning",
+                "attempt": 1,
+                "prompt_version": "business-plan-v1",
+                "usage": {
+                  "prompt": 791,
+                  "output": 118,
+                  "total": 909
+                },
+                "status": "received",
+                "elapsed_ms": 3251
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "da91107a77704843accf2337020f19a9",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "539d0bddca104b1a905a5460b05fa645",
+                "elapsed_ms": 23
+              },
+              {
+                "request": {
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "ac4ffa8da3754284830192d7004701f7",
+                "sources": [
+                  "dws.payment_day"
+                ],
+                "capability_trace_id": "45a49e9975e348689d9a3afc11f824bc",
+                "elapsed_ms": 25
+              }
+            ],
+            "elapsed_ms": 3301
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量",
+              "成功支付金额"
+            ],
+            "candidate_ids": [
+              "order_count",
+              "captured_payment_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count",
+              "captured_payment_amount"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day",
+            "dws.payment_day"
+          ],
+          "example": {
+            "status": "ok",
+            "plan": {
+              "analysis_type": "summary",
+              "metric_ids": [
+                "order_count",
+                "captured_payment_amount"
+              ],
+              "time_windows": [
+                {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                }
+              ],
+              "group_by": [],
+              "filters": {},
+              "comparison_type": null,
+              "sort_rule": null,
+              "limit": null,
+              "conditions": [],
+              "required_tool_calls": [
+                {
+                  "step": 1,
+                  "window_index": 0,
+                  "request": {
+                    "metric_id": "order_count",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "group_by": [],
+                    "filters": {}
+                  }
+                },
+                {
+                  "step": 2,
+                  "window_index": 0,
+                  "request": {
+                    "metric_id": "captured_payment_amount",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "group_by": [],
+                    "filters": {}
+                  }
+                }
+              ],
+              "unresolved_business_rules": []
+            },
+            "tools": [
+              {
+                "step": 1,
+                "window_index": 0,
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 23,
+                "trace_id": "da91107a77704843accf2337020f19a9",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "row_count": 1,
+                "definition": "时间窗内创建的订单记录数，含取消订单。",
+                "event_time": "orders.ordered_at"
+              },
+              {
+                "step": 2,
+                "window_index": 0,
+                "request": {
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 25,
+                "trace_id": "ac4ffa8da3754284830192d7004701f7",
+                "sources": [
+                  "dws.payment_day"
+                ],
+                "row_count": 1,
+                "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                "event_time": "payments.paid_at"
+              }
+            ],
+            "results": [
+              {
+                "month": null,
+                "bucket": "all",
+                "metrics": {
+                  "order_count": {
+                    "value": "2312"
+                  },
+                  "captured_payment_amount": {
+                    "value": "230864.57"
+                  }
+                }
+              }
+            ],
+            "notice": null,
+            "answer_zh": "统计窗口 [2025-01-01, 2025-02-01)。\n汇总：订单量 2312；成功支付金额 230864.57。\n订单量按orders.ordered_at统计。时间窗内创建的订单记录数，含取消订单。\n成功支付金额按payments.paid_at统计。支付事件时间窗内 captured 尝试的源金额合计。\n步骤 1 · 来源 dws.order_day · Trace da91107a77704843accf2337020f19a9\n步骤 2 · 来源 dws.payment_day · Trace ac4ffa8da3754284830192d7004701f7"
+          }
+        },
+        {
+          "id": "mom",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "business",
+          "elapsed_ms": 2805,
+          "trace": {
+            "trace_id": "4138618f7e294670bb8ac3250bc49f5b",
+            "model_attempts": [
+              {
+                "stage": "planning",
+                "attempt": 1,
+                "prompt_version": "business-plan-v1",
+                "usage": {
+                  "prompt": 793,
+                  "output": 114,
+                  "total": 907
+                },
+                "status": "received",
+                "elapsed_ms": 2748
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "8ed8a3e19a2d4a5daf907489b4f24488",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "capability_trace_id": "ca117e440e614f1499114ae0b1b02f02",
+                "elapsed_ms": 31
+              },
+              {
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-02-01",
+                  "end_date": "2025-03-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "510321ac14ee4450872eea0572103c48",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "capability_trace_id": "b69d9193b55f495ea4e6fad19dfef98f",
+                "elapsed_ms": 25
+              }
+            ],
+            "elapsed_ms": 2805
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "折扣后商品销售金额"
+            ],
+            "candidate_ids": [
+              "item_net_sales_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "item_net_sales_amount"
+            ]
+          },
+          "selected_sources": [
+            "dws.product_sales_day",
+            "dws.product_sales_day"
+          ],
+          "example": {
+            "status": "ok",
+            "plan": {
+              "analysis_type": "comparison",
+              "metric_ids": [
+                "item_net_sales_amount"
+              ],
+              "time_windows": [
+                {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                {
+                  "start_date": "2025-02-01",
+                  "end_date": "2025-03-01"
+                }
+              ],
+              "group_by": [],
+              "filters": {},
+              "comparison_type": "mom",
+              "sort_rule": null,
+              "limit": null,
+              "conditions": [],
+              "required_tool_calls": [
+                {
+                  "step": 1,
+                  "window_index": 0,
+                  "request": {
+                    "metric_id": "item_net_sales_amount",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "group_by": [],
+                    "filters": {}
+                  }
+                },
+                {
+                  "step": 2,
+                  "window_index": 1,
+                  "request": {
+                    "metric_id": "item_net_sales_amount",
+                    "start_date": "2025-02-01",
+                    "end_date": "2025-03-01",
+                    "group_by": [],
+                    "filters": {}
+                  }
+                }
+              ],
+              "unresolved_business_rules": []
+            },
+            "tools": [
+              {
+                "step": 1,
+                "window_index": 0,
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 31,
+                "trace_id": "8ed8a3e19a2d4a5daf907489b4f24488",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "row_count": 1,
+                "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                "event_time": "orders.ordered_at（明细继承订单时间）"
+              },
+              {
+                "step": 2,
+                "window_index": 1,
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-02-01",
+                  "end_date": "2025-03-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 25,
+                "trace_id": "510321ac14ee4450872eea0572103c48",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "row_count": 1,
+                "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                "event_time": "orders.ordered_at（明细继承订单时间）"
+              }
+            ],
+            "results": [
+              {
+                "month": null,
+                "bucket": "all",
+                "metrics": {
+                  "item_net_sales_amount": {
+                    "baseline": {
+                      "value": "231920.18"
+                    },
+                    "current": {
+                      "value": "207798.37"
+                    },
+                    "change": "-24121.81",
+                    "change_unit": "metric_unit",
+                    "change_pct": "-10.40091035",
+                    "change_pct_reason": null
+                  }
+                }
+              }
+            ],
+            "notice": null,
+            "answer_zh": "统计窗口 [2025-01-01, 2025-02-01)、[2025-02-01, 2025-03-01)。\n汇总：折扣后商品销售金额 231920.18 → 207798.37，变化 -24121.81，变化率 -10.40091035%。\n折扣后商品销售金额按orders.ordered_at（明细继承订单时间）统计。按下单时间统计明细毛额减行折扣，含所有订单状态。\n步骤 1 · 来源 dim.product、dws.product_sales_day · Trace 8ed8a3e19a2d4a5daf907489b4f24488\n步骤 2 · 来源 dim.product、dws.product_sales_day · Trace 510321ac14ee4450872eea0572103c48"
+          }
+        },
+        {
+          "id": "rank",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "business",
+          "elapsed_ms": 5267,
+          "trace": {
+            "trace_id": "01d1b050c9304bc8b0a3bd43273619c9",
+            "model_attempts": [
+              {
+                "stage": "planning",
+                "attempt": 1,
+                "prompt_version": "business-plan-v1",
+                "usage": {
+                  "prompt": 798,
+                  "output": 141,
+                  "total": 939
+                },
+                "status": "received",
+                "elapsed_ms": 5249
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [
+                    "channel"
+                  ],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "997a47820b224f6d9a84aa5857016e8a",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "157258494d3e4db19e47d57d4bfe74d0",
+                "elapsed_ms": 18
+              }
+            ],
+            "elapsed_ms": 5267
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ],
+          "example": {
+            "status": "ok",
+            "plan": {
+              "analysis_type": "ranking",
+              "metric_ids": [
+                "order_count"
+              ],
+              "time_windows": [
+                {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                }
+              ],
+              "group_by": [
+                "channel"
+              ],
+              "filters": {},
+              "comparison_type": null,
+              "sort_rule": {
+                "metric_id": "order_count",
+                "direction": "desc"
+              },
+              "limit": 2,
+              "conditions": [],
+              "required_tool_calls": [
+                {
+                  "step": 1,
+                  "window_index": 0,
+                  "request": {
+                    "metric_id": "order_count",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "group_by": [
+                      "channel"
+                    ],
+                    "filters": {}
+                  }
+                }
+              ],
+              "unresolved_business_rules": []
+            },
+            "tools": [
+              {
+                "step": 1,
+                "window_index": 0,
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [
+                    "channel"
+                  ],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 18,
+                "trace_id": "997a47820b224f6d9a84aa5857016e8a",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "row_count": 4,
+                "definition": "时间窗内创建的订单记录数，含取消订单。",
+                "event_time": "orders.ordered_at"
+              }
+            ],
+            "results": [
+              {
+                "month": null,
+                "bucket": "web",
+                "metrics": {
+                  "order_count": {
+                    "value": "1337"
+                  }
+                }
+              },
+              {
+                "month": null,
+                "bucket": "mobile",
+                "metrics": {
+                  "order_count": {
+                    "value": "685"
+                  }
+                }
+              }
+            ],
+            "notice": null,
+            "answer_zh": "统计窗口 [2025-01-01, 2025-02-01)。\nweb：订单量 1337。\nmobile：订单量 685。\n订单量按orders.ordered_at统计。时间窗内创建的订单记录数，含取消订单。\n步骤 1 · 来源 dws.order_day · Trace 997a47820b224f6d9a84aa5857016e8a"
+          }
+        }
+      ]
+    },
+    "live": {
+      "mode": "live",
+      "fixture_version": 1,
+      "passed": 8,
+      "total": 8,
+      "scores": {
+        "task_correct": {
+          "passed": 8,
+          "total": 8
+        },
+        "candidate_recall": {
+          "passed": 7,
+          "total": 7
+        },
+        "metric_selection": {
+          "passed": 7,
+          "total": 7
+        },
+        "ambiguity_correct": {
+          "passed": 0,
+          "total": 0
+        },
+        "route_correct": {
+          "passed": 8,
+          "total": 8
+        },
+        "tool_calls_correct": {
+          "passed": 8,
+          "total": 8
+        },
+        "numeric_correct": {
+          "passed": 7,
+          "total": 7
+        },
+        "end_to_end": {
+          "passed": 8,
+          "total": 8
+        }
+      },
+      "model_attempts": 9,
+      "tokens": {
+        "prompt": 3814,
+        "output": 687,
+        "total": 4501
+      },
+      "latency_ms": {
+        "mean": 4554,
+        "max": 7503
+      },
+      "cases": [
+        {
+          "id": "order",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 5215,
+          "trace": {
+            "trace_id": "0abad5b34649431fbfa727d137100f8b",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {
+                  "prompt": 189,
+                  "output": 58,
+                  "total": 247
+                },
+                "status": "received",
+                "elapsed_ms": 5197
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "99974d03b60d44c29e826b37cd3d9e6a",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "b578a354d9f9413bb498e694cd7fc99a",
+                "elapsed_ms": 17
+              }
+            ],
+            "elapsed_ms": 5215
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ],
+          "example": {
+            "status": "ok",
+            "query_result": {
+              "metric_id": "order_count",
+              "trace_id": "99974d03b60d44c29e826b37cd3d9e6a",
+              "definition": "时间窗内创建的订单记录数，含取消订单。",
+              "definition_version": "1.0.0",
+              "event_time": "orders.ordered_at",
+              "time_semantics": "orders.ordered_at",
+              "source_grain": "一行一个 order_id",
+              "group_by": [],
+              "start_date": "2025-01-01",
+              "end_date": "2025-02-01",
+              "observation_cutoff": null,
+              "sources": [
+                "dws.order_day"
+              ],
+              "status": "ok",
+              "results": [
+                {
+                  "bucket": "all",
+                  "value": "2312"
+                }
+              ],
+              "error": null
+            },
+            "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），订单量：all=2312。时间窗内创建的订单记录数，含取消订单。"
+          }
+        },
+        {
+          "id": "sales",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 3963,
+          "trace": {
+            "trace_id": "9f1ec22630144b678544169cf4838317",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {
+                  "prompt": 195,
+                  "output": 61,
+                  "total": 256
+                },
+                "status": "received",
+                "elapsed_ms": 3934
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "6a633af8fa95476eb16a78e38f3b661a",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "capability_trace_id": "9091c162793a48308726e3cf4c2e2890",
+                "elapsed_ms": 29
+              }
+            ],
+            "elapsed_ms": 3963
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "折扣后商品销售金额"
+            ],
+            "candidate_ids": [
+              "item_net_sales_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "item_net_sales_amount"
+            ]
+          },
+          "selected_sources": [
+            "dws.product_sales_day"
+          ],
+          "example": {
+            "status": "ok",
+            "query_result": {
+              "metric_id": "item_net_sales_amount",
+              "trace_id": "6a633af8fa95476eb16a78e38f3b661a",
+              "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+              "definition_version": "1.0.0",
+              "event_time": "orders.ordered_at（明细继承订单时间）",
+              "time_semantics": "orders.ordered_at（明细继承订单时间）",
+              "source_grain": "一行一个 order_item_id",
+              "group_by": [],
+              "start_date": "2025-01-01",
+              "end_date": "2025-02-01",
+              "observation_cutoff": null,
+              "sources": [
+                "dim.product",
+                "dws.product_sales_day"
+              ],
+              "status": "ok",
+              "results": [
+                {
+                  "bucket": "all",
+                  "value": "231920.18"
+                }
+              ],
+              "error": null
+            },
+            "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），折扣后商品销售金额：all=231920.18。按下单时间统计明细毛额减行折扣，含所有订单状态。"
+          }
+        },
+        {
+          "id": "payment",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 3672,
+          "trace": {
+            "trace_id": "80388a9052254887b8dd0dedcf3c4f5a",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {
+                  "prompt": 191,
+                  "output": 59,
+                  "total": 250
+                },
+                "status": "received",
+                "elapsed_ms": 3653
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "payment_attempt_success_rate",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "6f5f9c86795445a89c9a03462685242a",
+                "sources": [
+                  "dws.payment_day"
+                ],
+                "capability_trace_id": "d9e05b0b210240da8995ae960cbdb6b5",
+                "elapsed_ms": 18
+              }
+            ],
+            "elapsed_ms": 3672
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "支付成功率"
+            ],
+            "candidate_ids": [
+              "payment_attempt_success_rate"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "payment_attempt_success_rate"
+            ]
+          },
+          "selected_sources": [
+            "dws.payment_day"
+          ],
+          "example": {
+            "status": "ok",
+            "query_result": {
+              "metric_id": "payment_attempt_success_rate",
+              "trace_id": "6f5f9c86795445a89c9a03462685242a",
+              "definition": "同一支付事件时间窗内成功尝试数除以全部尝试数。",
+              "definition_version": "1.0.0",
+              "event_time": "payments.paid_at",
+              "time_semantics": "payments.paid_at",
+              "source_grain": "支付尝试",
+              "group_by": [],
+              "start_date": "2025-01-01",
+              "end_date": "2025-02-01",
+              "observation_cutoff": null,
+              "sources": [
+                "dws.payment_day"
+              ],
+              "status": "ok",
+              "results": [
+                {
+                  "bucket": "all",
+                  "value": "0.94503692",
+                  "numerator": "2304",
+                  "denominator": "2438"
+                }
+              ],
+              "error": null
+            },
+            "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），支付成功率：all=0.94503692。同一支付事件时间窗内成功尝试数除以全部尝试数。"
+          }
+        },
+        {
+          "id": "longtail",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "single",
+          "elapsed_ms": 7503,
+          "trace": {
+            "trace_id": "02b46c1325794125aacc8019467268be",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {
+                  "prompt": 190,
+                  "output": 62,
+                  "total": 252
+                },
+                "status": "received",
+                "elapsed_ms": 4222
+              },
+              {
+                "stage": "resolution",
+                "attempt": 1,
+                "prompt_version": "metric-resolution-v2",
+                "usage": {
+                  "prompt": 466,
+                  "output": 36,
+                  "total": 502
+                },
+                "status": "received",
+                "elapsed_ms": 3255
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "4d5243f8120a4c1eb78036101e405a32",
+                "sources": [
+                  "dws.payment_day"
+                ],
+                "capability_trace_id": "993cd46dddac4a74aaeb2e988f30279a",
+                "elapsed_ms": 22
+              }
+            ],
+            "elapsed_ms": 7503
+          },
+          "match": {
+            "method": "inferred",
+            "original_evidence": "成功扣款一共多少钱",
+            "candidate_ids": [
+              "captured_payment_amount",
+              "payment_attempt_success_rate",
+              "product_captured_payment_amount",
+              "completed_refund_amount",
+              "order_count",
+              "payment_item_amount_mismatch_order_count"
+            ],
+            "model_proposal": [
+              "captured_payment_amount"
+            ],
+            "confirmed": [
+              "captured_payment_amount"
+            ]
+          },
+          "selected_sources": [
+            "dws.payment_day"
+          ],
+          "example": {
+            "status": "ok",
+            "query_result": {
+              "metric_id": "captured_payment_amount",
+              "trace_id": "4d5243f8120a4c1eb78036101e405a32",
+              "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+              "definition_version": "1.0.0",
+              "event_time": "payments.paid_at",
+              "time_semantics": "payments.paid_at",
+              "source_grain": "一行一个 payment_id",
+              "group_by": [],
+              "start_date": "2025-01-01",
+              "end_date": "2025-02-01",
+              "observation_cutoff": null,
+              "sources": [
+                "dws.payment_day"
+              ],
+              "status": "ok",
+              "results": [
+                {
+                  "bucket": "all",
+                  "value": "230864.57"
+                }
+              ],
+              "error": null
+            },
+            "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），成功支付金额：all=230864.57。支付事件时间窗内 captured 尝试的源金额合计。"
+          }
+        },
+        {
+          "id": "sequence",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": null,
+            "metric_selection": null,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": null,
+            "end_to_end": true
+          },
+          "status": "detail",
+          "code": "detail_grain_required",
+          "task": "detail",
+          "elapsed_ms": 4014,
+          "trace": {
+            "trace_id": "87f7460e499646ef808f234655c51445",
+            "model_attempts": [
+              {
+                "stage": "intent",
+                "attempt": 1,
+                "prompt_version": "intent-v2",
+                "usage": {
+                  "prompt": 201,
+                  "output": 38,
+                  "total": 239
+                },
+                "status": "received",
+                "elapsed_ms": 4013
+              }
+            ],
+            "tools": [],
+            "elapsed_ms": 4014
+          },
+          "match": null,
+          "selected_sources": [
+            "dwd.payment_attempt_fact"
+          ],
+          "example": {
+            "status": "detail",
+            "code": "detail_grain_required",
+            "message": "日汇总不足，已登记的 DWD 路径保留所需键与事件粒度。",
+            "capability": {
+              "trace_id": "3a142caed4bb4dc4b404787cfa9961a6",
+              "metadata_source": "PostgreSQL pg_catalog",
+              "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+              "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+              "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+              "contract_version": "1.0.0",
+              "metric_version": "1.1.1-ads",
+              "selected_source": "dwd.payment_attempt_fact",
+              "candidate_sources": [
+                {
+                  "source": "dwd.payment_attempt_fact",
+                  "reason": "满足口径、键及权限检查。",
+                  "selected": true
+                },
+                {
+                  "source": "dws.payment_day",
+                  "reason": "日聚合丢失订单标识和尝试顺序。",
+                  "selected": false
+                },
+                {
+                  "source": "ads.payment_anomaly_order",
+                  "reason": "首次和末次时间及失败次数不能确定失败事件与成功事件的顺序。",
+                  "selected": false
+                }
+              ],
+              "required_fields": {
+                "dwd.payment_attempt_fact": [
+                  "order_id",
+                  "paid_at",
+                  "payment_id",
+                  "status"
+                ],
+                "dwd.order_fact": [
+                  "channel",
+                  "order_id"
+                ]
+              },
+              "dimensions": [
+                "channel"
+              ],
+              "join_paths": [
+                {
+                  "from": "dwd.payment_attempt_fact",
+                  "to": "dwd.order_fact",
+                  "from_column": "order_id",
+                  "to_column": "order_id",
+                  "evidence": "postgresql_foreign_key",
+                  "relationship_cardinality": "many_to_one"
+                }
+              ],
+              "risks": [
+                "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+              ],
+              "status": "DETAIL_QUERY",
+              "analysis_id": "payment_failure_then_capture",
+              "metric_id": null,
+              "time_constraints": {
+                "event_time": "payment_attempt_time",
+                "start_date": "2025-01-01",
+                "end_date": "2025-02-01",
+                "boundary": "[start_date,end_date)",
+                "physical_fields": {
+                  "payment_attempt_time": "paid_at"
+                }
+              },
+              "grain": [
+                "order_id",
+                "channel"
+              ],
+              "aggregation_constraints": [
+                "在同一订单内，窗口中存在 failed 后严格较晚的 captured，两个事件均须在请求窗口内。",
+                "同一 paid_at 不推断先后；按订单去重，可用存在性检查，不能直接对尝试自连接计数。"
+              ],
+              "reason_code": "detail_grain_required",
+              "reason": "日汇总不足，已登记的 DWD 路径保留所需键与事件粒度。",
+              "execution_policy": "plan_only"
+            }
+          }
+        },
+        {
+          "id": "multi",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "business",
+          "elapsed_ms": 4652,
+          "trace": {
+            "trace_id": "f693e750a5f74f5c8903ac17186224e7",
+            "model_attempts": [
+              {
+                "stage": "planning",
+                "attempt": 1,
+                "prompt_version": "business-plan-v1",
+                "usage": {
+                  "prompt": 791,
+                  "output": 118,
+                  "total": 909
+                },
+                "status": "received",
+                "elapsed_ms": 4607
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "d2950d2037844102827e30f0ad39e387",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "c01db4dd0b1e4c4b85f9092a115e0c79",
+                "elapsed_ms": 21
+              },
+              {
+                "request": {
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "8d328868e4104a938e059e49db20e614",
+                "sources": [
+                  "dws.payment_day"
+                ],
+                "capability_trace_id": "cef0ad2feb96431ea03eb90c2cfdda76",
+                "elapsed_ms": 22
+              }
+            ],
+            "elapsed_ms": 4652
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量",
+              "成功支付金额"
+            ],
+            "candidate_ids": [
+              "order_count",
+              "captured_payment_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count",
+              "captured_payment_amount"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day",
+            "dws.payment_day"
+          ],
+          "example": {
+            "status": "ok",
+            "plan": {
+              "analysis_type": "summary",
+              "metric_ids": [
+                "order_count",
+                "captured_payment_amount"
+              ],
+              "time_windows": [
+                {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                }
+              ],
+              "group_by": [],
+              "filters": {},
+              "comparison_type": null,
+              "sort_rule": null,
+              "limit": null,
+              "conditions": [],
+              "required_tool_calls": [
+                {
+                  "step": 1,
+                  "window_index": 0,
+                  "request": {
+                    "metric_id": "order_count",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "group_by": [],
+                    "filters": {}
+                  }
+                },
+                {
+                  "step": 2,
+                  "window_index": 0,
+                  "request": {
+                    "metric_id": "captured_payment_amount",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "group_by": [],
+                    "filters": {}
+                  }
+                }
+              ],
+              "unresolved_business_rules": []
+            },
+            "tools": [
+              {
+                "step": 1,
+                "window_index": 0,
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 21,
+                "trace_id": "d2950d2037844102827e30f0ad39e387",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "row_count": 1,
+                "definition": "时间窗内创建的订单记录数，含取消订单。",
+                "event_time": "orders.ordered_at"
+              },
+              {
+                "step": 2,
+                "window_index": 0,
+                "request": {
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 22,
+                "trace_id": "8d328868e4104a938e059e49db20e614",
+                "sources": [
+                  "dws.payment_day"
+                ],
+                "row_count": 1,
+                "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                "event_time": "payments.paid_at"
+              }
+            ],
+            "results": [
+              {
+                "month": null,
+                "bucket": "all",
+                "metrics": {
+                  "order_count": {
+                    "value": "2312"
+                  },
+                  "captured_payment_amount": {
+                    "value": "230864.57"
+                  }
+                }
+              }
+            ],
+            "notice": null,
+            "answer_zh": "统计窗口 [2025-01-01, 2025-02-01)。\n汇总：订单量 2312；成功支付金额 230864.57。\n订单量按orders.ordered_at统计。时间窗内创建的订单记录数，含取消订单。\n成功支付金额按payments.paid_at统计。支付事件时间窗内 captured 尝试的源金额合计。\n步骤 1 · 来源 dws.order_day · Trace d2950d2037844102827e30f0ad39e387\n步骤 2 · 来源 dws.payment_day · Trace 8d328868e4104a938e059e49db20e614"
+          }
+        },
+        {
+          "id": "mom",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "business",
+          "elapsed_ms": 4094,
+          "trace": {
+            "trace_id": "c7b202a8f4a94df78f117ecdffe44142",
+            "model_attempts": [
+              {
+                "stage": "planning",
+                "attempt": 1,
+                "prompt_version": "business-plan-v1",
+                "usage": {
+                  "prompt": 793,
+                  "output": 114,
+                  "total": 907
+                },
+                "status": "received",
+                "elapsed_ms": 4052
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "af100aeba51e47c9aea5a40248633d2f",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "capability_trace_id": "aed485035582476ea37fad3283673549",
+                "elapsed_ms": 21
+              },
+              {
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-02-01",
+                  "end_date": "2025-03-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "7dace2f74a034146a931ef56c61446d9",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "capability_trace_id": "53d7e0ca70c24347967ead2dfd4a84a9",
+                "elapsed_ms": 20
+              }
+            ],
+            "elapsed_ms": 4094
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "折扣后商品销售金额"
+            ],
+            "candidate_ids": [
+              "item_net_sales_amount"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "item_net_sales_amount"
+            ]
+          },
+          "selected_sources": [
+            "dws.product_sales_day",
+            "dws.product_sales_day"
+          ],
+          "example": {
+            "status": "ok",
+            "plan": {
+              "analysis_type": "comparison",
+              "metric_ids": [
+                "item_net_sales_amount"
+              ],
+              "time_windows": [
+                {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                },
+                {
+                  "start_date": "2025-02-01",
+                  "end_date": "2025-03-01"
+                }
+              ],
+              "group_by": [],
+              "filters": {},
+              "comparison_type": "mom",
+              "sort_rule": null,
+              "limit": null,
+              "conditions": [],
+              "required_tool_calls": [
+                {
+                  "step": 1,
+                  "window_index": 0,
+                  "request": {
+                    "metric_id": "item_net_sales_amount",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "group_by": [],
+                    "filters": {}
+                  }
+                },
+                {
+                  "step": 2,
+                  "window_index": 1,
+                  "request": {
+                    "metric_id": "item_net_sales_amount",
+                    "start_date": "2025-02-01",
+                    "end_date": "2025-03-01",
+                    "group_by": [],
+                    "filters": {}
+                  }
+                }
+              ],
+              "unresolved_business_rules": []
+            },
+            "tools": [
+              {
+                "step": 1,
+                "window_index": 0,
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 21,
+                "trace_id": "af100aeba51e47c9aea5a40248633d2f",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "row_count": 1,
+                "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                "event_time": "orders.ordered_at（明细继承订单时间）"
+              },
+              {
+                "step": 2,
+                "window_index": 1,
+                "request": {
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-02-01",
+                  "end_date": "2025-03-01",
+                  "group_by": [],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 20,
+                "trace_id": "7dace2f74a034146a931ef56c61446d9",
+                "sources": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "row_count": 1,
+                "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                "event_time": "orders.ordered_at（明细继承订单时间）"
+              }
+            ],
+            "results": [
+              {
+                "month": null,
+                "bucket": "all",
+                "metrics": {
+                  "item_net_sales_amount": {
+                    "baseline": {
+                      "value": "231920.18"
+                    },
+                    "current": {
+                      "value": "207798.37"
+                    },
+                    "change": "-24121.81",
+                    "change_unit": "metric_unit",
+                    "change_pct": "-10.40091035",
+                    "change_pct_reason": null
+                  }
+                }
+              }
+            ],
+            "notice": null,
+            "answer_zh": "统计窗口 [2025-01-01, 2025-02-01)、[2025-02-01, 2025-03-01)。\n汇总：折扣后商品销售金额 231920.18 → 207798.37，变化 -24121.81，变化率 -10.40091035%。\n折扣后商品销售金额按orders.ordered_at（明细继承订单时间）统计。按下单时间统计明细毛额减行折扣，含所有订单状态。\n步骤 1 · 来源 dim.product、dws.product_sales_day · Trace af100aeba51e47c9aea5a40248633d2f\n步骤 2 · 来源 dim.product、dws.product_sales_day · Trace 7dace2f74a034146a931ef56c61446d9"
+          }
+        },
+        {
+          "id": "rank",
+          "passed": true,
+          "scores": {
+            "task_correct": true,
+            "candidate_recall": true,
+            "metric_selection": true,
+            "ambiguity_correct": null,
+            "route_correct": true,
+            "tool_calls_correct": true,
+            "numeric_correct": true,
+            "end_to_end": true
+          },
+          "status": "ok",
+          "code": null,
+          "task": "business",
+          "elapsed_ms": 3315,
+          "trace": {
+            "trace_id": "22f9607f43ac49cd87b05920c5c835ba",
+            "model_attempts": [
+              {
+                "stage": "planning",
+                "attempt": 1,
+                "prompt_version": "business-plan-v1",
+                "usage": {
+                  "prompt": 798,
+                  "output": 141,
+                  "total": 939
+                },
+                "status": "received",
+                "elapsed_ms": 3292
+              }
+            ],
+            "tools": [
+              {
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [
+                    "channel"
+                  ],
+                  "filters": {}
+                },
+                "status": "ok",
+                "code": null,
+                "trace_id": "d88cdae1d1144e26a71f3222cfa31d22",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "capability_trace_id": "8bc922467c584e13aee15b38cf59979f",
+                "elapsed_ms": 22
+              }
+            ],
+            "elapsed_ms": 3315
+          },
+          "match": {
+            "method": "exact",
+            "original_evidence": [
+              "订单量"
+            ],
+            "candidate_ids": [
+              "order_count"
+            ],
+            "model_proposal": [],
+            "confirmed": [
+              "order_count"
+            ]
+          },
+          "selected_sources": [
+            "dws.order_day"
+          ],
+          "example": {
+            "status": "ok",
+            "plan": {
+              "analysis_type": "ranking",
+              "metric_ids": [
+                "order_count"
+              ],
+              "time_windows": [
+                {
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01"
+                }
+              ],
+              "group_by": [
+                "channel"
+              ],
+              "filters": {},
+              "comparison_type": null,
+              "sort_rule": {
+                "metric_id": "order_count",
+                "direction": "desc"
+              },
+              "limit": 2,
+              "conditions": [],
+              "required_tool_calls": [
+                {
+                  "step": 1,
+                  "window_index": 0,
+                  "request": {
+                    "metric_id": "order_count",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "group_by": [
+                      "channel"
+                    ],
+                    "filters": {}
+                  }
+                }
+              ],
+              "unresolved_business_rules": []
+            },
+            "tools": [
+              {
+                "step": 1,
+                "window_index": 0,
+                "request": {
+                  "metric_id": "order_count",
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "group_by": [
+                    "channel"
+                  ],
+                  "filters": {}
+                },
+                "status": "ok",
+                "elapsed_ms": 22,
+                "trace_id": "d88cdae1d1144e26a71f3222cfa31d22",
+                "sources": [
+                  "dws.order_day"
+                ],
+                "row_count": 4,
+                "definition": "时间窗内创建的订单记录数，含取消订单。",
+                "event_time": "orders.ordered_at"
+              }
+            ],
+            "results": [
+              {
+                "month": null,
+                "bucket": "web",
+                "metrics": {
+                  "order_count": {
+                    "value": "1337"
+                  }
+                }
+              },
+              {
+                "month": null,
+                "bucket": "mobile",
+                "metrics": {
+                  "order_count": {
+                    "value": "685"
+                  }
+                }
+              }
+            ],
+            "notice": null,
+            "answer_zh": "统计窗口 [2025-01-01, 2025-02-01)。\nweb：订单量 1337。\nmobile：订单量 685。\n订单量按orders.ordered_at统计。时间窗内创建的订单记录数，含取消订单。\n步骤 1 · 来源 dws.order_day · Trace d88cdae1d1144e26a71f3222cfa31d22"
+          }
+        }
+      ]
+    },
+    "diagnostics": [
+      {
+        "id": "payment",
+        "raw_outputs": [
+          {
+            "text": "{\n  \"metrics\": [\n    \"支付成功率\"\n  ],\n  \"time\": \"2025年1月\",\n  \"groups\": [],\n  \"filters\": [],\n  \"type\": \"metric\",\n  \"missing\": null\n}",
+            "usage": {
+              "prompt": 162,
+              "output": 59,
+              "total": 221
+            }
+          }
+        ],
+        "status": "error",
+        "code": "invalid_model_output",
+        "trace": {
+          "trace_id": "56474832ed904b8b8b2eceeb9c2a9ff5",
+          "model_attempts": [
+            {
+              "stage": "intent",
+              "attempt": 1,
+              "prompt_version": "intent-v1",
+              "usage": {
+                "prompt": 162,
+                "output": 59,
+                "total": 221
+              },
+              "status": "invalid_output",
+              "elapsed_ms": 4766
+            }
+          ],
+          "tools": [],
+          "elapsed_ms": 4766
+        }
+      },
+      {
+        "id": "longtail",
+        "raw_outputs": [
+          {
+            "text": "{\n  \"metrics\": [\n    \"成功扣款\"\n  ],\n  \"time\": \"2025年1月\",\n  \"groups\": [],\n  \"filters\": [],\n  \"type\": \"metric\",\n  \"missing\": []\n}",
+            "usage": {
+              "prompt": 161,
+              "output": 59,
+              "total": 220
+            }
+          },
+          {
+            "text": "[\n  {\n    \"metric_ids\": [\n      \"captured_payment_amount\"\n    ],\n    \"evidence\": [\n      \"成功扣款\"\n    ]\n  }\n]",
+            "usage": {
+              "prompt": 411,
+              "output": 45,
+              "total": 456
+            }
+          }
+        ],
+        "status": "error",
+        "code": "invalid_metric_proposal",
+        "trace": {
+          "trace_id": "d18d2d3309c34a5b99a2d0c7a9bb93ee",
+          "model_attempts": [
+            {
+              "stage": "intent",
+              "attempt": 1,
+              "prompt_version": "intent-v1",
+              "usage": {
+                "prompt": 161,
+                "output": 59,
+                "total": 220
+              },
+              "status": "received",
+              "elapsed_ms": 3467
+            },
+            {
+              "stage": "resolution",
+              "attempt": 1,
+              "prompt_version": "metric-resolution-v1",
+              "usage": {
+                "prompt": 411,
+                "output": 45,
+                "total": 456
+              },
+              "status": "invalid_output",
+              "elapsed_ms": 3628
+            }
+          ],
+          "tools": [],
+          "elapsed_ms": 7098
+        }
+      },
+      {
+        "id": "sequence",
+        "raw_outputs": [
+          {
+            "text": "{\n  \"metrics\": [\n    \"支付\"\n  ],\n  \"time\": \"2025年1月\",\n  \"groups\": [\n    \"渠道\"\n  ],\n  \"filters\": [\n    \"同一订单先失败后成功\"\n  ],\n  \"type\": \"complex\",\n  \"missing\": []\n}",
+            "usage": {
+              "prompt": 166,
+              "output": 78,
+              "total": 244
+            }
+          }
+        ],
+        "status": "unsupported",
+        "code": "unsupported_detail_scope",
+        "trace": {
+          "trace_id": "d67e590fab3e4006865ff705f8742bd8",
+          "model_attempts": [
+            {
+              "stage": "intent",
+              "attempt": 1,
+              "prompt_version": "intent-v1",
+              "status": "error",
+              "error_type": "ServerError",
+              "http_status": 503,
+              "elapsed_ms": 3322
+            },
+            {
+              "stage": "intent",
+              "attempt": 2,
+              "prompt_version": "intent-v1",
+              "usage": {
+                "prompt": 166,
+                "output": 78,
+                "total": 244
+              },
+              "status": "received",
+              "elapsed_ms": 2513
+            }
+          ],
+          "tools": [],
+          "elapsed_ms": 5836
+        }
+      }
+    ]
+  }
+}
