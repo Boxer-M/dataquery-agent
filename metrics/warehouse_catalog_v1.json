@@ -1,5 +1,5 @@
 {
-  "catalog_version": "1.1.0-dws",
+  "catalog_version": "1.1.1-ads",
   "design_only": false,
   "approved_base": {
     "path": "metrics/ecommerce_v1.json",
@@ -10,7 +10,7 @@
   "defaults": {
     "window": "[start,end)，源无时区时间；日期分组支持day/month",
     "as_of": "排他观察截止；队列as_of>=end，固定同一观察点；没有入库可知时间",
-    "summary_availability": "六张DWS已验收；has_existing_summary仅对dws_validation精确日粒度、维度、状态及观察截止有效，ADS/Agent未实现。",
+    "summary_availability": "六张DWS及三个ADS已验收；DWS能力仍仅限dws_validation精确范围。ADS应用字段见docs/warehouse/ADS_CONTRACTS.md；四项待验证指标不因视图存在升级，Agent/查询服务未实现。",
     "dimension_semantics": "商品/品类/客户属性为当前快照；跨事实的商品支付分摊不支持；显式过滤必须记录且不得覆盖固定状态口径",
     "source_fields_semantics": "source_fields均为真实源字段；维度附加血缘见dimension_lineage；planned表示尚未创建的逻辑对象。",
     "validation": "原8项定义未变；新增18项仅在已验证DWS范围available；4项defined_unverified/not_available_in_dws，原8项unsupported保持。"

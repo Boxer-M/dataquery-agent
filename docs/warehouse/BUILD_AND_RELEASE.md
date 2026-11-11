@@ -1,6 +1,6 @@
 # 加工依赖、SQL规范与运行策略
 
-A批及DWS路径已落地；ADS、4项明细指标和新源版本发布仍为规划。DWS单独入口scripts/build_dws.py，模型清单warehouse/dws_models.json，见DWS_ACCEPTANCE。实际入口和报告见BATCH_A_ACCEPTANCE.md，不用空SQL/空表伪造完成。
+A批、DWS与ADS路径已落地；4项明细指标的通用服务能力和新源版本发布仍为规划。DWS单独入口scripts/build_dws.py，模型清单warehouse/dws_models.json，见DWS_ACCEPTANCE。实际入口和报告见BATCH_A_ACCEPTANCE.md，不用空SQL/空表伪造完成。
 
 ## SQL目录规范
 
@@ -9,7 +9,7 @@ A批及DWS路径已落地；ADS、4项明细指标和新源版本发布仍为规
 | `sql/dwd/order_item_fact.sql`（现有） | 原DDL+SELECT投影，首批保持结果兼容 |
 | `sql/warehouse/ddl/{dim,dwd,dws}/<object>.sql`（DWD/DIM/DWS已实现） | 一个对象显式DDL，不混入源数据修复 |
 | `sql/warehouse/transform/{dim,dwd,dws}/<object>.sql`（DWD/DIM/DWS已实现） | 单一SELECT模型，不执行TRUNCATE/隐式覆盖 |
-| `sql/warehouse/ads/<view>.sql`（拟） | 普通视图SELECT与明确依赖 |
+| `sql/warehouse/ads/<view>.sql`（已实现，DDL在ddl/ads） | 普通视图SELECT与明确依赖 |
 | `sql/warehouse/quality/{relation,batch_a,metrics,legacy_item}.sql`（已实现） | 命名SELECT检查，分别输出阻断错误和业务告警 |
 | `sql/warehouse/ground_truth/dws/models.sql`与`sql/warehouse/dws_metrics/{ods,dws}.sql`（已实现） | 独立ODS参考计算，保留原8项引用已有SQL |
 | `warehouse/models.json`（已实现） | 节点、版本、depends_on、源/目标、字段、约束与索引；实际SQL哈希保存在发布报告 |
@@ -66,3 +66,7 @@ Python负责连接、事务、锁、绑定、拓扑执行、断言和报告。�
 未来获得可靠增量来源后才引入：按源PK+变更序列去重、删除事件、迟到窗口、受影响日期重算及发布版本。订单状态更正会影响所有关联明细/客户/渠道汇总；退货迟到或更正会影响其退货事件日以及对应下单批次所有已发布as_of；品类更正影响按当前分类的商品汇总；更换观察截止需重算cohort。不存在一个简单“只重算昨天”就正确的通用策略。
 
 A批已实现模型清单、共享执行、脱敏内容构建键报告和本地原子指针；有序依赖清单保证执行顺序，当前无需引入调度框架。测试沿用仓库平铺unittest发现方式，不为目录约定创建空测试包。新快照物理schema发布/增量仍未实现，遇到不同现有数据仍拒绝覆盖。
+
+## C批ADS入口
+
+`PYTHONPATH=src .venv/bin/python scripts/build_ads.py --plan`列出三个普通视图；去掉--plan执行首次创建或现有定义核验，--check-only仅只读验证。首次验收后用--grant-reader-select为学习角色授予三视图SELECT。入口复用既有事务、锁、内容指纹与DWS验证，不复制全套ETL框架。失败回滚全部新视图，不替换既有对象。详见ADS_CONTRACTS与ADS_ACCEPTANCE。

@@ -48,7 +48,7 @@ NULL 可选维度保留未知组。事实必填键缺失/孤儿先阻断验收�
 
 ## 快照、历史与发布
 
-首批沿用现有源快照，同时验证既有 order_item_fact；其他新表在同一事务创建与验收。一次批量交付 DWD+DIM，不分单表 PR。DWS已独立验收，ADS为后续独立PR；两者必须绑定同一source_snapshot_id、模型与指标版本，不允许混合不同批次维度和事实。
+首批沿用现有源快照，同时验证既有 order_item_fact；其他新表在同一事务创建与验收。一次批量交付 DWD+DIM，不分单表 PR。DWS与ADS均独立验收、分PR交付；两者必须绑定同一source_snapshot_id、模型与指标版本，不允许混合不同批次维度和事实。
 
 源没有 updated_at/CDC/delete 标记，第一版**不承诺按事件时间做可靠增量**。相同快照重跑只校验/复用；新快照全量构建新版本，不覆盖当前表。物理版本命名、清单和发布策略见 BUILD_AND_RELEASE.md。当前 order_item_fact 必须原位保留；未来 schema 迁移或视图切换另行评审，不自动 TRUNCATE/DROP/重命名它。
 
