@@ -1,0 +1,144 @@
+{
+  "version": "1.0.0",
+  "capability_contract": "warehouse/capability_contract.json",
+  "required_parameters": [
+    "start_date",
+    "end_date"
+  ],
+  "optional_parameters": [
+    "group_by",
+    "template_version"
+  ],
+  "access_requirements": {
+    "role": "sqlshed_detail_reader",
+    "read_only": true,
+    "owner_allowed": false
+  },
+  "quality_constraints": [
+    "金额保留 Decimal",
+    "返回行按契约粒度唯一",
+    "时间范围左闭右开"
+  ],
+  "analyses": {
+    "payment_failure_then_capture": {
+      "business_description": "支付事件窗口内同订单先失败后成功的订单数",
+      "capability_reference": "payment_failure_then_capture",
+      "templates": [
+        {
+          "template_id": "payment_failure_then_capture_total",
+          "template_version": "1.0.0",
+          "path": "sql/warehouse/detail/payment_failure_then_capture_total.sql",
+          "sha256": "633b830bb8d9be7d6c0eaf5ccdce966958845ce1f10a8c2f23af15a02378c53b",
+          "dimensions": [],
+          "source_models": [
+            "dwd.payment_attempt_fact"
+          ],
+          "result_schema": {
+            "order_count": "integer"
+          }
+        },
+        {
+          "template_id": "payment_failure_then_capture_channel",
+          "template_version": "1.0.0",
+          "path": "sql/warehouse/detail/payment_failure_then_capture_channel.sql",
+          "sha256": "9fd59456261dbcf421821d4d36aa5aa4685e98808ee372d37d6e18aada0c74cc",
+          "dimensions": [
+            "channel"
+          ],
+          "source_models": [
+            "dwd.payment_attempt_fact",
+            "dwd.order_fact"
+          ],
+          "result_schema": {
+            "channel": "text",
+            "order_count": "integer"
+          }
+        }
+      ],
+      "capability_fingerprint": "b0cac9e6a24fb39558f0d60f7d83eb534bdc742508e652b437a755906395bb6b"
+    },
+    "sales_by_order": {
+      "business_description": "按订单及可选品类、渠道汇总折扣后商品净额",
+      "capability_reference": "sales_by_order",
+      "templates": [
+        {
+          "template_id": "sales_by_order_order",
+          "template_version": "1.0.0",
+          "path": "sql/warehouse/detail/sales_by_order_order.sql",
+          "sha256": "4ad92f7821cd5038f639ed98ad9febc45ec2c8ff7b812dadf0fca8720b984729",
+          "dimensions": [
+            "order_id"
+          ],
+          "source_models": [
+            "dwd.order_item_fact"
+          ],
+          "result_schema": {
+            "order_id": "integer",
+            "net_amount": "decimal"
+          }
+        },
+        {
+          "template_id": "sales_by_order_channel",
+          "template_version": "1.0.0",
+          "path": "sql/warehouse/detail/sales_by_order_channel.sql",
+          "sha256": "0a0d0ef78d91321a7042f3c73747ccd3d66e770384ba3c01a51764b255e235a9",
+          "dimensions": [
+            "order_id",
+            "channel"
+          ],
+          "source_models": [
+            "dwd.order_item_fact",
+            "dwd.order_fact"
+          ],
+          "result_schema": {
+            "order_id": "integer",
+            "channel": "text",
+            "net_amount": "decimal"
+          }
+        },
+        {
+          "template_id": "sales_by_order_category",
+          "template_version": "1.0.0",
+          "path": "sql/warehouse/detail/sales_by_order_category.sql",
+          "sha256": "7e443dca3b7ab2b4fd60880d1150eec71f95e804d84ea2558e3aa101082471ec",
+          "dimensions": [
+            "order_id",
+            "category"
+          ],
+          "source_models": [
+            "dwd.order_item_fact",
+            "dim.product"
+          ],
+          "result_schema": {
+            "order_id": "integer",
+            "category_id": "integer",
+            "net_amount": "decimal"
+          }
+        },
+        {
+          "template_id": "sales_by_order_category_channel",
+          "template_version": "1.0.0",
+          "path": "sql/warehouse/detail/sales_by_order_category_channel.sql",
+          "sha256": "275a221973ced135e4c1471927a127cdef446d0e147e7698479864caa2cd0096",
+          "dimensions": [
+            "order_id",
+            "category",
+            "channel"
+          ],
+          "source_models": [
+            "dwd.order_item_fact",
+            "dim.product",
+            "dwd.order_fact"
+          ],
+          "result_schema": {
+            "order_id": "integer",
+            "category_id": "integer",
+            "channel": "text",
+            "net_amount": "decimal"
+          }
+        }
+      ],
+      "capability_fingerprint": "4a095f3a1e41363a102f8d571d63408a336a6ed8f1149713fa28a65576684c2c"
+    }
+  }
+}

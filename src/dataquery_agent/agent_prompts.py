@@ -3,7 +3,7 @@ import json
 
 TEXT_ARRAY = {"type": "array", "items": {"type": "string"}}
 
-PROMPT_VERSIONS = {"intent": "intent-v2", "resolution": "metric-resolution-v2",
+PROMPT_VERSIONS = {"intent": "intent-v3", "resolution": "metric-resolution-v2",
                    "planning": "business-plan-v1"}
 OUTPUT_SCHEMAS = {
     PROMPT_VERSIONS["intent"]: {
@@ -41,7 +41,7 @@ def intent_prompt(question, hints, detail_predicate=None):
         "除了 missing，逐字引用，勿补造。type 为 metric、complex 或 unknown。"
         "复杂指多指标、比较、排行；明确的单指标或已识别明细仍提取时间和分组。"
         "missing 只填写影响业务口径的缺失条件；无缺失时必须为 []。"
-        "已登记的明细条件属于任务本身，不放入 filters。不得生成 SQL、指标 ID 或结果。"
+        "已登记的明细条件属于任务本身，不放入 filters。若明细问句没有明确的原文指标名称，metrics 用 []，不要改写成订单数。不得生成 SQL、指标 ID 或结果。"
         + "\n已识别的原文提示：" + json.dumps(hints, ensure_ascii=False)
         + "\n已登记明细条件：" + json.dumps(detail_predicate, ensure_ascii=False)
         + "\n用户原文 JSON：" + json.dumps(question, ensure_ascii=False)

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "window": {"start_date":"2025-01-01","end_date":"2025-02-01"},
+  "synthetic_events": [
+    [1,"failed","2025-01-01 00:00:00"],[1,"captured","2025-01-02 00:00:00"],
+    [1,"failed","2025-01-01 08:00:00"],[1,"captured","2025-01-03 00:00:00"],
+    [2,"captured","2025-01-02 00:00:00"],[2,"failed","2025-01-03 00:00:00"],
+    [3,"failed","2025-01-02 00:00:00"],[3,"captured","2025-01-02 00:00:00"],
+    [4,"failed","2025-01-31 00:00:00"],[4,"captured","2025-02-01 00:00:00"],
+    [5,"failed","2024-12-31 23:59:59"],[5,"captured","2025-01-02 00:00:00"],
+    [6,"failed","2025-01-02 00:00:00"],[6,"captured","2025-01-04 00:00:00"]
+  ],
+  "synthetic_channels": [[1,"web"],[2,"web"],[3,"mobile"],[4,"web"],[5,"mobile"],[6,"mobile"]],
+  "synthetic_expected": {"total":2,"channel":[["mobile",1],["web",1]]},
+  "live_cases": [
+    {"id":"payment_total","analysis":"payment_failure_then_capture","group_by":[],"question":"2025年1月有多少订单先支付失败，后来成功支付？"},
+    {"id":"payment_channel","analysis":"payment_failure_then_capture","group_by":["channel"],"question":"2025年1月各渠道先失败后成功的订单有多少？"},
+    {"id":"sales_order","analysis":"sales_by_order","group_by":["order_id"],"question":"2025年1月按订单看商品净额"}
+  ],
+  "validation_cases": [
+    {"id":"missing_date","mutation":"missing_date","code":"invalid_parameters"},
+    {"id":"forged_date","mutation":"forged_date","code":"invalid_parameters"},
+    {"id":"extra_filter","mutation":"extra_filter","code":"invalid_parameters"},
+    {"id":"version","mutation":"version","code":"template_version_mismatch"},
+    {"id":"unsupported_analysis","mutation":"unsupported_analysis","code":"template_not_registered"},
+    {"id":"wrong_status","mutation":"wrong_status","code":"capability_mismatch"},
+    {"id":"forged_join","mutation":"forged_join","code":"capability_mismatch"},
+    {"id":"missing_field","mutation":"missing_field","code":"capability_mismatch"},
+    {"id":"schema_drift","mutation":"schema_drift","code":"schema_drift"},
+    {"id":"unsafe_role","mutation":"unsafe_role","code":"unsafe_role"}
+  ]
+}

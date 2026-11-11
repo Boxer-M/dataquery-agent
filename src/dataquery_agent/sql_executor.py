@@ -75,3 +75,49 @@ def execute_readonly_query(sql: str) -> QueryResult:
         raise QueryExecutionError("查询执行超时") from None
     except psycopg.Error:
         raise QueryExecutionError("数据库查询失败") from None
+
+
+class BoundedQueryError(QueryExecutionError):
+    def __init__(self, code):
+        super().__init__(code)
+        self.code = code
+
+
+def execute_bounded_readonly(dsn, statement, parameters, *, role, validate, authorize):
+    """Run a vetted parameterized statement under independent connection and query limits."""
+    from math import isfinite
+    from psycopg.conninfo import conninfo_to_dict
+
+    validate(statement)
+    try:
+        config = conninfo_to_dict(dsn)
+        if config.get("user") != role or config.get("dbname") != "sqlshed":
+            raise BoundedQueryError("unsafe_role")
+        with psycopg.connect(dsn, connect_timeout=CONNECT_TIMEOUT_SECONDS, autocommit=True) as connection:
+            with connection.transaction(force_rollback=True):
+                connection.execute("SET TRANSACTION READ ONLY")
+                connection.execute("SET LOCAL search_path = pg_catalog")
+                connection.execute("SELECT set_config('statement_timeout', %s, true)", (f"{STATEMENT_TIMEOUT_MS}ms",))
+                identity = connection.execute(
+                    "SELECT session_user, current_user, current_database(), current_setting('transaction_read_only')"
+                ).fetchone()
+                if identity != (role, role, "sqlshed", "on"):
+                    raise BoundedQueryError("unsafe_role")
+                authorize(connection)
+                plan = connection.execute("EXPLAIN (FORMAT JSON) " + statement, parameters).fetchone()[0]
+                cost = float(plan[0]["Plan"]["Total Cost"])
+                if not isfinite(cost) or cost > 100_000:
+                    raise BoundedQueryError("plan_cost_limit")
+                with connection.cursor(name="controlled_detail_result") as cursor:
+                    cursor.execute(statement, parameters)
+                    rows = cursor.fetchmany(MAX_RESULT_ROWS + 1)
+                    columns = tuple(column.name for column in cursor.description)
+                return QueryResult(columns, tuple(rows[:MAX_RESULT_ROWS]), len(rows) > MAX_RESULT_ROWS)
+    except psycopg.errors.QueryCanceled:
+        raise BoundedQueryError("query_timeout") from None
+    except psycopg.errors.InsufficientPrivilege:
+        raise BoundedQueryError("access_denied") from None
+    except psycopg.errors.UndefinedColumn:
+        raise BoundedQueryError("schema_drift") from None
+    except psycopg.Error:
+        raise BoundedQueryError("database_unavailable") from None
