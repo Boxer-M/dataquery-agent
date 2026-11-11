@@ -10,6 +10,8 @@ DataQuery Agent（智能问数系统）是一个用于学习和求职展示的�
 
 结构化指标查询可通过 Python 或 CLI 访问 26 项已验证指标。调用示例、支持矩阵和账号配置见 [Metric Query Service](docs/warehouse/METRIC_QUERY_SERVICE.md)。
 
+中文问题可以通过 CLI 匹配已验证指标，歧义会返回口径选项。运行方式见 [自然语言指标解析](docs/warehouse/INTENT_SEMANTIC_RESOLVER.md)。
+
 ## 当前状态
 
 当前已完成：
