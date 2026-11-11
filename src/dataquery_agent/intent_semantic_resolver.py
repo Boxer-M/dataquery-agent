@@ -17,6 +17,7 @@ ALIASES = {
     "下了多少单": ("order_count",),
     "取消订单量": ("cancelled_order_count",),
     "商品净额": ("item_net_sales_amount",),
+    "支付失败率": ("payment_failed_attempt_rate",),
     "实收支付金额": ("captured_payment_amount",),
     "销售额": ("item_gross_sales_amount", "item_net_sales_amount", "captured_payment_amount"),
     "退款金额": ("return_record_amount", "completed_refund_amount"),
@@ -218,13 +219,18 @@ class SemanticResolver:
         return {"status": result["status"], "request": request, "query_result": result}
 
 
-def gemini_generator(config):
+def gemini_generator(config, *, retry_once=False):
     from google import genai
     from google.genai import types
 
+    retries = types.HttpRetryOptions(
+        attempts=2, initial_delay=0.5, max_delay=1.0, jitter=0.0,
+        http_status_codes=[408, 429, 500, 502, 503, 504],
+    ) if retry_once else None
+
     def generate(prompt):
         with genai.Client(api_key=config["GEMINI_API_KEY"],
-                          http_options=types.HttpOptions(timeout=20000)) as client:
+                          http_options=types.HttpOptions(timeout=20000, retry_options=retries)) as client:
             response = client.models.generate_content(
                 model=config["GEMINI_MODEL"], contents=prompt,
                 config=types.GenerateContentConfig(response_mime_type="application/json"),
