@@ -30,6 +30,10 @@ class BusinessQueryPlanner:
         return {**result, "trace_id": trace_id, "elapsed_ms": round((monotonic() - started) * 1000)}
 
     def run(self, question, generate, today):
+        prepared = self.prepare(question, generate, today)
+        return self.execute_plan(prepared["plan"]) if prepared["status"] == "ready" else prepared
+
+    def prepare(self, question, generate, today):
         if not isinstance(question, str) or not question.strip() or len(question) > 500:
             return outcome("clarify", "invalid_question", "请提供一条不超过 500 字的经营分析问题。")
         try:
@@ -44,16 +48,17 @@ class BusinessQueryPlanner:
             plan = self.validator.validate(question, proposal, today or datetime.now(ZoneInfo("Asia/Shanghai")).date())
         except PlanError as error:
             return error.response
-        return self._execute(plan)
+        return {"status": "ready", "plan": plan}
 
-    def _execute(self, plan):
+    def execute_plan(self, plan, *, query=None):
+        """Execute a plan already validated by prepare, with an optional query gate."""
         deadline = monotonic() + QUERY_BUDGET_SECONDS
         tools, successful = [], {}
         for call in plan["required_tool_calls"]:
             if monotonic() >= deadline:
                 tools.append({**call, "status": "skipped", "error_code": "plan_timeout", "elapsed_ms": 0})
                 continue
-            trace, rows = self.call_tool(call, plan)
+            trace, rows = self.call_tool(call, plan, query=query)
             tools.append(trace)
             if trace["status"] == "ok":
                 key = (call["window_index"], call["request"]["metric_id"])
@@ -65,12 +70,12 @@ class BusinessQueryPlanner:
             "answer_zh": with_precision(render, plan, rows, tools, self.service.metrics, notice),
         }
 
-    def call_tool(self, call, plan):
+    def call_tool(self, call, plan, *, query=None):
         request = call["request"]
         started = monotonic()
         trace = dict(call)
         try:
-            result = self.service.query(request)
+            result = (query or self.service.query)(request)
         except Exception:
             result = {"status": "error", "error": {"code": "tool_exception"}}
         trace.update(status="error", elapsed_ms=round((monotonic() - started) * 1000))
