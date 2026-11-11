@@ -1,11 +1,31 @@
 """Versioned, task-specific contexts for the unified Agent."""
 import json
 
+from .dynamic_context import PROMPT_VERSION as DYNAMIC_VERSION
+
 TEXT_ARRAY = {"type": "array", "items": {"type": "string"}}
 
 PROMPT_VERSIONS = {"intent": "intent-v3", "resolution": "metric-resolution-v2",
-                   "planning": "business-plan-v1"}
+                   "planning": "business-plan-v1", "dynamic_sql": DYNAMIC_VERSION}
 OUTPUT_SCHEMAS = {
+    DYNAMIC_VERSION: {
+        "type": "object",
+        "properties": {
+            "sql": {"type": "string"},
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "start": {"type": "string"}, "end": {"type": "string"},
+                    "row_limit": {"type": "integer"}, "threshold": {"type": "integer"},
+                    "top_n": {"type": "integer"}, "status": {"type": "string"},
+                },
+                "required": ["start", "end", "row_limit"], "additionalProperties": False,
+            },
+            **{key: TEXT_ARRAY for key in ("sources", "output_fields", "steps", "unresolved")},
+        },
+        "required": ["sql", "parameters", "sources", "output_fields", "steps", "unresolved"],
+        "additionalProperties": False,
+    },
     PROMPT_VERSIONS["intent"]: {
         "type": "object",
         "properties": {

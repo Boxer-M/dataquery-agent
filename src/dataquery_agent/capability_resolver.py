@@ -60,6 +60,11 @@ class CapabilityResolver:
             response.update(error.data)
         return response
 
+    def resolve_dynamic(self, requirement):
+        from .dynamic_requirements import resolve_dynamic
+
+        return {"trace_id": uuid4().hex, **resolve_dynamic(self, requirement)}
+
     def _resolve(self, demand):
         r = self.registry
         if not isinstance(demand, dict) or demand.keys() - FIELDS:

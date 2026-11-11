@@ -15,6 +15,7 @@ SQL Shed 是采用 CC0 许可的公开合成测试数据集，独立存放于 `s
 | 元数据与能力判断 | 校验数据库结构、关联键和权限，返回标准指标路径、明细候选或拒绝理由。明细候选仅用于规划。[元数据与能力判断](docs/warehouse/METADATA_CAPABILITY.md) |
 | 统一 Agent | 从中文问题选择单指标、多指标、受控明细或澄清路径，并关联模型、能力和查询 Trace。[统一查询入口](docs/warehouse/UNIFIED_AGENT.md) |
 | 受控明细查询 | 固定模板执行同单支付顺序与订单商品净额查询。[受控明细](docs/warehouse/CONTROLLED_DETAIL_EXECUTION.md) |
+| 动态 SQL | 对已批准的新分析生成候选 SQL，经 AST 与业务口径验证后只读执行。[动态 SQL](docs/warehouse/DYNAMIC_SQL_ENGINE.md) |
 
 ## 测试与验证
 

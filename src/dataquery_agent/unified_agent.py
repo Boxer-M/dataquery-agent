@@ -19,6 +19,8 @@ from .business_results import RATIO_COMPONENT_METRICS, normalize_rows, with_prec
 from .capability_registry import CapabilityRegistry
 from .capability_resolver import CapabilityResolver
 from .detail_executor import DetailQueryExecutor
+from .dynamic_requirements import recognize as recognize_dynamic
+from .dynamic_sql_engine import DynamicSqlEngine
 from .intent_semantic_resolver import COMPLEX, GROUPS, MODIFIERS, SemanticResolver, gemini_generator, outcome, parse_intent
 from .intent_time import TIME, date_window
 from .metadata_service import MetadataService
@@ -43,10 +45,11 @@ TIME_TAIL = re.compile(r"季度|半年|截至|以来|之前|之后|以前|以后
 
 
 class UnifiedAgent:
-    def __init__(self, service, capability, detail_executor=None):
+    def __init__(self, service, capability, detail_executor=None, dynamic_engine=None):
         self.service = service
         self.capability = capability
         self.detail_executor = detail_executor
+        self.dynamic_engine = dynamic_engine
         self.semantic = SemanticResolver(service)
         self.candidates = MetricCandidates(self.semantic)
         self.planner = BusinessQueryPlanner(service)
@@ -95,6 +98,25 @@ class UnifiedAgent:
             frame["task"] = "clarification"
             return self.semantic.clarify_metric(("item_gross_sales_amount", "item_net_sales_amount",
                                                 "captured_payment_amount"))
+        if not analysis and self.dynamic_engine is not None:
+            requirement = recognize_dynamic(question, today)
+            if requirement is not None:
+                frame["task"] = "dynamic"
+                result = self.dynamic_engine.execute(question, requirement, runtime, agent_trace_id=trace["trace_id"])
+                execution = result["execution_trace"]
+                if execution.get("capability"):
+                    frame["routes"].append(execution["capability"])
+                trace["tools"].append(execution)
+                if result["status"] == "ok":
+                    text = f"{requirement.start} 至 {requirement.end}（不含结束日），{result['definition']}"
+                    text += f"返回 {len(result['results'])} 行。" if result["results"] else "无符合条件的分组。"
+                    if result["results"]:
+                        first = result["results"][0]
+                        text += "首行：" + "，".join(f"{name}={value}" for name, value in first.items()) + "。"
+                    if result["truncated"]:
+                        text += "仅展示排序后的前 100 行。"
+                    result["answer_zh"] = text
+                return result
         if not analysis and DETAIL.search(self.semantic.metric_pattern.sub("", question)):
             frame["task"] = "detail"
             return outcome("unsupported", "detail_not_registered", "该逐笔或订单明细需求暂无已登记路径。")
@@ -363,7 +385,7 @@ def main():
         service = MetricQueryService(dotenv_values(ROOT / ".env.metric-query").get("METRIC_QUERY_DSN"))
         capability = CapabilityResolver(CapabilityRegistry(MetadataService.local().snapshot()))
         generate = gemini_generator(dotenv_values(ROOT / ".env"), include_usage=True, schema_for_prompt=schema_for_prompt)
-        result = UnifiedAgent(service, capability, DetailQueryExecutor.local()).answer(args.question, generate)
+        result = UnifiedAgent(service, capability, DetailQueryExecutor.local(), DynamicSqlEngine.local()).answer(args.question, generate)
     except (OSError, KeyError, ValueError, psycopg.Error):
         message = "无法初始化指标、模型或只读元数据。"
         result = {

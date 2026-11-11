@@ -25,6 +25,8 @@ class AgentRuntime:
                 raw = self.generate(prompt)
                 text = raw.get("text") if isinstance(raw, dict) else raw
                 usage = raw.get("usage", {}) if isinstance(raw, dict) else {}
+                if isinstance(raw, dict) and isinstance(raw.get("model"), str):
+                    event["model"] = raw["model"]
                 if isinstance(usage, dict):
                     event["usage"] = {key: usage[key] for key in ("prompt", "output", "total")
                                       if type(usage.get(key)) is int}

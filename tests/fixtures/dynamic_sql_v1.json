@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "live_cases": [
+    {"id":"having","question":"2025年1月按订单统计支付尝试次数，保留大于1次的订单","operation":"attempts_by_order","truth":"ODS支付按订单计数并筛选"},
+    {"id":"top","question":"2025年1月各渠道按支付尝试次数列前3订单","operation":"attempt_rank_by_channel","truth":"ODS支付计数后按渠道独立排序取前三"},
+    {"id":"returns","question":"2025年1月按当前品类统计有退货记录的订单数","operation":"return_orders_by_category","truth":"ODS退货经唯一商品与订单明细取得品类和订单，并按品类去重"}
+  ],
+  "boundary_cases": [
+    "single_fact_aggregation","having","distinct_orders","top_per_group","row_number",
+    "multiple_attempts","payment_order_join","return_product_join","fanout_rejected",
+    "half_open_window","status_filter","empty","invalid_column","invalid_source","metric_formula",
+    "unknown_dimension","injection","invalid_model_output","one_repair","timeout","truncation"
+  ]
+}

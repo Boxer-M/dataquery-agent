@@ -79,12 +79,12 @@ def authorize_detail(connection, snapshot, fields):
             raise BoundedQueryError("schema_drift")
 
 
-def validated_rows(template, result):
+def validated_rows(template, result, *, grain=None):
     columns = tuple(name for name, _ in template.result_schema)
     if columns != result.columns or ("order_count" == columns[0] and len(result.rows) != 1):
         raise BoundedQueryError("invalid_result")
     types = {"text": str, "integer": int, "decimal": Decimal}
-    keys = columns[:-1]
+    key_indexes = [columns.index(name) for name in (columns[:-1] if grain is None else grain)]
     seen = set()
     rows = []
     for row in result.rows:
@@ -93,7 +93,7 @@ def validated_rows(template, result):
             for value, (_, kind) in zip(row, template.result_schema)
         ):
             raise BoundedQueryError("invalid_result")
-        key = row[:len(keys)]
+        key = tuple(row[index] for index in key_indexes)
         if key in seen or (columns[-1] == "order_count" and row[-1] < 0):
             raise BoundedQueryError("invalid_result")
         seen.add(key)
