@@ -18,7 +18,9 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         sources.update(tool.get("sources", []))
     request = routes[0].get("metric_request") if len(routes) == 1 else None
     plan = result.get("plan")
-    strategy = ("published_asset" if result.get("path") == "published_asset" else
+    knowledge = result.get("knowledge_result", result) if result.get("path") in {"knowledge", "hybrid"} else None
+    strategy = (result["path"] if knowledge is not None else
+                "published_asset" if result.get("path") == "published_asset" else
                 "dynamic_sql" if result.get("path") == "dynamic_sql" else
                 "approved_template" if detail else "standard_plan" if plan else
                 "standard_metric" if request else "no_execution")
@@ -29,7 +31,16 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         scalar = {key: rows[0][key] for key in ("value", "numerator", "denominator") if key in rows[0]}
     if len(rows) == 1 and set(rows[0]) == {"order_count"}:
         scalar = {"order_count": rows[0]["order_count"]}
+    knowledge_audit = None if knowledge is None else {
+        "evidence_status": knowledge["evidence_status"], "citations": knowledge["citations"],
+        "retrieval_strategy": knowledge.get("retrieval_trace", {}).get("strategy"),
+        "embedding_version": knowledge.get("retrieval_trace", {}).get("embedding_version"),
+        "retrieval_trace_id": knowledge.get("retrieval_trace", {}).get("trace_id"),
+        "answer_prompt_version": knowledge.get("answer_prompt_version"),
+        "metric_results": result.get("metric_results", []),
+    }
     return {
+        **({"knowledge": knowledge_audit} if knowledge_audit is not None else {}),
         **({"query_asset": result["query_asset"]} if strategy == "published_asset" else {}),
         "query_id": str(uuid4()), "conversation_id": str(claim["conversation_id"]),
         "message_id": str(claim["message_id"]), "trace_id": trace.get("trace_id"),

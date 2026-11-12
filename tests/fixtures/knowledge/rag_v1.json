@@ -1,0 +1,10 @@
+{
+  "version": "rag-v1",
+  "checks": ["exact_catalog", "chinese_synonym", "source_location", "cross_chunk", "version_update", "old_chunk_hidden", "no_evidence", "conflict", "synthetic_policy", "stale_catalog", "invalid_citation", "prompt_injection", "owner_scope", "duplicate_index", "embedding_compatibility", "vector_rank", "keyword_and_vector", "knowledge_route", "hybrid_ods", "history_version"],
+  "cases": [
+    {"id":"definition","question":"商品退款率与订单退款率有什么区别？","status":"partial","topic":"item_return_rate"},
+    {"id":"policy","question":"测试星店退款规则：未拆封商品签收后几天内可以申请退款？","status":"supported","quote":"七个自然日"},
+    {"id":"policy_gap","question":"测试星店退款规则：款项退到银行卡需要几天？","status":"insufficient"},
+    {"id":"hybrid","question":"2025年1月退货相关指标是多少？对应的业务定义是什么？","status":"supported","topics":["return_record_count","return_record_amount","item_return_rate"]}
+  ]
+}

@@ -55,7 +55,7 @@ class ConversationManager:
         began = monotonic()
         today = today or datetime.now(ZoneInfo("Asia/Shanghai")).date()
         try:
-            answer, context, pending, operation = self.dispatch(message, claim["state"], today)
+            answer, context, pending, operation = self.dispatch(message, claim["state"], today, owner=owner)
             record = build_record(claim, message, answer, operation, round((monotonic() - began) * 1000))
         except Exception:
             answer = response("error", "agent_failed", "查询处理失败，请稍后重试。")
@@ -74,15 +74,19 @@ class ConversationManager:
         return {**answer, **ids, "query_id": record["query_id"], "context_operation": record["context_operation"],
                 "state_version": claim["state"]["state_version"] + 1, "replayed": False}
 
-    def dispatch(self, message, state, today):
+    def dispatch(self, message, state, today, *, owner=None):
         active = state["active_query_context"]
         pending = state["pending_clarification"]
         if redact(message) != message:
             return response("unsupported", "sensitive_input", "请去除凭据或个人信息后重试。"), active, pending, "rejected"
         if message.strip().rstrip("。！？!?") in RESET:
             return response("ok", None, "已清空本会话的查询条件。"), None, None, "reset"
+        query = message
+        if getattr(self.agent, "knowledge", None) and not pending:
+            from .rag.routing import knowledge_followup
+            query = knowledge_followup(message, active)
         try:
-            edit = edit_for_message(message, active, self.agent.service.metrics,
+            edit = edit_for_message(query, active, self.agent.service.metrics,
                                     self.agent.service.cutoff.date().isoformat()) if not pending else None
             if pending and not self.is_new_topic(message):
                 request = resume_request(pending, message, self.agent.semantic)
@@ -90,11 +94,14 @@ class ConversationManager:
             elif edit:
                 operation, payload = edit
             else:
-                answer = self.agent.answer(message, self.generate, today=today)
+                if getattr(self.agent, "knowledge", None):
+                    answer = self.agent.answer(query, self.generate, today=today, knowledge_owner=owner)
+                else:
+                    answer = self.agent.answer(message, self.generate, today=today)
                 if answer.get("task") == "blocked":
                     return answer, active, pending, "rejected"
                 new_pending = pending_for(answer, message, today, self.agent.semantic)
-                return answer, self.context_for(answer), new_pending, "new"
+                return answer, self.context_for(answer), new_pending, "knowledge_followup" if query != message else "new"
         except ContextError as error:
             keep = None if error.code == "clarification_expired" else pending
             answer = response("clarify", error.code, str(error))
@@ -148,6 +155,8 @@ class ConversationManager:
             detail = result["detail_result"]
             return {"kind": "detail", "context_protocol": CONTEXT_VERSION, "analysis_id": detail["analysis_id"],
                     "time_constraints": detail["time_constraints"], "source_models": detail["sources"]}
+        if result.get("path") == "knowledge":
+            return {"kind": "knowledge", "context_protocol": CONTEXT_VERSION, "topic": result["knowledge_topic"]}
         if result.get("path") in {"dynamic_sql", "published_asset"}:
             return {"kind": "dynamic", "context_protocol": CONTEXT_VERSION, "operation": result["operation"],
                     "parameters": result["parameters"], "source_models": result["sources"]}
@@ -164,6 +173,7 @@ def local_manager():
     from .metadata_service import MetadataService
     from .metric_query_service import MetricQueryService
     from .query_asset_governance import QueryAssetRuntime
+    from .rag.answer import KnowledgeService
     from .unified_agent import UnifiedAgent
 
     cfg = dotenv_values(ROOT / ".env.agent-meta")
@@ -171,7 +181,8 @@ def local_manager():
     capability = CapabilityResolver(CapabilityRegistry(MetadataService.local().snapshot()))
     service = MetricQueryService(dotenv_values(ROOT / ".env.metric-query").get("METRIC_QUERY_DSN"))
     engine = DynamicSqlEngine.local()
-    agent = UnifiedAgent(service, capability, DetailQueryExecutor.local(), engine, QueryAssetRuntime.local(engine))
+    agent = UnifiedAgent(service, capability, DetailQueryExecutor.local(), engine,
+                         QueryAssetRuntime.local(engine), KnowledgeService.local(service.metrics))
     model = gemini_generator(dotenv_values(ROOT / ".env"), include_usage=True, schema_for_prompt=schema_for_prompt)
     return ConversationManager(store, agent, model), cfg.get("AGENT_OWNER_TOKEN")
 
