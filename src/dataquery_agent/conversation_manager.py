@@ -148,7 +148,7 @@ class ConversationManager:
             detail = result["detail_result"]
             return {"kind": "detail", "context_protocol": CONTEXT_VERSION, "analysis_id": detail["analysis_id"],
                     "time_constraints": detail["time_constraints"], "source_models": detail["sources"]}
-        if result.get("path") == "dynamic_sql":
+        if result.get("path") in {"dynamic_sql", "published_asset"}:
             return {"kind": "dynamic", "context_protocol": CONTEXT_VERSION, "operation": result["operation"],
                     "parameters": result["parameters"], "source_models": result["sources"]}
         return None
@@ -163,13 +163,15 @@ def local_manager():
     from .intent_semantic_resolver import gemini_generator
     from .metadata_service import MetadataService
     from .metric_query_service import MetricQueryService
+    from .query_asset_governance import QueryAssetRuntime
     from .unified_agent import UnifiedAgent
 
     cfg = dotenv_values(ROOT / ".env.agent-meta")
     store = ConversationStore(cfg.get("AGENT_META_DSN"))
     capability = CapabilityResolver(CapabilityRegistry(MetadataService.local().snapshot()))
     service = MetricQueryService(dotenv_values(ROOT / ".env.metric-query").get("METRIC_QUERY_DSN"))
-    agent = UnifiedAgent(service, capability, DetailQueryExecutor.local(), DynamicSqlEngine.local())
+    engine = DynamicSqlEngine.local()
+    agent = UnifiedAgent(service, capability, DetailQueryExecutor.local(), engine, QueryAssetRuntime.local(engine))
     model = gemini_generator(dotenv_values(ROOT / ".env"), include_usage=True, schema_for_prompt=schema_for_prompt)
     return ConversationManager(store, agent, model), cfg.get("AGENT_OWNER_TOKEN")
 

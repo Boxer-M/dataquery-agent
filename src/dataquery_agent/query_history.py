@@ -18,17 +18,19 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         sources.update(tool.get("sources", []))
     request = routes[0].get("metric_request") if len(routes) == 1 else None
     plan = result.get("plan")
-    strategy = ("dynamic_sql" if result.get("path") == "dynamic_sql" else
+    strategy = ("published_asset" if result.get("path") == "published_asset" else
+                "dynamic_sql" if result.get("path") == "dynamic_sql" else
                 "approved_template" if detail else "standard_plan" if plan else
                 "standard_metric" if request else "no_execution")
     # Store only executed validated SQL, never a rejected proposal or model prompt.
-    statement = payload.get("sql") if strategy in {"dynamic_sql", "approved_template"} and answer["status"] == "ok" else None
+    statement = payload.get("sql") if strategy in {"dynamic_sql", "approved_template", "published_asset"} and answer["status"] == "ok" else None
     scalar = {}
     if len(rows) == 1 and rows[0].get("bucket") == "all":
         scalar = {key: rows[0][key] for key in ("value", "numerator", "denominator") if key in rows[0]}
     if len(rows) == 1 and set(rows[0]) == {"order_count"}:
         scalar = {"order_count": rows[0]["order_count"]}
     return {
+        **({"query_asset": result["query_asset"]} if strategy == "published_asset" else {}),
         "query_id": str(uuid4()), "conversation_id": str(claim["conversation_id"]),
         "message_id": str(claim["message_id"]), "trace_id": trace.get("trace_id"),
         "original_question": redact(message)[:500], "context_version": CONTEXT_VERSION,

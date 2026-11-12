@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "operation": "attempt_rank_by_channel",
+  "scenarios": [
+    {"id": "history_to_publish", "question": "2025年1月各渠道按支付尝试次数列前3订单", "truth": "ODS 支付按订单计数，按渠道分别排序；次数相同时按订单号升序"},
+    {"id": "drift_and_recovery", "mutation": "在测试快照中把 paid_at 替换为 payment_event_time", "expected": ["incompatible", "blocked_before_sql", "STALE", "new_version"]},
+    {"id": "implementation_only", "mutation": "重命名排名 CTE", "expected": ["same_semantic_version", "different_sql_hash", "same_ods_results", "immutable_old_history"]}
+  ],
+  "checks": ["history_owner", "duplicate_parameter_variants", "distinct_semantics", "candidate_blocked", "invalid_sql_blocked", "published_route", "superseded_history", "standard_route", "detail_route", "removed_field", "unknown_rename", "extra_field", "join_cardinality", "event_time", "semantic_version", "registry_permission", "invalid_transition", "concurrent_candidate", "publication_rollback", "dynamic_cannot_access_registry", "stale_route", "drift_blocks_before_sql", "old_history", "ods_reconciliation"]
+}

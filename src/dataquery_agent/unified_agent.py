@@ -45,11 +45,12 @@ TIME_TAIL = re.compile(r"季度|半年|截至|以来|之前|之后|以前|以后
 
 
 class UnifiedAgent:
-    def __init__(self, service, capability, detail_executor=None, dynamic_engine=None):
+    def __init__(self, service, capability, detail_executor=None, dynamic_engine=None, asset_runtime=None):
         self.service = service
         self.capability = capability
         self.detail_executor = detail_executor
         self.dynamic_engine = dynamic_engine
+        self.asset_runtime = asset_runtime
         self.semantic = SemanticResolver(service)
         self.candidates = MetricCandidates(self.semantic)
         self.planner = BusinessQueryPlanner(service)
@@ -102,7 +103,10 @@ class UnifiedAgent:
             requirement = recognize_dynamic(question, today)
             if requirement is not None:
                 frame["task"] = "dynamic"
-                result = self.dynamic_engine.execute(question, requirement, runtime, agent_trace_id=trace["trace_id"])
+                result = (self.asset_runtime.execute(question, requirement, agent_trace_id=trace["trace_id"])
+                          if self.asset_runtime is not None else None)
+                if result is None:
+                    result = self.dynamic_engine.execute(question, requirement, runtime, agent_trace_id=trace["trace_id"])
                 execution = result["execution_trace"]
                 if execution.get("capability"):
                     frame["routes"].append(execution["capability"])
@@ -408,7 +412,10 @@ def main():
         service = MetricQueryService(dotenv_values(ROOT / ".env.metric-query").get("METRIC_QUERY_DSN"))
         capability = CapabilityResolver(CapabilityRegistry(MetadataService.local().snapshot()))
         generate = gemini_generator(dotenv_values(ROOT / ".env"), include_usage=True, schema_for_prompt=schema_for_prompt)
-        result = UnifiedAgent(service, capability, DetailQueryExecutor.local(), DynamicSqlEngine.local()).answer(args.question, generate)
+        from .query_asset_governance import QueryAssetRuntime
+        engine = DynamicSqlEngine.local()
+        result = UnifiedAgent(service, capability, DetailQueryExecutor.local(), engine,
+                              QueryAssetRuntime.local(engine)).answer(args.question, generate)
     except (OSError, KeyError, ValueError, psycopg.Error):
         message = "无法初始化指标、模型或只读元数据。"
         result = {

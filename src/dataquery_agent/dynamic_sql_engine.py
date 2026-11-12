@@ -78,13 +78,23 @@ class DynamicSqlEngine:
         if (refreshed.version != registry.version or CapabilityResolver(refreshed).resolve_dynamic(
                 requirement).get("capability_version") != route["capability_version"]):
             raise BoundedQueryError("schema_drift")
+        return self.execute_approved(statement, requirement, route, context, current, question=question)
+
+    def execute_approved(self, statement, requirement, route, context, snapshot, *, question=None, asset=False):
+        def validate(value):
+            if asset:
+                from .query_asset_contract import semantic_sql
+                self.ast.validate(value, context)
+                value = semantic_sql(value)
+            return self.validate(value, context)
+
         params = dict(context["parameters"])
         for field in ("start", "end"):
             params[field] = datetime.fromisoformat(params[field])
         result = execute_bounded_readonly(
             self.dsn, statement, params, role=DYNAMIC_ROLE,
-            validate=lambda value: self.validate(value, context),
-            authorize=lambda pg: authorize_detail(pg, current, route["required_fields"]),
+            validate=validate,
+            authorize=lambda pg: authorize_detail(pg, snapshot, route["required_fields"]),
         )
         rows = validated_rows(SimpleNamespace(result_schema=tuple(route["result_schema"])), result, grain=route["grain"])
         self.validate_results(rows, requirement)
@@ -92,8 +102,9 @@ class DynamicSqlEngine:
             "status": "ok", "operation": requirement.operation, "question": question,
             "path": "dynamic_sql", "definition": route["definition"], "event_time": route["event_time"],
             "grain": route["grain"], "sources": list(context["models"]), "parameters": context["parameters"],
-            "metadata_version": registry.version, "capability_version": route["capability_version"],
-            "prompt_version": PROMPT_VERSION, "sql": statement, "results": rows, "truncated": result.truncated,
+            "metadata_version": route["metadata_version"], "capability_version": route["capability_version"],
+            **({"prompt_version": PROMPT_VERSION} if not asset else {}),
+            "sql": statement, "results": rows, "truncated": result.truncated,
             "quality_limitations": route["risks"],
         }
 
