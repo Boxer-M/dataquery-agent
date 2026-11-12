@@ -1,0 +1,1816 @@
+{
+  "manifest": {
+    "sources": {
+      "metrics/warehouse_catalog_v1.json": "babae18d458b751e071c147f152cadde2e56477e521787d04c438fd75df0307b",
+      "docs/warehouse/METRICS_AND_LINEAGE.md": "3aaedd66685f102180eea8f6f25db3fecc736c79e5b746fee60bcc6015ed67b0",
+      "docs/warehouse/TABLE_DESIGN.md": "36345e702de157a95058e0305293533cee23d4998ee6edf6854b05d6d11f0940",
+      "docs/warehouse/QUERY_ASSET_GOVERNANCE.md": "d92ba7e21c17b443a350ccf7637779f5325275063cdf3f81e569cc80029a32d2"
+    },
+    "documents": [
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "03ddedc26bb621a1b9ebe5171a468f4c39036a9a1c0bd031d52b8c737b6ec68a",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=order_count]",
+            "sha256": "9396735a0e1ad4158abd07c5a9db0dbbf332bae6d60fedd8186ad3717b5dd4cb",
+            "characters": 112
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_net_sales_amount]",
+        "version": "1.1.1-ads",
+        "document_hash": "0559584fdc778b17fd5116c8f64f1dea9b45b405a2c27e7a2055add0c48a1536",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=item_net_sales_amount]",
+            "sha256": "089ec62ebd784fbe8fe94f0ae0c71ae7bcb9755d7e18ce376eba5ea92ca1d241",
+            "characters": 229
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=payment_attempt_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "b7853596fc3de9e47cd96dc70fd2ed61ab80e3360b563a9f9269197789b6cbd0",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=payment_attempt_count]",
+            "sha256": "2ad1c3695a0b457be1524e2bb7442964dff03ad96fdab8fcccb8485731039a7c",
+            "characters": 171
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=captured_payment_amount]",
+        "version": "1.1.1-ads",
+        "document_hash": "ef2866f078031b9deb2638c0445054cc469624defa817bbcd4b77d23b683c77d",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=captured_payment_amount]",
+            "sha256": "f74c472ea3dce76a123aa3294127edffba301dff52202b0d3dd37a96262ef5cd",
+            "characters": 200
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=payment_attempt_success_rate]",
+        "version": "1.1.1-ads",
+        "document_hash": "79d71bfdaf3bd88519088b40b120dd72297e1d970e11189ee50bb1871312f55f",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=payment_attempt_success_rate]",
+            "sha256": "e38ac4b16a4649329c5d27209507091cd62b1eefc7b59133a313827cbf9d3ec9",
+            "characters": 165
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_record_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "0e5ba5b787cc9a70dfe49f5e70d9aa2a3ada8bfa384269ce73cd15b86bc77e37",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=return_record_count]",
+            "sha256": "10d5a19dadac0091d2f1ed4c41bb3dc2de6c22fd590011198e4c82c92ee7d300",
+            "characters": 123
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_record_amount]",
+        "version": "1.1.1-ads",
+        "document_hash": "6753df59d947b1a1e5d96e4fada56ed8668251cbf4a6d7059a2928d42f6ffad9",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=return_record_amount]",
+            "sha256": "e3f275aa7f3901a3c0b3471fb39fd9fa8be2c4585e546b2f3296c0256b558ecf",
+            "characters": 157
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+        "version": "1.1.1-ads",
+        "document_hash": "7bb051c09ec59e5fc67733a00356806c9cd2b8fdc5bf1dbad6255b024072fa5a",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=item_return_rate]",
+            "sha256": "2d04a7d1a2406ea25602e3aae2e164aaf770bfbdbceab9fe0f265eca282b7568",
+            "characters": 282
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "5445ff74048590f5cbbe264d6dc7161728ba5159ac366c33fa7609ff83ef2600",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=order_item_count]",
+            "sha256": "e74fe9f81b5444ed365ddf3313cfd4260eae9ca25343461c5679b16a71cb3607",
+            "characters": 97
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=ordered_unit_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "7cfb49626ec2b00d889294dab026e2e2e0db718cf0e191d0ec2d92d58b89f0e6",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=ordered_unit_count]",
+            "sha256": "fa8fae4ffcb4c67ecfa2af532f20e05675ede8ea790291e809010175a32f9d54",
+            "characters": 104
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_gross_sales_amount]",
+        "version": "1.1.1-ads",
+        "document_hash": "2249c002a5459d2cbdf48303997b0f4665df5355307c93ae00763c7c136bc244",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=item_gross_sales_amount]",
+            "sha256": "c57726cb2b7bda443e81e287d253711b64e2415a5ba7f36116864e4cca93a6c6",
+            "characters": 124
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_discount_amount]",
+        "version": "1.1.1-ads",
+        "document_hash": "a5b2e1ebae6e31da26543318f66dfcbdc4737ff55ff1e00f68eac0888bc13134",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=item_discount_amount]",
+            "sha256": "16eb95a5500f9fe52cce063f595f2e7c408f9ebf4f8933a99d3efdd2fa47c9ff",
+            "characters": 112
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=cancelled_order_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "e3af1a69e43a8f9e201831a96c68329a576ad4c65036f09730a9852453e72d28",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=cancelled_order_count]",
+            "sha256": "232f4d33383291a5aa974c91274cce860d584106ac98a1fee3f8da730ccd3ac4",
+            "characters": 121
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=cancelled_order_rate]",
+        "version": "1.1.1-ads",
+        "document_hash": "a5fb329084389284180109e056e916d5723923b1a8ff5c176c12cf107154a816",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=cancelled_order_rate]",
+            "sha256": "38f81cdbc726238f5dc3a81227c353f5305cf057a88688689f1ecfda70d14808",
+            "characters": 153
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=average_order_record_amount]",
+        "version": "1.1.1-ads",
+        "document_hash": "5042112467c888f5ffec31ba299522fad8f1f6bc3cf28507a2312608c577d40b",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=average_order_record_amount]",
+            "sha256": "075f20c5b461f3105f508e5e2c9fc7e5c67fcade152ce9e06e68171440708db6",
+            "characters": 163
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=payment_failed_attempt_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "15dca56febcbc6a629bbcbb0376e415539a2134a8f1d9bb538ea1d06b3bb310d",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=payment_failed_attempt_count]",
+            "sha256": "45ffea3a3d888b7128fb668f43541b3f0633127cf71dcfcdb5cb67699e90713e",
+            "characters": 125
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=payment_failed_attempt_rate]",
+        "version": "1.1.1-ads",
+        "document_hash": "81806484acfd43048d0300a35168f0f1be7b970f47c49c7b44c5cf01080f1e5e",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=payment_failed_attempt_rate]",
+            "sha256": "ce55f9d14fbd38a15ce286c37073cc2bba651404147619d0dbc18be07b8c5605",
+            "characters": 142
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=payment_attempted_order_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "d1eb7025e5a1bd983fc6514df01d0f4e9289b5f5c64b0632458f3202fd602fa8",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=payment_attempted_order_count]",
+            "sha256": "a90c4a370973214941ec6a04bc1ab484996df1f1e9555c26be3baf75117bc936",
+            "characters": 129
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=multiple_payment_attempt_order_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "66dc6bb446f5c47a29db81bdc038f0e3d757fc13c6cdf820521af66a3f189915",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=multiple_payment_attempt_order_count]",
+            "sha256": "abd35bcb9e8775ca5bca08e6df663719a7ac29e16087cae85baf3cc9b4d47d52",
+            "characters": 138
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=payment_item_amount_mismatch_order_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "6475cc8b639c469668a650a78dd9ec2a58fc9593ef62a4c5effd39061b29ed16",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=payment_item_amount_mismatch_order_count]",
+            "sha256": "e170fac539ef30165a787249800423f3d03b13eb3d39c051c1a37c38aea72823",
+            "characters": 213
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_before_order_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "63333be3787c883a42601e3cf9a5a8ac5bc8d26f6a152f3378a84bb9811bd5e0",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=return_before_order_count]",
+            "sha256": "4c872d1cd238728443543b3ac89948fb66cb02ed508633e93692cbc6580d2678",
+            "characters": 147
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_above_item_net_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "ce6ee387a46c4115e1db1158511a50116b2413fede95bbbfa1a34ba3df4ed437",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=return_above_item_net_count]",
+            "sha256": "a9afff1dec22a9afbd2c6794351da44c6dcb707276efa8833391246ff9e0934a",
+            "characters": 180
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=ordering_customer_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "f2f5166aa2cba10079cdfc21de0f7c5ff45997b3c804097db1f36efa57ec6588",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=ordering_customer_count]",
+            "sha256": "000b8d2dddfca7114793764171457563de52f8daa81ff74f113801d26aaa9c81",
+            "characters": 119
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=repeat_ordering_customer_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "748458f9a123ea057e0ab4abb3e8e6ce628973ffd09430a1b2d862a9e5872fd1",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=repeat_ordering_customer_count]",
+            "sha256": "7b2743622d0a8767757ed9554208641f8240d87a96ae3a32ad89bc8faed69aa7",
+            "characters": 161
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=customer_repeat_order_rate]",
+        "version": "1.1.1-ads",
+        "document_hash": "787474bb33d8382ab8cc0b4331c8219fa5e6f57bce3f120be60bd685c3e25a1e",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=customer_repeat_order_rate]",
+            "sha256": "4478f1c793ac52af1d710221380601ce45b6ce38db7a7ef910f6de206deb08d4",
+            "characters": 174
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=first_observed_ordering_customer_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "395109760dc69d9a38baa0bc9b345f6973025723afc16459d2fd5deb65fcd14d",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=first_observed_ordering_customer_count]",
+            "sha256": "7bf7cea3f568eba637e140244b62b53e50906eda9ac1300f0b5e3a01562415ff",
+            "characters": 197
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=orders_per_ordering_customer]",
+        "version": "1.1.1-ads",
+        "document_hash": "2052dfd0cbcbdba7891e9e5b63452ab9221f48ade2498bccc98b459da1f818c6",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=orders_per_ordering_customer]",
+            "sha256": "26d0505c449d826cd5af9571d3bbd7aec52a8ca780c5a5e2afb1eafa6d2f6b3e",
+            "characters": 144
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=channel_order_share]",
+        "version": "1.1.1-ads",
+        "document_hash": "0ada2b95e542fff4f17b8bc82cb6aaa47785ce91593a10292a0b53458c205e03",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=channel_order_share]",
+            "sha256": "aa4851b28e5a7c6c1937bcee8754a0afb22b4cd274ac6a746c302880e0202668",
+            "characters": 134
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=ordered_product_count]",
+        "version": "1.1.1-ads",
+        "document_hash": "f7b5d789b3f9cb08d6f5f92defce1b9c53c6d4d8980f27631e661a14b9ccc3ac",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=ordered_product_count]",
+            "sha256": "040da5225c1dc84e162461abab15bde6c7919b100f5a70938781b8b53d722a5f",
+            "characters": 127
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=category_sales_share]",
+        "version": "1.1.1-ads",
+        "document_hash": "7f4a7539f23a1a756f764bc93a4db6588c5cce8225c896a3b790c74380f15d4c",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=category_sales_share]",
+            "sha256": "40b53a9a08c852bec278e83369e68bb35d368681a872a6b13b95e8ebb426433b",
+            "characters": 190
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=completed_refund_amount]",
+        "version": "1.1.1-ads",
+        "document_hash": "69ffd224654b79df6a979db553ca9e0b21da51cb70342c6d9615592881efb4b9",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=completed_refund_amount]",
+            "sha256": "a6912c0b3a9c525a1fce58a12a6f58e973b02c4e8128c860348bf8be8654a3a8",
+            "characters": 56
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=net_recognized_revenue]",
+        "version": "1.1.1-ads",
+        "document_hash": "1c986dfa594d81105cb13e0fd77c5b73ce7adedd6709ca446374b6b67553bcad",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=net_recognized_revenue]",
+            "sha256": "5ac3c3985293fc612cf421d55749900ca1104f8a022c2fdfa0c50fa2b2402642",
+            "characters": 64
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=unit_return_rate]",
+        "version": "1.1.1-ads",
+        "document_hash": "92d8cdff082816f9f69c688151c1740bdd01a814485b20447c55905216ee192e",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=unit_return_rate]",
+            "sha256": "3e9d45b3d781146c7db051e58ef82ac10ba15fa25e3b221b5c7372f6d9102c21",
+            "characters": 63
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=customer_lifetime_value]",
+        "version": "1.1.1-ads",
+        "document_hash": "4047e55b378696a5305f5b035ad95cfea099069e5bc797f074f15ce4204eb29b",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=customer_lifetime_value]",
+            "sha256": "99977064c149da7a3b3e14113d1953417b8af49318675a07daae14ec81e634cc",
+            "characters": 61
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=customer_entity_repeat_rate]",
+        "version": "1.1.1-ads",
+        "document_hash": "652c8028822b21b751ec43b6ddc49b617eee1b6d4b877a437ad34d985e047ac0",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=customer_entity_repeat_rate]",
+            "sha256": "4e5f1a9fd4a1e8021977b0e30fdefe3e412f6a57b0e2a8f9658d256b3830b2f3",
+            "characters": 61
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=historical_gross_margin_amount]",
+        "version": "1.1.1-ads",
+        "document_hash": "3cefab2f3d0536ab33544cf5be23247785ebf7d034cede4419478fce5015d9ed",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=historical_gross_margin_amount]",
+            "sha256": "af005964b6e520b82991fbbc6805d8feffb9ded94dc1fb19fff5449ea6f56c70",
+            "characters": 60
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=product_captured_payment_amount]",
+        "version": "1.1.1-ads",
+        "document_hash": "2008557ff87ee843efb4c6721dd7f3cccb9d62bff399be9c43b5e24dc6970b25",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=product_captured_payment_amount]",
+            "sha256": "39267fbca074cf86f3463c85bed2183755249c663a3e0760e598afa09cc1d805",
+            "characters": 81
+          }
+        ]
+      },
+      {
+        "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=currency_converted_sales_amount]",
+        "version": "1.1.1-ads",
+        "document_hash": "7da2bdefdfad2ddc74f277b8a3f527c1c8cb3b69f1acd806b45648bc72a1bcec",
+        "chunks": [
+          {
+            "location": "#/metrics[metric_id=currency_converted_sales_amount]",
+            "sha256": "c01288dabaf4136a90e7f02adf563c0db80ca9d2001f2548dbe9fff9a6f5bbeb",
+            "characters": 50
+          }
+        ]
+      },
+      {
+        "source": "docs/warehouse/METRICS_AND_LINEAGE.md",
+        "version": "3aaedd66685f-reviewed-v1",
+        "document_hash": "3aaedd66685f102180eea8f6f25db3fecc736c79e5b746fee60bcc6015ed67b0",
+        "chunks": [
+          {
+            "location": "lines:20-20",
+            "sha256": "6b12408f13a4040873a34dbaa9bedd4783e57627f295d272e89a4bd619672339",
+            "characters": 133
+          }
+        ]
+      },
+      {
+        "source": "docs/warehouse/TABLE_DESIGN.md",
+        "version": "36345e702de1-reviewed-v1",
+        "document_hash": "36345e702de157a95058e0305293533cee23d4998ee6edf6854b05d6d11f0940",
+        "chunks": [
+          {
+            "location": "lines:58-69",
+            "sha256": "666b13a53ee900ea4419a05b1b38865a0daf6d2d0e0fbfe4bd33f6f0c1264957",
+            "characters": 524
+          },
+          {
+            "location": "lines:75-86",
+            "sha256": "8c5b719ea879dc2d16a1a96fa0f722f3f32de33ca42b462f8bb8a39bf6336ae5",
+            "characters": 567
+          }
+        ]
+      },
+      {
+        "source": "docs/warehouse/QUERY_ASSET_GOVERNANCE.md",
+        "version": "d92ba7e21c17-reviewed-v1",
+        "document_hash": "d92ba7e21c17b443a350ccf7637779f5325275063cdf3f81e569cc80029a32d2",
+        "chunks": [
+          {
+            "location": "lines:14-16",
+            "sha256": "f37983a851580f1629aafcb91e5862a4e132c685d4a32c0adde61b31945214a5",
+            "characters": 422
+          }
+        ]
+      }
+    ],
+    "fragment_count": 42
+  },
+  "passed": true,
+  "embedding_batches": [
+    {
+      "query": false,
+      "elapsed_ms": 6899,
+      "token_counts": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "query": false,
+      "elapsed_ms": 5195,
+      "token_counts": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "query": false,
+      "elapsed_ms": 1842,
+      "token_counts": [
+        null,
+        null
+      ]
+    },
+    {
+      "query": true,
+      "elapsed_ms": 4613,
+      "token_counts": [
+        null
+      ]
+    },
+    {
+      "query": true,
+      "elapsed_ms": 4543,
+      "token_counts": [
+        null
+      ]
+    },
+    {
+      "query": true,
+      "elapsed_ms": 5868,
+      "token_counts": [
+        null
+      ]
+    },
+    {
+      "query": true,
+      "elapsed_ms": 2672,
+      "token_counts": [
+        null
+      ]
+    },
+    {
+      "query": true,
+      "elapsed_ms": 4610,
+      "token_counts": [
+        null
+      ]
+    },
+    {
+      "query": true,
+      "elapsed_ms": 2121,
+      "token_counts": [
+        null
+      ]
+    }
+  ],
+  "embedding": {
+    "model": "gemini-embedding-001",
+    "version": "gemini-embedding-001-768-unit-retrieval-v1",
+    "dimensions": 768,
+    "index_version": "3e1f09ed5de97bcf7846aa831d10deffac1541bbb1c098818cbc96dc7ede71d6"
+  },
+  "index": [
+    {
+      "document_id": "0a462ef188e629bec3761148c5ee3070216a039cef85c73e87e39bd7bc40f178",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "bf65c0897e368452b4701c1d45b9d6c3c0955987389294724baf3c2e4f6bb005",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "78a16801d2aacd1cded5008fe82c9d4afdfd59c3632095f0122feb1302823f55",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "98874bc2d089d04343d9c2d4ac09ffcb65e3c47b8c7b8892ff8393021a59b7f7",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "2d8d1c411e2fa10cfb11f39d33ce5010c6581c6b19bb307e8c373fff2e2bfe09",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "8ce7e256b8f9d0dca0932182f79be062bbd56c5c6ea1032639679cb2b4fcfc56",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "7a7aadf387d06f6f60921cf470285607d21e57f2380a967735bfaa54d0900d47",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "1921956db016452864a9ad8ec966b98c8e47813534d236e49bd491231dda39af",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "90979594301702dacfda9889a79771ec9471658f8604781e98c6082d40285ff9",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "0d4f405d047f30a1d15394f8762ebf25c36f26916a539d1a2d15cd8d81e889e8",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "ea36d19d453983a539ca24fe0e2bb40ec34fcccb175096adc8750bf517ca8d72",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "cdc38091c9533f8b8ab4fc4929f25d172af123905c4ed76bbca03a2d25b05d22",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "fc920950e7d4dec528469b6056dfaaec3556e0a1c30ef5280107634d184a38ff",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "85040cc0346ec5c6d19a60afcf48596da73eaf721efa9c7fe5e4bc68b5ff5a3a",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "486312d7097b1c274598ea362e92166a39c98a906195b9751f46fc1ac585ac9f",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "7dbe9e3273ad5cb9e53d4fde73577bfa6b415ce9b33c9342fb6c9299a1bf2ec8",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "b3574199c773632f7d3c5cf028a89ffa76f87d3ac1a3386306b7bd0bf653f5d9",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "d892131d4cc838964f7f4b3696a6782ffb392d0659cdccb29df1eae8a2cd2955",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "f5af7c0f7991e24fa802126300ccf7fd4a83566c83f58ae29968df7d283b0d5b",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "caf28ad1593c2985c431f178082b06b4e457e9db9eaf82acce4d73fc04551a38",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "57b9b8e3824e1eb363de838cfec09953853df36ab27b16ab68e2c725d0ccf20f",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "0783ae30c8cf369a807597526f4465bb134cda0752e164011ee80604d6dd62d1",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "cdcc28397da492002cd8eb125d5af33e5d4ecf0f4a4275b6c4e75d49db984f44",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "243e33de230c2311ba3a4f82704251bd5d26d5e2961a77e5ee7cc4382c3b23b3",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "5ab874f90cdfe8de53a23e9a6d1e2d2a07be89f64cb3ade68e7159c07fa155f5",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "2e53e5d0ff170ca974f9a06c5e774fa4ff8ded899c4aa972c9e915f75957db84",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "a2c233804d7bf80d673b37078ebf90cb889927b035fabd047884df2c7ad0cae0",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "36657f9cf4aec8b954c7ec1733b7567ee07a85ff4a4c26bd3a8c44e3b854ac9f",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "f31430203e321d2df79b8046519cba036a7fbc9a49c15d6b39507e284aec1b02",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "f23dbdb2c508857c846ada1d286195e79f8dbd16ccdd8edd333f4971b642825c",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "edd45b95b3f6cb2e77fc067de3528ab979a86e8de4256d3810984ec9ba56c56b",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "f402e5f758f90faa8b6e6632767cf06e672adb9f5aea9eac7e864e2623d144d9",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "15c5e8c1f02051b6a9c67c0c3893e72c271cfedc2236fcff893e763cf5809af5",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "5a90404770d5e78be99af4cc4f667fd4cf12adb2a2b971dd4aadc2b33b2f552d",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "463efc5b73a952dbb8b4b49cde793bdd25a80654a8d40b56540cef227b2ae2d9",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "061339d3c86fecd9230fec130993b5c1172ad7fb3e39de6df319ccb472187bfa",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "60a7274c9f82ebe7f41a54bf1ed441e1a31e56178ac0a49a2cc9a62fd8de2f79",
+      "version": "1.1.1-ads",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "b7934630ab31d4884fd67754b4c3dbd453ae75eff4c9c094057b72e15f5b485b",
+      "version": "3aaedd66685f-reviewed-v1",
+      "indexed": true,
+      "chunks": 1
+    },
+    {
+      "document_id": "f99eb4b0fd0154a9d72d9fcfa9ede083fabea2d3433d66aeca385a0972552bf8",
+      "version": "36345e702de1-reviewed-v1",
+      "indexed": true,
+      "chunks": 2
+    },
+    {
+      "document_id": "752e2c6ab41073bd1e6ab265dd196f286198698faebd0da7c8bfdab8ca4a6518",
+      "version": "d92ba7e21c17-reviewed-v1",
+      "indexed": true,
+      "chunks": 1
+    }
+  ],
+  "foreign_owner_visible": false,
+  "cases": [
+    {
+      "question": "退货观察截止和下单批次如何影响退货率？",
+      "expected_source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+      "expected_location": null,
+      "rank": 1,
+      "trace": {
+        "trace_id": "4a8f5926308a4a0e8d8c008777d4fdc1",
+        "strategy": "pgvector-cosine-exact-v1",
+        "embedding_model": "gemini-embedding-001",
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "退货观察截止和下单批次如何影响退货率?",
+        "scope": "catalog",
+        "elapsed_ms": 4651,
+        "candidates": [
+          {
+            "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+            "retrieval_score": 0.7293017997297427,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=item_return_rate]",
+            "heading_path": [
+              "商品明细退货率"
+            ]
+          }
+        ]
+      },
+      "citations": [
+        {
+          "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+          "document_version": "1.1.1-ads",
+          "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+          "title": "商品明细退货率",
+          "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+          "source_location": "#/metrics[metric_id=item_return_rate]",
+          "heading_path": [
+            "商品明细退货率"
+          ],
+          "retrieval_score": 0.7293017997297427,
+          "authority_level": 4,
+          "source_type": "catalog",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "2c622f278c209123de6517ae256b955898a79a9ac30937d243cfa9a241ddb22b",
+          "access_scope": "public",
+          "quote": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。"
+        }
+      ],
+      "latency_ms": 4652
+    },
+    {
+      "question": "退款到账金额是否有正式口径？",
+      "expected_source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=completed_refund_amount]",
+      "expected_location": null,
+      "rank": 1,
+      "trace": {
+        "trace_id": "a26c9cf266244a0dac767fa19efd6564",
+        "strategy": "pgvector-cosine-exact-v1",
+        "embedding_model": "gemini-embedding-001",
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "退款到账金额是否有正式口径?",
+        "scope": "catalog",
+        "elapsed_ms": 4586,
+        "candidates": [
+          {
+            "document_id": "f23dbdb2c508857c846ada1d286195e79f8dbd16ccdd8edd333f4971b642825c",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "135455531fc06532a53465590cc73e45e04aa9903a19a3c6f35f1d6ea3361eb0",
+            "retrieval_score": 0.7127899911168248,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=completed_refund_amount]",
+            "heading_path": [
+              "已完成退款金额"
+            ]
+          }
+        ]
+      },
+      "citations": [
+        {
+          "document_id": "f23dbdb2c508857c846ada1d286195e79f8dbd16ccdd8edd333f4971b642825c",
+          "document_version": "1.1.1-ads",
+          "chunk_id": "135455531fc06532a53465590cc73e45e04aa9903a19a3c6f35f1d6ea3361eb0",
+          "title": "已完成退款金额",
+          "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=completed_refund_amount]",
+          "source_location": "#/metrics[metric_id=completed_refund_amount]",
+          "heading_path": [
+            "已完成退款金额"
+          ],
+          "retrieval_score": 0.7127899911168248,
+          "authority_level": 4,
+          "source_type": "catalog",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "5ab87c361bf121141c07e22b6010ceb4ed71affe42eaf461df07fd9fd9f4037b",
+          "access_scope": "public",
+          "quote": "已完成退款金额"
+        }
+      ],
+      "latency_ms": 4586
+    },
+    {
+      "question": "渠道支付尝试排行的候选发布要经过哪些验证？",
+      "expected_source": "docs/warehouse/QUERY_ASSET_GOVERNANCE.md",
+      "expected_location": "lines:14-16",
+      "rank": 1,
+      "trace": {
+        "trace_id": "4daf7b9ab77e44c0b4ea6960620d7546",
+        "strategy": "pgvector-cosine-exact-v1",
+        "embedding_model": "gemini-embedding-001",
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "渠道支付尝试排行的候选发布要经过哪些验证?",
+        "scope": "all",
+        "elapsed_ms": 5889,
+        "candidates": [
+          {
+            "document_id": "752e2c6ab41073bd1e6ab265dd196f286198698faebd0da7c8bfdab8ca4a6518",
+            "document_version": "d92ba7e21c17-reviewed-v1",
+            "chunk_id": "e5d9976bd8d8aa1f84ea6d18ea08c040b629b9e05503af1e32e505012af0a1a8",
+            "retrieval_score": 0.7288438081741385,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "lines:14-16",
+            "heading_path": [
+              "支付排行资产的参数与验证"
+            ]
+          },
+          {
+            "document_id": "f99eb4b0fd0154a9d72d9fcfa9ede083fabea2d3433d66aeca385a0972552bf8",
+            "document_version": "36345e702de1-reviewed-v1",
+            "chunk_id": "780fce505ca03bdfb61e7ee430c9b32bda1648389d30c1e62702fb2e2a86a4d0",
+            "retrieval_score": 0.6361009695469767,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "lines:58-69",
+            "heading_path": [
+              "支付尝试事实"
+            ]
+          },
+          {
+            "document_id": "2d8d1c411e2fa10cfb11f39d33ce5010c6581c6b19bb307e8c373fff2e2bfe09",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "be7f739479344cc06382875086efb56200127e33fe3a087ffe73317868bc72d4",
+            "retrieval_score": 0.63512641191483,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=payment_attempt_success_rate]",
+            "heading_path": [
+              "支付成功率"
+            ]
+          },
+          {
+            "document_id": "a2c233804d7bf80d673b37078ebf90cb889927b035fabd047884df2c7ad0cae0",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "9ed1b3ff599762831a22538f88b1115388c180c08e97003ff40f202a72631980",
+            "retrieval_score": 0.6229672246287125,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=channel_order_share]",
+            "heading_path": [
+              "渠道订单占比"
+            ]
+          },
+          {
+            "document_id": "b3574199c773632f7d3c5cf028a89ffa76f87d3ac1a3386306b7bd0bf653f5d9",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "7d458fcbbed819181c984fd16ece6584d2ded25d99e7264d3670312e8ce0fad5",
+            "retrieval_score": 0.6207469927819387,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=payment_attempted_order_count]",
+            "heading_path": [
+              "有支付尝试的订单数"
+            ]
+          },
+          {
+            "document_id": "78a16801d2aacd1cded5008fe82c9d4afdfd59c3632095f0122feb1302823f55",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "b72636d8823d47b3566ba32e90629dadb38ed466b6a1241a58a4edf25b6f1287",
+            "retrieval_score": 0.6155359378137637,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=payment_attempt_count]",
+            "heading_path": [
+              "支付尝试次数"
+            ]
+          },
+          {
+            "document_id": "f5af7c0f7991e24fa802126300ccf7fd4a83566c83f58ae29968df7d283b0d5b",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "53f04eb759c66deb14212ac7835266dc5ff712f1b1c20caf147c9c634cbe8163",
+            "retrieval_score": 0.6089194650101991,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=payment_item_amount_mismatch_order_count]",
+            "heading_path": [
+              "支付与商品净额不一致订单数"
+            ]
+          },
+          {
+            "document_id": "d892131d4cc838964f7f4b3696a6782ffb392d0659cdccb29df1eae8a2cd2955",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "0f0a3d2aadc619136b087e8410c85f816c3501f0d2c72e637a272fb03fa079e7",
+            "retrieval_score": 0.6082756104551506,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=multiple_payment_attempt_order_count]",
+            "heading_path": [
+              "多次支付尝试订单数"
+            ]
+          },
+          {
+            "document_id": "7dbe9e3273ad5cb9e53d4fde73577bfa6b415ce9b33c9342fb6c9299a1bf2ec8",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "bdbae1f5b81c6faf895ccee593dfb008b306aefaf165f3db7380349181f423e1",
+            "retrieval_score": 0.6075603780877502,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=payment_failed_attempt_rate]",
+            "heading_path": [
+              "失败支付尝试率"
+            ]
+          },
+          {
+            "document_id": "98874bc2d089d04343d9c2d4ac09ffcb65e3c47b8c7b8892ff8393021a59b7f7",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "b581002fe768488f897c9541ce689cca4b333c66ccb1d171f8441fda2e3cd155",
+            "retrieval_score": 0.596254456489747,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=captured_payment_amount]",
+            "heading_path": [
+              "成功支付金额"
+            ]
+          },
+          {
+            "document_id": "486312d7097b1c274598ea362e92166a39c98a906195b9751f46fc1ac585ac9f",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "a789f57619f52718069f2318f63014dc5dcb1ea707971e72ae6fab7ad3e260da",
+            "retrieval_score": 0.5948500633239788,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=payment_failed_attempt_count]",
+            "heading_path": [
+              "失败支付尝试次数"
+            ]
+          },
+          {
+            "document_id": "061339d3c86fecd9230fec130993b5c1172ad7fb3e39de6df319ccb472187bfa",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "f85121f50a57c1363dd636346e4273e94999518bf67af3c6feb37d9283462261",
+            "retrieval_score": 0.5931836013088474,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=product_captured_payment_amount]",
+            "heading_path": [
+              "商品分摊成功支付金额"
+            ]
+          },
+          {
+            "document_id": "60a7274c9f82ebe7f41a54bf1ed441e1a31e56178ac0a49a2cc9a62fd8de2f79",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "8ad3951450bfb4f6ae9328f964d101be911b8b19a55a09de4d583a8e015855d7",
+            "retrieval_score": 0.5870424509048504,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=currency_converted_sales_amount]",
+            "heading_path": [
+              "统一币种销售金额"
+            ]
+          },
+          {
+            "document_id": "b7934630ab31d4884fd67754b4c3dbd453ae75eff4c9c094057b72e15f5b485b",
+            "document_version": "3aaedd66685f-reviewed-v1",
+            "chunk_id": "714c96f3c734c9b5e5cebbbb47d899ec079be51c50a4a2c1f170d7fa7249c8ed",
+            "retrieval_score": 0.579905287044296,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "lines:20-20",
+            "heading_path": [
+              "退货观察窗口"
+            ]
+          },
+          {
+            "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+            "retrieval_score": 0.5775447408150031,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=item_return_rate]",
+            "heading_path": [
+              "商品明细退货率"
+            ]
+          },
+          {
+            "document_id": "5a90404770d5e78be99af4cc4f667fd4cf12adb2a2b971dd4aadc2b33b2f552d",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "454492356d3aa62443145736c9d8b04d56c2324f1d4f2fa33ace55b11db423d1",
+            "retrieval_score": 0.5745945319291762,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=customer_entity_repeat_rate]",
+            "heading_path": [
+              "自然人复购率"
+            ]
+          },
+          {
+            "document_id": "f31430203e321d2df79b8046519cba036a7fbc9a49c15d6b39507e284aec1b02",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "26eb29ac4ae006bd7b7e832f9776ed5f852b2c914e9c9cc9a3b202a10e66bc22",
+            "retrieval_score": 0.5737681388855022,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=category_sales_share]",
+            "heading_path": [
+              "当前品类商品金额占比"
+            ]
+          },
+          {
+            "document_id": "edd45b95b3f6cb2e77fc067de3528ab979a86e8de4256d3810984ec9ba56c56b",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "66602a1c2676837aeb8f528792169b2b83645095bced17669e59be85e07211ff",
+            "retrieval_score": 0.5706272637096329,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=net_recognized_revenue]",
+            "heading_path": [
+              "财务净收入"
+            ]
+          }
+        ]
+      },
+      "citations": [
+        {
+          "document_id": "752e2c6ab41073bd1e6ab265dd196f286198698faebd0da7c8bfdab8ca4a6518",
+          "document_version": "d92ba7e21c17-reviewed-v1",
+          "chunk_id": "e5d9976bd8d8aa1f84ea6d18ea08c040b629b9e05503af1e32e505012af0a1a8",
+          "title": "QUERY_ASSET_GOVERNANCE",
+          "source_uri": "docs/warehouse/QUERY_ASSET_GOVERNANCE.md",
+          "source_location": "lines:14-16",
+          "heading_path": [
+            "支付排行资产的参数与验证"
+          ],
+          "retrieval_score": 0.7288438081741385,
+          "authority_level": 2,
+          "source_type": "technical",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "5e8d8e265c57ed68dfbece128568e3a5191b3a8a82c9318d7903eceeb86bccfa",
+          "access_scope": "public",
+          "quote": "- 验证复用动态 SQL AST、精确语义校验、DWD/DIM 权限检查、查询成本与超时、结果字段及粒度校验。4 组真实参数使用独立 ODS 查询计数，再由 Python 实现渠道内排行对账。确定性测试另外覆盖空结果、并列和非法排序。"
+        }
+      ],
+      "latency_ms": 5890
+    },
+    {
+      "question": "dwd.return_record_fact 的 refund_amount 是什么？",
+      "expected_source": "docs/warehouse/TABLE_DESIGN.md",
+      "expected_location": "lines:75-86",
+      "rank": 2,
+      "trace": {
+        "trace_id": "851e20ce56c04c17a7b0f3ab46be8594",
+        "strategy": "pgvector-cosine-exact-v1",
+        "embedding_model": "gemini-embedding-001",
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "dwd.return_record_fact 的 refund_amount 是什么?",
+        "scope": "all",
+        "elapsed_ms": 2687,
+        "candidates": [
+          {
+            "document_id": "7a7aadf387d06f6f60921cf470285607d21e57f2380a967735bfaa54d0900d47",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "931ff2e145dca8907bfb4706891efee96cb77a06b071ac1758c860aecad5a9f2",
+            "retrieval_score": 0.7956947094657133,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=return_record_amount]",
+            "heading_path": [
+              "退货记录金额"
+            ]
+          },
+          {
+            "document_id": "f99eb4b0fd0154a9d72d9fcfa9ede083fabea2d3433d66aeca385a0972552bf8",
+            "document_version": "36345e702de1-reviewed-v1",
+            "chunk_id": "a938f5342867f25da882c1db92348c8bb8e6994ce001258c636aba93b229f218",
+            "retrieval_score": 0.7827561523383799,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "lines:75-86",
+            "heading_path": [
+              "退货记录事实"
+            ]
+          },
+          {
+            "document_id": "57b9b8e3824e1eb363de838cfec09953853df36ab27b16ab68e2c725d0ccf20f",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "e46162e87e7b9b52a71b285cb1e2f6099353fd402f39ccf431efe7b2b707495b",
+            "retrieval_score": 0.7429823960390258,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=return_above_item_net_count]",
+            "heading_path": [
+              "退款记录超明细净额数"
+            ]
+          },
+          {
+            "document_id": "8ce7e256b8f9d0dca0932182f79be062bbd56c5c6ea1032639679cb2b4fcfc56",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "450b475ae62efeb17c662112b04842f957122dee99009e2ee0f0ea87cddbccad",
+            "retrieval_score": 0.7269396078098638,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=return_record_count]",
+            "heading_path": [
+              "退货记录数"
+            ]
+          },
+          {
+            "document_id": "f23dbdb2c508857c846ada1d286195e79f8dbd16ccdd8edd333f4971b642825c",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "135455531fc06532a53465590cc73e45e04aa9903a19a3c6f35f1d6ea3361eb0",
+            "retrieval_score": 0.7255517355275706,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=completed_refund_amount]",
+            "heading_path": [
+              "已完成退款金额"
+            ]
+          },
+          {
+            "document_id": "bf65c0897e368452b4701c1d45b9d6c3c0955987389294724baf3c2e4f6bb005",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "45dbc74d371aa007ed13a20f7ba783e2caa2d88d0dd7c565058af58e2f737353",
+            "retrieval_score": 0.7018342310684244,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=item_net_sales_amount]",
+            "heading_path": [
+              "折扣后商品销售金额"
+            ]
+          },
+          {
+            "document_id": "ea36d19d453983a539ca24fe0e2bb40ec34fcccb175096adc8750bf517ca8d72",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "ac52a175b1761273342986e5cad88e6f5085e9b970f57a70fcbb30e36ee5afcb",
+            "retrieval_score": 0.7014197048986598,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=item_discount_amount]",
+            "heading_path": [
+              "商品行折扣金额"
+            ]
+          },
+          {
+            "document_id": "f402e5f758f90faa8b6e6632767cf06e672adb9f5aea9eac7e864e2623d144d9",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "5b3c1e119c1a0a36ef9ef7733a6b2a8b1283c80ad448a4efe8493a29037efcd5",
+            "retrieval_score": 0.6999052107503745,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=unit_return_rate]",
+            "heading_path": [
+              "商品件数退货率"
+            ]
+          },
+          {
+            "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+            "retrieval_score": 0.6985437661843745,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=item_return_rate]",
+            "heading_path": [
+              "商品明细退货率"
+            ]
+          },
+          {
+            "document_id": "caf28ad1593c2985c431f178082b06b4e457e9db9eaf82acce4d73fc04551a38",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "887ec3b3bfb85dfc9ce178057fafc93faa8c678a1baedff5d10df646f117739f",
+            "retrieval_score": 0.6960373079721323,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=return_before_order_count]",
+            "heading_path": [
+              "早于下单的退货记录数"
+            ]
+          },
+          {
+            "document_id": "b7934630ab31d4884fd67754b4c3dbd453ae75eff4c9c094057b72e15f5b485b",
+            "document_version": "3aaedd66685f-reviewed-v1",
+            "chunk_id": "714c96f3c734c9b5e5cebbbb47d899ec079be51c50a4a2c1f170d7fa7249c8ed",
+            "retrieval_score": 0.6917357767415724,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "lines:20-20",
+            "heading_path": [
+              "退货观察窗口"
+            ]
+          },
+          {
+            "document_id": "98874bc2d089d04343d9c2d4ac09ffcb65e3c47b8c7b8892ff8393021a59b7f7",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "b581002fe768488f897c9541ce689cca4b333c66ccb1d171f8441fda2e3cd155",
+            "retrieval_score": 0.6876230984632783,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=captured_payment_amount]",
+            "heading_path": [
+              "成功支付金额"
+            ]
+          },
+          {
+            "document_id": "85040cc0346ec5c6d19a60afcf48596da73eaf721efa9c7fe5e4bc68b5ff5a3a",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "cb643628a216c7b019162b6d4767253ccf960676c1457b49ea91b2a40564c569",
+            "retrieval_score": 0.6806379912382402,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=average_order_record_amount]",
+            "heading_path": [
+              "每单商品记录金额"
+            ]
+          },
+          {
+            "document_id": "fc920950e7d4dec528469b6056dfaaec3556e0a1c30ef5280107634d184a38ff",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "e83c5aaaeab4ec5b52e47b587401c69e920688553bd23692a2dff35202de6c5e",
+            "retrieval_score": 0.667690217403476,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=cancelled_order_rate]",
+            "heading_path": [
+              "取消状态订单占比"
+            ]
+          },
+          {
+            "document_id": "0d4f405d047f30a1d15394f8762ebf25c36f26916a539d1a2d15cd8d81e889e8",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "a6cb37bff569f11f45d86a7687ed0be728df9881cdd5cccab3bf2f16a8507d35",
+            "retrieval_score": 0.6672451297270081,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=item_gross_sales_amount]",
+            "heading_path": [
+              "折扣前商品记录金额"
+            ]
+          },
+          {
+            "document_id": "f31430203e321d2df79b8046519cba036a7fbc9a49c15d6b39507e284aec1b02",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "26eb29ac4ae006bd7b7e832f9776ed5f852b2c914e9c9cc9a3b202a10e66bc22",
+            "retrieval_score": 0.6647371453360335,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=category_sales_share]",
+            "heading_path": [
+              "当前品类商品金额占比"
+            ]
+          },
+          {
+            "document_id": "061339d3c86fecd9230fec130993b5c1172ad7fb3e39de6df319ccb472187bfa",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "f85121f50a57c1363dd636346e4273e94999518bf67af3c6feb37d9283462261",
+            "retrieval_score": 0.6575088517352117,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=product_captured_payment_amount]",
+            "heading_path": [
+              "商品分摊成功支付金额"
+            ]
+          },
+          {
+            "document_id": "cdc38091c9533f8b8ab4fc4929f25d172af123905c4ed76bbca03a2d25b05d22",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "341bb22ff6953c8429df9980e1b10c7ef0833cc90e7575547546800a74a1a180",
+            "retrieval_score": 0.6553417659786835,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=cancelled_order_count]",
+            "heading_path": [
+              "取消状态订单数"
+            ]
+          }
+        ]
+      },
+      "citations": [
+        {
+          "document_id": "f99eb4b0fd0154a9d72d9fcfa9ede083fabea2d3433d66aeca385a0972552bf8",
+          "document_version": "36345e702de1-reviewed-v1",
+          "chunk_id": "a938f5342867f25da882c1db92348c8bb8e6994ce001258c636aba93b229f218",
+          "title": "TABLE_DESIGN",
+          "source_uri": "docs/warehouse/TABLE_DESIGN.md",
+          "source_location": "lines:75-86",
+          "heading_path": [
+            "退货记录事实"
+          ],
+          "retrieval_score": 0.7827561523383799,
+          "authority_level": 2,
+          "source_type": "technical",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "d90ff3184cbacfe866ea4cfcbb4cb7820a0e04b70414f214ef7458c49f99a552",
+          "access_scope": "public",
+          "quote": "| refund_amount | M | 源退货记录金额，不截断 |"
+        }
+      ],
+      "latency_ms": 2687
+    },
+    {
+      "question": "明细退货率的全量观察窗口和 as_of 截止是什么？",
+      "expected_source": "docs/warehouse/METRICS_AND_LINEAGE.md",
+      "expected_location": "lines:20-20",
+      "rank": 1,
+      "trace": {
+        "trace_id": "d921e61678694f43834e7ac45d9a4067",
+        "strategy": "pgvector-cosine-exact-v1",
+        "embedding_model": "gemini-embedding-001",
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "明细退货率的全量观察窗口和 as_of 截止是什么?",
+        "scope": "all",
+        "elapsed_ms": 4625,
+        "candidates": [
+          {
+            "document_id": "b7934630ab31d4884fd67754b4c3dbd453ae75eff4c9c094057b72e15f5b485b",
+            "document_version": "3aaedd66685f-reviewed-v1",
+            "chunk_id": "714c96f3c734c9b5e5cebbbb47d899ec079be51c50a4a2c1f170d7fa7249c8ed",
+            "retrieval_score": 0.8047189945317571,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "lines:20-20",
+            "heading_path": [
+              "退货观察窗口"
+            ]
+          },
+          {
+            "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+            "retrieval_score": 0.7376658823588397,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=item_return_rate]",
+            "heading_path": [
+              "商品明细退货率"
+            ]
+          },
+          {
+            "document_id": "5ab874f90cdfe8de53a23e9a6d1e2d2a07be89f64cb3ade68e7159c07fa155f5",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "93f0b354b704e4b0000b1403cea52ae180c79413fc5fcc55e0a4b584f34d8a48",
+            "retrieval_score": 0.6604598760604858,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=first_observed_ordering_customer_count]",
+            "heading_path": [
+              "首次观测下单账户数"
+            ]
+          },
+          {
+            "document_id": "f5af7c0f7991e24fa802126300ccf7fd4a83566c83f58ae29968df7d283b0d5b",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "53f04eb759c66deb14212ac7835266dc5ff712f1b1c20caf147c9c634cbe8163",
+            "retrieval_score": 0.6407372355461121,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=payment_item_amount_mismatch_order_count]",
+            "heading_path": [
+              "支付与商品净额不一致订单数"
+            ]
+          },
+          {
+            "document_id": "f402e5f758f90faa8b6e6632767cf06e672adb9f5aea9eac7e864e2623d144d9",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "5b3c1e119c1a0a36ef9ef7733a6b2a8b1283c80ad448a4efe8493a29037efcd5",
+            "retrieval_score": 0.6925361156463623,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=unit_return_rate]",
+            "heading_path": [
+              "商品件数退货率"
+            ]
+          },
+          {
+            "document_id": "caf28ad1593c2985c431f178082b06b4e457e9db9eaf82acce4d73fc04551a38",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "887ec3b3bfb85dfc9ce178057fafc93faa8c678a1baedff5d10df646f117739f",
+            "retrieval_score": 0.6919044462413924,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=return_before_order_count]",
+            "heading_path": [
+              "早于下单的退货记录数"
+            ]
+          },
+          {
+            "document_id": "243e33de230c2311ba3a4f82704251bd5d26d5e2961a77e5ee7cc4382c3b23b3",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "c15f46e88ebf9c0a5bb7b31095bc8888c459a47aa116c407ce45ac6f44701001",
+            "retrieval_score": 0.6883953027960851,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=customer_repeat_order_rate]",
+            "heading_path": [
+              "窗口内账户复购率"
+            ]
+          },
+          {
+            "document_id": "7a7aadf387d06f6f60921cf470285607d21e57f2380a967735bfaa54d0900d47",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "931ff2e145dca8907bfb4706891efee96cb77a06b071ac1758c860aecad5a9f2",
+            "retrieval_score": 0.6868765558861663,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=return_record_amount]",
+            "heading_path": [
+              "退货记录金额"
+            ]
+          },
+          {
+            "document_id": "8ce7e256b8f9d0dca0932182f79be062bbd56c5c6ea1032639679cb2b4fcfc56",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "450b475ae62efeb17c662112b04842f957122dee99009e2ee0f0ea87cddbccad",
+            "retrieval_score": 0.6847177743911743,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=return_record_count]",
+            "heading_path": [
+              "退货记录数"
+            ]
+          },
+          {
+            "document_id": "57b9b8e3824e1eb363de838cfec09953853df36ab27b16ab68e2c725d0ccf20f",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "e46162e87e7b9b52a71b285cb1e2f6099353fd402f39ccf431efe7b2b707495b",
+            "retrieval_score": 0.684391757380717,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=return_above_item_net_count]",
+            "heading_path": [
+              "退款记录超明细净额数"
+            ]
+          },
+          {
+            "document_id": "fc920950e7d4dec528469b6056dfaaec3556e0a1c30ef5280107634d184a38ff",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "e83c5aaaeab4ec5b52e47b587401c69e920688553bd23692a2dff35202de6c5e",
+            "retrieval_score": 0.6627430912324597,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=cancelled_order_rate]",
+            "heading_path": [
+              "取消状态订单占比"
+            ]
+          },
+          {
+            "document_id": "f31430203e321d2df79b8046519cba036a7fbc9a49c15d6b39507e284aec1b02",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "26eb29ac4ae006bd7b7e832f9776ed5f852b2c914e9c9cc9a3b202a10e66bc22",
+            "retrieval_score": 0.6593714153391979,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=category_sales_share]",
+            "heading_path": [
+              "当前品类商品金额占比"
+            ]
+          },
+          {
+            "document_id": "a2c233804d7bf80d673b37078ebf90cb889927b035fabd047884df2c7ad0cae0",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "9ed1b3ff599762831a22538f88b1115388c180c08e97003ff40f202a72631980",
+            "retrieval_score": 0.6577305393734738,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=channel_order_share]",
+            "heading_path": [
+              "渠道订单占比"
+            ]
+          },
+          {
+            "document_id": "bf65c0897e368452b4701c1d45b9d6c3c0955987389294724baf3c2e4f6bb005",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "45dbc74d371aa007ed13a20f7ba783e2caa2d88d0dd7c565058af58e2f737353",
+            "retrieval_score": 0.6552865320102581,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=item_net_sales_amount]",
+            "heading_path": [
+              "折扣后商品销售金额"
+            ]
+          },
+          {
+            "document_id": "f99eb4b0fd0154a9d72d9fcfa9ede083fabea2d3433d66aeca385a0972552bf8",
+            "document_version": "36345e702de1-reviewed-v1",
+            "chunk_id": "a938f5342867f25da882c1db92348c8bb8e6994ce001258c636aba93b229f218",
+            "retrieval_score": 0.6529376105349547,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "lines:75-86",
+            "heading_path": [
+              "退货记录事实"
+            ]
+          },
+          {
+            "document_id": "0783ae30c8cf369a807597526f4465bb134cda0752e164011ee80604d6dd62d1",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "cf7fd3050a00c0ce8e4d426efe08c56ebb1469d1f02da9d47656535efbecbc75",
+            "retrieval_score": 0.6517782405548767,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=ordering_customer_count]",
+            "heading_path": [
+              "下单账户数"
+            ]
+          },
+          {
+            "document_id": "85040cc0346ec5c6d19a60afcf48596da73eaf721efa9c7fe5e4bc68b5ff5a3a",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "cb643628a216c7b019162b6d4767253ccf960676c1457b49ea91b2a40564c569",
+            "retrieval_score": 0.6486556352787499,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=average_order_record_amount]",
+            "heading_path": [
+              "每单商品记录金额"
+            ]
+          },
+          {
+            "document_id": "0a462ef188e629bec3761148c5ee3070216a039cef85c73e87e39bd7bc40f178",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "4f6056568a5d2c15bfca065885e37f2ba06d494cfcba02648f9a3653705090ea",
+            "retrieval_score": 0.6440134432323851,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "#/metrics[metric_id=order_count]",
+            "heading_path": [
+              "订单量"
+            ]
+          }
+        ]
+      },
+      "citations": [
+        {
+          "document_id": "b7934630ab31d4884fd67754b4c3dbd453ae75eff4c9c094057b72e15f5b485b",
+          "document_version": "3aaedd66685f-reviewed-v1",
+          "chunk_id": "714c96f3c734c9b5e5cebbbb47d899ec079be51c50a4a2c1f170d7fa7249c8ed",
+          "title": "METRICS_AND_LINEAGE",
+          "source_uri": "docs/warehouse/METRICS_AND_LINEAGE.md",
+          "source_location": "lines:20-20",
+          "heading_path": [
+            "退货观察窗口"
+          ],
+          "retrieval_score": 0.8047189945317571,
+          "authority_level": 2,
+          "source_type": "technical",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "367f6474df4b5b3ed8d98064057c212927741af47365f39cdc86a30570f38a1a",
+          "access_scope": "public",
+          "quote": "窗口 [2023-01-01,2026-01-01)，退货队列 as_of=2026-01-01。包含取消单和源异常；金额不标币种。退货率是记录关联率，不是有效售后件数率；禁止将当月退货记录数/当月明细数替代它。"
+        }
+      ],
+      "latency_ms": 4626
+    }
+  ],
+  "catalog_answer": {
+    "status": "ok",
+    "answer_zh": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。 [1] 商品明细退货率 · #/metrics[metric_id=item_return_rate] · 版本 1.1.1-ads",
+    "evidence_status": "supported",
+    "citations": [
+      {
+        "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+        "document_version": "1.1.1-ads",
+        "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+        "title": "商品明细退货率",
+        "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+        "source_location": "#/metrics[metric_id=item_return_rate]",
+        "heading_path": [
+          "商品明细退货率"
+        ],
+        "retrieval_score": 0.7293017997297427,
+        "authority_level": 4,
+        "source_type": "catalog",
+        "effective_date": null,
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "content_hash": "2c622f278c209123de6517ae256b955898a79a9ac30937d243cfa9a241ddb22b",
+        "access_scope": "public",
+        "quote": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。"
+      }
+    ],
+    "retrieval_trace": {
+      "trace_id": "abece43b5aa54b0e923850314ff1e990",
+      "strategy": "pgvector-cosine-exact-v1",
+      "embedding_model": "gemini-embedding-001",
+      "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+      "index_incompatible": false,
+      "query": "退货观察截止和下单批次如何影响退货率?",
+      "scope": "catalog",
+      "elapsed_ms": 2139,
+      "candidates": [
+        {
+          "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+          "document_version": "1.1.1-ads",
+          "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+          "retrieval_score": 0.7293017997297427,
+          "exact_match": false,
+          "evidence_date_status": "active",
+          "source_location": "#/metrics[metric_id=item_return_rate]",
+          "heading_path": [
+            "商品明细退货率"
+          ]
+        }
+      ]
+    },
+    "answer_prompt_version": null
+  },
+  "metrics": {
+    "recall_at_6": 1,
+    "mrr_at_6": 0.9,
+    "correct_citations": 5,
+    "expected_citations": 5,
+    "latency_ms": {
+      "median": 4626,
+      "min": 2687,
+      "max": 5890
+    },
+    "index_embedding_batches_total_ms": 13936,
+    "embedding_tokens": null,
+    "embedding_token_note": "The provider returned no token_count for any vector. Generation was not called in this verification."
+  },
+  "base_commit": "7196f7d",
+  "regression": {
+    "run": 167,
+    "passed": 166,
+    "skipped": 1,
+    "seconds": 14.865
+  }
+}

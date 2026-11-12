@@ -1,5 +1,6 @@
 """Gemini text retrieval vectors, with a versioned normalization contract."""
 from math import isfinite, sqrt
+from time import monotonic
 
 from dotenv import dotenv_values
 
@@ -41,6 +42,7 @@ class GeminiEmbedding:
         with genai.Client(api_key=self.api_key, http_options=types.HttpOptions(timeout=15000)) as client:
             for start in range(0, len(texts), 20):
                 batch = texts[start:start + 20]
+                started = monotonic()
                 result = client.models.embed_content(
                     model=self.model, contents=batch,
                     config=types.EmbedContentConfig(output_dimensionality=DIMENSIONS,
@@ -48,5 +50,9 @@ class GeminiEmbedding:
                 )
                 if not result.embeddings or len(result.embeddings) != len(batch):
                     raise KnowledgeError("invalid_embedding_response")
+                self.record_batch(result, query=query, elapsed_ms=round((monotonic() - started) * 1000))
                 output.extend(vector(item.values) for item in result.embeddings)
         return output
+
+    def record_batch(self, response, *, query, elapsed_ms):
+        """Optional request telemetry. Avoid logging text and vectors."""

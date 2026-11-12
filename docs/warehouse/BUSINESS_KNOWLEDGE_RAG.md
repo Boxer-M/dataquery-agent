@@ -40,4 +40,6 @@ export PYTHONPATH=src
 
 使用 `search <question>` 查看候选、得分和定位；`ask <question>` 可运行知识及联合分析；`delete <document_id>` 停用文档。使用会话 CLI 的 `send` 与 `history` 可追踪历史引用。合成演示的开关仅在知识 CLI 和专门评测中显式启用。
 
-[评测报告](../../reports/warehouse/business_knowledge_v1.json)区分了固定向量配真实 PostgreSQL、真实 Gemini 配合成文档、独立 ODS 数值对账以及未执行的对外索引。本次自动审批未允许将仓库指标与技术文档发送到 Gemini，真实模型验收仅覆盖合成退款案例。
+[初始评测报告](../../reports/warehouse/business_knowledge_v1.json)记录了固定向量、合成文档和独立 ODS 对账。后续授权验收将正式目录 38 个指标片段与三份白名单技术文档中的 4 个指定片段用真实 Gemini Embedding 编入 pgvector。文件与片段哈希、检索候选、引用及权限隔离结果见[正式索引报告](../../reports/warehouse/repository_embeddings_v1.json)。
+
+复现授权验收时，先运行 `PYTHONPATH=src .venv/bin/python tests/evaluate_repository_embeddings.py` 生成预检清单。复核来源、行号和片段数量后，使用 `--approved-manifest <manifest.json>` 执行。清单与实际请求内容的哈希必须一致。验收只调用 Embedding，引用在本地核对。
