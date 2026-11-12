@@ -27,6 +27,7 @@ SQL Shed 电商数仓已完成 ODS 接入、DWD/DIM 建模、DWS 汇总和 ADS �
 - [统一 Agent 查询入口](UNIFIED_AGENT.md)
 - [受控明细执行与对账](CONTROLLED_DETAIL_EXECUTION.md)
 - [语义驱动动态 SQL](DYNAMIC_SQL_ENGINE.md)
+- [会话状态与查询历史](CONVERSATION_QUERY_HISTORY.md)
 - [统一 Agent 端到端报告](../../reports/warehouse/unified_agent_v1.json)
 
 指标目录包含 26 项已验证指标、4 项待验证指标和 8 项不支持指标。测试覆盖数据库结构、字段权限、关联粒度与指标对账。PostgreSQL 只读账号用于查询与对账测试，明细路由结论用于规划。

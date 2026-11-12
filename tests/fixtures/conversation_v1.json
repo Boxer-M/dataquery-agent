@@ -1,0 +1,9 @@
+{
+  "version":1,
+  "scenarios":[
+    {"id":"followup","messages":["2025年1月web渠道成功支付金额是多少？","那2月份呢？"],"truth":"独立ODS支付事件、captured、web分别按月汇总"},
+    {"id":"clarification","messages":["2025年1月销售额是多少？","折扣后商品销售金额。"],"truth":"选择已登记净额，独立ODS按订单时间与行折扣重算"},
+    {"id":"dynamic","messages":["2025年1月按订单统计支付尝试次数，保留大于1次的订单"],"truth":"ODS支付按订单聚合，与持久化执行SQL、参数及截断状态关联"}
+  ],
+  "coverage":["single","date_inheritance","channel_inheritance","metric_switch","group_switch","clarification_resume","invalid_choice","topic_change","reset","isolation","duplicate","concurrency","dynamic_history","detail_history","tool_failure","write_failure","truncation","trace_versions","injection","business_role_denied"]
+}

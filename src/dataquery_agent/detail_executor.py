@@ -189,4 +189,5 @@ class DetailQueryExecutor:
             "grain": current["grain"], "constraints": current["aggregation_constraints"],
             "quality_limitations": current["risks"], "sources": list(template.source_models),
             "template_id": template.template_id, "template_version": template.template_version,
+            "sql": template.statement,
         }

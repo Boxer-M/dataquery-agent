@@ -21,7 +21,7 @@ from .capability_resolver import CapabilityResolver
 from .detail_executor import DetailQueryExecutor
 from .dynamic_requirements import recognize as recognize_dynamic
 from .dynamic_sql_engine import DynamicSqlEngine
-from .intent_semantic_resolver import COMPLEX, GROUPS, MODIFIERS, SemanticResolver, gemini_generator, outcome, parse_intent
+from .intent_semantic_resolver import CHANNELS, COMPLEX, GROUPS, MODIFIERS, SemanticResolver, gemini_generator, outcome, parse_intent
 from .intent_time import TIME, date_window
 from .metadata_service import MetadataService
 from .metric_candidates import MetricCandidates
@@ -147,6 +147,7 @@ class UnifiedAgent:
         except (ValueError, TypeError, RecursionError):
             runtime.invalid_output()
             return outcome("error", "invalid_model_output", "模型提取的原文片段不符合约定。")
+        intent = self.grounded_channel_filters(question, intent)
         intent["groups"] = self.grounded_groups(question, intent["groups"])
         if predicate:
             intent["filters"] = [
@@ -193,7 +194,9 @@ class UnifiedAgent:
         resolved = self.semantic.resolve(question, intent, today, binding=binding)
         if resolved["status"] != "ready":
             return resolved
-        request = resolved["request"]
+        return self.run_metric_request(resolved["request"], frame, trace)
+
+    def run_metric_request(self, request, frame, trace):
         route = self.check_route(request, frame)
         if route["status"] != "STANDARD_METRIC":
             return self.route_outcome(route)
@@ -218,6 +221,24 @@ class UnifiedAgent:
                 intent["metrics"] = []
                 raw = json.dumps(intent, ensure_ascii=False)
         return parse_intent(raw, question)
+
+    def grounded_channel_filters(self, question, intent):
+        def channel_phrase(phrase):
+            if not phrase.endswith("渠道") or phrase not in question:
+                return None
+            token = phrase[:-2]
+            if token.lower() not in CHANNELS or re.search(r"(?:按|分)\s*" + re.escape(phrase), question):
+                return None
+            return token
+
+        groups, filters = [], [channel_phrase(phrase) or phrase for phrase in intent["filters"]]
+        for phrase in intent["groups"]:
+            token = channel_phrase(phrase)
+            if token:
+                filters.append(token)
+            else:
+                groups.append(phrase)
+        return dict(intent, groups=groups, filters=list(dict.fromkeys(filters)))
 
     def grounded_groups(self, question, groups):
         detected = [match.group() for match in self.semantic.group_pattern.finditer(question)]
@@ -303,7 +324,9 @@ class UnifiedAgent:
             if prepared.get("code") == "invalid_model_output":
                 runtime.invalid_output()
             return prepared
-        plan = prepared["plan"]
+        return self.run_business_plan(prepared["plan"], frame, trace)
+
+    def run_business_plan(self, plan, frame, trace):
         routes = {}
         for call in plan["required_tool_calls"]:
             request = call["request"]

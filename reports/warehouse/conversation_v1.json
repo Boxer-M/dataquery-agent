@@ -1,0 +1,3902 @@
+{
+  "base_commit": "e9a258f",
+  "fixtures": "tests/fixtures/conversation_v1.json",
+  "regression": {
+    "passed": 144,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 32.197
+  },
+  "fixed": {
+    "mode": "fixed",
+    "passed": 3,
+    "total": 3,
+    "cases": [
+      {
+        "id": "followup",
+        "passed": true,
+        "turns": [
+          {
+            "message": "2025年1月web渠道成功支付金额是多少？",
+            "state_before": {
+              "conversation_id": "0b4f2c88-e03c-4e4e-9df0-3bcc429ea324",
+              "state_version": 0,
+              "active_query_context": null,
+              "pending_clarification": null,
+              "last_message_id": null,
+              "last_query_id": null,
+              "created_at": "2026-11-11 07:14:35.687471+00:00",
+              "updated_at": "2026-11-11 07:14:35.687471+00:00",
+              "conversation_status": "active"
+            },
+            "model_outputs": [
+              "{\"metrics\": [\"成功支付金额\"], \"time\": \"2025年1月\", \"groups\": [], \"filters\": [\"web\"], \"type\": \"metric\", \"missing\": []}"
+            ],
+            "answer": {
+              "task": "single",
+              "routes": [
+                {
+                  "trace_id": "5b92da5d48e74d76b2933a14eda3825d",
+                  "metadata_source": "PostgreSQL pg_catalog",
+                  "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                  "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+                  "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+                  "contract_version": "1.0.0",
+                  "metric_version": "1.1.1-ads",
+                  "selected_source": "dws.payment_day",
+                  "candidate_sources": [
+                    {
+                      "source": "dws.payment_day",
+                      "reason": "满足口径、键及权限检查。",
+                      "selected": true
+                    }
+                  ],
+                  "required_fields": {
+                    "dws.payment_day": [
+                      "attempt_amount",
+                      "channel",
+                      "dq_negative_amount_count",
+                      "dq_payment_before_order_count",
+                      "method",
+                      "payment_attempt_count",
+                      "payment_date",
+                      "status"
+                    ]
+                  },
+                  "dimensions": [],
+                  "join_paths": [],
+                  "risks": [
+                    "支付尝试可能早于下单，金额与状态采用源记录口径。"
+                  ],
+                  "status": "STANDARD_METRIC",
+                  "metric_id": "captured_payment_amount",
+                  "metric_request": {
+                    "metric_id": "captured_payment_amount",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "filters": {
+                      "channel": "web"
+                    }
+                  },
+                  "metric_definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                  "time_constraints": {
+                    "event_time": "payment_attempt_time",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "boundary": "[start_date,end_date)",
+                    "physical_fields": {
+                      "payment_attempt_time": "payment_date"
+                    }
+                  },
+                  "grain": [
+                    "payment_date",
+                    "channel",
+                    "method",
+                    "status"
+                  ],
+                  "reason_code": "verified_metric_service",
+                  "reason": "标准模板满足已验证指标口径、时间和维度。"
+                }
+              ],
+              "match": {
+                "method": "exact",
+                "original_evidence": [
+                  "成功支付金额"
+                ],
+                "candidate_ids": [
+                  "captured_payment_amount"
+                ],
+                "model_proposal": [],
+                "confirmed": [
+                  "captured_payment_amount"
+                ]
+              },
+              "event_time_hint": null,
+              "status": "ok",
+              "code": null,
+              "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），成功支付金额：all=131071.23。支付事件时间窗内 captured 尝试的源金额合计。",
+              "choices": [],
+              "result": {
+                "status": "ok",
+                "query_result": {
+                  "metric_id": "captured_payment_amount",
+                  "trace_id": "d7ead09088d243479e4ef0bd25f76cdb",
+                  "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                  "definition_version": "1.0.0",
+                  "event_time": "payments.paid_at",
+                  "time_semantics": "payments.paid_at",
+                  "source_grain": "一行一个 payment_id",
+                  "group_by": [],
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "observation_cutoff": null,
+                  "sources": [
+                    "dws.payment_day"
+                  ],
+                  "status": "ok",
+                  "results": [
+                    {
+                      "bucket": "all",
+                      "value": "131071.23"
+                    }
+                  ],
+                  "error": null
+                },
+                "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），成功支付金额：all=131071.23。支付事件时间窗内 captured 尝试的源金额合计。"
+              },
+              "trace": {
+                "trace_id": "612f3e928d8145c1baae9c0fbf91a8c5",
+                "model_attempts": [
+                  {
+                    "stage": "intent",
+                    "attempt": 1,
+                    "prompt_version": "intent-v3",
+                    "usage": {},
+                    "status": "received",
+                    "elapsed_ms": 0
+                  }
+                ],
+                "tools": [
+                  {
+                    "request": {
+                      "metric_id": "captured_payment_amount",
+                      "start_date": "2025-01-01",
+                      "end_date": "2025-02-01",
+                      "filters": {
+                        "channel": "web"
+                      }
+                    },
+                    "status": "ok",
+                    "code": null,
+                    "trace_id": "d7ead09088d243479e4ef0bd25f76cdb",
+                    "sources": [
+                      "dws.payment_day"
+                    ],
+                    "capability_trace_id": "5b92da5d48e74d76b2933a14eda3825d",
+                    "elapsed_ms": 6
+                  }
+                ],
+                "elapsed_ms": 7
+              },
+              "conversation_id": "0b4f2c88-e03c-4e4e-9df0-3bcc429ea324",
+              "message_id": "18eb5c45-ef3b-4b1f-98e6-0c61a7da7007",
+              "query_id": "fd744383-1a31-4efa-8aaf-14082f970a66",
+              "context_operation": "new",
+              "state_version": 1,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "0b4f2c88-e03c-4e4e-9df0-3bcc429ea324",
+              "state_version": 1,
+              "active_query_context": {
+                "kind": "standard",
+                "request": {
+                  "filters": {
+                    "channel": "web"
+                  },
+                  "end_date": "2025-02-01",
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01"
+                },
+                "source_models": [
+                  "dws.payment_day"
+                ],
+                "context_protocol": "conversation-rules-v1",
+                "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                "confirmed_definition": "支付事件时间窗内 captured 尝试的源金额合计。"
+              },
+              "pending_clarification": null,
+              "last_message_id": "18eb5c45-ef3b-4b1f-98e6-0c61a7da7007",
+              "last_query_id": "fd744383-1a31-4efa-8aaf-14082f970a66",
+              "created_at": "2026-11-11 07:14:35.687471+00:00",
+              "updated_at": "2026-11-11 07:14:35.722961+00:00",
+              "conversation_status": "active"
+            },
+            "history": {
+              "sql": null,
+              "query_id": "fd744383-1a31-4efa-8aaf-14082f970a66",
+              "trace_id": "612f3e928d8145c1baae9c0fbf91a8c5",
+              "metric_id": "captured_payment_amount",
+              "error_code": null,
+              "latency_ms": 7,
+              "message_id": "18eb5c45-ef3b-4b1f-98e6-0c61a7da7007",
+              "route_type": "single",
+              "analysis_id": null,
+              "template_id": null,
+              "tool_traces": [
+                {
+                  "code": null,
+                  "status": "ok",
+                  "trace_id": "d7ead09088d243479e4ef0bd25f76cdb"
+                }
+              ],
+              "source_models": [
+                "dws.payment_day"
+              ],
+              "result_summary": {
+                "scalar": {
+                  "value": "131071.23"
+                },
+                "row_count": 1,
+                "truncated": false
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "0b4f2c88-e03c-4e4e-9df0-3bcc429ea324",
+              "prompt_versions": [
+                "intent-v3"
+              ],
+              "execution_status": "ok",
+              "resolved_request": {
+                "filters": {
+                  "channel": "web"
+                },
+                "end_date": "2025-02-01",
+                "metric_id": "captured_payment_amount",
+                "start_date": "2025-01-01"
+              },
+              "template_version": null,
+              "context_operation": "new",
+              "metadata_versions": [
+                "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad"
+              ],
+              "original_question": "2025年1月web渠道成功支付金额是多少？",
+              "parameter_summary": {
+                "filters": {
+                  "channel": "web"
+                },
+                "end_date": "2025-02-01",
+                "metric_id": "captured_payment_amount",
+                "start_date": "2025-01-01"
+              },
+              "data_build_version": null,
+              "execution_strategy": "standard_metric",
+              "sql_asset_reference": "sql/warehouse/dws_metrics/dws.sql#captured_payment_amount",
+              "metric_definition_version": "1.0.0",
+              "started_at": "2026-11-11 07:14:35.709226+00:00",
+              "completed_at": "2026-11-11 07:14:35.722961+00:00"
+            },
+            "passed": true
+          },
+          {
+            "message": "那2月份呢？",
+            "state_before": {
+              "conversation_id": "0b4f2c88-e03c-4e4e-9df0-3bcc429ea324",
+              "state_version": 1,
+              "active_query_context": {
+                "kind": "standard",
+                "request": {
+                  "filters": {
+                    "channel": "web"
+                  },
+                  "end_date": "2025-02-01",
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01"
+                },
+                "source_models": [
+                  "dws.payment_day"
+                ],
+                "context_protocol": "conversation-rules-v1",
+                "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                "confirmed_definition": "支付事件时间窗内 captured 尝试的源金额合计。"
+              },
+              "pending_clarification": null,
+              "last_message_id": "18eb5c45-ef3b-4b1f-98e6-0c61a7da7007",
+              "last_query_id": "fd744383-1a31-4efa-8aaf-14082f970a66",
+              "created_at": "2026-11-11 07:14:35.687471+00:00",
+              "updated_at": "2026-11-11 07:14:35.722961+00:00",
+              "conversation_status": "active"
+            },
+            "model_outputs": [],
+            "answer": {
+              "status": "ok",
+              "code": null,
+              "task": "single",
+              "answer_zh": "2025-02-01 至 2025-03-01（不含结束日），成功支付金额：all=117795.99。支付事件时间窗内 captured 尝试的源金额合计。",
+              "result": {
+                "status": "ok",
+                "query_result": {
+                  "metric_id": "captured_payment_amount",
+                  "trace_id": "55e634ceff97498b9e4609eb6faabbee",
+                  "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                  "definition_version": "1.0.0",
+                  "event_time": "payments.paid_at",
+                  "time_semantics": "payments.paid_at",
+                  "source_grain": "一行一个 payment_id",
+                  "group_by": [],
+                  "start_date": "2025-02-01",
+                  "end_date": "2025-03-01",
+                  "observation_cutoff": null,
+                  "sources": [
+                    "dws.payment_day"
+                  ],
+                  "status": "ok",
+                  "results": [
+                    {
+                      "bucket": "all",
+                      "value": "117795.99"
+                    }
+                  ],
+                  "error": null
+                },
+                "answer_zh": "2025-02-01 至 2025-03-01（不含结束日），成功支付金额：all=117795.99。支付事件时间窗内 captured 尝试的源金额合计。"
+              },
+              "routes": [
+                {
+                  "trace_id": "bf1ab231ed3942278b4c9746c49fb158",
+                  "metadata_source": "PostgreSQL pg_catalog",
+                  "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                  "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+                  "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+                  "contract_version": "1.0.0",
+                  "metric_version": "1.1.1-ads",
+                  "selected_source": "dws.payment_day",
+                  "candidate_sources": [
+                    {
+                      "source": "dws.payment_day",
+                      "reason": "满足口径、键及权限检查。",
+                      "selected": true
+                    }
+                  ],
+                  "required_fields": {
+                    "dws.payment_day": [
+                      "attempt_amount",
+                      "channel",
+                      "dq_negative_amount_count",
+                      "dq_payment_before_order_count",
+                      "method",
+                      "payment_attempt_count",
+                      "payment_date",
+                      "status"
+                    ]
+                  },
+                  "dimensions": [],
+                  "join_paths": [],
+                  "risks": [
+                    "支付尝试可能早于下单，金额与状态采用源记录口径。"
+                  ],
+                  "status": "STANDARD_METRIC",
+                  "metric_id": "captured_payment_amount",
+                  "metric_request": {
+                    "filters": {
+                      "channel": "web"
+                    },
+                    "end_date": "2025-03-01",
+                    "metric_id": "captured_payment_amount",
+                    "start_date": "2025-02-01"
+                  },
+                  "metric_definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                  "time_constraints": {
+                    "event_time": "payment_attempt_time",
+                    "start_date": "2025-02-01",
+                    "end_date": "2025-03-01",
+                    "boundary": "[start_date,end_date)",
+                    "physical_fields": {
+                      "payment_attempt_time": "payment_date"
+                    }
+                  },
+                  "grain": [
+                    "payment_date",
+                    "channel",
+                    "method",
+                    "status"
+                  ],
+                  "reason_code": "verified_metric_service",
+                  "reason": "标准模板满足已验证指标口径、时间和维度。"
+                }
+              ],
+              "choices": [],
+              "trace": {
+                "trace_id": "f16b40db05954bfc86d33ca1d2381723",
+                "model_attempts": [],
+                "tools": [
+                  {
+                    "request": {
+                      "filters": {
+                        "channel": "web"
+                      },
+                      "end_date": "2025-03-01",
+                      "metric_id": "captured_payment_amount",
+                      "start_date": "2025-02-01"
+                    },
+                    "status": "ok",
+                    "code": null,
+                    "trace_id": "55e634ceff97498b9e4609eb6faabbee",
+                    "sources": [
+                      "dws.payment_day"
+                    ],
+                    "capability_trace_id": "bf1ab231ed3942278b4c9746c49fb158",
+                    "elapsed_ms": 7
+                  }
+                ],
+                "elapsed_ms": 7
+              },
+              "conversation_id": "0b4f2c88-e03c-4e4e-9df0-3bcc429ea324",
+              "message_id": "749b157c-ea93-4162-a0c5-580a5d981bd5",
+              "query_id": "d50331a3-d9c2-4265-8700-fde52f3873ae",
+              "context_operation": "time",
+              "state_version": 2,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "0b4f2c88-e03c-4e4e-9df0-3bcc429ea324",
+              "state_version": 2,
+              "active_query_context": {
+                "kind": "standard",
+                "request": {
+                  "filters": {
+                    "channel": "web"
+                  },
+                  "end_date": "2025-03-01",
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-02-01"
+                },
+                "source_models": [
+                  "dws.payment_day"
+                ],
+                "context_protocol": "conversation-rules-v1",
+                "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                "confirmed_definition": "支付事件时间窗内 captured 尝试的源金额合计。"
+              },
+              "pending_clarification": null,
+              "last_message_id": "749b157c-ea93-4162-a0c5-580a5d981bd5",
+              "last_query_id": "d50331a3-d9c2-4265-8700-fde52f3873ae",
+              "created_at": "2026-11-11 07:14:35.687471+00:00",
+              "updated_at": "2026-11-11 07:14:35.776437+00:00",
+              "conversation_status": "active"
+            },
+            "history": {
+              "sql": null,
+              "query_id": "d50331a3-d9c2-4265-8700-fde52f3873ae",
+              "trace_id": "f16b40db05954bfc86d33ca1d2381723",
+              "metric_id": "captured_payment_amount",
+              "error_code": null,
+              "latency_ms": 7,
+              "message_id": "749b157c-ea93-4162-a0c5-580a5d981bd5",
+              "route_type": "single",
+              "analysis_id": null,
+              "template_id": null,
+              "tool_traces": [
+                {
+                  "code": null,
+                  "status": "ok",
+                  "trace_id": "55e634ceff97498b9e4609eb6faabbee"
+                }
+              ],
+              "source_models": [
+                "dws.payment_day"
+              ],
+              "result_summary": {
+                "scalar": {
+                  "value": "117795.99"
+                },
+                "row_count": 1,
+                "truncated": false
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "0b4f2c88-e03c-4e4e-9df0-3bcc429ea324",
+              "prompt_versions": [],
+              "execution_status": "ok",
+              "resolved_request": {
+                "filters": {
+                  "channel": "web"
+                },
+                "end_date": "2025-03-01",
+                "metric_id": "captured_payment_amount",
+                "start_date": "2025-02-01"
+              },
+              "template_version": null,
+              "context_operation": "time",
+              "metadata_versions": [
+                "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad"
+              ],
+              "original_question": "那2月份呢？",
+              "parameter_summary": {
+                "filters": {
+                  "channel": "web"
+                },
+                "end_date": "2025-03-01",
+                "metric_id": "captured_payment_amount",
+                "start_date": "2025-02-01"
+              },
+              "data_build_version": null,
+              "execution_strategy": "standard_metric",
+              "sql_asset_reference": "sql/warehouse/dws_metrics/dws.sql#captured_payment_amount",
+              "metric_definition_version": "1.0.0",
+              "started_at": "2026-11-11 07:14:35.761716+00:00",
+              "completed_at": "2026-11-11 07:14:35.776437+00:00"
+            },
+            "passed": true
+          }
+        ]
+      },
+      {
+        "id": "clarification",
+        "passed": true,
+        "turns": [
+          {
+            "message": "2025年1月销售额是多少？",
+            "state_before": {
+              "conversation_id": "b974e727-0489-47b6-b4a9-4f69e9b26aa7",
+              "state_version": 0,
+              "active_query_context": null,
+              "pending_clarification": null,
+              "last_message_id": null,
+              "last_query_id": null,
+              "created_at": "2026-11-11 07:14:35.805768+00:00",
+              "updated_at": "2026-11-11 07:14:35.805768+00:00",
+              "conversation_status": "active"
+            },
+            "model_outputs": [],
+            "answer": {
+              "task": "clarification",
+              "routes": [],
+              "match": {
+                "method": "exact",
+                "original_evidence": "销售额",
+                "candidate_ids": [
+                  "item_gross_sales_amount",
+                  "item_net_sales_amount",
+                  "captured_payment_amount"
+                ],
+                "model_proposal": [],
+                "confirmed": []
+              },
+              "event_time_hint": null,
+              "status": "clarify",
+              "code": "ambiguous_metric",
+              "answer_zh": "你想看哪一种口径？",
+              "choices": [
+                {
+                  "metric_id": "item_gross_sales_amount",
+                  "name": "折扣前商品记录金额",
+                  "definition": "按下单时间合计成交数量乘明细成交单价，尚未扣除行折扣。",
+                  "available": true
+                },
+                {
+                  "metric_id": "item_net_sales_amount",
+                  "name": "折扣后商品销售金额",
+                  "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                  "available": true
+                },
+                {
+                  "metric_id": "captured_payment_amount",
+                  "name": "成功支付金额",
+                  "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                  "available": true
+                }
+              ],
+              "result": {
+                "status": "clarify",
+                "code": "ambiguous_metric",
+                "message": "你想看哪一种口径？",
+                "choices": [
+                  {
+                    "metric_id": "item_gross_sales_amount",
+                    "name": "折扣前商品记录金额",
+                    "definition": "按下单时间合计成交数量乘明细成交单价，尚未扣除行折扣。",
+                    "available": true
+                  },
+                  {
+                    "metric_id": "item_net_sales_amount",
+                    "name": "折扣后商品销售金额",
+                    "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                    "available": true
+                  },
+                  {
+                    "metric_id": "captured_payment_amount",
+                    "name": "成功支付金额",
+                    "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                    "available": true
+                  }
+                ]
+              },
+              "trace": {
+                "trace_id": "cac6ab0a993e48009eea529c640fa0f3",
+                "model_attempts": [],
+                "tools": [],
+                "elapsed_ms": 0
+              },
+              "conversation_id": "b974e727-0489-47b6-b4a9-4f69e9b26aa7",
+              "message_id": "397ee1b0-24be-45e5-8909-82d1f7efaecc",
+              "query_id": "6da9605e-b7b2-4402-b718-1516578ebf20",
+              "context_operation": "new",
+              "state_version": 1,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "b974e727-0489-47b6-b4a9-4f69e9b26aa7",
+              "state_version": 1,
+              "active_query_context": null,
+              "pending_clarification": {
+                "slot": "metric_id",
+                "choices": [
+                  {
+                    "name": "折扣前商品记录金额",
+                    "metric_id": "item_gross_sales_amount"
+                  },
+                  {
+                    "name": "折扣后商品销售金额",
+                    "metric_id": "item_net_sales_amount"
+                  },
+                  {
+                    "name": "成功支付金额",
+                    "metric_id": "captured_payment_amount"
+                  }
+                ],
+                "end_date": "2025-02-01",
+                "evidence": "销售额",
+                "expires_at": "2026-11-11T07:29:35.823052+00:00",
+                "start_date": "2025-01-01",
+                "time_evidence": "2025年1月",
+                "group_evidence": [],
+                "filter_evidence": [],
+                "context_protocol": "conversation-rules-v1",
+                "original_question": "2025年1月销售额是多少？"
+              },
+              "last_message_id": "397ee1b0-24be-45e5-8909-82d1f7efaecc",
+              "last_query_id": "6da9605e-b7b2-4402-b718-1516578ebf20",
+              "created_at": "2026-11-11 07:14:35.805768+00:00",
+              "updated_at": "2026-11-11 07:14:35.827054+00:00",
+              "conversation_status": "awaiting_clarification"
+            },
+            "history": {
+              "sql": null,
+              "query_id": "6da9605e-b7b2-4402-b718-1516578ebf20",
+              "trace_id": "cac6ab0a993e48009eea529c640fa0f3",
+              "metric_id": null,
+              "error_code": "ambiguous_metric",
+              "latency_ms": 0,
+              "message_id": "397ee1b0-24be-45e5-8909-82d1f7efaecc",
+              "route_type": "clarification",
+              "analysis_id": null,
+              "template_id": null,
+              "tool_traces": [],
+              "source_models": [],
+              "result_summary": {
+                "scalar": {},
+                "row_count": 0,
+                "truncated": false
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "b974e727-0489-47b6-b4a9-4f69e9b26aa7",
+              "prompt_versions": [],
+              "execution_status": "clarify",
+              "resolved_request": null,
+              "template_version": null,
+              "context_operation": "new",
+              "metadata_versions": [],
+              "original_question": "2025年1月销售额是多少？",
+              "parameter_summary": null,
+              "data_build_version": null,
+              "execution_strategy": "no_execution",
+              "sql_asset_reference": null,
+              "metric_definition_version": null,
+              "started_at": "2026-11-11 07:14:35.817143+00:00",
+              "completed_at": "2026-11-11 07:14:35.827054+00:00"
+            },
+            "passed": true
+          },
+          {
+            "message": "折扣后商品销售金额。",
+            "state_before": {
+              "conversation_id": "b974e727-0489-47b6-b4a9-4f69e9b26aa7",
+              "state_version": 1,
+              "active_query_context": null,
+              "pending_clarification": {
+                "slot": "metric_id",
+                "choices": [
+                  {
+                    "name": "折扣前商品记录金额",
+                    "metric_id": "item_gross_sales_amount"
+                  },
+                  {
+                    "name": "折扣后商品销售金额",
+                    "metric_id": "item_net_sales_amount"
+                  },
+                  {
+                    "name": "成功支付金额",
+                    "metric_id": "captured_payment_amount"
+                  }
+                ],
+                "end_date": "2025-02-01",
+                "evidence": "销售额",
+                "expires_at": "2026-11-11T07:29:35.823052+00:00",
+                "start_date": "2025-01-01",
+                "time_evidence": "2025年1月",
+                "group_evidence": [],
+                "filter_evidence": [],
+                "context_protocol": "conversation-rules-v1",
+                "original_question": "2025年1月销售额是多少？"
+              },
+              "last_message_id": "397ee1b0-24be-45e5-8909-82d1f7efaecc",
+              "last_query_id": "6da9605e-b7b2-4402-b718-1516578ebf20",
+              "created_at": "2026-11-11 07:14:35.805768+00:00",
+              "updated_at": "2026-11-11 07:14:35.827054+00:00",
+              "conversation_status": "awaiting_clarification"
+            },
+            "model_outputs": [],
+            "answer": {
+              "status": "ok",
+              "code": null,
+              "task": "single",
+              "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），折扣后商品销售金额：all=231920.18。按下单时间统计明细毛额减行折扣，含所有订单状态。",
+              "result": {
+                "status": "ok",
+                "query_result": {
+                  "metric_id": "item_net_sales_amount",
+                  "trace_id": "37f89fbd85fb4c739e686f256854edde",
+                  "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                  "definition_version": "1.0.0",
+                  "event_time": "orders.ordered_at（明细继承订单时间）",
+                  "time_semantics": "orders.ordered_at（明细继承订单时间）",
+                  "source_grain": "一行一个 order_item_id",
+                  "group_by": [],
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "observation_cutoff": null,
+                  "sources": [
+                    "dim.product",
+                    "dws.product_sales_day"
+                  ],
+                  "status": "ok",
+                  "results": [
+                    {
+                      "bucket": "all",
+                      "value": "231920.18"
+                    }
+                  ],
+                  "error": null
+                },
+                "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），折扣后商品销售金额：all=231920.18。按下单时间统计明细毛额减行折扣，含所有订单状态。"
+              },
+              "routes": [
+                {
+                  "trace_id": "485e53d98371441ea1994767ef812983",
+                  "metadata_source": "PostgreSQL pg_catalog",
+                  "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                  "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+                  "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+                  "contract_version": "1.0.0",
+                  "metric_version": "1.1.1-ads",
+                  "selected_source": "dws.product_sales_day",
+                  "candidate_sources": [
+                    {
+                      "source": "dws.product_sales_day",
+                      "reason": "满足口径、键及权限检查。",
+                      "selected": true
+                    }
+                  ],
+                  "required_fields": {
+                    "dws.product_sales_day": [
+                      "channel",
+                      "item_discount_amount",
+                      "item_gross_amount",
+                      "item_net_sales_amount",
+                      "order_date",
+                      "order_item_count",
+                      "ordered_unit_count",
+                      "product_id"
+                    ],
+                    "dim.product": [
+                      "category_id",
+                      "product_id"
+                    ]
+                  },
+                  "dimensions": [],
+                  "join_paths": [
+                    {
+                      "from": "dws.product_sales_day",
+                      "to": "dim.product",
+                      "from_column": "product_id",
+                      "to_column": "product_id",
+                      "evidence": "business_contract",
+                      "relationship_cardinality": "many_to_one"
+                    }
+                  ],
+                  "risks": [
+                    "品类关联采用当前快照属性。",
+                    "逻辑关联来自验收契约，数据库未为所有关联建立物理外键。"
+                  ],
+                  "status": "STANDARD_METRIC",
+                  "metric_id": "item_net_sales_amount",
+                  "metric_request": {
+                    "metric_id": "item_net_sales_amount",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01"
+                  },
+                  "metric_definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                  "time_constraints": {
+                    "event_time": "order_time",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "boundary": "[start_date,end_date)",
+                    "physical_fields": {
+                      "order_time": "order_date"
+                    }
+                  },
+                  "grain": [
+                    "order_date",
+                    "channel",
+                    "product_id"
+                  ],
+                  "reason_code": "verified_metric_service",
+                  "reason": "标准模板满足已验证指标口径、时间和维度。"
+                }
+              ],
+              "choices": [],
+              "trace": {
+                "trace_id": "3866a0f147d24b289ed7dc50d6f19d76",
+                "model_attempts": [],
+                "tools": [
+                  {
+                    "request": {
+                      "metric_id": "item_net_sales_amount",
+                      "start_date": "2025-01-01",
+                      "end_date": "2025-02-01"
+                    },
+                    "status": "ok",
+                    "code": null,
+                    "trace_id": "37f89fbd85fb4c739e686f256854edde",
+                    "sources": [
+                      "dim.product",
+                      "dws.product_sales_day"
+                    ],
+                    "capability_trace_id": "485e53d98371441ea1994767ef812983",
+                    "elapsed_ms": 10
+                  }
+                ],
+                "elapsed_ms": 10
+              },
+              "conversation_id": "b974e727-0489-47b6-b4a9-4f69e9b26aa7",
+              "message_id": "6a3cf832-7c30-48a3-a1e5-1432024dd5e0",
+              "query_id": "bf6d573f-c9d7-4e79-96d0-993b528bf1c5",
+              "context_operation": "clarification",
+              "state_version": 2,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "b974e727-0489-47b6-b4a9-4f69e9b26aa7",
+              "state_version": 2,
+              "active_query_context": {
+                "kind": "standard",
+                "request": {
+                  "end_date": "2025-02-01",
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-01-01"
+                },
+                "source_models": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "context_protocol": "conversation-rules-v1",
+                "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                "confirmed_definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。"
+              },
+              "pending_clarification": null,
+              "last_message_id": "6a3cf832-7c30-48a3-a1e5-1432024dd5e0",
+              "last_query_id": "bf6d573f-c9d7-4e79-96d0-993b528bf1c5",
+              "created_at": "2026-11-11 07:14:35.805768+00:00",
+              "updated_at": "2026-11-11 07:14:35.876682+00:00",
+              "conversation_status": "active"
+            },
+            "history": {
+              "sql": null,
+              "query_id": "bf6d573f-c9d7-4e79-96d0-993b528bf1c5",
+              "trace_id": "3866a0f147d24b289ed7dc50d6f19d76",
+              "metric_id": "item_net_sales_amount",
+              "error_code": null,
+              "latency_ms": 11,
+              "message_id": "6a3cf832-7c30-48a3-a1e5-1432024dd5e0",
+              "route_type": "single",
+              "analysis_id": null,
+              "template_id": null,
+              "tool_traces": [
+                {
+                  "code": null,
+                  "status": "ok",
+                  "trace_id": "37f89fbd85fb4c739e686f256854edde"
+                }
+              ],
+              "source_models": [
+                "dim.product",
+                "dws.product_sales_day"
+              ],
+              "result_summary": {
+                "scalar": {
+                  "value": "231920.18"
+                },
+                "row_count": 1,
+                "truncated": false
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "b974e727-0489-47b6-b4a9-4f69e9b26aa7",
+              "prompt_versions": [],
+              "execution_status": "ok",
+              "resolved_request": {
+                "end_date": "2025-02-01",
+                "metric_id": "item_net_sales_amount",
+                "start_date": "2025-01-01"
+              },
+              "template_version": null,
+              "context_operation": "clarification",
+              "metadata_versions": [
+                "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad"
+              ],
+              "original_question": "折扣后商品销售金额。",
+              "parameter_summary": {
+                "end_date": "2025-02-01",
+                "metric_id": "item_net_sales_amount",
+                "start_date": "2025-01-01"
+              },
+              "data_build_version": null,
+              "execution_strategy": "standard_metric",
+              "sql_asset_reference": "sql/warehouse/dws_metrics/dws.sql#item_net_sales_amount",
+              "metric_definition_version": "1.0.0",
+              "started_at": "2026-11-11 07:14:35.851419+00:00",
+              "completed_at": "2026-11-11 07:14:35.876682+00:00"
+            },
+            "passed": true
+          }
+        ]
+      },
+      {
+        "id": "dynamic",
+        "passed": true,
+        "turns": [
+          {
+            "message": "2025年1月按订单统计支付尝试次数，保留大于1次的订单",
+            "state_before": {
+              "conversation_id": "bd44d509-30e0-4af0-b659-5b3259edbcee",
+              "state_version": 0,
+              "active_query_context": null,
+              "pending_clarification": null,
+              "last_message_id": null,
+              "last_query_id": null,
+              "created_at": "2026-11-11 07:14:35.908399+00:00",
+              "updated_at": "2026-11-11 07:14:35.908399+00:00",
+              "conversation_status": "active"
+            },
+            "model_outputs": [
+              "{\"sql\": \"SELECT f.order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY f.order_id LIMIT %(row_limit)s\", \"parameters\": {\"start\": \"2025-01-01\", \"end\": \"2025-02-01\", \"row_limit\": 101, \"threshold\": 1}, \"sources\": [\"dwd.payment_attempt_fact\"], \"output_fields\": [\"order_id\", \"attempt_count\"], \"steps\": [], \"unresolved\": []}"
+            ],
+            "answer": {
+              "task": "dynamic",
+              "routes": [
+                {
+                  "trace_id": "3c386da1700a45c8877b5752b84271c8",
+                  "selected_source": "dwd.payment_attempt_fact",
+                  "candidate_sources": [
+                    {
+                      "source": "dwd.payment_attempt_fact",
+                      "reason": "满足口径、键及权限检查。",
+                      "selected": true
+                    }
+                  ],
+                  "required_fields": {
+                    "dwd.payment_attempt_fact": [
+                      "order_id",
+                      "paid_at"
+                    ]
+                  },
+                  "join_paths": [],
+                  "risks": [
+                    "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                  ],
+                  "status": "DYNAMIC_QUERY",
+                  "operation": "attempts_by_order",
+                  "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                  "event_time": "payment_attempt_time",
+                  "time_column": "paid_at",
+                  "grain": [
+                    "order_id"
+                  ],
+                  "result_schema": [
+                    [
+                      "order_id",
+                      "integer"
+                    ],
+                    [
+                      "attempt_count",
+                      "integer"
+                    ]
+                  ],
+                  "contract_version": "1.0.0",
+                  "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                  "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1"
+                }
+              ],
+              "match": null,
+              "event_time_hint": null,
+              "status": "ok",
+              "code": null,
+              "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。返回 100 行。首行：order_id=65，attempt_count=2。仅展示排序后的前 100 行。",
+              "choices": [],
+              "result": {
+                "status": "ok",
+                "operation": "attempts_by_order",
+                "question": "2025年1月按订单统计支付尝试次数，保留大于1次的订单",
+                "path": "dynamic_sql",
+                "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                "event_time": "payment_attempt_time",
+                "grain": [
+                  "order_id"
+                ],
+                "sources": [
+                  "dwd.payment_attempt_fact"
+                ],
+                "parameters": {
+                  "start": "2025-01-01",
+                  "end": "2025-02-01",
+                  "row_limit": 101,
+                  "threshold": 1
+                },
+                "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1",
+                "prompt_version": "dynamic-sql-v1",
+                "sql": "SELECT f.order_id AS order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY order_id LIMIT %(row_limit)s",
+                "results": null,
+                "truncated": true,
+                "quality_limitations": [
+                  "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                ],
+                "execution_trace": {
+                  "trace_id": "7293e1b2824c4f27833e9a8da3a07745",
+                  "agent_trace_id": "4bc272da3fad468394b1ef6ec49b35fb",
+                  "prompt_version": "dynamic-sql-v1",
+                  "generation_attempts": [
+                    {
+                      "attempt": 1,
+                      "model_output": "{\"sql\": \"SELECT f.order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY f.order_id LIMIT %(row_limit)s\", \"parameters\": {\"start\": \"2025-01-01\", \"end\": \"2025-02-01\", \"row_limit\": 101, \"threshold\": 1}, \"sources\": [\"dwd.payment_attempt_fact\"], \"output_fields\": [\"order_id\", \"attempt_count\"], \"steps\": [], \"unresolved\": []}",
+                      "status": "validated"
+                    }
+                  ],
+                  "sql_validated": true,
+                  "capability": {
+                    "trace_id": "3c386da1700a45c8877b5752b84271c8",
+                    "selected_source": "dwd.payment_attempt_fact",
+                    "candidate_sources": [
+                      {
+                        "source": "dwd.payment_attempt_fact",
+                        "reason": "满足口径、键及权限检查。",
+                        "selected": true
+                      }
+                    ],
+                    "required_fields": {
+                      "dwd.payment_attempt_fact": [
+                        "order_id",
+                        "paid_at"
+                      ]
+                    },
+                    "join_paths": [],
+                    "risks": [
+                      "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                    ],
+                    "status": "DYNAMIC_QUERY",
+                    "operation": "attempts_by_order",
+                    "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                    "event_time": "payment_attempt_time",
+                    "time_column": "paid_at",
+                    "grain": [
+                      "order_id"
+                    ],
+                    "result_schema": [
+                      [
+                        "order_id",
+                        "integer"
+                      ],
+                      [
+                        "attempt_count",
+                        "integer"
+                      ]
+                    ],
+                    "contract_version": "1.0.0",
+                    "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                    "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1"
+                  },
+                  "context_summary": {
+                    "operation": "attempts_by_order",
+                    "models": {
+                      "dwd.payment_attempt_fact": {
+                        "fields": {
+                          "order_id": "integer",
+                          "paid_at": "timestamp without time zone"
+                        },
+                        "primary_key": [
+                          "payment_id"
+                        ],
+                        "grain": [
+                          "payment_id"
+                        ]
+                      }
+                    },
+                    "joins": [],
+                    "event_time": "payment_attempt_time",
+                    "time_column": "paid_at",
+                    "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                    "result_grain": [
+                      "order_id"
+                    ],
+                    "output_fields": [
+                      "order_id",
+                      "attempt_count"
+                    ],
+                    "parameters": {
+                      "start": "2025-01-01",
+                      "end": "2025-02-01",
+                      "row_limit": 101,
+                      "threshold": 1
+                    },
+                    "quality_limitations": [
+                      "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                    ],
+                    "access": "只读 DWD/DIM，禁止额外来源和字段",
+                    "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                    "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1",
+                    "status_semantics": {}
+                  },
+                  "bound_parameters": {
+                    "start": "2025-01-01",
+                    "end": "2025-02-01",
+                    "row_limit": 101,
+                    "threshold": 1
+                  },
+                  "status": "ok",
+                  "error_code": null,
+                  "elapsed_ms": 64
+                },
+                "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。返回 100 行。首行：order_id=65，attempt_count=2。仅展示排序后的前 100 行。",
+                "results_preview": [
+                  {
+                    "order_id": 65,
+                    "attempt_count": 2
+                  },
+                  {
+                    "order_id": 165,
+                    "attempt_count": 2
+                  },
+                  {
+                    "order_id": 323,
+                    "attempt_count": 2
+                  }
+                ]
+              },
+              "trace": {
+                "trace_id": "4bc272da3fad468394b1ef6ec49b35fb",
+                "model_attempts": [
+                  {
+                    "stage": "dynamic_sql",
+                    "attempt": 1,
+                    "prompt_version": "dynamic-sql-v1",
+                    "usage": {},
+                    "status": "received",
+                    "elapsed_ms": 0
+                  }
+                ],
+                "tools": [
+                  {
+                    "trace_id": "7293e1b2824c4f27833e9a8da3a07745",
+                    "agent_trace_id": "4bc272da3fad468394b1ef6ec49b35fb",
+                    "prompt_version": "dynamic-sql-v1",
+                    "generation_attempts": [
+                      {
+                        "attempt": 1,
+                        "model_output": "{\"sql\": \"SELECT f.order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY f.order_id LIMIT %(row_limit)s\", \"parameters\": {\"start\": \"2025-01-01\", \"end\": \"2025-02-01\", \"row_limit\": 101, \"threshold\": 1}, \"sources\": [\"dwd.payment_attempt_fact\"], \"output_fields\": [\"order_id\", \"attempt_count\"], \"steps\": [], \"unresolved\": []}",
+                        "status": "validated"
+                      }
+                    ],
+                    "sql_validated": true,
+                    "capability": {
+                      "trace_id": "3c386da1700a45c8877b5752b84271c8",
+                      "selected_source": "dwd.payment_attempt_fact",
+                      "candidate_sources": [
+                        {
+                          "source": "dwd.payment_attempt_fact",
+                          "reason": "满足口径、键及权限检查。",
+                          "selected": true
+                        }
+                      ],
+                      "required_fields": {
+                        "dwd.payment_attempt_fact": [
+                          "order_id",
+                          "paid_at"
+                        ]
+                      },
+                      "join_paths": [],
+                      "risks": [
+                        "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                      ],
+                      "status": "DYNAMIC_QUERY",
+                      "operation": "attempts_by_order",
+                      "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                      "event_time": "payment_attempt_time",
+                      "time_column": "paid_at",
+                      "grain": [
+                        "order_id"
+                      ],
+                      "result_schema": [
+                        [
+                          "order_id",
+                          "integer"
+                        ],
+                        [
+                          "attempt_count",
+                          "integer"
+                        ]
+                      ],
+                      "contract_version": "1.0.0",
+                      "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                      "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1"
+                    },
+                    "context_summary": {
+                      "operation": "attempts_by_order",
+                      "models": {
+                        "dwd.payment_attempt_fact": {
+                          "fields": {
+                            "order_id": "integer",
+                            "paid_at": "timestamp without time zone"
+                          },
+                          "primary_key": [
+                            "payment_id"
+                          ],
+                          "grain": [
+                            "payment_id"
+                          ]
+                        }
+                      },
+                      "joins": [],
+                      "event_time": "payment_attempt_time",
+                      "time_column": "paid_at",
+                      "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                      "result_grain": [
+                        "order_id"
+                      ],
+                      "output_fields": [
+                        "order_id",
+                        "attempt_count"
+                      ],
+                      "parameters": {
+                        "start": "2025-01-01",
+                        "end": "2025-02-01",
+                        "row_limit": 101,
+                        "threshold": 1
+                      },
+                      "quality_limitations": [
+                        "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                      ],
+                      "access": "只读 DWD/DIM，禁止额外来源和字段",
+                      "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                      "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1",
+                      "status_semantics": {}
+                    },
+                    "bound_parameters": {
+                      "start": "2025-01-01",
+                      "end": "2025-02-01",
+                      "row_limit": 101,
+                      "threshold": 1
+                    },
+                    "status": "ok",
+                    "error_code": null,
+                    "elapsed_ms": 64
+                  }
+                ],
+                "elapsed_ms": 64
+              },
+              "conversation_id": "bd44d509-30e0-4af0-b659-5b3259edbcee",
+              "message_id": "bc89600f-f956-4f71-a91f-7c87a66f603f",
+              "query_id": "2de1a181-2245-4555-9380-86865f5dcfde",
+              "context_operation": "new",
+              "state_version": 1,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "bd44d509-30e0-4af0-b659-5b3259edbcee",
+              "state_version": 1,
+              "active_query_context": {
+                "kind": "dynamic",
+                "operation": "attempts_by_order",
+                "parameters": {
+                  "end": "2025-02-01",
+                  "start": "2025-01-01",
+                  "row_limit": 101,
+                  "threshold": 1
+                },
+                "source_models": [
+                  "dwd.payment_attempt_fact"
+                ],
+                "context_protocol": "conversation-rules-v1"
+              },
+              "pending_clarification": null,
+              "last_message_id": "bc89600f-f956-4f71-a91f-7c87a66f603f",
+              "last_query_id": "2de1a181-2245-4555-9380-86865f5dcfde",
+              "created_at": "2026-11-11 07:14:35.908399+00:00",
+              "updated_at": "2026-11-11 07:14:35.993140+00:00",
+              "conversation_status": "active"
+            },
+            "history": {
+              "sql": "SELECT f.order_id AS order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY order_id LIMIT %(row_limit)s",
+              "query_id": "2de1a181-2245-4555-9380-86865f5dcfde",
+              "trace_id": "4bc272da3fad468394b1ef6ec49b35fb",
+              "metric_id": null,
+              "error_code": null,
+              "latency_ms": 64,
+              "message_id": "bc89600f-f956-4f71-a91f-7c87a66f603f",
+              "route_type": "dynamic",
+              "analysis_id": "attempts_by_order",
+              "template_id": null,
+              "tool_traces": [
+                {
+                  "code": null,
+                  "status": "ok",
+                  "trace_id": "7293e1b2824c4f27833e9a8da3a07745"
+                }
+              ],
+              "source_models": [
+                "dwd.payment_attempt_fact"
+              ],
+              "result_summary": {
+                "scalar": {},
+                "row_count": 100,
+                "truncated": true
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "bd44d509-30e0-4af0-b659-5b3259edbcee",
+              "prompt_versions": [
+                "dynamic-sql-v1"
+              ],
+              "execution_status": "ok",
+              "resolved_request": {
+                "end": "2025-02-01",
+                "start": "2025-01-01",
+                "row_limit": 101,
+                "threshold": 1
+              },
+              "template_version": null,
+              "context_operation": "new",
+              "metadata_versions": [
+                "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad"
+              ],
+              "original_question": "2025年1月按订单统计支付尝试次数，保留大于1次的订单",
+              "parameter_summary": {
+                "end": "2025-02-01",
+                "start": "2025-01-01",
+                "row_limit": 101,
+                "threshold": 1
+              },
+              "data_build_version": null,
+              "execution_strategy": "dynamic_sql",
+              "sql_asset_reference": null,
+              "metric_definition_version": null,
+              "started_at": "2026-11-11 07:14:35.921887+00:00",
+              "completed_at": "2026-11-11 07:14:35.993140+00:00"
+            },
+            "passed": true
+          }
+        ]
+      }
+    ]
+  },
+  "initial_live": {
+    "mode": "live",
+    "passed": 2,
+    "total": 3,
+    "cases": [
+      {
+        "id": "followup",
+        "passed": false,
+        "turns": [
+          {
+            "message": "2025年1月web渠道成功支付金额是多少？",
+            "state_before": {
+              "conversation_id": "94dbb592-ec4d-43e0-a7c5-061fffb9bdd3",
+              "state_version": 0,
+              "active_query_context": null,
+              "pending_clarification": null,
+              "last_message_id": null,
+              "last_query_id": null,
+              "created_at": "2026-11-11 07:09:42.825074+00:00",
+              "updated_at": "2026-11-11 07:09:42.825074+00:00",
+              "conversation_status": "active"
+            },
+            "model_outputs": [
+              {
+                "text": "{\n  \"metrics\": [\n    \"成功支付金额\"\n  ],\n  \"groups\": [\n    \"web渠道\"\n  ],\n  \"filters\": [],\n  \"missing\": [],\n  \"time\": \"2025年1月\",\n  \"type\": \"metric\"\n}",
+                "model": "gemini-3.5-flash-lite",
+                "usage": {
+                  "prompt": 218,
+                  "output": 68,
+                  "total": 286
+                }
+              }
+            ],
+            "answer": {
+              "task": "single",
+              "routes": [],
+              "match": {
+                "method": "exact",
+                "original_evidence": [
+                  "成功支付金额"
+                ],
+                "candidate_ids": [
+                  "captured_payment_amount"
+                ],
+                "model_proposal": [],
+                "confirmed": [
+                  "captured_payment_amount"
+                ]
+              },
+              "event_time_hint": null,
+              "status": "unsupported",
+              "code": "unsupported_grouping",
+              "answer_zh": "该分组未能映射到支持的业务维度。",
+              "choices": [],
+              "result": {
+                "status": "unsupported",
+                "code": "unsupported_grouping",
+                "message": "该分组未能映射到支持的业务维度。"
+              },
+              "trace": {
+                "trace_id": "32de09be2d504152b2a3a2a30433f521",
+                "model_attempts": [
+                  {
+                    "stage": "intent",
+                    "attempt": 1,
+                    "prompt_version": "intent-v3",
+                    "model": "gemini-3.5-flash-lite",
+                    "usage": {
+                      "prompt": 218,
+                      "output": 68,
+                      "total": 286
+                    },
+                    "status": "received",
+                    "elapsed_ms": 3445
+                  }
+                ],
+                "tools": [],
+                "elapsed_ms": 3446
+              },
+              "conversation_id": "94dbb592-ec4d-43e0-a7c5-061fffb9bdd3",
+              "message_id": "d6f03194-fadb-4e3e-863e-f52e2fa43607",
+              "query_id": "4e4796ac-ebaf-4d3b-90ae-2031850468cb",
+              "context_operation": "new",
+              "state_version": 1,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "94dbb592-ec4d-43e0-a7c5-061fffb9bdd3",
+              "state_version": 1,
+              "active_query_context": null,
+              "pending_clarification": null,
+              "last_message_id": "d6f03194-fadb-4e3e-863e-f52e2fa43607",
+              "last_query_id": "4e4796ac-ebaf-4d3b-90ae-2031850468cb",
+              "created_at": "2026-11-11 07:09:42.825074+00:00",
+              "updated_at": "2026-11-11 07:09:46.312385+00:00",
+              "conversation_status": "active"
+            },
+            "history": {
+              "sql": null,
+              "query_id": "4e4796ac-ebaf-4d3b-90ae-2031850468cb",
+              "trace_id": "32de09be2d504152b2a3a2a30433f521",
+              "metric_id": null,
+              "error_code": "unsupported_grouping",
+              "latency_ms": 3446,
+              "message_id": "d6f03194-fadb-4e3e-863e-f52e2fa43607",
+              "route_type": "single",
+              "analysis_id": null,
+              "template_id": null,
+              "tool_traces": [],
+              "source_models": [],
+              "result_summary": {
+                "scalar": {},
+                "row_count": 0,
+                "truncated": false
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "94dbb592-ec4d-43e0-a7c5-061fffb9bdd3",
+              "prompt_versions": [
+                "intent-v3"
+              ],
+              "execution_status": "unsupported",
+              "resolved_request": null,
+              "template_version": null,
+              "context_operation": "new",
+              "metadata_versions": [],
+              "original_question": "2025年1月web渠道成功支付金额是多少？",
+              "parameter_summary": null,
+              "data_build_version": null,
+              "execution_strategy": "no_execution",
+              "metric_definition_version": null,
+              "started_at": "2026-11-11 07:09:42.848833+00:00",
+              "completed_at": "2026-11-11 07:09:46.312385+00:00"
+            },
+            "passed": false
+          },
+          {
+            "message": "那2月份呢？",
+            "state_before": {
+              "conversation_id": "94dbb592-ec4d-43e0-a7c5-061fffb9bdd3",
+              "state_version": 1,
+              "active_query_context": null,
+              "pending_clarification": null,
+              "last_message_id": "d6f03194-fadb-4e3e-863e-f52e2fa43607",
+              "last_query_id": "4e4796ac-ebaf-4d3b-90ae-2031850468cb",
+              "created_at": "2026-11-11 07:09:42.825074+00:00",
+              "updated_at": "2026-11-11 07:09:46.312385+00:00",
+              "conversation_status": "active"
+            },
+            "model_outputs": [],
+            "answer": {
+              "status": "clarify",
+              "code": "no_compatible_context",
+              "task": "conversation",
+              "answer_zh": "请先执行一项可继续追问的标准指标查询。",
+              "result": {},
+              "routes": [],
+              "choices": [],
+              "trace": {
+                "trace_id": "0a9e4a4323074a56ab1f70c2e7f55b29",
+                "model_attempts": [],
+                "tools": []
+              },
+              "conversation_id": "94dbb592-ec4d-43e0-a7c5-061fffb9bdd3",
+              "message_id": "18ce471d-63d8-4af7-b3e5-dd8eb7996dd9",
+              "query_id": "26401197-d03f-45a6-88da-5eef2094c23c",
+              "context_operation": "clarify",
+              "state_version": 2,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "94dbb592-ec4d-43e0-a7c5-061fffb9bdd3",
+              "state_version": 2,
+              "active_query_context": null,
+              "pending_clarification": null,
+              "last_message_id": "18ce471d-63d8-4af7-b3e5-dd8eb7996dd9",
+              "last_query_id": "26401197-d03f-45a6-88da-5eef2094c23c",
+              "created_at": "2026-11-11 07:09:42.825074+00:00",
+              "updated_at": "2026-11-11 07:09:46.386808+00:00",
+              "conversation_status": "active"
+            },
+            "history": {
+              "sql": null,
+              "query_id": "26401197-d03f-45a6-88da-5eef2094c23c",
+              "trace_id": "0a9e4a4323074a56ab1f70c2e7f55b29",
+              "metric_id": null,
+              "error_code": "no_compatible_context",
+              "latency_ms": 0,
+              "message_id": "18ce471d-63d8-4af7-b3e5-dd8eb7996dd9",
+              "route_type": "conversation",
+              "analysis_id": null,
+              "template_id": null,
+              "tool_traces": [],
+              "source_models": [],
+              "result_summary": {
+                "scalar": {},
+                "row_count": 0,
+                "truncated": false
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "94dbb592-ec4d-43e0-a7c5-061fffb9bdd3",
+              "prompt_versions": [],
+              "execution_status": "clarify",
+              "resolved_request": null,
+              "template_version": null,
+              "context_operation": "clarify",
+              "metadata_versions": [],
+              "original_question": "那2月份呢？",
+              "parameter_summary": null,
+              "data_build_version": null,
+              "execution_strategy": "no_execution",
+              "metric_definition_version": null,
+              "started_at": "2026-11-11 07:09:46.373629+00:00",
+              "completed_at": "2026-11-11 07:09:46.386808+00:00"
+            },
+            "passed": false
+          }
+        ]
+      },
+      {
+        "id": "clarification",
+        "passed": true,
+        "turns": [
+          {
+            "message": "2025年1月销售额是多少？",
+            "state_before": {
+              "conversation_id": "0bb30dd8-d4f1-4347-85c8-69f20291c15f",
+              "state_version": 0,
+              "active_query_context": null,
+              "pending_clarification": null,
+              "last_message_id": null,
+              "last_query_id": null,
+              "created_at": "2026-11-11 07:09:46.417673+00:00",
+              "updated_at": "2026-11-11 07:09:46.417673+00:00",
+              "conversation_status": "active"
+            },
+            "model_outputs": [],
+            "answer": {
+              "task": "clarification",
+              "routes": [],
+              "match": {
+                "method": "exact",
+                "original_evidence": "销售额",
+                "candidate_ids": [
+                  "item_gross_sales_amount",
+                  "item_net_sales_amount",
+                  "captured_payment_amount"
+                ],
+                "model_proposal": [],
+                "confirmed": []
+              },
+              "event_time_hint": null,
+              "status": "clarify",
+              "code": "ambiguous_metric",
+              "answer_zh": "你想看哪一种口径？",
+              "choices": [
+                {
+                  "metric_id": "item_gross_sales_amount",
+                  "name": "折扣前商品记录金额",
+                  "definition": "按下单时间合计成交数量乘明细成交单价，尚未扣除行折扣。",
+                  "available": true
+                },
+                {
+                  "metric_id": "item_net_sales_amount",
+                  "name": "折扣后商品销售金额",
+                  "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                  "available": true
+                },
+                {
+                  "metric_id": "captured_payment_amount",
+                  "name": "成功支付金额",
+                  "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                  "available": true
+                }
+              ],
+              "result": {
+                "status": "clarify",
+                "code": "ambiguous_metric",
+                "message": "你想看哪一种口径？",
+                "choices": [
+                  {
+                    "metric_id": "item_gross_sales_amount",
+                    "name": "折扣前商品记录金额",
+                    "definition": "按下单时间合计成交数量乘明细成交单价，尚未扣除行折扣。",
+                    "available": true
+                  },
+                  {
+                    "metric_id": "item_net_sales_amount",
+                    "name": "折扣后商品销售金额",
+                    "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                    "available": true
+                  },
+                  {
+                    "metric_id": "captured_payment_amount",
+                    "name": "成功支付金额",
+                    "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                    "available": true
+                  }
+                ]
+              },
+              "trace": {
+                "trace_id": "624cb40ae12c47819883b9bc1d0799e6",
+                "model_attempts": [],
+                "tools": [],
+                "elapsed_ms": 0
+              },
+              "conversation_id": "0bb30dd8-d4f1-4347-85c8-69f20291c15f",
+              "message_id": "eb4ac73b-2e87-4bbf-b76c-76f0c1a5fa0f",
+              "query_id": "64e3e58c-84d3-41ff-8125-0edead5b714e",
+              "context_operation": "new",
+              "state_version": 1,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "0bb30dd8-d4f1-4347-85c8-69f20291c15f",
+              "state_version": 1,
+              "active_query_context": null,
+              "pending_clarification": {
+                "slot": "metric_id",
+                "choices": [
+                  {
+                    "name": "折扣前商品记录金额",
+                    "metric_id": "item_gross_sales_amount"
+                  },
+                  {
+                    "name": "折扣后商品销售金额",
+                    "metric_id": "item_net_sales_amount"
+                  },
+                  {
+                    "name": "成功支付金额",
+                    "metric_id": "captured_payment_amount"
+                  }
+                ],
+                "end_date": "2025-02-01",
+                "evidence": "销售额",
+                "expires_at": "2026-11-11T07:24:46.436347+00:00",
+                "start_date": "2025-01-01",
+                "time_evidence": "2025年1月",
+                "group_evidence": [],
+                "filter_evidence": [],
+                "original_question": "2025年1月销售额是多少？"
+              },
+              "last_message_id": "eb4ac73b-2e87-4bbf-b76c-76f0c1a5fa0f",
+              "last_query_id": "64e3e58c-84d3-41ff-8125-0edead5b714e",
+              "created_at": "2026-11-11 07:09:46.417673+00:00",
+              "updated_at": "2026-11-11 07:09:46.440295+00:00",
+              "conversation_status": "active"
+            },
+            "history": {
+              "sql": null,
+              "query_id": "64e3e58c-84d3-41ff-8125-0edead5b714e",
+              "trace_id": "624cb40ae12c47819883b9bc1d0799e6",
+              "metric_id": null,
+              "error_code": "ambiguous_metric",
+              "latency_ms": 0,
+              "message_id": "eb4ac73b-2e87-4bbf-b76c-76f0c1a5fa0f",
+              "route_type": "clarification",
+              "analysis_id": null,
+              "template_id": null,
+              "tool_traces": [],
+              "source_models": [],
+              "result_summary": {
+                "scalar": {},
+                "row_count": 0,
+                "truncated": false
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "0bb30dd8-d4f1-4347-85c8-69f20291c15f",
+              "prompt_versions": [],
+              "execution_status": "clarify",
+              "resolved_request": null,
+              "template_version": null,
+              "context_operation": "new",
+              "metadata_versions": [],
+              "original_question": "2025年1月销售额是多少？",
+              "parameter_summary": null,
+              "data_build_version": null,
+              "execution_strategy": "no_execution",
+              "metric_definition_version": null,
+              "started_at": "2026-11-11 07:09:46.431596+00:00",
+              "completed_at": "2026-11-11 07:09:46.440295+00:00"
+            },
+            "passed": true
+          },
+          {
+            "message": "折扣后商品销售金额。",
+            "state_before": {
+              "conversation_id": "0bb30dd8-d4f1-4347-85c8-69f20291c15f",
+              "state_version": 1,
+              "active_query_context": null,
+              "pending_clarification": {
+                "slot": "metric_id",
+                "choices": [
+                  {
+                    "name": "折扣前商品记录金额",
+                    "metric_id": "item_gross_sales_amount"
+                  },
+                  {
+                    "name": "折扣后商品销售金额",
+                    "metric_id": "item_net_sales_amount"
+                  },
+                  {
+                    "name": "成功支付金额",
+                    "metric_id": "captured_payment_amount"
+                  }
+                ],
+                "end_date": "2025-02-01",
+                "evidence": "销售额",
+                "expires_at": "2026-11-11T07:24:46.436347+00:00",
+                "start_date": "2025-01-01",
+                "time_evidence": "2025年1月",
+                "group_evidence": [],
+                "filter_evidence": [],
+                "original_question": "2025年1月销售额是多少？"
+              },
+              "last_message_id": "eb4ac73b-2e87-4bbf-b76c-76f0c1a5fa0f",
+              "last_query_id": "64e3e58c-84d3-41ff-8125-0edead5b714e",
+              "created_at": "2026-11-11 07:09:46.417673+00:00",
+              "updated_at": "2026-11-11 07:09:46.440295+00:00",
+              "conversation_status": "active"
+            },
+            "model_outputs": [],
+            "answer": {
+              "status": "ok",
+              "code": null,
+              "task": "single",
+              "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），折扣后商品销售金额：all=231920.18。按下单时间统计明细毛额减行折扣，含所有订单状态。",
+              "result": {
+                "status": "ok",
+                "query_result": {
+                  "metric_id": "item_net_sales_amount",
+                  "trace_id": "0a49843900a64f0b9668c51199b944d6",
+                  "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                  "definition_version": "1.0.0",
+                  "event_time": "orders.ordered_at（明细继承订单时间）",
+                  "time_semantics": "orders.ordered_at（明细继承订单时间）",
+                  "source_grain": "一行一个 order_item_id",
+                  "group_by": [],
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "observation_cutoff": null,
+                  "sources": [
+                    "dim.product",
+                    "dws.product_sales_day"
+                  ],
+                  "status": "ok",
+                  "results": [
+                    {
+                      "bucket": "all",
+                      "value": "231920.18"
+                    }
+                  ],
+                  "error": null
+                },
+                "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），折扣后商品销售金额：all=231920.18。按下单时间统计明细毛额减行折扣，含所有订单状态。"
+              },
+              "routes": [
+                {
+                  "trace_id": "05eb85065f73466cb8bafc29b7ed0d38",
+                  "metadata_source": "PostgreSQL pg_catalog",
+                  "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                  "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+                  "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+                  "contract_version": "1.0.0",
+                  "metric_version": "1.1.1-ads",
+                  "selected_source": "dws.product_sales_day",
+                  "candidate_sources": [
+                    {
+                      "source": "dws.product_sales_day",
+                      "reason": "满足口径、键及权限检查。",
+                      "selected": true
+                    }
+                  ],
+                  "required_fields": {
+                    "dws.product_sales_day": [
+                      "channel",
+                      "item_discount_amount",
+                      "item_gross_amount",
+                      "item_net_sales_amount",
+                      "order_date",
+                      "order_item_count",
+                      "ordered_unit_count",
+                      "product_id"
+                    ],
+                    "dim.product": [
+                      "category_id",
+                      "product_id"
+                    ]
+                  },
+                  "dimensions": [],
+                  "join_paths": [
+                    {
+                      "from": "dws.product_sales_day",
+                      "to": "dim.product",
+                      "from_column": "product_id",
+                      "to_column": "product_id",
+                      "evidence": "business_contract",
+                      "relationship_cardinality": "many_to_one"
+                    }
+                  ],
+                  "risks": [
+                    "品类关联采用当前快照属性。",
+                    "逻辑关联来自验收契约，数据库未为所有关联建立物理外键。"
+                  ],
+                  "status": "STANDARD_METRIC",
+                  "metric_id": "item_net_sales_amount",
+                  "metric_request": {
+                    "metric_id": "item_net_sales_amount",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01"
+                  },
+                  "metric_definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                  "time_constraints": {
+                    "event_time": "order_time",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "boundary": "[start_date,end_date)",
+                    "physical_fields": {
+                      "order_time": "order_date"
+                    }
+                  },
+                  "grain": [
+                    "order_date",
+                    "channel",
+                    "product_id"
+                  ],
+                  "reason_code": "verified_metric_service",
+                  "reason": "标准模板满足已验证指标口径、时间和维度。"
+                }
+              ],
+              "choices": [],
+              "trace": {
+                "trace_id": "e494893b7b8a43829908b6351fa691a5",
+                "model_attempts": [],
+                "tools": [
+                  {
+                    "request": {
+                      "metric_id": "item_net_sales_amount",
+                      "start_date": "2025-01-01",
+                      "end_date": "2025-02-01"
+                    },
+                    "status": "ok",
+                    "code": null,
+                    "trace_id": "0a49843900a64f0b9668c51199b944d6",
+                    "sources": [
+                      "dim.product",
+                      "dws.product_sales_day"
+                    ],
+                    "capability_trace_id": "05eb85065f73466cb8bafc29b7ed0d38",
+                    "elapsed_ms": 13
+                  }
+                ],
+                "elapsed_ms": 13
+              },
+              "conversation_id": "0bb30dd8-d4f1-4347-85c8-69f20291c15f",
+              "message_id": "fb23fd38-d843-4fbf-ab69-f98c1c553a92",
+              "query_id": "064bbf20-186b-4eef-bfee-540147004ba9",
+              "context_operation": "clarification",
+              "state_version": 2,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "0bb30dd8-d4f1-4347-85c8-69f20291c15f",
+              "state_version": 2,
+              "active_query_context": {
+                "kind": "standard",
+                "request": {
+                  "end_date": "2025-02-01",
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-01-01"
+                },
+                "source_models": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                "confirmed_definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。"
+              },
+              "pending_clarification": null,
+              "last_message_id": "fb23fd38-d843-4fbf-ab69-f98c1c553a92",
+              "last_query_id": "064bbf20-186b-4eef-bfee-540147004ba9",
+              "created_at": "2026-11-11 07:09:46.417673+00:00",
+              "updated_at": "2026-11-11 07:09:46.486298+00:00",
+              "conversation_status": "active"
+            },
+            "history": {
+              "sql": null,
+              "query_id": "064bbf20-186b-4eef-bfee-540147004ba9",
+              "trace_id": "e494893b7b8a43829908b6351fa691a5",
+              "metric_id": "item_net_sales_amount",
+              "error_code": null,
+              "latency_ms": 13,
+              "message_id": "fb23fd38-d843-4fbf-ab69-f98c1c553a92",
+              "route_type": "single",
+              "analysis_id": null,
+              "template_id": null,
+              "tool_traces": [
+                {
+                  "code": null,
+                  "status": "ok",
+                  "trace_id": "0a49843900a64f0b9668c51199b944d6"
+                }
+              ],
+              "source_models": [
+                "dim.product",
+                "dws.product_sales_day"
+              ],
+              "result_summary": {
+                "scalar": {
+                  "value": "231920.18"
+                },
+                "row_count": 1,
+                "truncated": false
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "0bb30dd8-d4f1-4347-85c8-69f20291c15f",
+              "prompt_versions": [],
+              "execution_status": "ok",
+              "resolved_request": {
+                "end_date": "2025-02-01",
+                "metric_id": "item_net_sales_amount",
+                "start_date": "2025-01-01"
+              },
+              "template_version": null,
+              "context_operation": "clarification",
+              "metadata_versions": [
+                "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad"
+              ],
+              "original_question": "折扣后商品销售金额。",
+              "parameter_summary": {
+                "end_date": "2025-02-01",
+                "metric_id": "item_net_sales_amount",
+                "start_date": "2025-01-01"
+              },
+              "data_build_version": null,
+              "execution_strategy": "standard_metric",
+              "metric_definition_version": "1.0.0",
+              "started_at": "2026-11-11 07:09:46.465912+00:00",
+              "completed_at": "2026-11-11 07:09:46.486298+00:00"
+            },
+            "passed": true
+          }
+        ]
+      },
+      {
+        "id": "dynamic",
+        "passed": true,
+        "turns": [
+          {
+            "message": "2025年1月按订单统计支付尝试次数，保留大于1次的订单",
+            "state_before": {
+              "conversation_id": "19b470b2-874b-418b-b994-120b91cac2a2",
+              "state_version": 0,
+              "active_query_context": null,
+              "pending_clarification": null,
+              "last_message_id": null,
+              "last_query_id": null,
+              "created_at": "2026-11-11 07:09:46.522730+00:00",
+              "updated_at": "2026-11-11 07:09:46.522730+00:00",
+              "conversation_status": "active"
+            },
+            "model_outputs": [
+              {
+                "text": "{\"sql\": \"SELECT f.order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY f.order_id LIMIT %(row_limit)s\", \"parameters\": {\"start\": \"2025-01-01\", \"end\": \"2025-02-01\", \"row_limit\": 101, \"threshold\": 1}, \"sources\": [\"dwd.payment_attempt_fact\"], \"output_fields\": [\"order_id\", \"attempt_count\"], \"steps\": [\"filter by paid_at time range\", \"group by order_id\", \"filter by attempt count threshold\", \"order and limit results\"], \"unresolved\": []}",
+                "model": "gemini-3.5-flash-lite",
+                "usage": {
+                  "prompt": 658,
+                  "output": 196,
+                  "total": 854
+                }
+              }
+            ],
+            "answer": {
+              "task": "dynamic",
+              "routes": [
+                {
+                  "trace_id": "37c289a0f280445c9cb48575200f1ffe",
+                  "selected_source": "dwd.payment_attempt_fact",
+                  "candidate_sources": [
+                    {
+                      "source": "dwd.payment_attempt_fact",
+                      "reason": "满足口径、键及权限检查。",
+                      "selected": true
+                    }
+                  ],
+                  "required_fields": {
+                    "dwd.payment_attempt_fact": [
+                      "order_id",
+                      "paid_at"
+                    ]
+                  },
+                  "join_paths": [],
+                  "risks": [
+                    "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                  ],
+                  "status": "DYNAMIC_QUERY",
+                  "operation": "attempts_by_order",
+                  "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                  "event_time": "payment_attempt_time",
+                  "time_column": "paid_at",
+                  "grain": [
+                    "order_id"
+                  ],
+                  "result_schema": [
+                    [
+                      "order_id",
+                      "integer"
+                    ],
+                    [
+                      "attempt_count",
+                      "integer"
+                    ]
+                  ],
+                  "contract_version": "1.0.0",
+                  "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                  "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1"
+                }
+              ],
+              "match": null,
+              "event_time_hint": null,
+              "status": "ok",
+              "code": null,
+              "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。返回 100 行。首行：order_id=65，attempt_count=2。仅展示排序后的前 100 行。",
+              "choices": [],
+              "result": {
+                "status": "ok",
+                "operation": "attempts_by_order",
+                "question": "2025年1月按订单统计支付尝试次数，保留大于1次的订单",
+                "path": "dynamic_sql",
+                "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                "event_time": "payment_attempt_time",
+                "grain": [
+                  "order_id"
+                ],
+                "sources": [
+                  "dwd.payment_attempt_fact"
+                ],
+                "parameters": {
+                  "start": "2025-01-01",
+                  "end": "2025-02-01",
+                  "row_limit": 101,
+                  "threshold": 1
+                },
+                "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1",
+                "prompt_version": "dynamic-sql-v1",
+                "sql": "SELECT f.order_id AS order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY order_id LIMIT %(row_limit)s",
+                "results": null,
+                "truncated": true,
+                "quality_limitations": [
+                  "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                ],
+                "execution_trace": {
+                  "trace_id": "dadf514e35e84627b717936c502c93fd",
+                  "agent_trace_id": "0a5b81149d6748599909e04550778c9e",
+                  "prompt_version": "dynamic-sql-v1",
+                  "generation_attempts": [
+                    {
+                      "attempt": 1,
+                      "model_output": "{\"sql\": \"SELECT f.order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY f.order_id LIMIT %(row_limit)s\", \"parameters\": {\"start\": \"2025-01-01\", \"end\": \"2025-02-01\", \"row_limit\": 101, \"threshold\": 1}, \"sources\": [\"dwd.payment_attempt_fact\"], \"output_fields\": [\"order_id\", \"attempt_count\"], \"steps\": [\"filter by paid_at time range\", \"group by order_id\", \"filter by attempt count threshold\", \"order and limit results\"], \"unresolved\": []}",
+                      "status": "validated"
+                    }
+                  ],
+                  "sql_validated": true,
+                  "capability": {
+                    "trace_id": "37c289a0f280445c9cb48575200f1ffe",
+                    "selected_source": "dwd.payment_attempt_fact",
+                    "candidate_sources": [
+                      {
+                        "source": "dwd.payment_attempt_fact",
+                        "reason": "满足口径、键及权限检查。",
+                        "selected": true
+                      }
+                    ],
+                    "required_fields": {
+                      "dwd.payment_attempt_fact": [
+                        "order_id",
+                        "paid_at"
+                      ]
+                    },
+                    "join_paths": [],
+                    "risks": [
+                      "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                    ],
+                    "status": "DYNAMIC_QUERY",
+                    "operation": "attempts_by_order",
+                    "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                    "event_time": "payment_attempt_time",
+                    "time_column": "paid_at",
+                    "grain": [
+                      "order_id"
+                    ],
+                    "result_schema": [
+                      [
+                        "order_id",
+                        "integer"
+                      ],
+                      [
+                        "attempt_count",
+                        "integer"
+                      ]
+                    ],
+                    "contract_version": "1.0.0",
+                    "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                    "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1"
+                  },
+                  "context_summary": {
+                    "operation": "attempts_by_order",
+                    "models": {
+                      "dwd.payment_attempt_fact": {
+                        "fields": {
+                          "order_id": "integer",
+                          "paid_at": "timestamp without time zone"
+                        },
+                        "primary_key": [
+                          "payment_id"
+                        ],
+                        "grain": [
+                          "payment_id"
+                        ]
+                      }
+                    },
+                    "joins": [],
+                    "event_time": "payment_attempt_time",
+                    "time_column": "paid_at",
+                    "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                    "result_grain": [
+                      "order_id"
+                    ],
+                    "output_fields": [
+                      "order_id",
+                      "attempt_count"
+                    ],
+                    "parameters": {
+                      "start": "2025-01-01",
+                      "end": "2025-02-01",
+                      "row_limit": 101,
+                      "threshold": 1
+                    },
+                    "quality_limitations": [
+                      "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                    ],
+                    "access": "只读 DWD/DIM，禁止额外来源和字段",
+                    "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                    "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1",
+                    "status_semantics": {}
+                  },
+                  "bound_parameters": {
+                    "start": "2025-01-01",
+                    "end": "2025-02-01",
+                    "row_limit": 101,
+                    "threshold": 1
+                  },
+                  "status": "ok",
+                  "error_code": null,
+                  "elapsed_ms": 4661
+                },
+                "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。返回 100 行。首行：order_id=65，attempt_count=2。仅展示排序后的前 100 行。",
+                "results_preview": [
+                  {
+                    "order_id": 65,
+                    "attempt_count": 2
+                  },
+                  {
+                    "order_id": 165,
+                    "attempt_count": 2
+                  },
+                  {
+                    "order_id": 323,
+                    "attempt_count": 2
+                  }
+                ]
+              },
+              "trace": {
+                "trace_id": "0a5b81149d6748599909e04550778c9e",
+                "model_attempts": [
+                  {
+                    "stage": "dynamic_sql",
+                    "attempt": 1,
+                    "prompt_version": "dynamic-sql-v1",
+                    "model": "gemini-3.5-flash-lite",
+                    "usage": {
+                      "prompt": 658,
+                      "output": 196,
+                      "total": 854
+                    },
+                    "status": "received",
+                    "elapsed_ms": 4527
+                  }
+                ],
+                "tools": [
+                  {
+                    "trace_id": "dadf514e35e84627b717936c502c93fd",
+                    "agent_trace_id": "0a5b81149d6748599909e04550778c9e",
+                    "prompt_version": "dynamic-sql-v1",
+                    "generation_attempts": [
+                      {
+                        "attempt": 1,
+                        "model_output": "{\"sql\": \"SELECT f.order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY f.order_id LIMIT %(row_limit)s\", \"parameters\": {\"start\": \"2025-01-01\", \"end\": \"2025-02-01\", \"row_limit\": 101, \"threshold\": 1}, \"sources\": [\"dwd.payment_attempt_fact\"], \"output_fields\": [\"order_id\", \"attempt_count\"], \"steps\": [\"filter by paid_at time range\", \"group by order_id\", \"filter by attempt count threshold\", \"order and limit results\"], \"unresolved\": []}",
+                        "status": "validated"
+                      }
+                    ],
+                    "sql_validated": true,
+                    "capability": {
+                      "trace_id": "37c289a0f280445c9cb48575200f1ffe",
+                      "selected_source": "dwd.payment_attempt_fact",
+                      "candidate_sources": [
+                        {
+                          "source": "dwd.payment_attempt_fact",
+                          "reason": "满足口径、键及权限检查。",
+                          "selected": true
+                        }
+                      ],
+                      "required_fields": {
+                        "dwd.payment_attempt_fact": [
+                          "order_id",
+                          "paid_at"
+                        ]
+                      },
+                      "join_paths": [],
+                      "risks": [
+                        "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                      ],
+                      "status": "DYNAMIC_QUERY",
+                      "operation": "attempts_by_order",
+                      "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                      "event_time": "payment_attempt_time",
+                      "time_column": "paid_at",
+                      "grain": [
+                        "order_id"
+                      ],
+                      "result_schema": [
+                        [
+                          "order_id",
+                          "integer"
+                        ],
+                        [
+                          "attempt_count",
+                          "integer"
+                        ]
+                      ],
+                      "contract_version": "1.0.0",
+                      "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                      "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1"
+                    },
+                    "context_summary": {
+                      "operation": "attempts_by_order",
+                      "models": {
+                        "dwd.payment_attempt_fact": {
+                          "fields": {
+                            "order_id": "integer",
+                            "paid_at": "timestamp without time zone"
+                          },
+                          "primary_key": [
+                            "payment_id"
+                          ],
+                          "grain": [
+                            "payment_id"
+                          ]
+                        }
+                      },
+                      "joins": [],
+                      "event_time": "payment_attempt_time",
+                      "time_column": "paid_at",
+                      "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                      "result_grain": [
+                        "order_id"
+                      ],
+                      "output_fields": [
+                        "order_id",
+                        "attempt_count"
+                      ],
+                      "parameters": {
+                        "start": "2025-01-01",
+                        "end": "2025-02-01",
+                        "row_limit": 101,
+                        "threshold": 1
+                      },
+                      "quality_limitations": [
+                        "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                      ],
+                      "access": "只读 DWD/DIM，禁止额外来源和字段",
+                      "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                      "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1",
+                      "status_semantics": {}
+                    },
+                    "bound_parameters": {
+                      "start": "2025-01-01",
+                      "end": "2025-02-01",
+                      "row_limit": 101,
+                      "threshold": 1
+                    },
+                    "status": "ok",
+                    "error_code": null,
+                    "elapsed_ms": 4661
+                  }
+                ],
+                "elapsed_ms": 4661
+              },
+              "conversation_id": "19b470b2-874b-418b-b994-120b91cac2a2",
+              "message_id": "6751e2b1-501f-4e8c-a903-c5cbfa5ff1a9",
+              "query_id": "88be2c88-373b-424e-bf63-ae4a61d54815",
+              "context_operation": "new",
+              "state_version": 1,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "19b470b2-874b-418b-b994-120b91cac2a2",
+              "state_version": 1,
+              "active_query_context": {
+                "kind": "dynamic",
+                "operation": "attempts_by_order",
+                "parameters": {
+                  "end": "2025-02-01",
+                  "start": "2025-01-01",
+                  "row_limit": 101,
+                  "threshold": 1
+                },
+                "source_models": [
+                  "dwd.payment_attempt_fact"
+                ]
+              },
+              "pending_clarification": null,
+              "last_message_id": "6751e2b1-501f-4e8c-a903-c5cbfa5ff1a9",
+              "last_query_id": "88be2c88-373b-424e-bf63-ae4a61d54815",
+              "created_at": "2026-11-11 07:09:46.522730+00:00",
+              "updated_at": "2026-11-11 07:09:51.207026+00:00",
+              "conversation_status": "active"
+            },
+            "history": {
+              "sql": "SELECT f.order_id AS order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY order_id LIMIT %(row_limit)s",
+              "query_id": "88be2c88-373b-424e-bf63-ae4a61d54815",
+              "trace_id": "0a5b81149d6748599909e04550778c9e",
+              "metric_id": null,
+              "error_code": null,
+              "latency_ms": 4661,
+              "message_id": "6751e2b1-501f-4e8c-a903-c5cbfa5ff1a9",
+              "route_type": "dynamic",
+              "analysis_id": "attempts_by_order",
+              "template_id": null,
+              "tool_traces": [
+                {
+                  "code": null,
+                  "status": "ok",
+                  "trace_id": "dadf514e35e84627b717936c502c93fd"
+                }
+              ],
+              "source_models": [
+                "dwd.payment_attempt_fact"
+              ],
+              "result_summary": {
+                "scalar": {},
+                "row_count": 100,
+                "truncated": true
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "19b470b2-874b-418b-b994-120b91cac2a2",
+              "prompt_versions": [
+                "dynamic-sql-v1"
+              ],
+              "execution_status": "ok",
+              "resolved_request": {
+                "end": "2025-02-01",
+                "start": "2025-01-01",
+                "row_limit": 101,
+                "threshold": 1
+              },
+              "template_version": null,
+              "context_operation": "new",
+              "metadata_versions": [
+                "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad"
+              ],
+              "original_question": "2025年1月按订单统计支付尝试次数，保留大于1次的订单",
+              "parameter_summary": {
+                "end": "2025-02-01",
+                "start": "2025-01-01",
+                "row_limit": 101,
+                "threshold": 1
+              },
+              "data_build_version": null,
+              "execution_strategy": "dynamic_sql",
+              "metric_definition_version": null,
+              "started_at": "2026-11-11 07:09:46.535767+00:00",
+              "completed_at": "2026-11-11 07:09:51.207026+00:00"
+            },
+            "passed": true
+          }
+        ]
+      }
+    ]
+  },
+  "live": {
+    "mode": "live",
+    "passed": 3,
+    "total": 3,
+    "cases": [
+      {
+        "id": "followup",
+        "passed": true,
+        "turns": [
+          {
+            "message": "2025年1月web渠道成功支付金额是多少？",
+            "state_before": {
+              "conversation_id": "017e21e4-9ddc-4fe6-a272-980805e2c29d",
+              "state_version": 0,
+              "active_query_context": null,
+              "pending_clarification": null,
+              "last_message_id": null,
+              "last_query_id": null,
+              "created_at": "2026-11-11 07:14:36.359459+00:00",
+              "updated_at": "2026-11-11 07:14:36.359459+00:00",
+              "conversation_status": "active"
+            },
+            "model_outputs": [
+              {
+                "text": "{\n  \"metrics\": [\n    \"成功支付金额\"\n  ],\n  \"groups\": [\n    \"web渠道\"\n  ],\n  \"filters\": [],\n  \"missing\": [],\n  \"time\": \"2025年1月\",\n  \"type\": \"metric\"\n}",
+                "model": "gemini-3.5-flash-lite",
+                "usage": {
+                  "prompt": 218,
+                  "output": 68,
+                  "total": 286
+                }
+              }
+            ],
+            "answer": {
+              "task": "single",
+              "routes": [
+                {
+                  "trace_id": "2a591961a6d64d7f8eaaaa27abc96855",
+                  "metadata_source": "PostgreSQL pg_catalog",
+                  "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                  "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+                  "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+                  "contract_version": "1.0.0",
+                  "metric_version": "1.1.1-ads",
+                  "selected_source": "dws.payment_day",
+                  "candidate_sources": [
+                    {
+                      "source": "dws.payment_day",
+                      "reason": "满足口径、键及权限检查。",
+                      "selected": true
+                    }
+                  ],
+                  "required_fields": {
+                    "dws.payment_day": [
+                      "attempt_amount",
+                      "channel",
+                      "dq_negative_amount_count",
+                      "dq_payment_before_order_count",
+                      "method",
+                      "payment_attempt_count",
+                      "payment_date",
+                      "status"
+                    ]
+                  },
+                  "dimensions": [],
+                  "join_paths": [],
+                  "risks": [
+                    "支付尝试可能早于下单，金额与状态采用源记录口径。"
+                  ],
+                  "status": "STANDARD_METRIC",
+                  "metric_id": "captured_payment_amount",
+                  "metric_request": {
+                    "metric_id": "captured_payment_amount",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "filters": {
+                      "channel": "web"
+                    }
+                  },
+                  "metric_definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                  "time_constraints": {
+                    "event_time": "payment_attempt_time",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "boundary": "[start_date,end_date)",
+                    "physical_fields": {
+                      "payment_attempt_time": "payment_date"
+                    }
+                  },
+                  "grain": [
+                    "payment_date",
+                    "channel",
+                    "method",
+                    "status"
+                  ],
+                  "reason_code": "verified_metric_service",
+                  "reason": "标准模板满足已验证指标口径、时间和维度。"
+                }
+              ],
+              "match": {
+                "method": "exact",
+                "original_evidence": [
+                  "成功支付金额"
+                ],
+                "candidate_ids": [
+                  "captured_payment_amount"
+                ],
+                "model_proposal": [],
+                "confirmed": [
+                  "captured_payment_amount"
+                ]
+              },
+              "event_time_hint": null,
+              "status": "ok",
+              "code": null,
+              "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），成功支付金额：all=131071.23。支付事件时间窗内 captured 尝试的源金额合计。",
+              "choices": [],
+              "result": {
+                "status": "ok",
+                "query_result": {
+                  "metric_id": "captured_payment_amount",
+                  "trace_id": "a660f9bd482248628d856e9c8b638054",
+                  "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                  "definition_version": "1.0.0",
+                  "event_time": "payments.paid_at",
+                  "time_semantics": "payments.paid_at",
+                  "source_grain": "一行一个 payment_id",
+                  "group_by": [],
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "observation_cutoff": null,
+                  "sources": [
+                    "dws.payment_day"
+                  ],
+                  "status": "ok",
+                  "results": [
+                    {
+                      "bucket": "all",
+                      "value": "131071.23"
+                    }
+                  ],
+                  "error": null
+                },
+                "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），成功支付金额：all=131071.23。支付事件时间窗内 captured 尝试的源金额合计。"
+              },
+              "trace": {
+                "trace_id": "75667a9d7a0f4b60833b0fa409986f22",
+                "model_attempts": [
+                  {
+                    "stage": "intent",
+                    "attempt": 1,
+                    "prompt_version": "intent-v3",
+                    "model": "gemini-3.5-flash-lite",
+                    "usage": {
+                      "prompt": 218,
+                      "output": 68,
+                      "total": 286
+                    },
+                    "status": "received",
+                    "elapsed_ms": 4319
+                  }
+                ],
+                "tools": [
+                  {
+                    "request": {
+                      "metric_id": "captured_payment_amount",
+                      "start_date": "2025-01-01",
+                      "end_date": "2025-02-01",
+                      "filters": {
+                        "channel": "web"
+                      }
+                    },
+                    "status": "ok",
+                    "code": null,
+                    "trace_id": "a660f9bd482248628d856e9c8b638054",
+                    "sources": [
+                      "dws.payment_day"
+                    ],
+                    "capability_trace_id": "2a591961a6d64d7f8eaaaa27abc96855",
+                    "elapsed_ms": 21
+                  }
+                ],
+                "elapsed_ms": 4341
+              },
+              "conversation_id": "017e21e4-9ddc-4fe6-a272-980805e2c29d",
+              "message_id": "d69e94f7-0cff-45ea-bd79-36f75c4b8307",
+              "query_id": "ae065f57-8dd9-4cea-967b-7b8c232dae74",
+              "context_operation": "new",
+              "state_version": 1,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "017e21e4-9ddc-4fe6-a272-980805e2c29d",
+              "state_version": 1,
+              "active_query_context": {
+                "kind": "standard",
+                "request": {
+                  "filters": {
+                    "channel": "web"
+                  },
+                  "end_date": "2025-02-01",
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01"
+                },
+                "source_models": [
+                  "dws.payment_day"
+                ],
+                "context_protocol": "conversation-rules-v1",
+                "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                "confirmed_definition": "支付事件时间窗内 captured 尝试的源金额合计。"
+              },
+              "pending_clarification": null,
+              "last_message_id": "d69e94f7-0cff-45ea-bd79-36f75c4b8307",
+              "last_query_id": "ae065f57-8dd9-4cea-967b-7b8c232dae74",
+              "created_at": "2026-11-11 07:14:36.359459+00:00",
+              "updated_at": "2026-11-11 07:14:40.731707+00:00",
+              "conversation_status": "active"
+            },
+            "history": {
+              "sql": null,
+              "query_id": "ae065f57-8dd9-4cea-967b-7b8c232dae74",
+              "trace_id": "75667a9d7a0f4b60833b0fa409986f22",
+              "metric_id": "captured_payment_amount",
+              "error_code": null,
+              "latency_ms": 4341,
+              "message_id": "d69e94f7-0cff-45ea-bd79-36f75c4b8307",
+              "route_type": "single",
+              "analysis_id": null,
+              "template_id": null,
+              "tool_traces": [
+                {
+                  "code": null,
+                  "status": "ok",
+                  "trace_id": "a660f9bd482248628d856e9c8b638054"
+                }
+              ],
+              "source_models": [
+                "dws.payment_day"
+              ],
+              "result_summary": {
+                "scalar": {
+                  "value": "131071.23"
+                },
+                "row_count": 1,
+                "truncated": false
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "017e21e4-9ddc-4fe6-a272-980805e2c29d",
+              "prompt_versions": [
+                "intent-v3"
+              ],
+              "execution_status": "ok",
+              "resolved_request": {
+                "filters": {
+                  "channel": "web"
+                },
+                "end_date": "2025-02-01",
+                "metric_id": "captured_payment_amount",
+                "start_date": "2025-01-01"
+              },
+              "template_version": null,
+              "context_operation": "new",
+              "metadata_versions": [
+                "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad"
+              ],
+              "original_question": "2025年1月web渠道成功支付金额是多少？",
+              "parameter_summary": {
+                "filters": {
+                  "channel": "web"
+                },
+                "end_date": "2025-02-01",
+                "metric_id": "captured_payment_amount",
+                "start_date": "2025-01-01"
+              },
+              "data_build_version": null,
+              "execution_strategy": "standard_metric",
+              "sql_asset_reference": "sql/warehouse/dws_metrics/dws.sql#captured_payment_amount",
+              "metric_definition_version": "1.0.0",
+              "started_at": "2026-11-11 07:14:36.376571+00:00",
+              "completed_at": "2026-11-11 07:14:40.731707+00:00"
+            },
+            "passed": true
+          },
+          {
+            "message": "那2月份呢？",
+            "state_before": {
+              "conversation_id": "017e21e4-9ddc-4fe6-a272-980805e2c29d",
+              "state_version": 1,
+              "active_query_context": {
+                "kind": "standard",
+                "request": {
+                  "filters": {
+                    "channel": "web"
+                  },
+                  "end_date": "2025-02-01",
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-01-01"
+                },
+                "source_models": [
+                  "dws.payment_day"
+                ],
+                "context_protocol": "conversation-rules-v1",
+                "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                "confirmed_definition": "支付事件时间窗内 captured 尝试的源金额合计。"
+              },
+              "pending_clarification": null,
+              "last_message_id": "d69e94f7-0cff-45ea-bd79-36f75c4b8307",
+              "last_query_id": "ae065f57-8dd9-4cea-967b-7b8c232dae74",
+              "created_at": "2026-11-11 07:14:36.359459+00:00",
+              "updated_at": "2026-11-11 07:14:40.731707+00:00",
+              "conversation_status": "active"
+            },
+            "model_outputs": [],
+            "answer": {
+              "status": "ok",
+              "code": null,
+              "task": "single",
+              "answer_zh": "2025-02-01 至 2025-03-01（不含结束日），成功支付金额：all=117795.99。支付事件时间窗内 captured 尝试的源金额合计。",
+              "result": {
+                "status": "ok",
+                "query_result": {
+                  "metric_id": "captured_payment_amount",
+                  "trace_id": "ee9ad5eeaadf40859cebdfea46f7283a",
+                  "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                  "definition_version": "1.0.0",
+                  "event_time": "payments.paid_at",
+                  "time_semantics": "payments.paid_at",
+                  "source_grain": "一行一个 payment_id",
+                  "group_by": [],
+                  "start_date": "2025-02-01",
+                  "end_date": "2025-03-01",
+                  "observation_cutoff": null,
+                  "sources": [
+                    "dws.payment_day"
+                  ],
+                  "status": "ok",
+                  "results": [
+                    {
+                      "bucket": "all",
+                      "value": "117795.99"
+                    }
+                  ],
+                  "error": null
+                },
+                "answer_zh": "2025-02-01 至 2025-03-01（不含结束日），成功支付金额：all=117795.99。支付事件时间窗内 captured 尝试的源金额合计。"
+              },
+              "routes": [
+                {
+                  "trace_id": "5d82d5c3cafb4afbb46bd325ecc7872f",
+                  "metadata_source": "PostgreSQL pg_catalog",
+                  "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                  "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+                  "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+                  "contract_version": "1.0.0",
+                  "metric_version": "1.1.1-ads",
+                  "selected_source": "dws.payment_day",
+                  "candidate_sources": [
+                    {
+                      "source": "dws.payment_day",
+                      "reason": "满足口径、键及权限检查。",
+                      "selected": true
+                    }
+                  ],
+                  "required_fields": {
+                    "dws.payment_day": [
+                      "attempt_amount",
+                      "channel",
+                      "dq_negative_amount_count",
+                      "dq_payment_before_order_count",
+                      "method",
+                      "payment_attempt_count",
+                      "payment_date",
+                      "status"
+                    ]
+                  },
+                  "dimensions": [],
+                  "join_paths": [],
+                  "risks": [
+                    "支付尝试可能早于下单，金额与状态采用源记录口径。"
+                  ],
+                  "status": "STANDARD_METRIC",
+                  "metric_id": "captured_payment_amount",
+                  "metric_request": {
+                    "filters": {
+                      "channel": "web"
+                    },
+                    "end_date": "2025-03-01",
+                    "metric_id": "captured_payment_amount",
+                    "start_date": "2025-02-01"
+                  },
+                  "metric_definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                  "time_constraints": {
+                    "event_time": "payment_attempt_time",
+                    "start_date": "2025-02-01",
+                    "end_date": "2025-03-01",
+                    "boundary": "[start_date,end_date)",
+                    "physical_fields": {
+                      "payment_attempt_time": "payment_date"
+                    }
+                  },
+                  "grain": [
+                    "payment_date",
+                    "channel",
+                    "method",
+                    "status"
+                  ],
+                  "reason_code": "verified_metric_service",
+                  "reason": "标准模板满足已验证指标口径、时间和维度。"
+                }
+              ],
+              "choices": [],
+              "trace": {
+                "trace_id": "4b3f94963d99440e86e6de35126c9d78",
+                "model_attempts": [],
+                "tools": [
+                  {
+                    "request": {
+                      "filters": {
+                        "channel": "web"
+                      },
+                      "end_date": "2025-03-01",
+                      "metric_id": "captured_payment_amount",
+                      "start_date": "2025-02-01"
+                    },
+                    "status": "ok",
+                    "code": null,
+                    "trace_id": "ee9ad5eeaadf40859cebdfea46f7283a",
+                    "sources": [
+                      "dws.payment_day"
+                    ],
+                    "capability_trace_id": "5d82d5c3cafb4afbb46bd325ecc7872f",
+                    "elapsed_ms": 7
+                  }
+                ],
+                "elapsed_ms": 7
+              },
+              "conversation_id": "017e21e4-9ddc-4fe6-a272-980805e2c29d",
+              "message_id": "afa91843-384d-4452-840c-2ec7cec8faf1",
+              "query_id": "4e04ab80-0b0b-4bf7-ae85-42ebb191b33f",
+              "context_operation": "time",
+              "state_version": 2,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "017e21e4-9ddc-4fe6-a272-980805e2c29d",
+              "state_version": 2,
+              "active_query_context": {
+                "kind": "standard",
+                "request": {
+                  "filters": {
+                    "channel": "web"
+                  },
+                  "end_date": "2025-03-01",
+                  "metric_id": "captured_payment_amount",
+                  "start_date": "2025-02-01"
+                },
+                "source_models": [
+                  "dws.payment_day"
+                ],
+                "context_protocol": "conversation-rules-v1",
+                "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                "confirmed_definition": "支付事件时间窗内 captured 尝试的源金额合计。"
+              },
+              "pending_clarification": null,
+              "last_message_id": "afa91843-384d-4452-840c-2ec7cec8faf1",
+              "last_query_id": "4e04ab80-0b0b-4bf7-ae85-42ebb191b33f",
+              "created_at": "2026-11-11 07:14:36.359459+00:00",
+              "updated_at": "2026-11-11 07:14:40.811240+00:00",
+              "conversation_status": "active"
+            },
+            "history": {
+              "sql": null,
+              "query_id": "4e04ab80-0b0b-4bf7-ae85-42ebb191b33f",
+              "trace_id": "4b3f94963d99440e86e6de35126c9d78",
+              "metric_id": "captured_payment_amount",
+              "error_code": null,
+              "latency_ms": 7,
+              "message_id": "afa91843-384d-4452-840c-2ec7cec8faf1",
+              "route_type": "single",
+              "analysis_id": null,
+              "template_id": null,
+              "tool_traces": [
+                {
+                  "code": null,
+                  "status": "ok",
+                  "trace_id": "ee9ad5eeaadf40859cebdfea46f7283a"
+                }
+              ],
+              "source_models": [
+                "dws.payment_day"
+              ],
+              "result_summary": {
+                "scalar": {
+                  "value": "117795.99"
+                },
+                "row_count": 1,
+                "truncated": false
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "017e21e4-9ddc-4fe6-a272-980805e2c29d",
+              "prompt_versions": [],
+              "execution_status": "ok",
+              "resolved_request": {
+                "filters": {
+                  "channel": "web"
+                },
+                "end_date": "2025-03-01",
+                "metric_id": "captured_payment_amount",
+                "start_date": "2025-02-01"
+              },
+              "template_version": null,
+              "context_operation": "time",
+              "metadata_versions": [
+                "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad"
+              ],
+              "original_question": "那2月份呢？",
+              "parameter_summary": {
+                "filters": {
+                  "channel": "web"
+                },
+                "end_date": "2025-03-01",
+                "metric_id": "captured_payment_amount",
+                "start_date": "2025-02-01"
+              },
+              "data_build_version": null,
+              "execution_strategy": "standard_metric",
+              "sql_asset_reference": "sql/warehouse/dws_metrics/dws.sql#captured_payment_amount",
+              "metric_definition_version": "1.0.0",
+              "started_at": "2026-11-11 07:14:40.794323+00:00",
+              "completed_at": "2026-11-11 07:14:40.811240+00:00"
+            },
+            "passed": true
+          }
+        ]
+      },
+      {
+        "id": "clarification",
+        "passed": true,
+        "turns": [
+          {
+            "message": "2025年1月销售额是多少？",
+            "state_before": {
+              "conversation_id": "3c7f48be-b090-4557-8f5f-fb20c5caa3d3",
+              "state_version": 0,
+              "active_query_context": null,
+              "pending_clarification": null,
+              "last_message_id": null,
+              "last_query_id": null,
+              "created_at": "2026-11-11 07:14:40.852375+00:00",
+              "updated_at": "2026-11-11 07:14:40.852375+00:00",
+              "conversation_status": "active"
+            },
+            "model_outputs": [],
+            "answer": {
+              "task": "clarification",
+              "routes": [],
+              "match": {
+                "method": "exact",
+                "original_evidence": "销售额",
+                "candidate_ids": [
+                  "item_gross_sales_amount",
+                  "item_net_sales_amount",
+                  "captured_payment_amount"
+                ],
+                "model_proposal": [],
+                "confirmed": []
+              },
+              "event_time_hint": null,
+              "status": "clarify",
+              "code": "ambiguous_metric",
+              "answer_zh": "你想看哪一种口径？",
+              "choices": [
+                {
+                  "metric_id": "item_gross_sales_amount",
+                  "name": "折扣前商品记录金额",
+                  "definition": "按下单时间合计成交数量乘明细成交单价，尚未扣除行折扣。",
+                  "available": true
+                },
+                {
+                  "metric_id": "item_net_sales_amount",
+                  "name": "折扣后商品销售金额",
+                  "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                  "available": true
+                },
+                {
+                  "metric_id": "captured_payment_amount",
+                  "name": "成功支付金额",
+                  "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                  "available": true
+                }
+              ],
+              "result": {
+                "status": "clarify",
+                "code": "ambiguous_metric",
+                "message": "你想看哪一种口径？",
+                "choices": [
+                  {
+                    "metric_id": "item_gross_sales_amount",
+                    "name": "折扣前商品记录金额",
+                    "definition": "按下单时间合计成交数量乘明细成交单价，尚未扣除行折扣。",
+                    "available": true
+                  },
+                  {
+                    "metric_id": "item_net_sales_amount",
+                    "name": "折扣后商品销售金额",
+                    "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                    "available": true
+                  },
+                  {
+                    "metric_id": "captured_payment_amount",
+                    "name": "成功支付金额",
+                    "definition": "支付事件时间窗内 captured 尝试的源金额合计。",
+                    "available": true
+                  }
+                ]
+              },
+              "trace": {
+                "trace_id": "0bbe98bba2e64c3b89adf3113d34e897",
+                "model_attempts": [],
+                "tools": [],
+                "elapsed_ms": 0
+              },
+              "conversation_id": "3c7f48be-b090-4557-8f5f-fb20c5caa3d3",
+              "message_id": "a0ad025d-64aa-4b0a-b996-a53e6315ea47",
+              "query_id": "b9c50c04-909f-43cf-855e-2452463554be",
+              "context_operation": "new",
+              "state_version": 1,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "3c7f48be-b090-4557-8f5f-fb20c5caa3d3",
+              "state_version": 1,
+              "active_query_context": null,
+              "pending_clarification": {
+                "slot": "metric_id",
+                "choices": [
+                  {
+                    "name": "折扣前商品记录金额",
+                    "metric_id": "item_gross_sales_amount"
+                  },
+                  {
+                    "name": "折扣后商品销售金额",
+                    "metric_id": "item_net_sales_amount"
+                  },
+                  {
+                    "name": "成功支付金额",
+                    "metric_id": "captured_payment_amount"
+                  }
+                ],
+                "end_date": "2025-02-01",
+                "evidence": "销售额",
+                "expires_at": "2026-11-11T07:29:40.870783+00:00",
+                "start_date": "2025-01-01",
+                "time_evidence": "2025年1月",
+                "group_evidence": [],
+                "filter_evidence": [],
+                "context_protocol": "conversation-rules-v1",
+                "original_question": "2025年1月销售额是多少？"
+              },
+              "last_message_id": "a0ad025d-64aa-4b0a-b996-a53e6315ea47",
+              "last_query_id": "b9c50c04-909f-43cf-855e-2452463554be",
+              "created_at": "2026-11-11 07:14:40.852375+00:00",
+              "updated_at": "2026-11-11 07:14:40.875364+00:00",
+              "conversation_status": "awaiting_clarification"
+            },
+            "history": {
+              "sql": null,
+              "query_id": "b9c50c04-909f-43cf-855e-2452463554be",
+              "trace_id": "0bbe98bba2e64c3b89adf3113d34e897",
+              "metric_id": null,
+              "error_code": "ambiguous_metric",
+              "latency_ms": 0,
+              "message_id": "a0ad025d-64aa-4b0a-b996-a53e6315ea47",
+              "route_type": "clarification",
+              "analysis_id": null,
+              "template_id": null,
+              "tool_traces": [],
+              "source_models": [],
+              "result_summary": {
+                "scalar": {},
+                "row_count": 0,
+                "truncated": false
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "3c7f48be-b090-4557-8f5f-fb20c5caa3d3",
+              "prompt_versions": [],
+              "execution_status": "clarify",
+              "resolved_request": null,
+              "template_version": null,
+              "context_operation": "new",
+              "metadata_versions": [],
+              "original_question": "2025年1月销售额是多少？",
+              "parameter_summary": null,
+              "data_build_version": null,
+              "execution_strategy": "no_execution",
+              "sql_asset_reference": null,
+              "metric_definition_version": null,
+              "started_at": "2026-11-11 07:14:40.866909+00:00",
+              "completed_at": "2026-11-11 07:14:40.875364+00:00"
+            },
+            "passed": true
+          },
+          {
+            "message": "折扣后商品销售金额。",
+            "state_before": {
+              "conversation_id": "3c7f48be-b090-4557-8f5f-fb20c5caa3d3",
+              "state_version": 1,
+              "active_query_context": null,
+              "pending_clarification": {
+                "slot": "metric_id",
+                "choices": [
+                  {
+                    "name": "折扣前商品记录金额",
+                    "metric_id": "item_gross_sales_amount"
+                  },
+                  {
+                    "name": "折扣后商品销售金额",
+                    "metric_id": "item_net_sales_amount"
+                  },
+                  {
+                    "name": "成功支付金额",
+                    "metric_id": "captured_payment_amount"
+                  }
+                ],
+                "end_date": "2025-02-01",
+                "evidence": "销售额",
+                "expires_at": "2026-11-11T07:29:40.870783+00:00",
+                "start_date": "2025-01-01",
+                "time_evidence": "2025年1月",
+                "group_evidence": [],
+                "filter_evidence": [],
+                "context_protocol": "conversation-rules-v1",
+                "original_question": "2025年1月销售额是多少？"
+              },
+              "last_message_id": "a0ad025d-64aa-4b0a-b996-a53e6315ea47",
+              "last_query_id": "b9c50c04-909f-43cf-855e-2452463554be",
+              "created_at": "2026-11-11 07:14:40.852375+00:00",
+              "updated_at": "2026-11-11 07:14:40.875364+00:00",
+              "conversation_status": "awaiting_clarification"
+            },
+            "model_outputs": [],
+            "answer": {
+              "status": "ok",
+              "code": null,
+              "task": "single",
+              "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），折扣后商品销售金额：all=231920.18。按下单时间统计明细毛额减行折扣，含所有订单状态。",
+              "result": {
+                "status": "ok",
+                "query_result": {
+                  "metric_id": "item_net_sales_amount",
+                  "trace_id": "f12539a5a3134725a79c79a91a46caac",
+                  "definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                  "definition_version": "1.0.0",
+                  "event_time": "orders.ordered_at（明细继承订单时间）",
+                  "time_semantics": "orders.ordered_at（明细继承订单时间）",
+                  "source_grain": "一行一个 order_item_id",
+                  "group_by": [],
+                  "start_date": "2025-01-01",
+                  "end_date": "2025-02-01",
+                  "observation_cutoff": null,
+                  "sources": [
+                    "dim.product",
+                    "dws.product_sales_day"
+                  ],
+                  "status": "ok",
+                  "results": [
+                    {
+                      "bucket": "all",
+                      "value": "231920.18"
+                    }
+                  ],
+                  "error": null
+                },
+                "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），折扣后商品销售金额：all=231920.18。按下单时间统计明细毛额减行折扣，含所有订单状态。"
+              },
+              "routes": [
+                {
+                  "trace_id": "934f83270f0c4875a9b252666c97aea2",
+                  "metadata_source": "PostgreSQL pg_catalog",
+                  "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                  "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+                  "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+                  "contract_version": "1.0.0",
+                  "metric_version": "1.1.1-ads",
+                  "selected_source": "dws.product_sales_day",
+                  "candidate_sources": [
+                    {
+                      "source": "dws.product_sales_day",
+                      "reason": "满足口径、键及权限检查。",
+                      "selected": true
+                    }
+                  ],
+                  "required_fields": {
+                    "dws.product_sales_day": [
+                      "channel",
+                      "item_discount_amount",
+                      "item_gross_amount",
+                      "item_net_sales_amount",
+                      "order_date",
+                      "order_item_count",
+                      "ordered_unit_count",
+                      "product_id"
+                    ],
+                    "dim.product": [
+                      "category_id",
+                      "product_id"
+                    ]
+                  },
+                  "dimensions": [],
+                  "join_paths": [
+                    {
+                      "from": "dws.product_sales_day",
+                      "to": "dim.product",
+                      "from_column": "product_id",
+                      "to_column": "product_id",
+                      "evidence": "business_contract",
+                      "relationship_cardinality": "many_to_one"
+                    }
+                  ],
+                  "risks": [
+                    "品类关联采用当前快照属性。",
+                    "逻辑关联来自验收契约，数据库未为所有关联建立物理外键。"
+                  ],
+                  "status": "STANDARD_METRIC",
+                  "metric_id": "item_net_sales_amount",
+                  "metric_request": {
+                    "metric_id": "item_net_sales_amount",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01"
+                  },
+                  "metric_definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。",
+                  "time_constraints": {
+                    "event_time": "order_time",
+                    "start_date": "2025-01-01",
+                    "end_date": "2025-02-01",
+                    "boundary": "[start_date,end_date)",
+                    "physical_fields": {
+                      "order_time": "order_date"
+                    }
+                  },
+                  "grain": [
+                    "order_date",
+                    "channel",
+                    "product_id"
+                  ],
+                  "reason_code": "verified_metric_service",
+                  "reason": "标准模板满足已验证指标口径、时间和维度。"
+                }
+              ],
+              "choices": [],
+              "trace": {
+                "trace_id": "5770a3b43db449ccb74c5b8f97fa1f24",
+                "model_attempts": [],
+                "tools": [
+                  {
+                    "request": {
+                      "metric_id": "item_net_sales_amount",
+                      "start_date": "2025-01-01",
+                      "end_date": "2025-02-01"
+                    },
+                    "status": "ok",
+                    "code": null,
+                    "trace_id": "f12539a5a3134725a79c79a91a46caac",
+                    "sources": [
+                      "dim.product",
+                      "dws.product_sales_day"
+                    ],
+                    "capability_trace_id": "934f83270f0c4875a9b252666c97aea2",
+                    "elapsed_ms": 8
+                  }
+                ],
+                "elapsed_ms": 8
+              },
+              "conversation_id": "3c7f48be-b090-4557-8f5f-fb20c5caa3d3",
+              "message_id": "9c89eef5-41dd-439a-8da2-6f80fbed3bac",
+              "query_id": "dd90d087-182b-4e25-a0de-b0a5efdb8c99",
+              "context_operation": "clarification",
+              "state_version": 2,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "3c7f48be-b090-4557-8f5f-fb20c5caa3d3",
+              "state_version": 2,
+              "active_query_context": {
+                "kind": "standard",
+                "request": {
+                  "end_date": "2025-02-01",
+                  "metric_id": "item_net_sales_amount",
+                  "start_date": "2025-01-01"
+                },
+                "source_models": [
+                  "dim.product",
+                  "dws.product_sales_day"
+                ],
+                "context_protocol": "conversation-rules-v1",
+                "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                "confirmed_definition": "按下单时间统计明细毛额减行折扣，含所有订单状态。"
+              },
+              "pending_clarification": null,
+              "last_message_id": "9c89eef5-41dd-439a-8da2-6f80fbed3bac",
+              "last_query_id": "dd90d087-182b-4e25-a0de-b0a5efdb8c99",
+              "created_at": "2026-11-11 07:14:40.852375+00:00",
+              "updated_at": "2026-11-11 07:14:40.916789+00:00",
+              "conversation_status": "active"
+            },
+            "history": {
+              "sql": null,
+              "query_id": "dd90d087-182b-4e25-a0de-b0a5efdb8c99",
+              "trace_id": "5770a3b43db449ccb74c5b8f97fa1f24",
+              "metric_id": "item_net_sales_amount",
+              "error_code": null,
+              "latency_ms": 8,
+              "message_id": "9c89eef5-41dd-439a-8da2-6f80fbed3bac",
+              "route_type": "single",
+              "analysis_id": null,
+              "template_id": null,
+              "tool_traces": [
+                {
+                  "code": null,
+                  "status": "ok",
+                  "trace_id": "f12539a5a3134725a79c79a91a46caac"
+                }
+              ],
+              "source_models": [
+                "dim.product",
+                "dws.product_sales_day"
+              ],
+              "result_summary": {
+                "scalar": {
+                  "value": "231920.18"
+                },
+                "row_count": 1,
+                "truncated": false
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "3c7f48be-b090-4557-8f5f-fb20c5caa3d3",
+              "prompt_versions": [],
+              "execution_status": "ok",
+              "resolved_request": {
+                "end_date": "2025-02-01",
+                "metric_id": "item_net_sales_amount",
+                "start_date": "2025-01-01"
+              },
+              "template_version": null,
+              "context_operation": "clarification",
+              "metadata_versions": [
+                "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad"
+              ],
+              "original_question": "折扣后商品销售金额。",
+              "parameter_summary": {
+                "end_date": "2025-02-01",
+                "metric_id": "item_net_sales_amount",
+                "start_date": "2025-01-01"
+              },
+              "data_build_version": null,
+              "execution_strategy": "standard_metric",
+              "sql_asset_reference": "sql/warehouse/dws_metrics/dws.sql#item_net_sales_amount",
+              "metric_definition_version": "1.0.0",
+              "started_at": "2026-11-11 07:14:40.901007+00:00",
+              "completed_at": "2026-11-11 07:14:40.916789+00:00"
+            },
+            "passed": true
+          }
+        ]
+      },
+      {
+        "id": "dynamic",
+        "passed": true,
+        "turns": [
+          {
+            "message": "2025年1月按订单统计支付尝试次数，保留大于1次的订单",
+            "state_before": {
+              "conversation_id": "80b38c8f-10c3-46ed-8640-7f7d44bf3944",
+              "state_version": 0,
+              "active_query_context": null,
+              "pending_clarification": null,
+              "last_message_id": null,
+              "last_query_id": null,
+              "created_at": "2026-11-11 07:14:40.944567+00:00",
+              "updated_at": "2026-11-11 07:14:40.944567+00:00",
+              "conversation_status": "active"
+            },
+            "model_outputs": [
+              {
+                "text": "{\"sql\": \"SELECT f.order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY f.order_id LIMIT %(row_limit)s\", \"parameters\": {\"start\": \"2025-01-01\", \"end\": \"2025-02-01\", \"row_limit\": 101, \"threshold\": 1}, \"sources\": [\"dwd.payment_attempt_fact\"], \"output_fields\": [\"order_id\", \"attempt_count\"], \"steps\": [\"filter by paid_at time window\", \"group by order_id\", \"count attempts\", \"filter having attempt_count > threshold\", \"order by order_id\", \"limit rows\"], \"unresolved\": []}",
+                "model": "gemini-3.5-flash-lite",
+                "usage": {
+                  "prompt": 658,
+                  "output": 206,
+                  "total": 864
+                }
+              }
+            ],
+            "answer": {
+              "task": "dynamic",
+              "routes": [
+                {
+                  "trace_id": "bc43ffc441b44870a98fe1ab71b5f553",
+                  "selected_source": "dwd.payment_attempt_fact",
+                  "candidate_sources": [
+                    {
+                      "source": "dwd.payment_attempt_fact",
+                      "reason": "满足口径、键及权限检查。",
+                      "selected": true
+                    }
+                  ],
+                  "required_fields": {
+                    "dwd.payment_attempt_fact": [
+                      "order_id",
+                      "paid_at"
+                    ]
+                  },
+                  "join_paths": [],
+                  "risks": [
+                    "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                  ],
+                  "status": "DYNAMIC_QUERY",
+                  "operation": "attempts_by_order",
+                  "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                  "event_time": "payment_attempt_time",
+                  "time_column": "paid_at",
+                  "grain": [
+                    "order_id"
+                  ],
+                  "result_schema": [
+                    [
+                      "order_id",
+                      "integer"
+                    ],
+                    [
+                      "attempt_count",
+                      "integer"
+                    ]
+                  ],
+                  "contract_version": "1.0.0",
+                  "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                  "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1"
+                }
+              ],
+              "match": null,
+              "event_time_hint": null,
+              "status": "ok",
+              "code": null,
+              "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。返回 100 行。首行：order_id=65，attempt_count=2。仅展示排序后的前 100 行。",
+              "choices": [],
+              "result": {
+                "status": "ok",
+                "operation": "attempts_by_order",
+                "question": "2025年1月按订单统计支付尝试次数，保留大于1次的订单",
+                "path": "dynamic_sql",
+                "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                "event_time": "payment_attempt_time",
+                "grain": [
+                  "order_id"
+                ],
+                "sources": [
+                  "dwd.payment_attempt_fact"
+                ],
+                "parameters": {
+                  "start": "2025-01-01",
+                  "end": "2025-02-01",
+                  "row_limit": 101,
+                  "threshold": 1
+                },
+                "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1",
+                "prompt_version": "dynamic-sql-v1",
+                "sql": "SELECT f.order_id AS order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY order_id LIMIT %(row_limit)s",
+                "results": null,
+                "truncated": true,
+                "quality_limitations": [
+                  "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                ],
+                "execution_trace": {
+                  "trace_id": "98fd0745d7404cb3b62904a7c04e9dde",
+                  "agent_trace_id": "1131eaf7f6e04fada367ff3c4a2af106",
+                  "prompt_version": "dynamic-sql-v1",
+                  "generation_attempts": [
+                    {
+                      "attempt": 1,
+                      "model_output": "{\"sql\": \"SELECT f.order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY f.order_id LIMIT %(row_limit)s\", \"parameters\": {\"start\": \"2025-01-01\", \"end\": \"2025-02-01\", \"row_limit\": 101, \"threshold\": 1}, \"sources\": [\"dwd.payment_attempt_fact\"], \"output_fields\": [\"order_id\", \"attempt_count\"], \"steps\": [\"filter by paid_at time window\", \"group by order_id\", \"count attempts\", \"filter having attempt_count > threshold\", \"order by order_id\", \"limit rows\"], \"unresolved\": []}",
+                      "status": "validated"
+                    }
+                  ],
+                  "sql_validated": true,
+                  "capability": {
+                    "trace_id": "bc43ffc441b44870a98fe1ab71b5f553",
+                    "selected_source": "dwd.payment_attempt_fact",
+                    "candidate_sources": [
+                      {
+                        "source": "dwd.payment_attempt_fact",
+                        "reason": "满足口径、键及权限检查。",
+                        "selected": true
+                      }
+                    ],
+                    "required_fields": {
+                      "dwd.payment_attempt_fact": [
+                        "order_id",
+                        "paid_at"
+                      ]
+                    },
+                    "join_paths": [],
+                    "risks": [
+                      "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                    ],
+                    "status": "DYNAMIC_QUERY",
+                    "operation": "attempts_by_order",
+                    "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                    "event_time": "payment_attempt_time",
+                    "time_column": "paid_at",
+                    "grain": [
+                      "order_id"
+                    ],
+                    "result_schema": [
+                      [
+                        "order_id",
+                        "integer"
+                      ],
+                      [
+                        "attempt_count",
+                        "integer"
+                      ]
+                    ],
+                    "contract_version": "1.0.0",
+                    "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                    "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1"
+                  },
+                  "context_summary": {
+                    "operation": "attempts_by_order",
+                    "models": {
+                      "dwd.payment_attempt_fact": {
+                        "fields": {
+                          "order_id": "integer",
+                          "paid_at": "timestamp without time zone"
+                        },
+                        "primary_key": [
+                          "payment_id"
+                        ],
+                        "grain": [
+                          "payment_id"
+                        ]
+                      }
+                    },
+                    "joins": [],
+                    "event_time": "payment_attempt_time",
+                    "time_column": "paid_at",
+                    "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                    "result_grain": [
+                      "order_id"
+                    ],
+                    "output_fields": [
+                      "order_id",
+                      "attempt_count"
+                    ],
+                    "parameters": {
+                      "start": "2025-01-01",
+                      "end": "2025-02-01",
+                      "row_limit": 101,
+                      "threshold": 1
+                    },
+                    "quality_limitations": [
+                      "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                    ],
+                    "access": "只读 DWD/DIM，禁止额外来源和字段",
+                    "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                    "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1",
+                    "status_semantics": {}
+                  },
+                  "bound_parameters": {
+                    "start": "2025-01-01",
+                    "end": "2025-02-01",
+                    "row_limit": 101,
+                    "threshold": 1
+                  },
+                  "status": "ok",
+                  "error_code": null,
+                  "elapsed_ms": 7520
+                },
+                "answer_zh": "2025-01-01 至 2025-02-01（不含结束日），按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。返回 100 行。首行：order_id=65，attempt_count=2。仅展示排序后的前 100 行。",
+                "results_preview": [
+                  {
+                    "order_id": 65,
+                    "attempt_count": 2
+                  },
+                  {
+                    "order_id": 165,
+                    "attempt_count": 2
+                  },
+                  {
+                    "order_id": 323,
+                    "attempt_count": 2
+                  }
+                ]
+              },
+              "trace": {
+                "trace_id": "1131eaf7f6e04fada367ff3c4a2af106",
+                "model_attempts": [
+                  {
+                    "stage": "dynamic_sql",
+                    "attempt": 1,
+                    "prompt_version": "dynamic-sql-v1",
+                    "model": "gemini-3.5-flash-lite",
+                    "usage": {
+                      "prompt": 658,
+                      "output": 206,
+                      "total": 864
+                    },
+                    "status": "received",
+                    "elapsed_ms": 7410
+                  }
+                ],
+                "tools": [
+                  {
+                    "trace_id": "98fd0745d7404cb3b62904a7c04e9dde",
+                    "agent_trace_id": "1131eaf7f6e04fada367ff3c4a2af106",
+                    "prompt_version": "dynamic-sql-v1",
+                    "generation_attempts": [
+                      {
+                        "attempt": 1,
+                        "model_output": "{\"sql\": \"SELECT f.order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY f.order_id LIMIT %(row_limit)s\", \"parameters\": {\"start\": \"2025-01-01\", \"end\": \"2025-02-01\", \"row_limit\": 101, \"threshold\": 1}, \"sources\": [\"dwd.payment_attempt_fact\"], \"output_fields\": [\"order_id\", \"attempt_count\"], \"steps\": [\"filter by paid_at time window\", \"group by order_id\", \"count attempts\", \"filter having attempt_count > threshold\", \"order by order_id\", \"limit rows\"], \"unresolved\": []}",
+                        "status": "validated"
+                      }
+                    ],
+                    "sql_validated": true,
+                    "capability": {
+                      "trace_id": "bc43ffc441b44870a98fe1ab71b5f553",
+                      "selected_source": "dwd.payment_attempt_fact",
+                      "candidate_sources": [
+                        {
+                          "source": "dwd.payment_attempt_fact",
+                          "reason": "满足口径、键及权限检查。",
+                          "selected": true
+                        }
+                      ],
+                      "required_fields": {
+                        "dwd.payment_attempt_fact": [
+                          "order_id",
+                          "paid_at"
+                        ]
+                      },
+                      "join_paths": [],
+                      "risks": [
+                        "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                      ],
+                      "status": "DYNAMIC_QUERY",
+                      "operation": "attempts_by_order",
+                      "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                      "event_time": "payment_attempt_time",
+                      "time_column": "paid_at",
+                      "grain": [
+                        "order_id"
+                      ],
+                      "result_schema": [
+                        [
+                          "order_id",
+                          "integer"
+                        ],
+                        [
+                          "attempt_count",
+                          "integer"
+                        ]
+                      ],
+                      "contract_version": "1.0.0",
+                      "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                      "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1"
+                    },
+                    "context_summary": {
+                      "operation": "attempts_by_order",
+                      "models": {
+                        "dwd.payment_attempt_fact": {
+                          "fields": {
+                            "order_id": "integer",
+                            "paid_at": "timestamp without time zone"
+                          },
+                          "primary_key": [
+                            "payment_id"
+                          ],
+                          "grain": [
+                            "payment_id"
+                          ]
+                        }
+                      },
+                      "joins": [],
+                      "event_time": "payment_attempt_time",
+                      "time_column": "paid_at",
+                      "definition": "按支付事件窗计数支付尝试，每行一次尝试，按订单汇总并筛选次数。",
+                      "result_grain": [
+                        "order_id"
+                      ],
+                      "output_fields": [
+                        "order_id",
+                        "attempt_count"
+                      ],
+                      "parameters": {
+                        "start": "2025-01-01",
+                        "end": "2025-02-01",
+                        "row_limit": 101,
+                        "threshold": 1
+                      },
+                      "quality_limitations": [
+                        "保留早于下单的支付尝试、负金额和未知支付状态标记。"
+                      ],
+                      "access": "只读 DWD/DIM，禁止额外来源和字段",
+                      "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+                      "capability_version": "79c03f3d23bf1eab6a512fbbb77ac45ebc66a337b63462ad9f7aedf19b4712d1",
+                      "status_semantics": {}
+                    },
+                    "bound_parameters": {
+                      "start": "2025-01-01",
+                      "end": "2025-02-01",
+                      "row_limit": 101,
+                      "threshold": 1
+                    },
+                    "status": "ok",
+                    "error_code": null,
+                    "elapsed_ms": 7520
+                  }
+                ],
+                "elapsed_ms": 7520
+              },
+              "conversation_id": "80b38c8f-10c3-46ed-8640-7f7d44bf3944",
+              "message_id": "4504d402-55c1-4a4c-b8c9-74596ef69110",
+              "query_id": "f55f2d90-b83b-4961-b655-e49c6fd62cbd",
+              "context_operation": "new",
+              "state_version": 1,
+              "replayed": false
+            },
+            "state_after": {
+              "conversation_id": "80b38c8f-10c3-46ed-8640-7f7d44bf3944",
+              "state_version": 1,
+              "active_query_context": {
+                "kind": "dynamic",
+                "operation": "attempts_by_order",
+                "parameters": {
+                  "end": "2025-02-01",
+                  "start": "2025-01-01",
+                  "row_limit": 101,
+                  "threshold": 1
+                },
+                "source_models": [
+                  "dwd.payment_attempt_fact"
+                ],
+                "context_protocol": "conversation-rules-v1"
+              },
+              "pending_clarification": null,
+              "last_message_id": "4504d402-55c1-4a4c-b8c9-74596ef69110",
+              "last_query_id": "f55f2d90-b83b-4961-b655-e49c6fd62cbd",
+              "created_at": "2026-11-11 07:14:40.944567+00:00",
+              "updated_at": "2026-11-11 07:14:48.484041+00:00",
+              "conversation_status": "active"
+            },
+            "history": {
+              "sql": "SELECT f.order_id AS order_id, COUNT(*) AS attempt_count FROM dwd.payment_attempt_fact AS f WHERE f.paid_at >= %(start)s AND f.paid_at < %(end)s GROUP BY f.order_id HAVING COUNT(*) > %(threshold)s ORDER BY order_id LIMIT %(row_limit)s",
+              "query_id": "f55f2d90-b83b-4961-b655-e49c6fd62cbd",
+              "trace_id": "1131eaf7f6e04fada367ff3c4a2af106",
+              "metric_id": null,
+              "error_code": null,
+              "latency_ms": 7520,
+              "message_id": "4504d402-55c1-4a4c-b8c9-74596ef69110",
+              "route_type": "dynamic",
+              "analysis_id": "attempts_by_order",
+              "template_id": null,
+              "tool_traces": [
+                {
+                  "code": null,
+                  "status": "ok",
+                  "trace_id": "98fd0745d7404cb3b62904a7c04e9dde"
+                }
+              ],
+              "source_models": [
+                "dwd.payment_attempt_fact"
+              ],
+              "result_summary": {
+                "scalar": {},
+                "row_count": 100,
+                "truncated": true
+              },
+              "context_version": "conversation-rules-v1",
+              "conversation_id": "80b38c8f-10c3-46ed-8640-7f7d44bf3944",
+              "prompt_versions": [
+                "dynamic-sql-v1"
+              ],
+              "execution_status": "ok",
+              "resolved_request": {
+                "end": "2025-02-01",
+                "start": "2025-01-01",
+                "row_limit": 101,
+                "threshold": 1
+              },
+              "template_version": null,
+              "context_operation": "new",
+              "metadata_versions": [
+                "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad"
+              ],
+              "original_question": "2025年1月按订单统计支付尝试次数，保留大于1次的订单",
+              "parameter_summary": {
+                "end": "2025-02-01",
+                "start": "2025-01-01",
+                "row_limit": 101,
+                "threshold": 1
+              },
+              "data_build_version": null,
+              "execution_strategy": "dynamic_sql",
+              "sql_asset_reference": null,
+              "metric_definition_version": null,
+              "started_at": "2026-11-11 07:14:40.955337+00:00",
+              "completed_at": "2026-11-11 07:14:48.484041+00:00"
+            },
+            "passed": true
+          }
+        ]
+      }
+    ]
+  }
+}
