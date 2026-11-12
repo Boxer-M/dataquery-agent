@@ -17,6 +17,7 @@ SQL Shed 是采用 CC0 许可的公开合成测试数据集，独立存放于 `s
 | 受控明细查询 | 固定模板执行同单支付顺序与订单商品净额查询。[受控明细](docs/warehouse/CONTROLLED_DETAIL_EXECUTION.md) |
 | 动态 SQL | 对已批准的新分析生成候选 SQL，经 AST 与业务口径验证后只读执行。[动态 SQL](docs/warehouse/DYNAMIC_SQL_ENGINE.md) |
 | 会话与历史 | 支持结构化追问、澄清恢复和按查询 ID 追溯。[会话状态与查询历史](docs/warehouse/CONVERSATION_QUERY_HISTORY.md) |
+| 查询资产 | 独立验证并发布可复用的查询版本，在执行前检查依赖。[查询资产治理](docs/warehouse/QUERY_ASSET_GOVERNANCE.md) |
 
 ## 测试与验证
 
