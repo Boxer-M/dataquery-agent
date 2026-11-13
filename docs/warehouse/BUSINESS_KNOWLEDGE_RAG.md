@@ -43,3 +43,24 @@ export PYTHONPATH=src
 [初始评测报告](../../reports/warehouse/business_knowledge_v1.json)记录了固定向量、合成文档和独立 ODS 对账。后续授权验收将正式目录 38 个指标片段与三份白名单技术文档中的 4 个指定片段用真实 Gemini Embedding 编入 pgvector。文件与片段哈希、检索候选、引用及权限隔离结果见[正式索引报告](../../reports/warehouse/repository_embeddings_v1.json)。
 
 复现授权验收时，先运行 `PYTHONPATH=src .venv/bin/python tests/evaluate_repository_embeddings.py` 生成预检清单。复核来源、行号和片段数量后，使用 `--approved-manifest <manifest.json>` 执行。清单与实际请求内容的哈希必须一致。验收只调用 Embedding，引用在本地核对。
+
+## 正式指标精确路由
+
+| 请求 | RAG v1 | 精确路由 |
+|---|---|---|
+| 指标 ID、正式名称或已有别名的定义查询 | 按主题过滤后调用 Query Embedding | 直接读取当前目录，按来源、版本和内容哈希查找活跃 Chunk |
+| 多义别名或多个候选指标 | 可同时返回匹配主题 | 返回候选口径供澄清 |
+| 未登记的订单退款率 | 返回缺失提示 | 返回缺失提示，禁止命中更宽泛的退货率别名 |
+| 正式目录存在而对应索引缺失或过期 | 可能返回证据不足 | 展示当前目录定义，并明确缺少可用引用 |
+| 退货指标联合分析 | 指标服务加向量检索 | 指标服务加精确目录引用 |
+| 平台规则或技术文档 | 向量检索 | 沿用向量检索 |
+
+精确查询使用既有只读角色和 RLS，核对目录条目、Chunk 原文、位置及哈希。Trace 记录匹配方法、指标 ID、执行路径、Embedding 调用标志和引用。会话历史为新记录增加这些字段，旧记录仍按原格式读取。任意指标和技术文档的组合解释尚未实现。
+
+```bash
+PYTHONPATH=src .venv/bin/python -m dataquery_agent.rag.cli ask 'item_return_rate'
+PYTHONPATH=src .venv/bin/python -m dataquery_agent.rag.cli ask '商品明细退货率怎么定义？'
+PYTHONPATH=src .venv/bin/python -m dataquery_agent.rag.cli ask '退货率怎么定义？'
+```
+
+[精确路由验收报告](../../reports/warehouse/metric_exact_routing_v1.json)记录真实 PostgreSQL 查询、引用、历史和独立 ODS 对账。外部模型调用由失败哨兵拦截并核对调用次数。

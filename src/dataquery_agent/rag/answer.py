@@ -78,18 +78,18 @@ def validate_answer(raw, evidence):
     if bool(claims) == (status == "insufficient"):
         raise KnowledgeError("invalid_citation")
     by_id = {item["chunk_id"]: item for item in evidence}
-    verified = []
-    for item in claims:
-        if (not isinstance(item, dict) or set(item) != {"chunk_id", "quote"}
-                or not isinstance(item["chunk_id"], str) or not isinstance(item["quote"], str)):
-            raise KnowledgeError("invalid_citation")
-        source, quote = by_id.get(item["chunk_id"]), item["quote"]
-        if source is None or not 4 <= len(quote.strip()) <= 600 or quote not in source["evidence_text"]:
-            raise KnowledgeError("invalid_citation")
-        ensure_safe(quote)
-        citation = {key: val for key, val in source.items() if key != "evidence_text"}
-        verified.append({**citation, "quote": quote})
-    return status, verified
+    return status, [validate_claim(item, by_id) for item in claims]
+
+
+def validate_claim(item, by_id):
+    if (not isinstance(item, dict) or set(item) != {"chunk_id", "quote"}
+            or not isinstance(item["chunk_id"], str) or not isinstance(item["quote"], str)):
+        raise KnowledgeError("invalid_citation")
+    source, quote = by_id.get(item["chunk_id"]), item["quote"]
+    if source is None or not 4 <= len(quote.strip()) <= 600 or quote not in source["evidence_text"]:
+        raise KnowledgeError("invalid_citation")
+    ensure_safe(quote)
+    return {key: value for key, value in source.items() if key != "evidence_text"} | {"quote": quote}
 
 
 class KnowledgeService:
@@ -107,6 +107,10 @@ class KnowledgeService:
         if (ROOT / ".env.knowledge").exists():
             return cls(Retriever(KnowledgeStore.local(), GeminiEmbedding.local()), catalog, synthetic=synthetic)
         return None
+
+    def exact(self, service, resolution, **scope):
+        from .catalog_evidence import exact_definitions
+        return exact_definitions(self.retriever.store, service, resolution, **scope)
 
     def answer(self, question, runtime, *, today, owner=None, topics=None, missing=None, rules=False):
         try:
