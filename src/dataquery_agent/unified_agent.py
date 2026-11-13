@@ -45,17 +45,18 @@ TIME_TAIL = re.compile(r"季度|半年|截至|以来|之前|之后|以前|以后
 
 
 class UnifiedAgent:
-    def __init__(self, service, capability, detail_executor=None, dynamic_engine=None, asset_runtime=None):
+    def __init__(self, service, capability, detail_executor=None, dynamic_engine=None, asset_runtime=None, knowledge=None):
         self.service = service
         self.capability = capability
         self.detail_executor = detail_executor
         self.dynamic_engine = dynamic_engine
         self.asset_runtime = asset_runtime
+        self.knowledge = knowledge
         self.semantic = SemanticResolver(service)
         self.candidates = MetricCandidates(self.semantic)
         self.planner = BusinessQueryPlanner(service)
 
-    def answer(self, question, generate, *, today=None, state=None):
+    def answer(self, question, generate, *, today=None, state=None, knowledge_owner=None):
         """Answer one question. State is reserved for a future validated context."""
         started = monotonic()
         runtime = AgentRuntime(generate)
@@ -63,7 +64,7 @@ class UnifiedAgent:
         frame = {"task": "unknown", "routes": [], "match": None, "event_time_hint": None}
         try:
             result = self._answer(question, runtime, frame, trace,
-                                  today or datetime.now(ZoneInfo("Asia/Shanghai")).date(), state)
+                                  today or datetime.now(ZoneInfo("Asia/Shanghai")).date(), state, knowledge_owner)
         except ModelUnavailable:
             result = outcome("error", "model_unavailable", "模型暂时不可用，请稍后重试。")
         trace["elapsed_ms"] = round((monotonic() - started) * 1000)
@@ -73,7 +74,7 @@ class UnifiedAgent:
             "choices": result.get("choices", []), "result": result, "trace": trace,
         }
 
-    def _answer(self, question, runtime, frame, trace, today, state):
+    def _answer(self, question, runtime, frame, trace, today, state, knowledge_owner=None):
         if state is not None:
             return outcome("clarify", "state_not_supported", "请在当前问题中完整说明查询需求。")
         if not isinstance(question, str) or not question.strip() or len(question) > 500:
@@ -81,6 +82,11 @@ class UnifiedAgent:
         if INJECTION.search(question):
             frame["task"] = "blocked"
             return outcome("unsupported", "unsafe_request", "请直接描述业务需求。")
+        if self.knowledge is not None:
+            from .rag.routing import route_knowledge
+            routed = route_knowledge(self, question, runtime, frame, trace, today, knowledge_owner)
+            if routed is not None:
+                return routed
         mentions = list(dict.fromkeys(match.group() for match in self.semantic.metric_pattern.finditer(question)))
         analysis = self.recognize_analysis(question, mentions)
         if analysis in {"refund_settled_at", "browse_conversion_rate", "payment_amount_by_category"}:
@@ -413,9 +419,10 @@ def main():
         capability = CapabilityResolver(CapabilityRegistry(MetadataService.local().snapshot()))
         generate = gemini_generator(dotenv_values(ROOT / ".env"), include_usage=True, schema_for_prompt=schema_for_prompt)
         from .query_asset_governance import QueryAssetRuntime
+        from .rag.answer import KnowledgeService
         engine = DynamicSqlEngine.local()
         result = UnifiedAgent(service, capability, DetailQueryExecutor.local(), engine,
-                              QueryAssetRuntime.local(engine)).answer(args.question, generate)
+                              QueryAssetRuntime.local(engine), KnowledgeService.local(service.metrics)).answer(args.question, generate)
     except (OSError, KeyError, ValueError, psycopg.Error):
         message = "无法初始化指标、模型或只读元数据。"
         result = {

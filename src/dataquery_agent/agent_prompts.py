@@ -6,7 +6,8 @@ from .dynamic_context import PROMPT_VERSION as DYNAMIC_VERSION
 TEXT_ARRAY = {"type": "array", "items": {"type": "string"}}
 
 PROMPT_VERSIONS = {"intent": "intent-v3", "resolution": "metric-resolution-v2",
-                   "planning": "business-plan-v1", "dynamic_sql": DYNAMIC_VERSION}
+                   "planning": "business-plan-v1", "dynamic_sql": DYNAMIC_VERSION,
+                   "knowledge": "knowledge-extractive-v1"}
 OUTPUT_SCHEMAS = {
     DYNAMIC_VERSION: {
         "type": "object",
@@ -46,6 +47,9 @@ OUTPUT_SCHEMAS = {
 
 
 def schema_for_prompt(prompt):
+    if prompt.startswith("[knowledge-extractive-v1]"):
+        from .rag.answer import ANSWER_SCHEMA
+        return ANSWER_SCHEMA
     return next((schema for version, schema in OUTPUT_SCHEMAS.items()
                  if prompt.startswith(f"[{version}]")), None)
 
