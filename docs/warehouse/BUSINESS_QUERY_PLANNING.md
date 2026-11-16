@@ -46,3 +46,23 @@ INTENT_GEMINI_TESTS=1 METRIC_QUERY_POSTGRES_TESTS=1 WAREHOUSE_POSTGRES_TESTS=1 \
 固定模式验证计划、工具参数、结果处理与拒绝逻辑。PostgreSQL 模式使用固定计划，调用真实指标服务并与独立 ODS SQL 比较。live 模式同时验证真实 Gemini 和真实工具。两类真实模式的数值检查分别重算变化值、排序和阈值，不采用模拟工具结果。
 
 本轮完整回归 92/92。固定用例 19/19，真实 PostgreSQL 6/6，最终真实 Gemini 6/6。首轮真实 Gemini 为 4/5，其中逐笔明细场景遇到一次模型调用失败。加入有限重试后，最终样本中的 4 个执行场景与 ODS 一致，2 个澄清或拒绝场景均未执行数据库查询。延迟、逐例检查以及 3 个真实计划与查询 Trace 见[评测报告](../../reports/warehouse/business_planning_v1.json)。
+
+## Business Planner v2
+
+| 请求 | 既有路径 | v2 |
+|---|---|---|
+| 标准指标数值、跨期、排行 | 原 Planner 和指标服务 | 沿用既有候选计划、校验和执行 |
+| 两个明确指标或一个多义别名 | 精确实体解析统一标为歧义 | 分别返回 `multiple` 和 `ambiguous` |
+| 数值附正式定义 | 固定退货联合查询 | 经过验证的标准计划可以选择附加正式定义 |
+| 发布资产及受控动态 SQL | 各自的既有路径 | 沿用既有路径 |
+
+Unified Agent 从明确的定义请求后缀识别联合任务，把数值问题送入原 Planner。最多支持五个正式指标，并继续使用既有步数、时间、维度、筛选和观察截止校验。模型输出仍由程序验证。能力路由通过后，指标服务和 Catalog 精确查找分别返回结果。目录精确查找使用活跃版本、内容哈希、权限及原文校验。
+
+每个子任务记录执行状态、来源和 Trace ID。定义索引缺失时，SQL 数值仍可返回，整体状态为 `partial`，目录子任务为 `unavailable`，当前目录文字带缺少引用的提示。历史为新请求追加 `subtasks`，已有会话和历史兼容读取。
+
+```bash
+PYTHONPATH=src .venv/bin/python -m dataquery_agent.unified_agent '查询2025年1月订单量和订单商品明细数，并给出正式定义'
+KNOWLEDGE_POSTGRES_TESTS=1 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -p test_business_planner_v2.py -v
+```
+
+[真实 PostgreSQL 联合查询验收](../../reports/warehouse/business_planner_v2.json)使用固定候选计划、真实指标服务和独立 ODS 查询，并包含模拟目录索引缺失的 Trace。自由组合技术文档和跨任务调度留待后续工作。

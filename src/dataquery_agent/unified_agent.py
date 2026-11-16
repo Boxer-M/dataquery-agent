@@ -327,14 +327,34 @@ class UnifiedAgent:
         return {"status": "ok", "detail_result": result,
                 "answer_zh": f"{start} 至 {end}（不含结束日），{result['definition']}。{summary}"}
 
-    def business(self, question, runtime, frame, trace, today):
+    def business(self, question, runtime, frame, trace, today, *, catalog=None, owner=None):
         prepared = self.planner.prepare(
             question, lambda prompt: runtime.call("planning", f"[{PROMPT_VERSIONS['planning']}] {prompt}"), today)
         if prepared["status"] != "ready":
             if prepared.get("code") == "invalid_model_output":
                 runtime.invalid_output()
             return prepared
-        return self.run_business_plan(prepared["plan"], frame, trace)
+        plan = prepared["plan"]
+        if catalog is None:
+            return self.run_business_plan(plan, frame, trace)
+        plan["include_catalog_definitions"] = True
+        result = self.run_business_plan(plan, frame, trace)
+        if "tools" not in result:
+            return result
+        from .rag.routing import catalog_tasks
+        resolution = dict(catalog, method="validated_plan", metric_ids=plan["metric_ids"])
+        knowledge = self.knowledge.exact(self.service, resolution, today=today, owner=owner)
+        trace["tools"].append(knowledge["retrieval_trace"])
+        subtasks = [dict(tool, kind="metric", metric_id=tool["request"]["metric_id"]) for tool in result["tools"]]
+        subtasks += catalog_tasks(knowledge, plan["metric_ids"])
+        status = result["status"]
+        if status == "ok" and knowledge["evidence_status"] != "supported":
+            status = "partial"
+        elif status == "error" and knowledge["citations"]:
+            status = "partial"
+        return dict(result, status=status, path="hybrid", knowledge_result=knowledge, subtasks=subtasks,
+                    metric_resolution=resolution, answer_zh=result["answer_zh"] + "\n正式定义\n" + knowledge["answer_zh"])
+
 
     def run_business_plan(self, plan, frame, trace):
         routes = {}

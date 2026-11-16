@@ -46,6 +46,7 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         "metric_results": result.get("metric_results", []),
     }
     return {
+        **({"subtasks": result["subtasks"]} if "subtasks" in result else {}),
         **({"knowledge": knowledge_audit} if knowledge_audit is not None else {}),
         **({"query_asset": result["query_asset"]} if strategy == "published_asset" else {}),
         "query_id": str(uuid4()), "conversation_id": str(claim["conversation_id"]),
