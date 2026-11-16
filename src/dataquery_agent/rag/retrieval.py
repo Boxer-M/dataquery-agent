@@ -16,7 +16,7 @@ class Retriever:
         self.store = store
         self.embedding = embedding
 
-    def search(self, question, *, today, owner=None, synthetic=False, topics=None, rules=False, top_k=6, reviewed_pdf=False):
+    def search(self, question, *, today, owner=None, synthetic=False, topics=None, rules=False, top_k=6, reviewed_pdf=False, include_reviewed_pdf=False):
         if not isinstance(question, str) or not 1 <= len(question.strip()) <= 500 or type(top_k) is not int or not 1 <= top_k <= 10:
             raise KnowledgeError("invalid_retrieval_request")
         if not isinstance(today, date) or (topics is not None and
@@ -24,7 +24,15 @@ class Retriever:
             raise KnowledgeError("invalid_retrieval_request")
         if reviewed_pdf and (not owner or synthetic or topics is not None or rules):
             raise KnowledgeError("invalid_pdf_retrieval_scope")
-        pdf_provenance = ",v.pdf_review,'published' AS publication_state" if reviewed_pdf else ""
+        include_reviewed_pdf = bool(include_reviewed_pdf and owner and not synthetic and topics is None)
+        allow_pdf = reviewed_pdf or include_reviewed_pdf
+        pdf_provenance = ",v.pdf_review,'published' AS publication_state" if allow_pdf else ""
+        pdf_gate = """AND (d.source_type <> 'reviewed_pdf' OR (
+            d.owner_scope = current_setting('agent.owner_scope', true)
+            AND d.deleted_at IS NULL AND d.active_version = c.document_version AND d.active_index = c.index_version
+            AND v.pdf_review->>'review_state' = 'reviewed'
+            AND v.pdf_review->>'file_sha256' = v.content_hash
+            AND v.pdf_review->>'owner_scope' = d.owner_scope))""" if allow_pdf else ""
         query = " ".join(unicodedata.normalize("NFKC", question).split())
         ensure_safe(query)
         started = monotonic()
@@ -45,24 +53,28 @@ class Retriever:
                     FROM {CHUNKS} c JOIN {DOCS} d USING(document_id)
                     JOIN {VERSIONS} v USING(document_id,document_version)
                     WHERE c.embedding_version=%(version)s AND c.embedding_model=%(model)s
-                      AND (d.source_type='reviewed_pdf') = %(reviewed_pdf)s
+                      AND (NOT %(pdf_only)s OR d.source_type='reviewed_pdf')
+                      AND (%(allow_pdf)s OR d.source_type<>'reviewed_pdf')
+                      {pdf_gate}
                       AND (%(topics)s::text[] IS NULL OR (d.source_type='catalog' AND v.topic=ANY(%(topics)s)))
-                      AND (NOT %(rules)s OR d.source_type IN ('business_rule','synthetic_fixture'))
+                      AND (NOT %(rules)s OR d.source_type IN ('business_rule','synthetic_fixture','reviewed_pdf'))
                 )
                 SELECT * FROM scored
                 ORDER BY (evidence_date_status='active') DESC,
                          (retrieval_score + CASE WHEN exact_match THEN 0.08 ELSE 0 END) DESC, chunk_id
                 LIMIT %(limit)s
             """, {"embedding": values, "terms": exact_terms, "today": today, "version": self.embedding.version,
-                  "model": self.embedding.model, "reviewed_pdf": reviewed_pdf, "topics": topics, "rules": rules, "limit": min(3 * top_k, 30)}).fetchall()
+                  "model": self.embedding.model, "pdf_only": reviewed_pdf, "allow_pdf": allow_pdf, "topics": topics, "rules": rules, "limit": min(3 * top_k, 30)}).fetchall()
             if not rows:
                 compatible = pg.execute(f"""
                     SELECT EXISTS (SELECT 1 FROM {CHUNKS} c JOIN {DOCS} d USING(document_id)
                         JOIN {VERSIONS} v USING(document_id,document_version)
-                        WHERE (d.source_type='reviewed_pdf') = %s
+                        WHERE (NOT %s OR d.source_type='reviewed_pdf')
+                          AND (%s OR d.source_type<>'reviewed_pdf')
+                          {pdf_gate}
                           AND (%s::text[] IS NULL OR (d.source_type='catalog' AND v.topic=ANY(%s)))
-                          AND (NOT %s OR d.source_type IN ('business_rule','synthetic_fixture')))
-                """, (reviewed_pdf, topics, topics, rules)).fetchone()
+                          AND (NOT %s OR d.source_type IN ('business_rule','synthetic_fixture','reviewed_pdf')))
+                """, (reviewed_pdf, allow_pdf, topics, topics, rules)).fetchone()
                 incompatible = next(iter(compatible.values()))
             else:
                 incompatible = False
@@ -76,9 +88,9 @@ class Retriever:
         trace = {
             "trace_id": uuid4().hex, "strategy": STRATEGY, "query_embedding_called": True, "embedding_model": self.embedding.model,
             "embedding_version": self.embedding.version, "index_incompatible": incompatible,
-            "query": query, "scope": "reviewed_pdf" if reviewed_pdf else "rules" if rules else "catalog" if topics else "all", "elapsed_ms": round((monotonic() - started) * 1000),
+            "query": query, "includes_reviewed_pdf": allow_pdf, "scope": "reviewed_pdf" if reviewed_pdf else "rules" if rules else "catalog" if topics else "all", "elapsed_ms": round((monotonic() - started) * 1000),
             "candidates": [{key: row[key] for key in ("document_id", "document_version", "chunk_id", "retrieval_score",
-                                                     "exact_match", "evidence_date_status", "source_location", "heading_path")}
+                                                     "exact_match", "evidence_date_status", "source_location", "heading_path", "source_type")}
                            for row in rows],
         }
         return rows[:top_k], trace

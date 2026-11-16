@@ -43,6 +43,12 @@ class Citation(BaseModel):
     source_location: str | None = None
     source_type: str | None = None
     quote: str | None = None
+    source_hash: str | None = None
+    page_number: int | None = None
+    line_start: int | None = None
+    line_end: int | None = None
+    extraction_method: str | None = None
+    access_scope: str | None = None
 
 
 class MetricDefinition(BaseModel):
@@ -71,6 +77,8 @@ class TraceStep(BaseModel):
     schedule_position: int | None = None
     elapsed_ms: int | float | None = None
     agent_elapsed_ms: int | float | None = None
+    scope: str | None = None
+    includes_reviewed_pdf: bool | None = None
 
 
 class PublicTrace(BaseModel):
@@ -93,6 +101,7 @@ class QueryResponse(BaseModel):
     rows: list[dict[str, JsonValue]] = Field(default_factory=list)
     rows_truncated: bool = False
     row_count: int | None = None
+    evidence_status: str | None = None
     citations: list[Citation] = Field(default_factory=list)
     definitions: list[MetricDefinition] = Field(default_factory=list)
     clarification_choices: list[MetricDefinition] = Field(default_factory=list)
@@ -114,9 +123,15 @@ def identifier(value):
     return None
 
 
-def projection(model, item, *, ids=()):
-    return model(**{key: identifier(item.get(key)) if key in ids else text(item.get(key), 600)
-                    for key in model.model_fields if key in item})
+def projection(model, item, *, ids=(), positive_ints=()):
+    fields = {}
+    for key in model.model_fields.keys() & item.keys():
+        value = item[key]
+        if key in positive_ints:
+            fields[key] = value if type(value) is int and value > 0 else None
+        else:
+            fields[key] = identifier(value) if key in ids else text(value, 600)
+    return model(**fields)
 
 
 def steps(items):
@@ -126,12 +141,14 @@ def steps(items):
         details = item.get("agent_call", {})
         request = item.get("request") or item.get("authorization_subject") or {}
         fields = {key: identifier(item.get(key)) if key in identifiers else text(item.get(key), 120)
-                  for key in TraceStep.model_fields if key not in {"sources", "depends_on", "failed_dependencies", "schedule_position", "elapsed_ms", "agent_elapsed_ms"}}
+                  for key in TraceStep.model_fields if key not in {"sources", "depends_on", "failed_dependencies", "schedule_position", "elapsed_ms", "agent_elapsed_ms", "includes_reviewed_pdf"}}
         fields.update(metric_id=text(item.get("metric_id") or request.get("metric_id"), 120),
                       agent=text(details.get("agent") or item.get("agent"), 120),
                       kind=text(item.get("kind") or ("metric" if item.get("request", {}).get("metric_id") else None), 120),
                       tool=text(details.get("tool") or item.get("tool") or item.get("strategy"), 120),
                       code=text(item.get("code") or item.get("error_code") or item.get("reason_code"), 120))
+        if type(item.get("includes_reviewed_pdf")) is bool:
+            fields["includes_reviewed_pdf"] = item["includes_reviewed_pdf"]
         fields["sources"] = [text(source, 150) for source in item.get("sources", [])[:10] if isinstance(source, str)]
         for key in ("depends_on", "failed_dependencies"):
             if key in item:
@@ -184,7 +201,8 @@ def public_response(data, *, history=False):
     error = ApiError(code=code or "request_failed", message="请求未能完成。") if status == "failed" else None
     if status == "partial" and code:
         error = ApiError(code=code, message="部分任务未能完成。")
-    citations = [projection(Citation, item, ids={"document_id", "chunk_id"})
+    citations = [projection(Citation, item, ids={"document_id", "chunk_id", "source_hash"},
+                            positive_ints={"page_number", "line_start", "line_end"})
                  for item in knowledge.get("citations", [])[:10]]
     public_rows = [metric_row(row) for row in rows[:MAX_ROWS] if isinstance(row, dict)]
     truncated = bool(len(rows) > MAX_ROWS or summary.get("truncated") or primary.get("truncated"))
@@ -198,6 +216,7 @@ def public_response(data, *, history=False):
         message_id=data.get("message_id"), answer=text(data.get("answer_zh")) if status != "failed" else None,
         error=error, rows=public_rows, rows_truncated=truncated,
         row_count=summary.get("row_count", len(rows)), citations=citations,
+        evidence_status=text(knowledge.get("evidence_status"), 40),
         definitions=[projection(MetricDefinition, item) for item in
                      ([primary] if "query_result" in result else tasks)[:12] if item.get("definition")],
         clarification_choices=[projection(MetricDefinition, item) for item in data.get("choices", [])[:8]],

@@ -1,5 +1,6 @@
 """Build evidence and enforce extractive, attributable model responses."""
 import json
+import re
 from uuid import uuid4
 
 import psycopg
@@ -25,6 +26,22 @@ EVIDENCE_FIELDS = (
 )
 
 
+def pdf_citation_fields(row):
+    location = re.fullmatch(r"page:([1-9][0-9]*);lines:([1-9][0-9]*)-([1-9][0-9]*)",
+                            row["source_location"])
+    review = row.get("pdf_review") or {}
+    if not location or not row["private"] or review.get("review_state") != "reviewed":
+        return None
+    page, first, last = map(int, location.groups())
+    source = next((item for item in review.get("pages", []) if item.get("page") == page), {})
+    method, digest = source.get("method"), review.get("file_sha256")
+    if (first > last or method not in {"native_text", "ocr"} or digest != row["document_hash"]
+            or not isinstance(digest, str) or not re.fullmatch(r"[a-f0-9]{64}", digest)):
+        return None
+    return dict(page_number=page, line_start=first, line_end=last, source_hash=digest,
+                extraction_method=method)
+
+
 def build_evidence(rows, catalog):
     active, expired = [], []
     for row in rows:
@@ -37,6 +54,11 @@ def build_evidence(rows, catalog):
         except KnowledgeError:
             continue
         citation = {key: row[key] for key in EVIDENCE_FIELDS}
+        if row["source_type"] == "reviewed_pdf":
+            fields = pdf_citation_fields(row)
+            if fields is None:
+                continue
+            citation.update(fields)
         citation.update(access_scope="owner" if row["private"] else "public", evidence_text=row["chunk_text"])
         (active if row["evidence_date_status"] == "active" else expired).append((row, citation))
     # Same-topic rules of equal authority with distinct active content require a human decision.
@@ -112,10 +134,11 @@ class KnowledgeService:
         from .catalog_evidence import exact_definitions
         return exact_definitions(self.retriever.store, service, resolution, **scope)
 
-    def answer(self, question, runtime, *, today, owner=None, topics=None, missing=None, rules=False):
+    def answer(self, question, runtime, *, today, owner=None, topics=None, missing=None, rules=False, pdf_only=False):
         try:
             rows, trace = self.retriever.search(question, today=today, owner=owner, synthetic=self.synthetic,
-                                                topics=topics, rules=rules)
+                                                topics=topics, rules=rules and not pdf_only,
+                                                reviewed_pdf=pdf_only, include_reviewed_pdf=True)
             evidence, expired, conflicts = build_evidence(rows, self.catalog)
         except (KnowledgeError, psycopg.Error, OSError, ValueError) as error:
             code = str(error) if isinstance(error, KnowledgeError) else "knowledge_unavailable"
@@ -153,12 +176,27 @@ class KnowledgeService:
                 if isinstance(error, KnowledgeError):
                     runtime.invalid_output()
                 status = "insufficient"
+        pdf_citations = [item for item in citations if item["source_type"] == "reviewed_pdf"]
+        if pdf_citations:
+            try:
+                current = self.retriever.store.current_pdf_citations(pdf_citations, owner=owner)
+            except (psycopg.Error, KnowledgeError, OSError, ValueError):
+                current = []
+            if len(current) != len(pdf_citations):
+                citations = [item for item in citations if item["source_type"] != "reviewed_pdf"
+                             or item in current]
+                status = "partial" if citations else "insufficient"
         if missing:
             status = "partial" if citations and status == "supported" else status
         lines = []
         for index, item in enumerate(citations, 1):
             title = ("[合成测试] " if item["source_type"] == "synthetic_fixture" else "") + item["title"]
-            lines.append(f"{item.get('quote', '发现冲突来源')} [{index}] {title} · {item['source_location']}"
+            if item["source_type"] == "reviewed_pdf":
+                location = f"PDF 第 {item['page_number']} 页 · 审核文本第 {item['line_start']}–{item['line_end']} 行"
+                quote = f"原文摘录：“{item['quote']}”"
+            else:
+                location, quote = item["source_location"], item.get("quote", "发现冲突来源")
+            lines.append(f"{quote} [{index}] {title} · {location}"
                          f" · 版本 {item['document_version']}")
         messages = {"conflict": "存在同等权威的冲突来源，需要确认适用规则。",
                     "insufficient": "已接入资料没有足够证据回答这个问题。",

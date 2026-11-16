@@ -39,6 +39,7 @@ SQL Shed 电商数仓已完成 ODS 接入、DWD/DIM 建模、DWS 汇总和 ADS �
 - [订单量图表与浏览器验收](FRONTEND_ECHARTS_V1.md)
 - [本地 PDF 提取与 OCR](DOCUMENT_INGESTION_V1.md)
 - [PDF 审核、版本化 Chunk 与向量检索](DOCUMENT_RAG_V2.md)
+- [Knowledge Agent PDF 检索与可信引用](DOCUMENT_RAG_V3.md)
 - [真实 Gemini 端到端对照评测](REAL_LLM_E2E_EVALUATION.md)
 - [统一 Agent 端到端报告](../../reports/warehouse/unified_agent_v1.json)
 
