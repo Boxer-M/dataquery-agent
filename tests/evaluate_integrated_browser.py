@@ -93,6 +93,8 @@ def run():
                     env=os.environ | {"WORKSPACE_NATIVE_PDF": str(native), "WORKSPACE_SCAN_PDF": str(PDF)}, text=True,
                 ))
                 document_ui.update(index_batches=stage_engine.batches, injected_timeouts=failures)
+                # Keep the uploaded copy out of the existing single-fixture RAG scenarios.
+                withdraw_ui_documents()
                 if path := os.getenv("WORKSPACE_DOCUMENT_UI_REPORT"):
                     Path(path).write_text(json.dumps(document_ui, ensure_ascii=False, indent=2))
             response = subprocess.check_output(["node", "tests/browser.mjs"], cwd=ROOT / "frontend",

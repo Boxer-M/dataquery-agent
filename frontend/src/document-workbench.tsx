@@ -13,6 +13,7 @@ export default function DocumentWorkbench({ open, onClose, onAsk }: {
   open: boolean; onClose: () => void; onAsk: (title: string) => void
 }) {
   const [selection, setSelection] = useState<File>()
+  const [lookup, setLookup] = useState('')
   const [fileLabel, setFileLabel] = useState<{ name: string; size: number }>()
   const [document, setDocument] = useState<DocumentReceipt>()
   const [page, setPage] = useState<DocumentPage>()
@@ -75,7 +76,7 @@ export default function DocumentWorkbench({ open, onClose, onAsk }: {
       setSuperseded(replace && receipt.state !== 'published')
       adopt(receipt, file.name.replace(/\.pdf$/i, '').slice(0, 150))
       if (receipt.pages.length) await loadPage(receipt, receipt.pages[0].page)
-    }, ' 如果上传回执丢失，请核对后再手动上传。')
+    }, ' 如果已知 Document ID，可先打开已有文档核对。首次上传若回执丢失，创建结果待确认。')
   }
 
   function review() {
@@ -110,6 +111,22 @@ export default function DocumentWorkbench({ open, onClose, onAsk }: {
     }, ' 当前界面保留最后一次确认的状态。若索引回执丢失，可刷新状态或重试同一审核版本。')
   }
 
+  function reopen() {
+    const id = lookup.trim().toLowerCase()
+    if (!/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/.test(id)) {
+      setError('请输入完整的 Document ID。')
+      return
+    }
+    void run('正在打开文档', async () => {
+      const receipt = await readDocument(id)
+      setSelection(undefined)
+      setFileLabel(undefined)
+      setSuperseded(false)
+      adopt(receipt)
+      if (receipt.pages.length) await loadPage(receipt, receipt.pages[0].page)
+    })
+  }
+
   function refresh() {
     if (!document) return
     void run('正在刷新', async () => {
@@ -142,17 +159,23 @@ export default function DocumentWorkbench({ open, onClose, onAsk }: {
           {document && <Button onClick={() => transfer(true)} disabled={!selection || !!busy}>替换当前 PDF</Button>}
         </div>
         <small>仅接受 PDF，最多 10 MiB、40 页。上传后可逐页核对提取文本。</small>
+        <div className="document-actions">
+          <Input aria-label="已有文档的 Document ID" placeholder="已有文档的 Document ID" value={lookup}
+            maxLength={36} disabled={!!busy} style={{ width: 'min(370px, 100%)' }}
+            onChange={event => setLookup(event.target.value)} onPressEnter={reopen} />
+          <Button onClick={reopen} disabled={!lookup.trim() || !!busy}>打开已有文档</Button>
+        </div>
       </section>
       {busy && <div className="loading" role="status">{busy}…</div>}
       {error && <Alert type="error" showIcon title={error} />}
       {superseded && <Alert type="info" showIcon title="已有发布的旧版本可能仍可用于问答，直到当前版本成功发布。" />}
       {document && <>
-        <section className="document-card document-meta">
+        <section className="document-card document-meta" aria-label="当前导入版本">
           <div><strong>{fileLabel?.name ?? document.title ?? 'PDF 文档'}</strong> <Tag color={document.state === 'published' ? 'green' : 'blue'}>{states[document.state]}</Tag></div>
           <span>{fileLabel && `${(fileLabel.size / 1024).toFixed(1)} KiB · `}{document.pages.length} 页</span>
           <span>Document ID <code>{document.document_id}</code></span>
-          <span>导入版本 <code>{document.version}</code></span>
-          {document.publication && <span>知识版本 <code>{document.publication.version}</code>
+          <span>当前导入版本 <code>{document.version}</code></span>
+          {document.publication && <span>已发布知识版本 <code>{document.publication.version}</code>
             {' · '}{document.publication.indexed ? '已建立索引' : '已复用现有索引'}</span>}
         </section>
         <section className="document-card">

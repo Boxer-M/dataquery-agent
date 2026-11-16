@@ -54,7 +54,7 @@ try {
   await selectFile(process.env.WORKSPACE_NATIVE_PDF)
   await page.route('**/api/documents', route => route.abort('failed'), { times: 1 })
   await button('上传 PDF').click()
-  await drawer.getByText(/如果上传回执丢失/).waitFor()
+  await drawer.getByText(/首次上传若回执丢失，创建结果待确认/).waitFor()
   assert.equal(requests.filter(item => item.path === base && item.method === 'POST').length, 1)
   const native = await act(base, '上传 PDF', 201)
   assert.equal(native.pages[0].method, 'native_text')
@@ -135,11 +135,18 @@ try {
     return { status: response.status, code: (await response.json()).error.code }
   }, { ...reviewed, path })
   assert.deepEqual(stale, { status: 409, code: 'stale_upload_version' })
+  await page.reload()
+  await page.getByRole('button', { name: '文档知识库' }).click()
+  await drawer.getByRole('textbox', { name: '已有文档的 Document ID' }).fill(imported.document_id)
+  await button('打开已有文档').click()
+  await drawer.getByText(replacement.version, { exact: true }).waitFor()
+  await drawer.getByText('待审核', { exact: true }).waitFor()
+  assert.ok(await button('发布到知识库').isDisabled())
   assert.deepEqual(errors, [])
   console.log(JSON.stringify({
     native: native.pages, scanned: imported.pages, review_version: reviewed.review_version,
     publication: published.publication, repeat_publication: replay.publication, citation, query_id: answer.query_id,
-    failure: failed.error.code, upload_network_attempts: 1, stale, browser_authorization_sent: false,
+    failure: failed.error.code, upload_network_attempts: 1, stale, reopened_after_refresh: true, browser_authorization_sent: false,
   }))
 } finally {
   await browser.close()
