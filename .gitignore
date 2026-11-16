@@ -50,3 +50,6 @@ reports/warehouse/*.json.part
 # Frontend local dependencies and build
 frontend/node_modules/
 frontend/dist/
+
+# Local document review signer
+.document-review-key

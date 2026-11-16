@@ -32,6 +32,7 @@ def main():
                     created.append(path)
                     output.write(f"KNOWLEDGE_DSN=postgresql://{name}:{password}@127.0.0.1:5433/sqlshed\n")
             pg.execute((ROOT / "sql/agent_meta/003_business_knowledge.sql").read_text())
+            pg.execute((ROOT / "sql/agent_meta/004_reviewed_pdf.sql").read_text())
             pg.execute(f"""GRANT CONNECT ON DATABASE sqlshed TO {ADMIN}, {READER};
                 GRANT USAGE ON SCHEMA agent_meta, rag_vector TO {ADMIN}, {READER};
                 GRANT SELECT ON {DOCS}, {VERSIONS}, {CHUNKS} TO {ADMIN}, {READER};
