@@ -36,6 +36,8 @@ def build_record(claim, message, answer, operation, elapsed_ms):
     resolution = result.get("metric_resolution")
     knowledge_audit = None if knowledge is None else {
         "execution_path": retrieval.get("strategy") or ("catalog_clarification" if resolution else None),
+        "retrieval_scope": retrieval.get("scope"),
+        "includes_reviewed_pdf": retrieval.get("includes_reviewed_pdf"),
         "query_embedding_called": retrieval.get("query_embedding_called", False if resolution else None),
         "metric_resolution": resolution,
         "reason": retrieval.get("reason") or answer.get("code"),
@@ -78,7 +80,7 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         "latency_ms": elapsed_ms, "error_code": answer.get("code"),
         "tool_traces": [{**{key: tool[key] for key in (*BINDING_FIELDS, "capability_trace_id", "request")
                            if key in tool and "task_id" in tool},
-                         **{key: tool[key] for key in ("strategy", "kind", "tool", "elapsed_ms", "sources") if key in tool},
+                         **{key: tool[key] for key in ("strategy", "kind", "tool", "elapsed_ms", "sources", "agent", "scope", "includes_reviewed_pdf") if key in tool},
                          "trace_id": tool.get("trace_id"), "status": tool.get("status"),
                          "code": tool.get("code") or tool.get("error_code")}
                         for tool in trace.get("tools", [])],

@@ -180,3 +180,31 @@ class KnowledgeStore:
                 ORDER BY c.chunk_index,c.chunk_id
             """, ([doc.source_uri for doc in documents], [doc.topic for doc in documents],
                   today, today)).fetchall()
+
+    def current_pdf_citations(self, citations, *, owner):
+        """Recheck issued PDF quotations under RLS after model generation."""
+        if not citations or not owner:
+            return []
+        with self.transaction(owner) as pg:
+            rows = pg.execute(f"""
+                SELECT c.chunk_id,c.chunk_text,c.content_hash,c.source_location,c.document_version,
+                       d.document_id,v.content_hash AS source_hash
+                FROM {CHUNKS} c JOIN {DOCS} d USING(document_id)
+                JOIN {VERSIONS} v USING(document_id,document_version)
+                WHERE c.chunk_id=ANY(%s) AND d.source_type='reviewed_pdf'
+                  AND d.owner_scope=current_setting('agent.owner_scope', true)
+                  AND d.deleted_at IS NULL AND d.active_version=c.document_version AND d.active_index=c.index_version
+                  AND v.pdf_review->>'review_state'='reviewed'
+                  AND v.pdf_review->>'file_sha256'=v.content_hash
+                  AND v.pdf_review->>'owner_scope'=d.owner_scope
+            """, ([citation["chunk_id"] for citation in citations],)).fetchall()
+        by_id = {row["chunk_id"]: row for row in rows}
+        verified = []
+        for citation in citations:
+            row = by_id.get(citation["chunk_id"])
+            if row and citation["quote"] in row["chunk_text"] and all(
+                row[key] == citation[key] for key in
+                ("document_id", "document_version", "content_hash", "source_location", "source_hash")
+            ):
+                verified.append(citation)
+        return verified

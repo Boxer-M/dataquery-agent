@@ -1,5 +1,6 @@
 """Narrow, explicit knowledge and hybrid routes over the existing metric contract."""
 import re
+from uuid import uuid4
 
 from ..intent_time import TIME, date_window
 from ..intent_semantic_resolver import ALIASES, outcome
@@ -9,6 +10,8 @@ from .documents import CATALOG_PATH
 EXPLANATION = re.compile(r"怎么定义|如何定义|定义是什么|业务定义|口径|有什么区别|有何区别|字段含义|文档|政策|规则|指标定义|正式定义|怎么算")
 RETURN_METRICS = ("return_record_count", "return_record_amount", "item_return_rate")
 DEFINITION = re.compile(r"怎么定义|如何定义|定义是什么|业务定义|指标定义|口径|怎么算|有什么区别|有何区别")
+PDF = re.compile(r"(?<![a-z0-9])pdf(?![a-z0-9])", re.I)
+FORMAL_DEFINITION = re.compile(r"正式(?:指标|业务)?(?:定义|口径)|指标定义")
 ORDER_RATE = re.compile(r"订单(?:退款|退货)率")
 GENERIC_RETURNS = re.compile(r"^退货相关指标是多少[？?，,。\s]*(?:对应的)?业务定义是什么[？?。]?$")
 
@@ -35,7 +38,8 @@ def catalog_tasks(knowledge, metric_ids):
 def route_knowledge(agent, question, runtime, frame, trace, today, owner):
     bare_id = normalize(question.strip().rstrip("？?。")) in agent.service.metrics
     suffix = CATALOG_SUFFIX.search(question)
-    if not bare_id and not suffix and not EXPLANATION.search(question):
+    mentions_pdf = bool(PDF.search(question))
+    if not bare_id and not suffix and not EXPLANATION.search(question) and not mentions_pdf:
         return None
     service = agent.knowledge
     periods = list(TIME.finditer(question))
@@ -65,8 +69,15 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
     if periods and re.search(r"多少|排行|同比|环比", question):
         return None
     frame["task"] = "knowledge"
-    if bare_id or (DEFINITION.search(question) and not re.search(r"字段含义|政策|文档", question)):
-        resolution = MetricEntityResolver(agent.service.metrics, ALIASES | DEFINITION_ALIASES).resolve(ORDER_RATE.sub(" ", question))
+    definition_question = DEFINITION.search(question)
+    document_context = mentions_pdf or re.search(r"字段含义|政策|文档", question)
+    resolution = None
+    if bare_id or definition_question or (mentions_pdf and FORMAL_DEFINITION.search(question)):
+        resolution = MetricEntityResolver(agent.service.metrics, ALIASES | DEFINITION_ALIASES).resolve(
+            ORDER_RATE.sub(" ", question))
+    formal_reference = resolution and (resolution["metric_ids"] or resolution["unknown_ids"] or ORDER_RATE.search(question))
+    if resolution is not None and (bare_id or formal_reference or not document_context
+                                   or (mentions_pdf and FORMAL_DEFINITION.search(question))):
         ids = resolution["metric_ids"]
         methods = {match["method"] for match in resolution["matches"]}
         resolution["method"] = next(iter(methods)) if len(methods) == 1 else "mixed" if methods else "not_found"
@@ -95,12 +106,22 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
     kind = "business_rule" if re.search(r"政策|规则", question) else "technical_document"
     specialist = KnowledgeAgent(
         lookup_catalog=None,
-        answer_document=lambda subject, rules: service.answer(subject, runtime, today=today, owner=owner, rules=rules),
+        answer_document=lambda subject, rules: service.answer(subject, runtime, today=today, owner=owner, rules=rules,
+                                                                   pdf_only=mentions_pdf),
     )
     result = specialist.execute(kind, question, known_metrics=agent.service.metrics, runtime=runtime)
-    trace["agent_calls"] = [result["agent_call"]]
-    trace["tools"].append(result["retrieval_trace"])
-    return dict(result, path="knowledge", knowledge_topic="document")
+    plan_id, attempt_id = uuid4().hex, uuid4().hex
+    binding = {"plan_id": plan_id, "task_id": f"{plan_id}/1", "attempt_id": attempt_id}
+    trace["agent_calls"] = [{**binding, **result["agent_call"]}]
+    retrieval = result.get("retrieval_trace")
+    if retrieval:
+        retrieval.update(binding, agent="knowledge", tool="rag_retrieval", kind="knowledge", status=result["status"])
+        trace["tools"].append(retrieval)
+    task = {**binding, "kind": "knowledge", "status": result["status"], "agent_call": result["agent_call"]}
+    if retrieval:
+        task["trace_id"] = retrieval["trace_id"]
+    return dict(result, path="knowledge", knowledge_topic="document", plan_id=plan_id, attempt_id=attempt_id,
+                subtasks=[task])
 
 
 def knowledge_followup(message, active):
