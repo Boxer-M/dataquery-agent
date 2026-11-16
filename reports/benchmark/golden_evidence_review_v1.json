@@ -1,0 +1,840 @@
+{
+  "dataset_version": "benchmark-golden-evidence-review-v1",
+  "reviewer": "Codex technical evidence review",
+  "parent_digest": "514eb4787e0b0788f519a55c92ad7062df502f5692bfc562654a98c5a91ca344",
+  "holdout_manifest_digest": "2e6ed46945283459b7389f5cc4d2889cc1c37c547e145a3e82652a57e56f1f47",
+  "gemini_calls": 0,
+  "ods_snapshot": {
+    "id": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+    "scope": "SQL Shed ODS content",
+    "tables": {
+      "categories": {
+        "rows": 24,
+        "content_md5": "5cac5091dbbe88826c58998f31570921"
+      },
+      "customers": {
+        "rows": 12000,
+        "content_md5": "75bf913bc65867ac3a41b59d66eacef5"
+      },
+      "products": {
+        "rows": 2000,
+        "content_md5": "fdcbbacc00836de01307ccf720f4c651"
+      },
+      "orders": {
+        "rows": 90000,
+        "content_md5": "0a4bd95a352845982d324af546d6f696"
+      },
+      "order_items": {
+        "rows": 215000,
+        "content_md5": "c58761707e304e4d016f560a9d7bb195"
+      },
+      "payments": {
+        "rows": 95000,
+        "content_md5": "2543325831bac99012e472c90eb12070"
+      },
+      "returns": {
+        "rows": 12000,
+        "content_md5": "d3743924071d9b0e61061cd9f1c6029a"
+      }
+    }
+  },
+  "ods_columns": [
+    {
+      "table_name": "categories",
+      "columns": [
+        "category_id",
+        "category_name",
+        "parent_category_id"
+      ]
+    },
+    {
+      "table_name": "customers",
+      "columns": [
+        "customer_id",
+        "first_name",
+        "last_name",
+        "email",
+        "city",
+        "country",
+        "signup_date",
+        "loyalty_tier",
+        "marketing_opt_in"
+      ]
+    },
+    {
+      "table_name": "order_items",
+      "columns": [
+        "order_item_id",
+        "order_id",
+        "product_id",
+        "quantity",
+        "unit_price",
+        "discount_amount"
+      ]
+    },
+    {
+      "table_name": "orders",
+      "columns": [
+        "order_id",
+        "customer_id",
+        "ordered_at",
+        "shipped_at",
+        "status",
+        "channel",
+        "shipping_country",
+        "coupon_code"
+      ]
+    },
+    {
+      "table_name": "payments",
+      "columns": [
+        "payment_id",
+        "order_id",
+        "method",
+        "amount",
+        "paid_at",
+        "status",
+        "failure_reason"
+      ]
+    },
+    {
+      "table_name": "products",
+      "columns": [
+        "product_id",
+        "sku",
+        "product_name",
+        "category_id",
+        "unit_price",
+        "unit_cost",
+        "discontinued_at"
+      ]
+    },
+    {
+      "table_name": "returns",
+      "columns": [
+        "return_id",
+        "order_item_id",
+        "returned_at",
+        "reason",
+        "refund_amount",
+        "restocked"
+      ]
+    }
+  ],
+  "pdf": {
+    "source": "output/pdf/document-extraction-sample.pdf",
+    "source_type": "repository_synthetic_pdf",
+    "original_sha256": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+    "reviewer": "Codex technical evidence review",
+    "review_version": "pdf-review-v1",
+    "extraction_version": "pdf-extraction-v1",
+    "document_id": "ebb090746f2a1c4c1b27542839449174e14da69c4300e508c89ebf86dd7ed73b",
+    "verified_version": "pdf-8d4522465afaeb9cc37be8f29e2fdd323df002aee54f145c",
+    "publication_state_during_check": "published",
+    "owner_access": "same owner only",
+    "embedding_mode": "fixed-ngram-test-768-v1",
+    "page_inventory": [
+      {
+        "page": 1,
+        "method": "native_text",
+        "status": "ok"
+      },
+      {
+        "page": 2,
+        "method": "ocr",
+        "status": "ok"
+      },
+      {
+        "page": 3,
+        "method": "ocr",
+        "status": "no_text"
+      }
+    ],
+    "reviewed_pages": [
+      {
+        "page": 1,
+        "method": "native_text",
+        "extractor_version": "pypdf 7.1.0",
+        "corrected": false,
+        "extracted_text_sha256": "00e915cead1481e447e387eb37e6a9423154153ed3b75ad8f9ca78dd7b9dc2a8",
+        "reviewed_text_sha256": "00e915cead1481e447e387eb37e6a9423154153ed3b75ad8f9ca78dd7b9dc2a8"
+      },
+      {
+        "page": 2,
+        "method": "ocr",
+        "extractor_version": "Apple Vision revision 3, Version 15.7.7 (Build 24G720)",
+        "corrected": true,
+        "extracted_text_sha256": "6b20ffa95852966782e9b5f1ba7e8fe6f646756aee42346da37d0db0c39bd53f",
+        "reviewed_text_sha256": "9d69d1b715f7b8ee5e81303c7754c56c0c9a1ad991007019dfdd4689c5a9abf5"
+      }
+    ],
+    "active_citations_at_verification": [
+      {
+        "document_id": "ebb090746f2a1c4c1b27542839449174e14da69c4300e508c89ebf86dd7ed73b",
+        "document_version": "pdf-8d4522465afaeb9cc37be8f29e2fdd323df002aee54f145c",
+        "chunk_id": "deabc6bbe0296a93be92b8cc03b5e31eaa4839b49e9cb3eb9edad1926f7c6d44",
+        "title": "Order count PDF evidence verification",
+        "source_uri": "reviewed-pdf:golden-evidence-4ceae3a6e65738b62bb6",
+        "source_location": "page:1;lines:1-3",
+        "heading_path": [],
+        "retrieval_score": 0.8339503506451651,
+        "authority_level": 1,
+        "source_type": "reviewed_pdf",
+        "effective_date": null,
+        "embedding_version": "fixed-ngram-test-768-v1",
+        "content_hash": "14c641c0446181104f2967ae2f3ad4e971306dc9bf9bd4acd622b3f092d8da07",
+        "page_number": 1,
+        "line_start": 1,
+        "line_end": 3,
+        "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+        "extraction_method": "native_text",
+        "access_scope": "owner",
+        "quote": "Order count: 24"
+      },
+      {
+        "document_id": "ebb090746f2a1c4c1b27542839449174e14da69c4300e508c89ebf86dd7ed73b",
+        "document_version": "pdf-8d4522465afaeb9cc37be8f29e2fdd323df002aee54f145c",
+        "chunk_id": "b65fe1b43c07be3a4e2efeb2bd21288ec1064f1532d9f05553e22aae4e876dca",
+        "title": "Order count PDF evidence verification",
+        "source_uri": "reviewed-pdf:golden-evidence-4ceae3a6e65738b62bb6",
+        "source_location": "page:2;lines:1-2",
+        "heading_path": [],
+        "retrieval_score": 0.7100469470024109,
+        "authority_level": 1,
+        "source_type": "reviewed_pdf",
+        "effective_date": null,
+        "embedding_version": "fixed-ngram-test-768-v1",
+        "content_hash": "052a8d6a369c0beaad7d130c47a0d60a66331688877e478c1cb51208cabb1649",
+        "page_number": 2,
+        "line_start": 1,
+        "line_end": 2,
+        "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+        "extraction_method": "ocr",
+        "access_scope": "owner",
+        "quote": "Order count: 48"
+      }
+    ],
+    "superseded_citation": {
+      "document_id": "ebb090746f2a1c4c1b27542839449174e14da69c4300e508c89ebf86dd7ed73b",
+      "document_version": "pdf-ffd52413bbdc4ef90bdad84c63098038e262192904598f4c",
+      "chunk_id": "ab25b178f97cce77bcf29e83b6d2a8fcebd1bc945c8a4ac2dfe2cc23a1a9bab5",
+      "title": "Order count PDF evidence verification",
+      "source_uri": "reviewed-pdf:golden-evidence-4ceae3a6e65738b62bb6",
+      "source_location": "page:2;lines:1-2",
+      "heading_path": [],
+      "retrieval_score": 0.7100469470024109,
+      "authority_level": 1,
+      "source_type": "reviewed_pdf",
+      "effective_date": null,
+      "embedding_version": "fixed-ngram-test-768-v1",
+      "content_hash": "dbfa7c76f32bd14a90a3deddd21f0e5c51685de39e377163426f597ed4d6dd58",
+      "page_number": 2,
+      "line_start": 1,
+      "line_end": 2,
+      "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+      "extraction_method": "ocr",
+      "access_scope": "owner",
+      "quote": "Order count: 4B"
+    },
+    "checks": {
+      "unsigned_rejected": true,
+      "blank_page_not_indexed": true,
+      "foreign_owner_rejected": true,
+      "old_citation_rejected": true,
+      "ocr_confidence_only_in_extraction": true,
+      "revised_citation_uses_reviewed_lines": true,
+      "withdrawn_citations_rejected": true
+    }
+  },
+  "reviews": [
+    {
+      "case_id": "exp1:intent:ambiguous-credit",
+      "decision": "needs_review",
+      "reason_category": "business_definition",
+      "reason": "缺少冲销的正式映射和事件口径",
+      "further_review": "人工确认冲销是会计分录、退款还是调整",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:planning:different-axes",
+      "decision": "needs_review",
+      "reason_category": "business_definition",
+      "reason": "支付方式与品类属于不同事实维度，逐行对应无依据",
+      "further_review": "确认接受独立报表或给出批准的归属规则",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:planning:customer-overlap",
+      "decision": "needs_review",
+      "reason_category": "business_definition",
+      "reason": "ODS 存在订单渠道与账户键，但春季边界与渠道码需确认",
+      "further_review": "确认窗口和电话 / 网站映射后求账户集合交集",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:planning:rates-delta",
+      "decision": "needs_review",
+      "reason_category": "business_definition",
+      "reason": "账户国家与订单国家口径未确认，且取消占比未开放国家轴",
+      "further_review": "声明国家来源、窗口、分母和空分母处理",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:planning:path-funnel",
+      "decision": "reviewed_negative",
+      "reason_category": "capability_boundary",
+      "reason": "ODS 无浏览事件，不能生成端到端漏斗",
+      "further_review": "缺少必要输入或正式规则时保留为能力负例",
+      "authorization": "repo synthetic fixture or read-only public SQL Shed ODS",
+      "human_signoff": null,
+      "evidence": {
+        "catalog_status": {
+          "browse_conversion_rate": "unsupported"
+        },
+        "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+        "scope": "ODS inventory and Metric Query Service contract"
+      },
+      "golden_update": {
+        "intent": "business_plan",
+        "metric_ids": [],
+        "behavior": {
+          "review_rule": "missing_browse_fact",
+          "criterion": "ODS 无浏览事件，不能生成端到端漏斗",
+          "acceptable_status": [
+            "unsupported",
+            "clarify"
+          ],
+          "numerical_result_allowed": false
+        }
+      }
+    },
+    {
+      "case_id": "exp1:planning:department-cost",
+      "decision": "reviewed_negative",
+      "reason_category": "capability_boundary",
+      "reason": "无历史成本、部门或退款责任人，不能估计或分摊毛利",
+      "further_review": "缺少必要输入或正式规则时保留为能力负例",
+      "authorization": "repo synthetic fixture or read-only public SQL Shed ODS",
+      "human_signoff": null,
+      "evidence": {
+        "catalog_status": {
+          "historical_gross_margin_amount": "unsupported"
+        },
+        "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+        "scope": "ODS inventory and Metric Query Service contract"
+      },
+      "golden_update": {
+        "intent": "business_plan",
+        "metric_ids": [],
+        "behavior": {
+          "review_rule": "missing_cost_and_attribution",
+          "criterion": "无历史成本、部门或退款责任人，不能估计或分摊毛利",
+          "acceptable_status": [
+            "unsupported",
+            "clarify"
+          ],
+          "numerical_result_allowed": false
+        }
+      }
+    },
+    {
+      "case_id": "exp1:planning:cohort-drift",
+      "decision": "reviewed_negative",
+      "reason_category": "capability_boundary",
+      "reason": "正式明细退货率采用统一观察截止，7、30 天的逐明细窗口尚无正式口径",
+      "further_review": "缺少必要输入或正式规则时保留为能力负例",
+      "authorization": "repo synthetic fixture or read-only public SQL Shed ODS",
+      "human_signoff": null,
+      "evidence": {
+        "catalog_status": {
+          "item_return_rate": "approved_v1_unchanged"
+        },
+        "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+        "scope": "ODS inventory and Metric Query Service contract"
+      },
+      "golden_update": {
+        "intent": "business_plan",
+        "metric_ids": [
+          "item_return_rate"
+        ],
+        "behavior": {
+          "review_rule": "unsupported_observation_policy",
+          "criterion": "正式明细退货率采用统一观察截止，7、30 天的逐明细窗口尚无正式口径",
+          "acceptable_status": [
+            "unsupported",
+            "clarify"
+          ],
+          "numerical_result_allowed": false
+        }
+      }
+    },
+    {
+      "case_id": "exp1:conversation:keep-filter",
+      "decision": "needs_review",
+      "reason_category": "conversation_fixture",
+      "reason": "缺首轮成功请求及持久化的渠道过滤",
+      "further_review": "保存首轮请求与回执，核验新筛选是否叠加",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:conversation:negate",
+      "decision": "needs_review",
+      "reason_category": "conversation_fixture",
+      "reason": "缺首轮分组与明确清除操作的回执",
+      "further_review": "验证清除渠道分组后仍保留窗口",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:conversation:replace-axis",
+      "decision": "needs_review",
+      "reason_category": "conversation_fixture",
+      "reason": "缺国家轴已保存的会话快照",
+      "further_review": "验证替换为会员等级并保留窗口和指标",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:conversation:replace-clock",
+      "decision": "needs_review",
+      "reason_category": "conversation_fixture",
+      "reason": "缺首轮退货事件窗口状态及改用购买批次的约束",
+      "further_review": "确认是否澄清购买批次和观察截止",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:conversation:mixed-add",
+      "decision": "needs_review",
+      "reason_category": "conversation_fixture",
+      "reason": "缺首轮商品分组与结果，并列计划继承未验证",
+      "further_review": "确认补指标与既有窗口、商品轴和结果上限",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:conversation:follow-ref",
+      "decision": "needs_review",
+      "reason_category": "conversation_fixture",
+      "reason": "缺先前具体引用的有效版本及 Owner 绑定",
+      "further_review": "用已保存的引用快照复核同文档追问",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:conversation:branch-time",
+      "decision": "needs_review",
+      "reason_category": "conversation_fixture",
+      "reason": "缺两窗口比较的历史计划",
+      "further_review": "验证前者只替换基期并重新检查窗口",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:conversation:clarify-scope",
+      "decision": "needs_review",
+      "reason_category": "conversation_fixture",
+      "reason": "缺澄清关联回执，测试报表未唯一标识",
+      "further_review": "提供有权限且当前发布的报表与主题",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:conversation:confirm-share",
+      "decision": "needs_review",
+      "reason_category": "conversation_fixture",
+      "reason": "缺澄清前后的明确窗口和全渠道分母",
+      "further_review": "复核过滤参数没有误缩小分母",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:conversation:invalid-carry",
+      "decision": "needs_review",
+      "reason_category": "conversation_fixture",
+      "reason": "缺原支付方式分组的会话状态",
+      "further_review": "确认改指标时是否主动澄清或拒绝不兼容分组",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:pdf:pdf-metadata",
+      "decision": "reviewed_negative",
+      "reason_category": "document_boundary",
+      "reason": "OCR 置信度仅是提取质量信息，不能作为正式答案依据",
+      "further_review": "按同一已授权夹具重建后复核，映射本次运行的 Chunk ID",
+      "authorization": "repo synthetic fixture or read-only public SQL Shed ODS",
+      "human_signoff": null,
+      "evidence": {
+        "source": "output/pdf/document-extraction-sample.pdf",
+        "content_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+        "version": "pdf-8d4522465afaeb9cc37be8f29e2fdd323df002aee54f145c",
+        "page": 2,
+        "relevant_chunks": [],
+        "expected_behavior": "OCR 置信度仅是提取质量信息，不能作为正式答案依据",
+        "fixture": "ephemeral_replay",
+        "forbidden_chunk_ids": []
+      },
+      "golden_update": {
+        "intent": "knowledge",
+        "tool_path": "rag",
+        "evidence": {
+          "source": "output/pdf/document-extraction-sample.pdf",
+          "content_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "version": "pdf-8d4522465afaeb9cc37be8f29e2fdd323df002aee54f145c",
+          "page": 2,
+          "relevant_chunks": [],
+          "expected_behavior": "OCR 置信度仅是提取质量信息，不能作为正式答案依据",
+          "fixture": "ephemeral_replay",
+          "forbidden_chunk_ids": []
+        },
+        "behavior": {
+          "review_rule": "metadata_not_authority",
+          "criterion": "OCR 置信度仅是提取质量信息，不能作为正式答案依据"
+        }
+      }
+    },
+    {
+      "case_id": "exp1:pdf:pdf-negative",
+      "decision": "reviewed_negative",
+      "reason_category": "document_boundary",
+      "reason": "第三页无审核文本和有效 Chunk，不得返回该页引用",
+      "further_review": "按同一已授权夹具重建后复核，映射本次运行的 Chunk ID",
+      "authorization": "repo synthetic fixture or read-only public SQL Shed ODS",
+      "human_signoff": null,
+      "evidence": {
+        "source": "output/pdf/document-extraction-sample.pdf",
+        "content_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+        "version": "pdf-8d4522465afaeb9cc37be8f29e2fdd323df002aee54f145c",
+        "page": 3,
+        "relevant_chunks": [],
+        "expected_behavior": "第三页无审核文本和有效 Chunk，不得返回该页引用",
+        "fixture": "ephemeral_replay",
+        "forbidden_chunk_ids": []
+      },
+      "golden_update": {
+        "intent": "knowledge",
+        "tool_path": "rag",
+        "evidence": {
+          "source": "output/pdf/document-extraction-sample.pdf",
+          "content_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "version": "pdf-8d4522465afaeb9cc37be8f29e2fdd323df002aee54f145c",
+          "page": 3,
+          "relevant_chunks": [],
+          "expected_behavior": "第三页无审核文本和有效 Chunk，不得返回该页引用",
+          "fixture": "ephemeral_replay",
+          "forbidden_chunk_ids": []
+        },
+        "behavior": {
+          "review_rule": "no_page_evidence",
+          "criterion": "第三页无审核文本和有效 Chunk，不得返回该页引用"
+        }
+      }
+    },
+    {
+      "case_id": "exp1:pdf:pdf-old-ocr",
+      "decision": "reviewed_negative",
+      "reason_category": "document_boundary",
+      "reason": "当前版可引用第 2 页审核文本；旧转录只可在授权历史中审计",
+      "further_review": "按同一已授权夹具重建后复核，映射本次运行的 Chunk ID",
+      "authorization": "repo synthetic fixture or read-only public SQL Shed ODS",
+      "human_signoff": null,
+      "evidence": {
+        "source": "output/pdf/document-extraction-sample.pdf",
+        "content_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+        "version": "pdf-8d4522465afaeb9cc37be8f29e2fdd323df002aee54f145c",
+        "page": 2,
+        "relevant_chunks": [
+          "b65fe1b43c07be3a4e2efeb2bd21288ec1064f1532d9f05553e22aae4e876dca"
+        ],
+        "expected_behavior": "当前版可引用第 2 页审核文本；旧转录只可在授权历史中审计",
+        "fixture": "ephemeral_replay",
+        "forbidden_chunk_ids": [
+          "ab25b178f97cce77bcf29e83b6d2a8fcebd1bc945c8a4ac2dfe2cc23a1a9bab5"
+        ]
+      },
+      "golden_update": {
+        "intent": "knowledge",
+        "tool_path": "rag",
+        "evidence": {
+          "source": "output/pdf/document-extraction-sample.pdf",
+          "content_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "version": "pdf-8d4522465afaeb9cc37be8f29e2fdd323df002aee54f145c",
+          "page": 2,
+          "relevant_chunks": [
+            "b65fe1b43c07be3a4e2efeb2bd21288ec1064f1532d9f05553e22aae4e876dca"
+          ],
+          "expected_behavior": "当前版可引用第 2 页审核文本；旧转录只可在授权历史中审计",
+          "fixture": "ephemeral_replay",
+          "forbidden_chunk_ids": [
+            "ab25b178f97cce77bcf29e83b6d2a8fcebd1bc945c8a4ac2dfe2cc23a1a9bab5"
+          ]
+        },
+        "behavior": {
+          "review_rule": "superseded_source",
+          "criterion": "当前版可引用第 2 页审核文本；旧转录只可在授权历史中审计"
+        }
+      }
+    },
+    {
+      "case_id": "exp1:pdf:pdf-missing-table",
+      "decision": "needs_review",
+      "reason_category": "pdf_source",
+      "reason": "授权样例没有相关表格，无法核对单元格语义",
+      "further_review": "提供有表格、行列关系可复核的授权原件",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:pdf:pdf-original-bbox",
+      "decision": "reviewed_negative",
+      "reason_category": "document_boundary",
+      "reason": "修订引用可定位实际第 2 页和审核文本第 1–2 行，不能提供修订字的原图坐标",
+      "further_review": "按同一已授权夹具重建后复核，映射本次运行的 Chunk ID",
+      "authorization": "repo synthetic fixture or read-only public SQL Shed ODS",
+      "human_signoff": null,
+      "evidence": {
+        "source": "output/pdf/document-extraction-sample.pdf",
+        "content_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+        "version": "pdf-8d4522465afaeb9cc37be8f29e2fdd323df002aee54f145c",
+        "page": 2,
+        "relevant_chunks": [
+          "b65fe1b43c07be3a4e2efeb2bd21288ec1064f1532d9f05553e22aae4e876dca"
+        ],
+        "expected_behavior": "修订引用可定位实际第 2 页和审核文本第 1–2 行，不能提供修订字的原图坐标",
+        "fixture": "ephemeral_replay",
+        "forbidden_chunk_ids": []
+      },
+      "golden_update": {
+        "intent": "knowledge",
+        "tool_path": "rag",
+        "evidence": {
+          "source": "output/pdf/document-extraction-sample.pdf",
+          "content_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "version": "pdf-8d4522465afaeb9cc37be8f29e2fdd323df002aee54f145c",
+          "page": 2,
+          "relevant_chunks": [
+            "b65fe1b43c07be3a4e2efeb2bd21288ec1064f1532d9f05553e22aae4e876dca"
+          ],
+          "expected_behavior": "修订引用可定位实际第 2 页和审核文本第 1–2 行，不能提供修订字的原图坐标",
+          "fixture": "ephemeral_replay",
+          "forbidden_chunk_ids": []
+        },
+        "behavior": {
+          "review_rule": "coordinates_unavailable",
+          "criterion": "修订引用可定位实际第 2 页和审核文本第 1–2 行，不能提供修订字的原图坐标"
+        }
+      }
+    },
+    {
+      "case_id": "exp1:pdf:pdf-shared-filename",
+      "decision": "needs_review",
+      "reason_category": "pdf_source",
+      "reason": "已验证跨 Owner 隔离，尚缺不同 Owner 的同名双文件对照",
+      "further_review": "审核并发布双份同名试件再验证各自引用",
+      "authorization": "no case-specific authoritative source confirmed",
+      "human_signoff": null,
+      "evidence": {},
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:hybrid:pdf-gross",
+      "decision": "needs_review",
+      "reason_category": "pdf_rule",
+      "reason": "授权 PDF 未含折扣披露规定",
+      "further_review": "待批准的披露规则；SQL 成功而证据缺失时仅可返回 partial",
+      "authorization": "repo synthetic fixture or read-only public SQL Shed ODS",
+      "human_signoff": null,
+      "evidence": {
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "item_gross_sales_amount",
+                "start_date": "2025-04-01",
+                "end_date": "2025-05-01",
+                "group_by": [],
+                "filters": {}
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "all",
+                  "value": "217934.96"
+                }
+              ]
+            }
+          ]
+        },
+        "pdf_support": "not_confirmed",
+        "join_claim": "not_supported"
+      },
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:hybrid:pdf-attribution",
+      "decision": "needs_review",
+      "reason_category": "pdf_rule",
+      "reason": "授权 PDF 未定义账户与自然人关系",
+      "further_review": "待审核的身份规则；账户数只能独立陈述",
+      "authorization": "repo synthetic fixture or read-only public SQL Shed ODS",
+      "human_signoff": null,
+      "evidence": {
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "ordering_customer_count",
+                "start_date": "2025-05-01",
+                "end_date": "2025-06-01",
+                "group_by": [],
+                "filters": {}
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "all",
+                  "value": 882
+                }
+              ]
+            }
+          ]
+        },
+        "pdf_support": "not_confirmed",
+        "join_claim": "not_supported"
+      },
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:hybrid:pdf-cohort",
+      "decision": "needs_review",
+      "reason_category": "pdf_rule",
+      "reason": "授权 PDF 未定义窗口内重复下单",
+      "further_review": "核对 PDF 窗口、账户粒度和计数分母；不等同于正式复购率",
+      "authorization": "repo synthetic fixture or read-only public SQL Shed ODS",
+      "human_signoff": null,
+      "evidence": {
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "customer_repeat_order_rate",
+                "start_date": "2025-08-01",
+                "end_date": "2025-09-01",
+                "group_by": [],
+                "filters": {}
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "all",
+                  "value": "0.23421355",
+                  "numerator": 204,
+                  "denominator": 871
+                }
+              ]
+            }
+          ]
+        },
+        "pdf_support": "not_confirmed",
+        "join_claim": "not_supported"
+      },
+      "golden_update": null
+    },
+    {
+      "case_id": "exp1:hybrid:pdf-distinct",
+      "decision": "needs_review",
+      "reason_category": "pdf_rule",
+      "reason": "授权 PDF 未解释商品 ID 与 SKU",
+      "further_review": "核对原文和商品身份关系；禁止用 SKU 改写正式去重规则",
+      "authorization": "repo synthetic fixture or read-only public SQL Shed ODS",
+      "human_signoff": null,
+      "evidence": {
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "ordered_product_count",
+                "start_date": "2025-07-01",
+                "end_date": "2025-08-01",
+                "group_by": [],
+                "filters": {}
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "all",
+                  "value": 884
+                }
+              ]
+            }
+          ]
+        },
+        "pdf_support": "not_confirmed",
+        "join_claim": "not_supported"
+      },
+      "golden_update": null
+    }
+  ],
+  "counts": {
+    "reviewed_before": 53,
+    "pending_before": 27,
+    "reviewed_after": 60,
+    "pending_after": 20,
+    "promoted_negative": 7,
+    "hybrid_sql_only": 4
+  },
+  "pending_reasons": {
+    "business_definition": 4,
+    "conversation_fixture": 10,
+    "pdf_source": 2,
+    "pdf_rule": 4
+  }
+}
