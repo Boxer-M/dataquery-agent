@@ -30,6 +30,7 @@ SQL Shed 电商数仓已完成 ODS 接入、DWD/DIM 建模、DWS 汇总和 ADS �
 - [会话状态与查询历史](CONVERSATION_QUERY_HISTORY.md)
 - [查询资产治理与复用](QUERY_ASSET_GOVERNANCE.md)
 - [业务知识检索与引用](BUSINESS_KNOWLEDGE_RAG.md)
+- [FastAPI 本地接口](FASTAPI_API_V1.md)
 - [真实 Gemini 端到端对照评测](REAL_LLM_E2E_EVALUATION.md)
 - [统一 Agent 端到端报告](../../reports/warehouse/unified_agent_v1.json)
 
