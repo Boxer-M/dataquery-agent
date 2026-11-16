@@ -1,0 +1,12 @@
+[
+  {"id":"clarification_reply","question":"item_net_sales_amount","after":"ambiguous","check":"scalar","metric":"item_net_sales_amount","start":"2025-01-01","end":"2025-02-01"},
+  {"id":"annual_order_count","question":"2025年订单量是多少？","check":"scalar","metric":"order_count","start":"2025-01-01","end":"2026-01-01"},
+  {"id":"monthly_visualization","question":"按月拆分","after":"annual_order_count","check":"month"},
+  {"id":"channel_visualization","question":"查询2025年1月按渠道统计订单量","check":"channel"},
+  {"id":"native_pdf","question":"PDF 中带有 Native verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。","check":"pdf","page":1,"quote":"Order count: 24"},
+  {"id":"ocr_pdf","question":"PDF 中带有 Scanned verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。","check":"pdf","page":2,"quote":"Order count: 48"},
+  {"id":"catalog_over_pdf","question":"PDF 里订单量的正式定义是什么？","check":"catalog"},
+  {"id":"sql_and_pdf","question":"2025年1月订单量是多少，并引用PDF扫描页的 Order count 原文。","check":"combined"},
+  {"id":"foreign_pdf","question":"PDF 中带有 Scanned verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。","check":"absent","foreign":true},
+  {"id":"withdrawn_pdf","question":"PDF 中带有 Scanned verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。","check":"absent","withdraw":true}
+]

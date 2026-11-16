@@ -18,8 +18,8 @@ export type MetricDefinition = {
 
 export type Citation = Partial<Record<
   'document_id' | 'document_version' | 'chunk_id' | 'title' |
-  'source_uri' | 'source_location' | 'source_type' | 'quote', string | null
->>
+  'source_uri' | 'source_location' | 'source_type' | 'quote' | 'source_hash' | 'extraction_method', string | null
+>> & { page_number?: number | null; line_start?: number | null; line_end?: number | null }
 
 export type TraceStep = {
   trace_id?: string; plan_id?: string; task_id?: string; attempt_id?: string

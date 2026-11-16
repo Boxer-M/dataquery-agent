@@ -38,6 +38,9 @@ function CitationDetails({ citation }: { citation: Citation }) {
   const fields = [
     ['来源', citation.source_uri], ['位置', citation.source_location], ['类型', citation.source_type],
     ['版本', citation.document_version], ['文档 ID', citation.document_id], ['片段 ID', citation.chunk_id],
+    ['页码', citation.page_number],
+    ['审核文本行', citation.line_start && citation.line_end ? `${citation.line_start}–${citation.line_end}` : null],
+    ['提取方式', citation.extraction_method], ['原件 SHA-256', citation.source_hash],
   ]
   return <details className="result-details">
     <summary>{citation.title ? `查看引用 · ${citation.title}` : '查看引用'}</summary>

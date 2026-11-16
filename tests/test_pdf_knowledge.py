@@ -94,6 +94,14 @@ class PdfKnowledgePostgresTests(unittest.TestCase):
             self.assertFalse(exact["result"]["retrieval_trace"]["query_embedding_called"])
             self.assertEqual(exact["result"]["retrieval_trace"]["strategy"], "catalog_exact")
 
+            joint = manager.process_message(
+                owner, cid, "2025年1月订单量是多少，并引用PDF扫描页的 Order count 原文。", uuid4(), today=TODAY,
+            )
+            self.assertEqual(joint["code"], "sql_pdf_combination_unsupported")
+            self.assertEqual(joint["trace"]["tools"], [])
+            self.assertEqual(joint["trace"]["model_attempts"], [])
+            self.assertEqual(manager.get_query(owner, joint["query_id"])["error_code"], joint["code"])
+
             switched = {}
             def supersede():
                 switched.update(publish({"2": "扫描样本：订单数量\nOrder count: 48"}))
