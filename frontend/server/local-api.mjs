@@ -5,7 +5,15 @@ const origins = new Map([
   ['127.0.0.1:5173', 'http://127.0.0.1:5173'],
   ['localhost:5173', 'http://localhost:5173'],
 ])
-const queryPath = /^\/api\/queries\/[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i
+const uuid = '[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}'
+const queryPath = new RegExp(`^/api/queries/${uuid}$`)
+const docRoot = '/api/documents'
+const pdfRoute = new RegExp(`^${docRoot}(?:/${uuid}/versions)?$`)
+const reviewRoute = new RegExp(`^${docRoot}/${uuid}/review$`)
+const publishRoute = new RegExp(`^${docRoot}/${uuid}/publish$`)
+const previewRoute = new RegExp(`^${docRoot}/${uuid}(?:/pages/[1-9][0-9]?)?$`)
+const pdfBytes = 10 * 1024 * 1024
+const reviewBytes = 512 * 1024
 const upstream = 'http://127.0.0.1:8000'
 const routes = new Map([
   ['/api/health', 'GET'],
@@ -27,13 +35,21 @@ export function checkAccess(req) {
       || headers['x-dataquery-client'] !== 'workspace') {
     return [403, 'proxy_access_denied', '只允许本地工作台发起同源请求。']
   }
-  const allowedMethod = routes.get(url) ?? (queryPath.test(url) ? 'GET' : undefined)
+  const pdf = pdfRoute.test(url)
+  const review = reviewRoute.test(url)
+  const publish = publishRoute.test(url)
+  const allowedMethod = routes.get(url) ?? (pdf || review || publish ? 'POST'
+    : queryPath.test(url) || previewRoute.test(url) ? 'GET' : undefined)
   if (!allowedMethod) return [404, 'proxy_route_not_found', '此接口未开放。']
   if (allowedMethod !== method) return [405, 'proxy_method_not_allowed', '请求方法不受支持。']
   if (method === 'POST' && headers.origin !== origin) {
     return [403, 'proxy_origin_required', '写入请求需要工作台的本地 Origin。']
   }
-  if (url === '/api/chat' && headers['content-type']?.split(';')[0] !== 'application/json') {
+  const mediaType = headers['content-type']?.split(';')[0].trim().toLowerCase()
+  if (pdf && mediaType !== 'application/pdf') {
+    return [415, 'proxy_pdf_required', '请提交 PDF 请求体。']
+  }
+  if ((url === '/api/chat' || review || publish) && mediaType !== 'application/json') {
     return [415, 'proxy_json_required', '请提交 JSON 请求。']
   }
 }
@@ -46,21 +62,38 @@ export function localApi(tokenFile) {
           || !server.config.server.strictPort) {
         throw new Error('DataQuery workspace requires 127.0.0.1:5173 with strictPort.')
       }
+      let writingDocument = false
       server.middlewares.use(async (req, res, next) => {
         if (!/^\/api(?:\/|\?|$)/.test(req.url ?? '')) return next()
         const rejected = checkAccess(req)
         if (rejected) return error(res, ...rejected)
 
+        const pdf = pdfRoute.test(req.url)
+        const review = reviewRoute.test(req.url)
+        if (pdf || review || publishRoute.test(req.url)) {
+          if (writingDocument) return error(res, 409, 'document_operation_busy', '文档操作正在处理，请重试。')
+          writingDocument = true
+          res.once('close', () => { writingDocument = false })
+        }
+        const requestLimit = pdf ? pdfBytes : review ? reviewBytes : 8192
+        const responseLimit = previewRoute.test(req.url) ? 8 * 1024 * 1024 : 256 * 1024
         const chunks = []
         let size = 0
+        const uploadDeadline = pdf || review ? setTimeout(() => {
+          if (!res.headersSent) error(res, 408, 'request_timeout', '请求体接收超时。')
+          req.destroy()
+        }, 15_000) : undefined
         try {
           for await (const chunk of req.iterator({ destroyOnReturn: false })) {
             size += chunk.length
-            if (size > 8192) return error(res, 413, 'request_too_large', '请求体过大。')
+            if (size > requestLimit) return error(res, 413, 'request_too_large', '请求体过大。')
             chunks.push(chunk)
           }
         } catch {
-          return error(res, 400, 'request_incomplete', '请求未接收完整。')
+          if (!res.headersSent && !res.destroyed) return error(res, 400, 'request_incomplete', '请求未接收完整。')
+          return
+        } finally {
+          clearTimeout(uploadDeadline)
         }
 
         const headers = { Accept: 'application/json' }
@@ -74,7 +107,7 @@ export function localApi(tokenFile) {
           }
           if (!token) return error(res, 503, 'proxy_not_configured', '本地代理的访问配置尚未就绪。')
           headers.Authorization = `Bearer ${token}`
-          if (req.method === 'POST') headers['Content-Type'] = 'application/json'
+          if (req.method === 'POST') headers['Content-Type'] = pdf ? 'application/pdf' : 'application/json'
         }
 
         const call = request(new URL(req.url, upstream), { method: req.method, headers }, (response) => {
@@ -82,7 +115,7 @@ export function localApi(tokenFile) {
           let received = 0
           response.on('data', (part) => {
             received += part.length
-            if (received > 256 * 1024) {
+            if (received > responseLimit) {
               if (!res.headersSent) error(res, 502, 'upstream_response_too_large', '后端响应超出上限。')
               response.destroy()
               return

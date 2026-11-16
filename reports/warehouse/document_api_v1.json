@@ -1,0 +1,201 @@
+{
+  "real_gemini": true,
+  "transport": "HTTP over loopback",
+  "native": {
+    "document_id": "821499c6-1baa-45a4-9e30-dee289673b65",
+    "version": "3c643a6c-38a2-4b80-a8bd-95847ba147ea",
+    "file_sha256": "a148c6773619b92de88df2ff5ed58205d314fd4459ff5474d68ee090f6e2cf9f",
+    "extraction_version": "pdf-extraction-v1",
+    "ocr_bounds_space": "normalized_rotated_crop_box_lower_left",
+    "state": "unreviewed",
+    "review_version": null,
+    "title": null,
+    "review_basis": null,
+    "publication": null,
+    "pages": [
+      {
+        "page": 1,
+        "method": "native_text",
+        "status": "ok",
+        "error": null,
+        "extractor_version": "pypdf 7.1.0"
+      }
+    ]
+  },
+  "import": {
+    "document_id": "cc356b85-7459-46b6-ba84-3d6940d8bb45",
+    "version": "8c98871d-1bdb-4fd8-8ec1-7f9b3f51077b",
+    "file_sha256": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+    "extraction_version": "pdf-extraction-v1",
+    "ocr_bounds_space": "normalized_rotated_crop_box_lower_left",
+    "state": "unreviewed",
+    "review_version": null,
+    "title": null,
+    "review_basis": null,
+    "publication": null,
+    "pages": [
+      {
+        "page": 1,
+        "method": "native_text",
+        "status": "ok",
+        "error": null,
+        "extractor_version": "pypdf 7.1.0"
+      },
+      {
+        "page": 2,
+        "method": "ocr",
+        "status": "ok",
+        "error": null,
+        "extractor_version": "Apple Vision revision 3, Version 15.7.7 (Build 24G720)"
+      },
+      {
+        "page": 3,
+        "method": "ocr",
+        "status": "no_text",
+        "error": null,
+        "extractor_version": "Apple Vision revision 3, Version 15.7.7 (Build 24G720)"
+      }
+    ]
+  },
+  "review": {
+    "document_id": "cc356b85-7459-46b6-ba84-3d6940d8bb45",
+    "version": "8c98871d-1bdb-4fd8-8ec1-7f9b3f51077b",
+    "file_sha256": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+    "extraction_version": "pdf-extraction-v1",
+    "ocr_bounds_space": "normalized_rotated_crop_box_lower_left",
+    "state": "reviewed",
+    "review_version": "pdf-4ef4dd979b465adb3ae1a74a39ec1b77ec4118be04a93ef6",
+    "title": "Synthetic PDF verification",
+    "review_basis": "Compared against the authorized synthetic original",
+    "publication": null,
+    "pages": [
+      {
+        "page": 1,
+        "method": "native_text",
+        "status": "ok",
+        "error": null,
+        "extractor_version": "pypdf 7.1.0"
+      },
+      {
+        "page": 2,
+        "method": "ocr",
+        "status": "ok",
+        "error": null,
+        "extractor_version": "Apple Vision revision 3, Version 15.7.7 (Build 24G720)"
+      },
+      {
+        "page": 3,
+        "method": "ocr",
+        "status": "no_text",
+        "error": null,
+        "extractor_version": "Apple Vision revision 3, Version 15.7.7 (Build 24G720)"
+      }
+    ]
+  },
+  "publish": {
+    "document_id": "cf9b47a828dc8fdfa7dc069a3ef3c9f1df0887a017124dd6ad992851a9091dcd",
+    "version": "pdf-4ef4dd979b465adb3ae1a74a39ec1b77ec4118be04a93ef6",
+    "indexed": true
+  },
+  "republish": {
+    "document_id": "cf9b47a828dc8fdfa7dc069a3ef3c9f1df0887a017124dd6ad992851a9091dcd",
+    "version": "pdf-4ef4dd979b465adb3ae1a74a39ec1b77ec4118be04a93ef6",
+    "indexed": false
+  },
+  "citation": {
+    "document_id": "cf9b47a828dc8fdfa7dc069a3ef3c9f1df0887a017124dd6ad992851a9091dcd",
+    "document_version": "pdf-4ef4dd979b465adb3ae1a74a39ec1b77ec4118be04a93ef6",
+    "chunk_id": "b055fb82594d9945200e1f2880043b63ab92fe8ef417751b013dd7c1ecb25f5a",
+    "title": "Synthetic PDF verification",
+    "source_uri": "reviewed-pdf:api-cc356b85-7459-46b6-ba84-3d6940d8bb45",
+    "source_location": "page:2;lines:1-4",
+    "source_type": "reviewed_pdf",
+    "quote": "Order count: 48",
+    "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+    "page_number": 2,
+    "line_start": 1,
+    "line_end": 4,
+    "extraction_method": "ocr",
+    "access_scope": "owner"
+  },
+  "trace": {
+    "trace_id": "5c95a1e505d54cf4b24e9973564874b3",
+    "plan_id": "cf9050b247814d019f181d6998943efe",
+    "attempt_id": "5f3619a7435e455e8cd7081b2bc17f3f",
+    "tasks": [
+      {
+        "trace_id": "37bd5e6ecaa9439da14c0ab259ec002f",
+        "plan_id": "cf9050b247814d019f181d6998943efe",
+        "task_id": "cf9050b247814d019f181d6998943efe/1",
+        "attempt_id": "5f3619a7435e455e8cd7081b2bc17f3f",
+        "agent": "knowledge",
+        "tool": "rag_retrieval",
+        "kind": "knowledge",
+        "status": "ok",
+        "sources": [],
+        "agent_elapsed_ms": 4186.26
+      }
+    ],
+    "capability": [],
+    "tools": [
+      {
+        "trace_id": "37bd5e6ecaa9439da14c0ab259ec002f",
+        "plan_id": "cf9050b247814d019f181d6998943efe",
+        "task_id": "cf9050b247814d019f181d6998943efe/1",
+        "attempt_id": "5f3619a7435e455e8cd7081b2bc17f3f",
+        "agent": "knowledge",
+        "tool": "rag_retrieval",
+        "kind": "knowledge",
+        "status": "ok",
+        "sources": [],
+        "elapsed_ms": 1628,
+        "scope": "reviewed_pdf",
+        "includes_reviewed_pdf": true
+      }
+    ]
+  },
+  "history_citation_matches": true,
+  "corrections_preserved": true,
+  "original_matches_file": true,
+  "embedding_batches": [
+    {
+      "task_type": "RETRIEVAL_DOCUMENT",
+      "elapsed_ms": 2088,
+      "token_counts": [
+        null,
+        null
+      ]
+    },
+    {
+      "task_type": "RETRIEVAL_QUERY",
+      "elapsed_ms": 1604,
+      "token_counts": [
+        null
+      ]
+    }
+  ],
+  "rejections": [
+    "unreviewed",
+    "forged_signature",
+    "cross_owner",
+    "stale_review",
+    "stale_upload",
+    "valid_signature_for_superseded_review",
+    "active_javascript_pdf",
+    "pdf_over_40_pages"
+  ],
+  "publish_failure_left_unpublished": true,
+  "proxy": {
+    "127.0.0.1": {
+      "import": 201,
+      "preview": 200,
+      "foreign_origin": 403
+    },
+    "localhost": {
+      "import": 201,
+      "preview": 200,
+      "foreign_origin": 403
+    }
+  },
+  "fixture_deactivated": true
+}

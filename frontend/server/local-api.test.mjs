@@ -33,3 +33,20 @@ test('blocks forged hosts, origins, cross-site and non-loopback clients', () => 
   assert.equal(checkAccess({ ...request, socket: { remoteAddress: '192.0.2.1' } })[0], 403)
   assert.equal(checkAccess(withHeaders({ 'content-type': 'text/plain' }))[0], 415)
 })
+
+test('allows bounded PDF import and JSON review routes for the local workspace', () => {
+  const base = '/api/documents'
+  const document = base + '/2f074dc9-2d98-4824-a765-09fc65ead286'
+  const pdf = withHeaders({ 'content-type': 'application/pdf' })
+  assert.equal(checkAccess({ ...pdf, url: base }), undefined)
+  assert.equal(checkAccess({ ...pdf, url: document + '/versions' }), undefined)
+  assert.equal(checkAccess({ ...request, url: base })[0], 415)
+  assert.equal(checkAccess({ ...request, method: 'GET', url: document + '/pages/2' }), undefined)
+  assert.equal(checkAccess({ ...request, url: document + '/review' }), undefined)
+  assert.equal(checkAccess({ ...request, url: document + '/publish' }), undefined)
+  for (const path of ['/%2E%2E/%2Eenv.api', '/pages/01', '?owner=foreign', '/receipt']) {
+    assert.equal(checkAccess({ ...request, method: 'GET', url: document + path })[0], 404)
+  }
+  const foreign = withHeaders({ origin: 'https://example.invalid', 'content-type': 'application/pdf' })
+  assert.equal(checkAccess({ ...foreign, url: base })[0], 403)
+})

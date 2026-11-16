@@ -1,5 +1,7 @@
 """Loopback-only development HTTP API over the existing Conversation Manager."""
+from asyncio import timeout
 from hmac import compare_digest
+import json
 import re
 from uuid import UUID
 
@@ -15,6 +17,8 @@ from .api_models import (
 )
 from .conversation_manager import local_manager
 from .conversation_store import ConversationError
+from .document_api import DOCUMENTS, body_limit, document_router
+from .document_staging import DocumentStaging
 from .metrics import ROOT
 
 MAX_REQUEST_BYTES = 8192
@@ -28,6 +32,7 @@ def failure(status, code, message):
 class LocalRequestLimits:
     def __init__(self, app):
         self.app = app
+        self.document_write = False
 
     async def __call__(self, scope, receive, send):
         if scope["type"] != "http":
@@ -36,17 +41,35 @@ class LocalRequestLimits:
             return await failure(403, "local_only", "此服务仅接受本机请求。")(scope, receive, send)
         if scope["method"] != "POST":
             return await self.app(scope, receive, send)
-        # Read a bounded body before framework JSON parsing. Also covers chunked requests.
+        is_document = scope["path"] == DOCUMENTS or scope["path"].startswith(DOCUMENTS + "/")
+        if is_document and self.document_write:
+            return await failure(409, "document_operation_busy", "文档操作正在处理，请重试。")(scope, receive, send)
+        if is_document:
+            self.document_write = True
+        try:
+            await self.bounded_request(scope, receive, send)
+        finally:
+            if is_document:
+                self.document_write = False
+
+    async def bounded_request(self, scope, receive, send):
+        # Read a bounded body before framework parsing. Also covers chunked requests.
+        limit = body_limit(scope["path"], MAX_REQUEST_BYTES)
         body = bytearray()
-        while True:
-            event = await receive()
-            if event["type"] == "http.disconnect":
-                return
-            body.extend(event.get("body", b""))
-            if len(body) > MAX_REQUEST_BYTES:
-                return await failure(413, "request_too_large", "请求体过大。")(scope, receive, send)
-            if not event.get("more_body"):
-                break
+        try:
+            async with timeout(15):
+                while True:
+                    event = await receive()
+                    if event["type"] == "http.disconnect":
+                        return
+                    chunk = event.get("body", b"")
+                    if len(body) + len(chunk) > limit:
+                        return await failure(413, "request_too_large", "请求体过大。")(scope, receive, send)
+                    body.extend(chunk)
+                    if not event.get("more_body"):
+                        break
+        except TimeoutError:
+            return await failure(408, "request_timeout", "请求体接收超时。")(scope, receive, send)
         consumed = False
 
         async def replay():
@@ -66,7 +89,7 @@ def bounded(model):
     return Response(payload, media_type="application/json", headers={"Cache-Control": "no-store"})
 
 
-def create_app(*, token, manager_factory=local_manager):
+def create_app(*, token, manager_factory=local_manager, document_staging=None):
     if not isinstance(token, str) or not re.fullmatch(r"[a-fA-F0-9]{64}", token):
         raise ValueError("Configure DATAQUERY_HTTP_TOKEN as 64 hexadecimal characters.")
     app = FastAPI(title="DataQuery Agent API", version="1.0", docs_url=None, redoc_url=None)
@@ -74,11 +97,15 @@ def create_app(*, token, manager_factory=local_manager):
     app.add_middleware(LocalRequestLimits)
     bearer = HTTPBearer(auto_error=False)
 
-    def identity(auth: HTTPAuthorizationCredentials | None = Depends(bearer)):
+    def authorize(auth: HTTPAuthorizationCredentials | None = Depends(bearer)):
         if auth is None or not compare_digest(auth.credentials.encode("utf-8"), token.encode("utf-8")):
             raise HTTPException(401, headers={"WWW-Authenticate": "Bearer"})
-        manager, owner = manager_factory()
-        return manager, owner
+    def identity(_=Depends(authorize)):
+        return manager_factory()
+
+    def document_owner(_=Depends(authorize)):
+        # Reuse the same trusted owner as chat and history.
+        return manager_factory()[1]
 
     @app.exception_handler(HTTPException)
     async def http_error(_request, error):
@@ -125,6 +152,14 @@ def create_app(*, token, manager_factory=local_manager):
             raise
         return bounded(public_response(data, history=True))
 
+    def document_response(data, status):
+        payload = json.dumps(data, ensure_ascii=False).encode("utf-8")
+        if len(payload) > 8 * 1024 * 1024:
+            return failure(413, "response_too_large", "文档预览超出响应上限。")
+        return Response(payload, status_code=status, media_type="application/json", headers={"Cache-Control": "no-store"})
+
+    app.include_router(document_router(document_owner, staging=document_staging or DocumentStaging(),
+                                       respond=document_response, failure=failure))
     return app
 
 
