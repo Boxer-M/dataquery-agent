@@ -1,0 +1,98 @@
+{
+  "review": {
+    "status": "reviewed",
+    "pages": 2
+  },
+  "publish": {
+    "document_id": "a390d8b6598d62ce0c49d1ee8c769aa5b5dc326503884906fe136da628477cb8",
+    "version": "pdf-9397d0a02bb9b2c3bdb4331e72c30ecc0a9457c1683bce44",
+    "indexed": true,
+    "chunks": 2,
+    "embedding_batches": [
+      {
+        "task_type": "RETRIEVAL_DOCUMENT",
+        "elapsed_ms": 2916,
+        "token_counts": [
+          null,
+          null
+        ]
+      }
+    ]
+  },
+  "idempotent_publish": {
+    "document_id": "a390d8b6598d62ce0c49d1ee8c769aa5b5dc326503884906fe136da628477cb8",
+    "version": "pdf-9397d0a02bb9b2c3bdb4331e72c30ecc0a9457c1683bce44",
+    "indexed": false,
+    "embedding_batches": []
+  },
+  "search": {
+    "trace_id": "b90b493ae31f4c44a3cf92fc4f7aab2c",
+    "embedding_batches": [
+      {
+        "task_type": "RETRIEVAL_QUERY",
+        "elapsed_ms": 2925,
+        "token_counts": [
+          null
+        ]
+      }
+    ],
+    "matched": {
+      "document_id": "a390d8b6598d62ce0c49d1ee8c769aa5b5dc326503884906fe136da628477cb8",
+      "document_version": "pdf-9397d0a02bb9b2c3bdb4331e72c30ecc0a9457c1683bce44",
+      "chunk_id": "1bfb892232572dd1a7a9d32169c4e47871597d29d9c92f85abcce63bb6df2b92",
+      "source_location": "page:2;lines:1-3",
+      "chunk_text": "Scanned verification page\n扫描样本：订单数量\nOrder count: 48",
+      "embedding_model": "gemini-embedding-001",
+      "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+      "retrieval_score": 0.8412641476077858,
+      "publication_state": "published"
+    },
+    "citation": {
+      "document_id": "a390d8b6598d62ce0c49d1ee8c769aa5b5dc326503884906fe136da628477cb8",
+      "document_version": "pdf-9397d0a02bb9b2c3bdb4331e72c30ecc0a9457c1683bce44",
+      "chunk_id": "1bfb892232572dd1a7a9d32169c4e47871597d29d9c92f85abcce63bb6df2b92",
+      "title": "Synthetic PDF verification",
+      "source_uri": "reviewed-pdf:synthetic-verification-eba8dbeb3d09",
+      "source_location": "page:2;lines:1-3",
+      "heading_path": [],
+      "retrieval_score": 0.8412641476077858,
+      "authority_level": 1,
+      "source_type": "reviewed_pdf",
+      "effective_date": null,
+      "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+      "content_hash": "55f360db19e75fe3da58a348ff2b596095128aca65d38c566a20bee034d07007",
+      "access_scope": "owner",
+      "quote": "Order count: 48"
+    }
+  },
+  "source": {
+    "file_sha256": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+    "review_state": "reviewed",
+    "review_version": "pdf-review-v1",
+    "extraction_version": "pdf-extraction-v1",
+    "pages": [
+      {
+        "page": 1,
+        "method": "native_text",
+        "corrected": false,
+        "extractor_version": "pypdf 7.1.0",
+        "reviewed_text_sha256": "00e915cead1481e447e387eb37e6a9423154153ed3b75ad8f9ca78dd7b9dc2a8",
+        "extracted_text_sha256": "00e915cead1481e447e387eb37e6a9423154153ed3b75ad8f9ca78dd7b9dc2a8"
+      },
+      {
+        "page": 2,
+        "method": "ocr",
+        "corrected": false,
+        "extractor_version": "Apple Vision revision 3, Version 15.7.7 (Build 24G720)",
+        "reviewed_text_sha256": "6b20ffa95852966782e9b5f1ba7e8fe6f646756aee42346da37d0db0c39bd53f",
+        "extracted_text_sha256": "6b20ffa95852966782e9b5f1ba7e8fe6f646756aee42346da37d0db0c39bd53f"
+      }
+    ]
+  },
+  "vector_dimensions": [
+    768,
+    768
+  ],
+  "other_owner_visible_chunks": 0,
+  "fixture_deactivated_after_verification": true
+}

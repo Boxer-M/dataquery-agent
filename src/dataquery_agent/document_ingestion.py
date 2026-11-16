@@ -129,11 +129,7 @@ def worker(path):
     sys.stdout.buffer.write(payload if len(payload) <= MAX_OUTPUT else b'{"error":"document_output_limit"}')
 
 
-def extract_pdf(path, *, owner):
-    try:
-        scope = owner_hash(owner)
-    except ConversationError:
-        raise ExtractionError("owner_scope_required") from None
+def read_pdf(path):
     if Path(path).suffix.lower() != ".pdf":
         raise ExtractionError("pdf_extension_required")
     with os.fdopen(os.open(path, os.O_RDONLY | os.O_NONBLOCK), "rb") as source:
@@ -147,6 +143,15 @@ def extract_pdf(path, *, owner):
         raise ExtractionError("pdf_size_limit")
     if not raw.startswith(b"%PDF-"):
         raise ExtractionError("invalid_pdf_header")
+    return raw
+
+
+def extract_pdf(path, *, owner):
+    try:
+        scope = owner_hash(owner)
+    except ConversationError:
+        raise ExtractionError("owner_scope_required") from None
+    raw = read_pdf(path)
     digest = sha256(raw).hexdigest()
     with TemporaryDirectory(prefix="dataquery-pdf-") as directory:
         snapshot = Path(directory) / "input.pdf"

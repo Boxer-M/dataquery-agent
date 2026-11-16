@@ -59,11 +59,20 @@ class KnowledgeStore:
             raise KnowledgeError("document_version_conflict")
         return stored
 
-    def index(self, doc, embedding, *, owner=None, external_approved=False):
+    def index(self, doc, embedding, *, owner=None, external_approved=False, pdf_receipt=None, pdf=None):
+        review = None
+        if pdf_receipt is not None:
+            from .pdf_review import verify_receipt
+            if doc is not None:
+                raise KnowledgeError("review_document_must_come_from_receipt")
+            doc, review = verify_receipt(pdf_receipt, owner=owner, pdf=pdf)
+        if doc is None or (review is None and (doc.source_type == "reviewed_pdf"
+                                            or any(part.location.startswith("page:") for part in doc.passages))):
+            raise KnowledgeError("signed_review_required")
         validate_document(doc)
         if doc.source_type in {"catalog", "technical"} and owner:
             raise KnowledgeError("repository_sources_are_public")
-        if doc.source_type in {"business_rule", "synthetic_fixture"}:
+        if doc.source_type in {"business_rule", "synthetic_fixture", "reviewed_pdf"}:
             if not owner:
                 raise KnowledgeError("owner_scope_required")
             if not external_approved:
@@ -104,11 +113,16 @@ class KnowledgeStore:
             else:
                 pg.execute(f"""INSERT INTO {DOCS} (document_id,owner_scope,source_type,source_uri)
                     VALUES (%s,%s,%s,%s)""", (document_id, scope, doc.source_type, doc.source_uri))
+            version_values = (document_id, doc.version, doc.title, doc.content_hash, doc.topic,
+                              AUTHORITIES[doc.source_type], doc.effective, doc.expires)
+            columns, placeholders = "", ""
+            if review is not None:
+                from psycopg.types.json import Jsonb
+                columns, placeholders = ",pdf_review", ",%s"
+                version_values += (Jsonb(review),)
             pg.execute(f"""INSERT INTO {VERSIONS}
-                (document_id,document_version,title,content_hash,topic,authority_level,effective_date,expires_on)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING""",
-                       (document_id, doc.version, doc.title, doc.content_hash, doc.topic,
-                        AUTHORITIES[doc.source_type], doc.effective, doc.expires))
+                (document_id,document_version,title,content_hash,topic,authority_level,effective_date,expires_on{columns})
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s{placeholders}) ON CONFLICT DO NOTHING""", version_values)
             for i, (chunk, item) in enumerate(zip(doc.passages, values or [])):
                 content_hash = fingerprint(asdict(chunk))
                 chunk_id = fingerprint([document_id, doc.version, index, i, content_hash])

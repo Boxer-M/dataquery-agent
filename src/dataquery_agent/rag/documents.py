@@ -23,7 +23,7 @@ INJECTION = re.compile(
     r"<\s*/?\s*(?:system|developer)\b|(?:api[_ -]?key|password|secret|token)\s*[:=]",
     re.I | re.S,
 )
-AUTHORITIES = {"catalog": 4, "business_rule": 3, "technical": 2, "synthetic_fixture": 1}
+AUTHORITIES = {"catalog": 4, "business_rule": 3, "technical": 2, "synthetic_fixture": 1, "reviewed_pdf": 1}
 
 
 class KnowledgeError(ValueError):
@@ -116,7 +116,7 @@ def parse_file(path, *, title, source_type, source_uri, version, topic=None, eff
     from urllib.parse import urlparse
 
     path = Path(path)
-    if source_type not in AUTHORITIES or source_type == "catalog":
+    if source_type not in {"business_rule", "technical", "synthetic_fixture"}:
         raise KnowledgeError("invalid_document_type")
     if (not title or not version or len(title) > 150 or len(version) > 64 or len(source_uri) > 500
             or not source_uri or (topic and len(topic) > 120)):
