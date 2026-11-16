@@ -56,7 +56,7 @@ def signature(payload, key):
     return hmac.digest(key, canonical, "sha256").hex()
 
 
-def approve(extraction, pdf, *, owner, slug, title, basis, corrections):
+def approve(extraction, pdf, *, owner, slug, title, basis, corrections, source_revision=None):
     scope = scope_for(owner)
     if not isinstance(extraction, dict) or extraction.get("review_state") != "unreviewed":
         raise KnowledgeError("unreviewed_extraction_required")
@@ -98,6 +98,8 @@ def approve(extraction, pdf, *, owner, slug, title, basis, corrections):
     payload = {field: fresh[field] for field in fields if field != "document_version"}
     payload.update(review_version=REVIEW_VERSION, review_state="reviewed", source_uri=f"reviewed-pdf:{slug}",
                    title=title.strip(), basis=basis.strip(), reviewer_key_id=sha256(key).hexdigest()[:16], pages=pages)
+    if source_revision is not None:
+        payload["source_revision"] = source_revision
     build_document(payload)
     return {"review": payload, "signature": signature(payload, key)}
 
