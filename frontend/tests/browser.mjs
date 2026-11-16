@@ -236,7 +236,7 @@ try {
   const retried = await (await retriedResponse).json()
   assert.deepEqual(submitted.at(-1), failedMessage)
   assert.equal(retried.message_id, failedMessage.message_id)
-  assert.equal(committed.status, 'completed')
+  assert.equal(committed.status, 'completed', committed.error?.code)
   assert.equal(retried.replayed, true)
   assert.equal(retried.query_id, committed.query_id)
 

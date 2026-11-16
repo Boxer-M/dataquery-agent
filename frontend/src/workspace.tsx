@@ -2,13 +2,15 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Alert, Button, Input, Spin } from 'antd'
 import {
   ApartmentOutlined, ArrowUpOutlined, BarChartOutlined, CalendarOutlined,
-  MessageOutlined, PlusOutlined, ReloadOutlined,
+  FileTextOutlined, MessageOutlined, PlusOutlined, ReloadOutlined,
 } from '@ant-design/icons'
 import { createConversation, health, RequestError, sendQuestion } from './api'
 import type { ChatRequest, ChatResponse } from './api'
 
 const QueryResult = lazy(() => import('./query-result').then(module => ({ default: module.QueryResult })))
 const QueryHistory = lazy(() => import('./query-history').then(module => ({ default: module.QueryHistory })))
+
+const DocumentWorkbench = lazy(() => import('./document-workbench'))
 
 type Message = { request: ChatRequest; response?: ChatResponse; error?: string; retryable?: boolean }
 
@@ -24,6 +26,8 @@ export function App() {
   const [messages, setMessages] = useState<Message[]>([])
   const [historyId, setHistoryId] = useState<string>()
   const [draft, setDraft] = useState('')
+  const [documents, setDocuments] = useState<'open' | 'closed'>()
+  const questionInput = useRef<React.ComponentRef<typeof Input.TextArea>>(null)
   const [busy, setBusy] = useState(false)
   const [notice, setNotice] = useState('')
   const locked = useRef(false)
@@ -97,6 +101,7 @@ export function App() {
     <aside className="sidebar" aria-label="会话">
       <div className="brand"><span className="mark"><BarChartOutlined /></span><div><b>DataQuery</b><span>分析工作台</span></div></div>
       <Button className="new-session" icon={<PlusOutlined />} onClick={restart} disabled={busy}>新建会话</Button>
+      <Button className="document-entry" icon={<FileTextOutlined />} onClick={() => setDocuments('open')}>文档知识库</Button>
       <div className="sidebar-label">当前会话</div>
       <div className="session"><MessageOutlined /><div><strong>{conversation ? '数据问答' : '尚未开始'}</strong>
         {conversation && <small title={conversation}>{conversation}</small>}
@@ -145,7 +150,7 @@ export function App() {
       <div className="composer-area">
         {notice && <Alert className="notice" showIcon type="error" title={notice} />}
         <form className="composer" onSubmit={event => { event.preventDefault(); submit() }}>
-          <Input.TextArea aria-label="输入问题" value={draft} maxLength={500} autoSize={{ minRows: 1, maxRows: 5 }}
+          <Input.TextArea ref={questionInput} aria-label="输入问题" value={draft} maxLength={500} autoSize={{ minRows: 1, maxRows: 5 }}
             onChange={event => setDraft(event.target.value)} placeholder="输入你想查询的问题"
             onKeyDown={event => {
               if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
@@ -160,6 +165,14 @@ export function App() {
         </form>
       </div>
     </main>
+    {documents && <Suspense fallback={<div className="history-chunk-loading" role="status">正在加载文档工作台</div>}>
+      <DocumentWorkbench open={documents === 'open'} onClose={() => setDocuments('closed')}
+        onAsk={title => {
+          setDraft(`请根据「${title}」这份 PDF，说明其中的内容并引用原文。`)
+          setDocuments('closed')
+          window.setTimeout(() => questionInput.current?.focus(), 300)
+        }} />
+    </Suspense>}
     {historyId && <Suspense fallback={<div className="history-chunk-loading" role="status">
       <Spin size="small" /> 正在加载查询历史
     </div>}>

@@ -1,0 +1,19 @@
+.document-workbench { display: grid; gap: 14px; color: #183239; }
+.document-card { display: grid; gap: 11px; min-width: 0; padding: 15px; border: 1px solid #dce7df; border-radius: 11px; background: #f9fbf9; }
+.document-actions { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; overflow-wrap: anywhere; }
+.document-actions .ant-select { min-width: min(240px, 100%); }
+.document-card small, .document-meta span { color: #536d64; overflow-wrap: anywhere; }
+.document-meta { grid-template-columns: minmax(0, 1fr) auto; }
+.document-meta > span:nth-child(n+3) { grid-column: 1 / -1; }
+.document-meta code { overflow-wrap: anywhere; }
+.document-file { position: relative; display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border: 1px solid #bed4c9; border-radius: 6px; cursor: pointer; background: #fff; }
+.document-file input { position: absolute; inset: 0; width: 100%; opacity: 0; cursor: pointer; }
+.document-file:focus-within { outline: 2px solid #15836d; outline-offset: 2px; }
+.document-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.document-columns h3 { margin: 0 0 6px; font-size: 14px; }
+.document-columns pre { min-height: 100px; max-height: 250px; overflow: auto; margin: 0; padding: 10px; background: #edf3ef; white-space: pre-wrap; overflow-wrap: anywhere; border-radius: 6px; }
+.document-columns label { display: grid; align-content: start; gap: 4px; }
+.document-blocks { max-height: 250px; overflow: auto; }
+.document-blocks li { margin-block: 6px; overflow-wrap: anywhere; }
+.document-blocks small { display: block; }
+@media (max-width: 640px) { .document-columns, .document-meta { grid-template-columns: 1fr; } }
