@@ -1,6 +1,7 @@
 """Bounded and redacted audit records, distinct from model and tool traces."""
 from uuid import uuid4
 
+from .capability_trace import BINDING_FIELDS
 from .conversation_context import CONTEXT_VERSION, redact
 
 
@@ -47,6 +48,7 @@ def build_record(claim, message, answer, operation, elapsed_ms):
     }
     agent_calls = trace.get("agent_calls", [])
     return {
+        **({"capability_records": trace["capability_records"]} if trace.get("capability_records") else {}),
         **({"agent_calls": agent_calls} if agent_calls else {}),
         **({key: result[key] for key in ("plan_id", "attempt_id") if key in result}),
         **({"recovery": result["recovery"]} if "recovery" in result else {}),
@@ -74,7 +76,9 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         "source_models": sorted(sources),
         "result_summary": {"row_count": len(rows), "truncated": bool(payload.get("truncated")), "scalar": scalar},
         "latency_ms": elapsed_ms, "error_code": answer.get("code"),
-        "tool_traces": [{"trace_id": tool.get("trace_id"), "status": tool.get("status"),
+        "tool_traces": [{**{key: tool[key] for key in (*BINDING_FIELDS, "capability_trace_id", "request", "sources")
+                           if key in tool and "task_id" in tool},
+                         "trace_id": tool.get("trace_id"), "status": tool.get("status"),
                          "code": tool.get("code") or tool.get("error_code")}
                         for tool in trace.get("tools", [])],
     }

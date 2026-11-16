@@ -33,3 +33,16 @@ PYTHONPATH=src .venv/bin/python tests/evaluate_agent_e2e.py --rescore /tmp/agent
 `--rescore` 接收单版本采集结果。已提交报告包含 `baseline` 和 `specialists` 两个对象，复评分时先提取所需对象。比较版本时，可把 `1994f12` 导出到独立目录，使用该版本的 `src` 和同一套本地配置运行同一个 Runner。通过同一个本地 `E2E_FIXTURE_OWNER` 环境配置让两轮共享合成知识索引。
 
 [黄金用例](../../tests/fixtures/agent_e2e_v1.json) · [两版本报告与完整结构化 Trace](../../reports/warehouse/agent_e2e_evaluation_v1.json)
+
+## Capability Trace 关联修复验收
+
+历史真实评测保留原样。修复验收先对历史联合用例复评分，复现 `sql_capability_trace_unlinked`。随后把该用例已保存的 Gemini 规划提案送入现有校验器，重新执行真实 PostgreSQL、Catalog 查找和历史持久化。本次复验没有新 Gemini 调用。
+
+预检和执行复核均保存在外层路由、统一 Trace 和 Query History。每条记录绑定 Plan ID、Task ID、Attempt ID 和获准的指标请求。专业 Agent 的 SQL 工具事件必须指向本任务唯一的执行复核记录。无专业 Agent 的 DAG 数值查询使用实际获准的预检记录。执行门在调用指标服务前验证关联，复核拒绝或跨任务 Trace ID 会阻止对应 SQL。
+
+```bash
+KNOWLEDGE_POSTGRES_TESTS=1 CAPABILITY_LINK_REPORT=/tmp/capability-linkage.json \
+  PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -p test_capability_trace_linkage.py -v
+```
+
+[修复前后 Trace 与 PostgreSQL 验收](../../reports/warehouse/capability_trace_linkage_v1.json)

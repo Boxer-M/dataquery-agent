@@ -18,6 +18,7 @@ from .business_query_planner import BusinessQueryPlanner
 from .business_results import RATIO_COMPONENT_METRICS, normalize_rows, with_precision
 from .capability_registry import CapabilityRegistry
 from .capability_resolver import CapabilityResolver
+from .capability_trace import BINDING_FIELDS, capability_link
 from .detail_executor import DetailQueryExecutor
 from .dynamic_requirements import recognize as recognize_dynamic
 from .dynamic_sql_engine import DynamicSqlEngine
@@ -410,32 +411,48 @@ class UnifiedAgent:
                     answer_zh=result["answer_zh"] + "\n正式定义\n" + knowledge["answer_zh"])
 
     def run_business_plan(self, plan, frame, trace, *, recovery_proof=None, catalog=None, metric_results=None):
+        plan_id, attempt_id = uuid4().hex, uuid4().hex
         routes = {}
+        records = trace.setdefault("capability_records", [])
+
+        def resolve(request, step, phase):
+            route = self.check_route(request, frame, binding={
+                "plan_id": plan_id, "task_id": f"{plan_id}/{step}", "attempt_id": attempt_id,
+                "authorization_subject": dict(request), "capability_phase": phase,
+            })
+            records.append(route)
+            return route
+
         for call in plan["required_tool_calls"]:
-            request = call["request"]
-            route = self.check_route(request, frame)
+            route = resolve(call["request"], call["step"], "preflight")
             if route["status"] != "STANDARD_METRIC":
                 return self.route_outcome(route)
-            routes[self.request_key(request)] = route
+            routes[call["step"]] = route
         if recovery_proof is not None:
             from .catalog_recovery import sql_checkpoint
             before = sql_checkpoint(self.service, plan, list(routes.values()), capture_snapshot=True)
-        specialist = None
-        if catalog is not None:
-            from .specialists import DataAnalysisAgent
-            specialist = DataAnalysisAgent(
-                resolve=lambda request: self.check_route(request, {**frame, "routes": []}),
-                query_metric=lambda request, route: self.query(request, route, trace),
-            )
 
-        def query(request):
-            route = routes[self.request_key(request)]
-            result = specialist.execute(request, route) if specialist else self.query(request, route, trace)
+        def query(step, request):
+            def execute(request, route):
+                phase = "execution_recheck" if catalog is not None else "preflight"
+                binding = {key: routes[step][key] for key in BINDING_FIELDS} | {"capability_phase": phase}
+                return self.query(request, route, trace, binding=binding)
+
+            if catalog is not None:
+                from .specialists import DataAnalysisAgent
+                specialist = DataAnalysisAgent(
+                    resolve=lambda request: resolve(request, step, "execution_recheck"),
+                    query_metric=execute,
+                )
+                result = specialist.execute(request, routes[step])
+            else:
+                result = execute(request, routes[step])
             if metric_results is not None and result["status"] == "ok":
                 metric_results.append(result)
             return result
 
-        result = self.planner.execute_plan(plan, query=query, catalog=catalog)
+        result = self.planner.execute_plan(plan, task_query=query, catalog=catalog,
+                                           execution_ids=(plan_id, attempt_id))
         if recovery_proof is not None and before and result["status"] == "ok":
             if sql_checkpoint(self.service, plan, list(routes.values()), capture_snapshot=True) == before:
                 recovery_proof["checkpoint"] = {key: value for key, value in before.items() if key != "snapshot"}
@@ -443,19 +460,17 @@ class UnifiedAgent:
             result.setdefault("code", "tool_execution_failed")
         return result
 
-    @staticmethod
-    def request_key(request):
-        return json.dumps(request, sort_keys=True, ensure_ascii=False)
-
-    def check_route(self, request, frame):
+    def check_route(self, request, frame, *, binding=None):
         try:
             demand = dict(request)
             if frame["event_time_hint"]:
                 demand["event_time"] = frame["event_time_hint"]
             route = self.capability.resolve(demand)
         except (ValueError, KeyError, psycopg.Error):
-            route = {"status": "UNSUPPORTED", "reason_code": "capability_unavailable",
+            route = {"trace_id": uuid4().hex, "status": "UNSUPPORTED", "reason_code": "capability_unavailable",
                      "reason": "能力验证暂时不可用。"}
+        if binding is not None:
+            route = {**route, **binding}
         frame["routes"].append(route)
         return route
 
@@ -466,7 +481,10 @@ class UnifiedAgent:
         return outcome(status, route.get("reason_code"), route.get("reason", "无法执行此业务路径。"),
                        capability=route)
 
-    def query(self, request, route, trace):
+    def query(self, request, route, trace, *, binding=None):
+        link = {"request": request, "capability_trace_id": route.get("trace_id"), **(binding or {})}
+        if binding is not None and capability_link(link, trace["capability_records"]) is not route:
+            return {"status": "error", "error": {"code": "invalid_capability_trace_link"}}
         started = monotonic()
         result = None
         error = None
@@ -496,9 +514,9 @@ class UnifiedAgent:
             error = "tool_exception"
         result = result if isinstance(result, dict) else {}
         trace["tools"].append({
-            "request": request, "status": "error" if error else "ok", "code": error,
+            **link, "status": "error" if error else "ok", "code": error,
             "trace_id": result.get("trace_id"), "sources": result.get("sources", []),
-            "capability_trace_id": route["trace_id"], "elapsed_ms": round((monotonic() - started) * 1000),
+            "elapsed_ms": round((monotonic() - started) * 1000),
         })
         return dict(result, status="error", error={"code": error}, results=[]) if error else result
 

@@ -80,6 +80,18 @@ def check(case, answer, history, model_outputs, service, pg):
         route.get("trace_id") == item.get("capability_trace_id") and
         set(item["sources"]) == route["required_fields"].keys() for route in answer["routes"])
         for item in tools if "request" in item)
+    if any("task_id" in item for item in tools):
+        from dataquery_agent.capability_trace import BINDING_FIELDS, capability_link
+        records = trace.get("capability_records", [])
+        saved = history or {}
+        persisted_tools = {item.get("trace_id"): item for item in saved.get("tool_traces", [])}
+        sql_sources = sql_sources and records == saved.get("capability_records") and all(
+            capability_link(item, records) is not None
+            and all(persisted_tools.get(item["trace_id"], {}).get(key) == item.get(key)
+                    for key in (*BINDING_FIELDS, "capability_trace_id", "request", "sources", "status"))
+            and capability_link(persisted_tools.get(item["trace_id"], {}), records) is not None
+            for item in tools if "task_id" in item
+        )
     knowledge = result.get("knowledge_result", result)
     citations = knowledge.get("citations", [])
     strategy = knowledge.get("retrieval_trace", {}).get("strategy")
