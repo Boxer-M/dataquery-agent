@@ -1,5 +1,5 @@
 export type Status = 'completed' | 'partial' | 'clarification_required' | 'failed'
-export type Cell = string | number | boolean | null | { [key: string]: Cell }
+export type Cell = string | number | boolean | null | Cell[] | { [key: string]: Cell }
 export type Row = Record<string, Cell>
 type ApiError = { code: string; message: string }
 
@@ -8,6 +8,18 @@ export type ChatRequest = {
   message_id: string
   question: string
 }
+
+export type MetricDefinition = {
+  metric_id?: string | null
+  name?: string | null
+  definition?: string | null
+  definition_version?: string | null
+}
+
+export type Citation = Partial<Record<
+  'document_id' | 'document_version' | 'chunk_id' | 'title' |
+  'source_uri' | 'source_location' | 'source_type' | 'quote', string | null
+>>
 
 export type ChatResponse = {
   status: Status
@@ -19,7 +31,10 @@ export type ChatResponse = {
   rows: Row[]
   row_count?: number
   rows_truncated: boolean
-  clarification_choices: { metric_id?: string; name?: string; definition?: string }[]
+  definitions: MetricDefinition[]
+  citations: Citation[]
+  clarification_choices: MetricDefinition[]
+  trace?: { tasks?: { task_id?: string; metric_id?: string; kind?: string; status?: string; code?: string }[] }
   replayed: boolean
 }
 
@@ -73,6 +88,7 @@ export async function sendQuestion(body: ChatRequest) {
   const value = await jsonRequest<ChatResponse>('/api/chat', 'POST', body)
   if (!['completed', 'partial', 'clarification_required', 'failed'].includes(value.status)
       || !Array.isArray(value.rows) || !Array.isArray(value.clarification_choices)
+      || !Array.isArray(value.definitions) || !Array.isArray(value.citations)
       || (value.status !== 'failed' && (value.conversation_id !== body.conversation_id
           || value.message_id !== body.message_id || !value.query_id))) {
     throw new RequestError('API 回执不完整或与当前消息不匹配。', true)
