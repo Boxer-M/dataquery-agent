@@ -33,7 +33,7 @@ class CatalogRecoveryTests(unittest.TestCase):
                 self.assertEqual(missing["status"], "partial", missing)
                 duplicate = manager.process_message(owner, cid, command, message_id, today=TODAY)
                 self.assertTrue(duplicate["replayed"])
-                self.assertEqual(lookup.call_count, 2)
+                self.assertEqual(lookup.call_count, 3)  # Two initial nodes and one batched recovery.
             denied = manager.process_message(token_hex(32), cid, command, uuid4(), today=TODAY)
             self.assertEqual(denied["code"], "conversation_not_found")
             with patch.dict(service.metrics["order_count"], definition="changed for test"):

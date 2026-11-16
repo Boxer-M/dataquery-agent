@@ -14,6 +14,7 @@ from .business_results import RATIO_COMPONENT_METRICS, combine, normalize_rows, 
 from .intent_semantic_resolver import gemini_generator, outcome
 from .metric_query_service import MetricQueryService
 from .metrics import ROOT
+from .task_dag import Task, TaskGraphError, execute_tasks
 
 QUERY_BUDGET_SECONDS = 30
 
@@ -50,24 +51,47 @@ class BusinessQueryPlanner:
             return error.response
         return {"status": "ready", "plan": plan}
 
-    def execute_plan(self, plan, *, query=None):
-        """Execute a plan already validated by prepare, with an optional query gate."""
-        deadline = monotonic() + QUERY_BUDGET_SECONDS
-        tools, successful = [], {}
-        for call in plan["required_tool_calls"]:
-            if monotonic() >= deadline:
-                tools.append({**call, "status": "skipped", "error_code": "plan_timeout", "elapsed_ms": 0})
-                continue
-            trace, rows = self.call_tool(call, plan, query=query)
-            tools.append(trace)
-            if trace["status"] == "ok":
-                key = (call["window_index"], call["request"]["metric_id"])
-                successful[key] = rows
+    def execute_plan(self, plan, *, query=None, catalog=None):
+        """Schedule the validated metric calls and optional exact Catalog lookups."""
+        plan_id, attempt_id = uuid4().hex, uuid4().hex
+        tasks = [Task(f"{plan_id}/{call['step']}", "metric", call) for call in plan["required_tool_calls"]]
+        if catalog is not None:
+            metric_tasks = tuple(tasks)
+            for index, mid in enumerate(plan["metric_ids"], len(metric_tasks) + 1):
+                dependencies = tuple(task.task_id for task in metric_tasks
+                                     if task.parameters["request"]["metric_id"] == mid)
+                if not dependencies:
+                    return outcome("error", "invalid_task_graph", "目录任务缺少对应的指标查询。")
+                tasks.append(Task(f"{plan_id}/{index}", "catalog", {"metric_id": mid}, dependencies))
+        handlers = {"metric": lambda call: self.call_tool(call, plan, query=query)}
+        if catalog is not None:
+            handlers["catalog"] = catalog
+        try:
+            outcomes = execute_tasks(tasks, handlers, attempt_id=attempt_id,
+                                     deadline=monotonic() + QUERY_BUDGET_SECONDS, clock=monotonic)
+        except TaskGraphError as error:
+            return outcome("error", str(error), "任务计划依赖校验失败。")
+        tools, subtasks, successful, knowledge = [], [], {}, []
+        for task in tasks:
+            event, payload = outcomes[task.task_id]
+            params = task.parameters
+            if task.task_type == "metric":
+                request = params["request"]
+                event = {**params, **event, "metric_id": request["metric_id"]}
+                tools.append(event)
+                if event["status"] == "ok":
+                    successful[params["window_index"], request["metric_id"]] = payload
+            else:
+                event = {**params, **event}
+                if payload is not None:
+                    knowledge.append(payload)
+            subtasks.append(event)
         rows, notice = with_precision(combine, plan, successful)
         status = "ok" if len(successful) == len(tools) else "partial" if successful else "error"
         return {
             "status": status, "plan": plan, "tools": tools, "results": rows, "notice": notice,
             "answer_zh": with_precision(render, plan, rows, tools, self.service.metrics, notice),
+            "plan_id": plan_id, "attempt_id": attempt_id, "subtasks": subtasks, "catalog_results": knowledge,
         }
 
     def call_tool(self, call, plan, *, query=None):

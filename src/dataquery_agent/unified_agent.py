@@ -337,32 +337,67 @@ class UnifiedAgent:
         plan = prepared["plan"]
         if catalog is None:
             return self.run_business_plan(plan, frame, trace)
-        plan["include_catalog_definitions"] = True
+        return self.run_hybrid_plan(plan, catalog, frame, trace, today, owner)
+
+    def run_hybrid_plan(self, plan, resolution, frame, trace, today, owner, *, keep_metric_results=False):
         from .catalog_recovery import checkpoint_partial
-        proof = {}
-        result = self.run_business_plan(plan, frame, trace, recovery_proof=proof if owner else None)
+        from .rag.routing import catalog_tasks
+
+        plan["include_catalog_definitions"] = True
+        resolution = dict(resolution, method=resolution.get("method", "validated_plan"),
+                          metric_ids=plan["metric_ids"])
+
+        def catalog(params):
+            mid = params["metric_id"]
+            evidence = self.knowledge.exact(self.service, dict(resolution, metric_ids=[mid]),
+                                            today=today, owner=owner)
+            trace["tools"].append(evidence["retrieval_trace"])
+            return catalog_tasks(evidence, [mid])[0], evidence
+
+        proof, metric_results = {}, []
+        result = self.run_business_plan(plan, frame, trace, catalog=catalog, recovery_proof=proof if owner else None,
+                                        metric_results=metric_results if keep_metric_results else None)
         if "tools" not in result:
             return result
-        from .rag.routing import catalog_tasks
-        resolution = dict(catalog, method="validated_plan", metric_ids=plan["metric_ids"])
-        knowledge = self.knowledge.exact(self.service, resolution, today=today, owner=owner)
-        trace["tools"].append(knowledge["retrieval_trace"])
-        subtasks = [dict(tool, kind="metric", metric_id=tool["request"]["metric_id"]) for tool in result["tools"]]
-        subtasks += catalog_tasks(knowledge, plan["metric_ids"])
+        subtasks = result["subtasks"]
+        catalogs = [task for task in subtasks if task["kind"] == "catalog"]
+        citations = [task["citation"] for task in catalogs if task["status"] == "ok"]
+        evidence_status = ("supported" if len(citations) == len(catalogs)
+                           else "partial" if citations else "insufficient")
+        evidence_results = result.pop("catalog_results")
+        sections = []
+        citation_number = 0
+        for evidence in evidence_results:
+            section = evidence["answer_zh"]
+            if evidence["citations"]:
+                citation_number += 1
+                section = section.replace(" [1] ", f" [{citation_number}] ", 1)
+            sections.append(section)
+        if any(task["status"] == "skipped" for task in catalogs):
+            sections.append("部分正式定义因关联查询失败或计划超时而跳过。")
+        retrieval = {
+            "trace_id": uuid4().hex, "strategy": "catalog_exact", "query_embedding_called": False,
+            "metric_ids": plan["metric_ids"],
+            "candidates": citations,
+            "metric_errors": {task["metric_id"]: task["error_code"] for task in catalogs if task["status"] != "ok"},
+        }
+        trace["tools"].append(retrieval)
+        knowledge = {"status": "ok", "citations": citations, "evidence_status": evidence_status,
+                     "answer_zh": "\n".join(sections), "retrieval_trace": retrieval,
+                     "uncited_metric_ids": [task["metric_id"] for task in catalogs if task["status"] != "ok"]}
         status = result["status"]
-        if status == "ok" and knowledge["evidence_status"] != "supported":
+        if status == "ok" and evidence_status != "supported":
             status = "partial"
-        elif status == "error" and knowledge["citations"]:
-            status = "partial"
-        if status == "partial" and result["status"] == "ok":
-            saved, subtasks = checkpoint_partial(plan, subtasks, proof.get("checkpoint"),
-                                                results=result["results"], sql_answer=result["answer_zh"])
-            result.update(saved)
+            saved = checkpoint_partial(proof.get("checkpoint"), results=result["results"],
+                                       sql_answer=result["answer_zh"], metric_results=metric_results,
+                                       plan_id=result["plan_id"], attempt_id=result["attempt_id"])
+            if saved:
+                result["recovery"] = saved
         return dict(result, status=status, path="hybrid", knowledge_result=knowledge, subtasks=subtasks,
-                    metric_resolution=resolution, answer_zh=result["answer_zh"] + "\n正式定义\n" + knowledge["answer_zh"])
+                    metric_resolution=resolution, metric_results=metric_results,
+                    answer_zh=result["answer_zh"] + "\n正式定义\n" + knowledge["answer_zh"])
 
-
-    def run_business_plan(self, plan, frame, trace, *, recovery_proof=None):
+    def run_business_plan(self, plan, frame, trace, *, recovery_proof=None, catalog=None, metric_results=None):
         routes = {}
         for call in plan["required_tool_calls"]:
             request = call["request"]
@@ -373,13 +408,18 @@ class UnifiedAgent:
         if recovery_proof is not None:
             from .catalog_recovery import sql_checkpoint
             before = sql_checkpoint(self.service, plan, list(routes.values()), capture_snapshot=True)
-        result = self.planner.execute_plan(
-            plan, query=lambda request: self.query(request, routes[self.request_key(request)], trace))
+        def query(request):
+            result = self.query(request, routes[self.request_key(request)], trace)
+            if metric_results is not None and result["status"] == "ok":
+                metric_results.append(result)
+            return result
+
+        result = self.planner.execute_plan(plan, query=query, catalog=catalog)
         if recovery_proof is not None and before and result["status"] == "ok":
             if sql_checkpoint(self.service, plan, list(routes.values()), capture_snapshot=True) == before:
                 recovery_proof["checkpoint"] = {key: value for key, value in before.items() if key != "snapshot"}
         if result["status"] == "error":
-            result["code"] = "tool_execution_failed"
+            result.setdefault("code", "tool_execution_failed")
         return result
 
     @staticmethod

@@ -46,6 +46,7 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         "metric_results": result.get("metric_results", []),
     }
     return {
+        **({key: result[key] for key in ("plan_id", "attempt_id") if key in result}),
         **({"recovery": result["recovery"]} if "recovery" in result else {}),
         **({"subtasks": result["subtasks"]} if "subtasks" in result else {}),
         **({"knowledge": knowledge_audit} if knowledge_audit is not None else {}),
