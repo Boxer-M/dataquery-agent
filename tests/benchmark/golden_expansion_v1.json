@@ -1,0 +1,4173 @@
+{
+  "version": "benchmark-golden-v1",
+  "dataset_version": "benchmark-golden-expansion-v1",
+  "cases": [
+    {
+      "case_id": "exp1:intent:gross",
+      "task_category": "intent",
+      "question": "item_gross_sales_amount 与扣掉商品行折扣后的金额是同一个口径吗？请给出这个 ID 的正式定义。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:intent:gross",
+        "original_id": "exp1:intent:gross"
+      },
+      "split": "validation",
+      "normalized_text_id": "e99d1b188789b44eefa7",
+      "semantic_group_id": "cd68dc65ff8f62f3e864",
+      "template_id": "2e5c0d273dce3f619f3e",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "catalog_definition",
+        "entity": null,
+        "metric_ids": [
+          "item_gross_sales_amount"
+        ],
+        "metric_request": null,
+        "plan": null,
+        "tool_path": "catalog_exact",
+        "sql": null,
+        "evidence": {
+          "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_gross_sales_amount]",
+          "version": "1.1.1-ads",
+          "content_hash": "2249c002a5459d2cbdf48303997b0f4665df5355307c93ae00763c7c136bc244",
+          "definition": "按下单时间合计成交数量乘明细成交单价，尚未扣除行折扣。",
+          "formula": "SUM(i.quantity*i.unit_price)",
+          "quote": "按下单时间合计成交数量乘明细成交单价，尚未扣除行折扣。"
+        },
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": "manual"
+      }
+    },
+    {
+      "case_id": "exp1:intent:discount",
+      "task_category": "intent",
+      "question": "请依据正式定义回答：指标手册里的 item_discount_amount 正式加总的是什么？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:intent:discount",
+        "original_id": "exp1:intent:discount"
+      },
+      "split": "validation",
+      "normalized_text_id": "85d257febcb44f023da2",
+      "semantic_group_id": "a5a6355bb3682d657f2b",
+      "template_id": "397268eb79f32a4c6830",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "catalog_definition",
+        "entity": null,
+        "metric_ids": [
+          "item_discount_amount"
+        ],
+        "metric_request": null,
+        "plan": null,
+        "tool_path": "catalog_exact",
+        "sql": null,
+        "evidence": {
+          "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_discount_amount]",
+          "version": "1.1.1-ads",
+          "content_hash": "a5b2e1ebae6e31da26543318f66dfcbdc4737ff55ff1e00f68eac0888bc13134",
+          "definition": "按下单时间合计每条商品明细的整行折扣金额，不再乘数量。",
+          "formula": "SUM(i.discount_amount)",
+          "quote": "按下单时间合计每条商品明细的整行折扣金额，不再乘数量。"
+        },
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": "manual"
+      }
+    },
+    {
+      "case_id": "exp1:intent:account-count",
+      "task_category": "intent",
+      "question": "ordering_customer_count 的正式定义按账户还是按自然人去重？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:intent:account-count",
+        "original_id": "exp1:intent:account-count"
+      },
+      "split": "validation",
+      "normalized_text_id": "b22d5dfec0d78839b158",
+      "semantic_group_id": "312ba6f43f3df64d6318",
+      "template_id": "ff2478eaf6861cd117f4",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "catalog_definition",
+        "entity": null,
+        "metric_ids": [
+          "ordering_customer_count"
+        ],
+        "metric_request": null,
+        "plan": null,
+        "tool_path": "catalog_exact",
+        "sql": null,
+        "evidence": {
+          "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=ordering_customer_count]",
+          "version": "1.1.1-ads",
+          "content_hash": "f2f5166aa2cba10079cdfc21de0f7c5ff45997b3c804097db1f36efa57ec6588",
+          "definition": "下单窗口内至少有一单的不同客户账户数。",
+          "formula": "COUNT(DISTINCT o.customer_id)",
+          "quote": "下单窗口内至少有一单的不同客户账户数。"
+        },
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": "manual"
+      }
+    },
+    {
+      "case_id": "exp1:intent:repeat-count",
+      "task_category": "intent",
+      "question": "请依据正式定义回答：请给出 repeat_ordering_customer_count 的正式口径以及最少下单次数。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:intent:repeat-count",
+        "original_id": "exp1:intent:repeat-count"
+      },
+      "split": "validation",
+      "normalized_text_id": "06d75479c30f34dcf78b",
+      "semantic_group_id": "47d5c6cb1af4e4c51906",
+      "template_id": "0ef99825df4747027729",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "catalog_definition",
+        "entity": null,
+        "metric_ids": [
+          "repeat_ordering_customer_count"
+        ],
+        "metric_request": null,
+        "plan": null,
+        "tool_path": "catalog_exact",
+        "sql": null,
+        "evidence": {
+          "source": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=repeat_ordering_customer_count]",
+          "version": "1.1.1-ads",
+          "content_hash": "748458f9a123ea057e0ab4abb3e8e6ce628973ffd09430a1b2d862a9e5872fd1",
+          "definition": "下单窗口内累计至少两单的不同客户账户数，跨所选日期和渠道按账户合并。",
+          "formula": "COUNT(customer_id HAVING COUNT(order_id)>=2)",
+          "quote": "下单窗口内累计至少两单的不同客户账户数，跨所选日期和渠道按账户合并。"
+        },
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": "manual"
+      }
+    },
+    {
+      "case_id": "exp1:intent:first-observed",
+      "task_category": "intent",
+      "question": "2025年1月 first_observed_ordering_customer_count 现在有可用的标准数值吗？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:intent:first-observed",
+        "original_id": "exp1:intent:first-observed"
+      },
+      "split": "validation",
+      "normalized_text_id": "b66acd2b628e429be9d9",
+      "semantic_group_id": "b7ebda2f9b3e939bd681",
+      "template_id": "67125948ab0f66998dc4",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "metric",
+        "entity": {
+          "catalog_status": "defined_unverified"
+        },
+        "metric_ids": [
+          "first_observed_ordering_customer_count"
+        ],
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": "unsupported",
+        "code": "metric_unverified"
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:intent:lifetime",
+      "task_category": "intent",
+      "question": "请直接查2025年3月 customer_lifetime_value。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:intent:lifetime",
+        "original_id": "exp1:intent:lifetime"
+      },
+      "split": "validation",
+      "normalized_text_id": "14b8d274dfeef067b7a5",
+      "semantic_group_id": "f6c055b6fc51f01655e2",
+      "template_id": "c2cfd962e3d6afe08266",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "metric",
+        "entity": {
+          "catalog_status": "unsupported"
+        },
+        "metric_ids": [
+          "customer_lifetime_value"
+        ],
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": "unsupported",
+        "code": "unsupported"
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:intent:unknown-chargeback",
+      "task_category": "intent",
+      "question": "正式指标 chargeback_response_hours 怎么定义？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:intent:unknown-chargeback",
+        "original_id": "exp1:intent:unknown-chargeback"
+      },
+      "split": "validation",
+      "normalized_text_id": "c3904abe17ffb093dc07",
+      "semantic_group_id": "9b009ba612d5ad87e693",
+      "template_id": "2e042fb1b3a23abcd148",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "catalog_definition",
+        "entity": {
+          "unmatched_id": "chargeback_response_hours",
+          "evidence_status": "insufficient"
+        },
+        "metric_ids": [],
+        "metric_request": null,
+        "plan": null,
+        "tool_path": "catalog_exact",
+        "sql": null,
+        "evidence": null,
+        "status": "ok",
+        "code": "formal_definition_not_found"
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:intent:ambiguous-credit",
+      "task_category": "intent",
+      "question": "今年三季度店铺的冲销金额是多少？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:intent:ambiguous-credit",
+        "original_id": "exp1:intent:ambiguous-credit"
+      },
+      "split": "development",
+      "normalized_text_id": "d619316adad07534136c",
+      "semantic_group_id": "848de38cf4aa7b11846b",
+      "template_id": "a7ff4e5ba3e444c92b92",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "业务别名尚未批准且没有唯一正式映射",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:planning:gross-discount",
+      "task_category": "planning",
+      "question": "从2025-04-01至2025-06-30按品类同时列折扣前商品记录金额、商品行折扣金额；分别保留两列。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:planning:gross-discount",
+        "original_id": "exp1:planning:gross-discount"
+      },
+      "split": "validation",
+      "normalized_text_id": "145f4f323bc36345749b",
+      "semantic_group_id": "dae9e8d79f9e453bb321",
+      "template_id": "5e2399205d4c7dabfecf",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "business_plan",
+        "entity": null,
+        "metric_ids": [
+          "item_gross_sales_amount",
+          "item_discount_amount"
+        ],
+        "metric_request": null,
+        "plan": {
+          "analysis_type": "summary",
+          "operation": "align_by_bucket",
+          "requests": [
+            {
+              "metric_id": "item_gross_sales_amount",
+              "start_date": "2025-04-01",
+              "end_date": "2025-07-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "item_discount_amount",
+              "start_date": "2025-04-01",
+              "end_date": "2025-07-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            }
+          ],
+          "no_cross_fact_join": true,
+          "retain_per_metric_event_time": true
+        },
+        "tool_path": "metric_query",
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "item_gross_sales_amount",
+                "start_date": "2025-04-01",
+                "end_date": "2025-07-01",
+                "group_by": [
+                  "category"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "1",
+                  "value": "48698.90"
+                },
+                {
+                  "bucket": "10",
+                  "value": "15967.37"
+                },
+                {
+                  "bucket": "11",
+                  "value": "10365.63"
+                },
+                {
+                  "bucket": "12",
+                  "value": "58761.63"
+                },
+                {
+                  "bucket": "13",
+                  "value": "7477.80"
+                },
+                {
+                  "bucket": "14",
+                  "value": "6888.95"
+                },
+                {
+                  "bucket": "15",
+                  "value": "90718.01"
+                },
+                {
+                  "bucket": "16",
+                  "value": "56847.71"
+                },
+                {
+                  "bucket": "17",
+                  "value": "16419.48"
+                },
+                {
+                  "bucket": "18",
+                  "value": "11067.09"
+                },
+                {
+                  "bucket": "19",
+                  "value": "53948.51"
+                },
+                {
+                  "bucket": "2",
+                  "value": "26051.35"
+                },
+                {
+                  "bucket": "20",
+                  "value": "115026.10"
+                },
+                {
+                  "bucket": "21",
+                  "value": "19908.02"
+                },
+                {
+                  "bucket": "22",
+                  "value": "15512.49"
+                },
+                {
+                  "bucket": "23",
+                  "value": "13179.01"
+                },
+                {
+                  "bucket": "24",
+                  "value": "19159.49"
+                },
+                {
+                  "bucket": "3",
+                  "value": "11739.23"
+                },
+                {
+                  "bucket": "4",
+                  "value": "18029.54"
+                },
+                {
+                  "bucket": "5",
+                  "value": "13914.97"
+                },
+                {
+                  "bucket": "6",
+                  "value": "14652.58"
+                },
+                {
+                  "bucket": "7",
+                  "value": "23267.31"
+                },
+                {
+                  "bucket": "8",
+                  "value": "8517.16"
+                },
+                {
+                  "bucket": "9",
+                  "value": "14184.80"
+                }
+              ]
+            },
+            {
+              "parameters": {
+                "metric_id": "item_discount_amount",
+                "start_date": "2025-04-01",
+                "end_date": "2025-07-01",
+                "group_by": [
+                  "category"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "1",
+                  "value": "486.30"
+                },
+                {
+                  "bucket": "10",
+                  "value": "124.20"
+                },
+                {
+                  "bucket": "11",
+                  "value": "83.82"
+                },
+                {
+                  "bucket": "12",
+                  "value": "537.15"
+                },
+                {
+                  "bucket": "13",
+                  "value": "87.36"
+                },
+                {
+                  "bucket": "14",
+                  "value": "60.89"
+                },
+                {
+                  "bucket": "15",
+                  "value": "919.28"
+                },
+                {
+                  "bucket": "16",
+                  "value": "554.68"
+                },
+                {
+                  "bucket": "17",
+                  "value": "103.55"
+                },
+                {
+                  "bucket": "18",
+                  "value": "90.42"
+                },
+                {
+                  "bucket": "19",
+                  "value": "592.38"
+                },
+                {
+                  "bucket": "2",
+                  "value": "272.09"
+                },
+                {
+                  "bucket": "20",
+                  "value": "1065.52"
+                },
+                {
+                  "bucket": "21",
+                  "value": "200.10"
+                },
+                {
+                  "bucket": "22",
+                  "value": "109.13"
+                },
+                {
+                  "bucket": "23",
+                  "value": "129.60"
+                },
+                {
+                  "bucket": "24",
+                  "value": "192.37"
+                },
+                {
+                  "bucket": "3",
+                  "value": "131.41"
+                },
+                {
+                  "bucket": "4",
+                  "value": "187.26"
+                },
+                {
+                  "bucket": "5",
+                  "value": "182.80"
+                },
+                {
+                  "bucket": "6",
+                  "value": "132.76"
+                },
+                {
+                  "bucket": "7",
+                  "value": "248.13"
+                },
+                {
+                  "bucket": "8",
+                  "value": "63.40"
+                },
+                {
+                  "bucket": "9",
+                  "value": "132.71"
+                }
+              ]
+            }
+          ]
+        },
+        "evidence": null,
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:planning:items-products",
+      "task_category": "planning",
+      "question": "2025年7月按品类同时列订单商品明细数和有下单明细的商品数，重复商品只在后一列去重。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:planning:items-products",
+        "original_id": "exp1:planning:items-products"
+      },
+      "split": "validation",
+      "normalized_text_id": "bb7363ed03ae9b22e688",
+      "semantic_group_id": "ecab9317147cd991a1ba",
+      "template_id": "0cbdfe3741bb68d7cb2b",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "business_plan",
+        "entity": null,
+        "metric_ids": [
+          "order_item_count",
+          "ordered_product_count"
+        ],
+        "metric_request": null,
+        "plan": {
+          "analysis_type": "summary",
+          "operation": "align_by_bucket",
+          "requests": [
+            {
+              "metric_id": "order_item_count",
+              "start_date": "2025-07-01",
+              "end_date": "2025-08-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "ordered_product_count",
+              "start_date": "2025-07-01",
+              "end_date": "2025-08-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            }
+          ],
+          "no_cross_fact_join": true,
+          "retain_per_metric_event_time": true
+        },
+        "tool_path": "metric_query",
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "order_item_count",
+                "start_date": "2025-07-01",
+                "end_date": "2025-08-01",
+                "group_by": [
+                  "category"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "1",
+                  "value": 567
+                },
+                {
+                  "bucket": "10",
+                  "value": 123
+                },
+                {
+                  "bucket": "11",
+                  "value": 85
+                },
+                {
+                  "bucket": "12",
+                  "value": 322
+                },
+                {
+                  "bucket": "13",
+                  "value": 46
+                },
+                {
+                  "bucket": "14",
+                  "value": 117
+                },
+                {
+                  "bucket": "15",
+                  "value": 697
+                },
+                {
+                  "bucket": "16",
+                  "value": 285
+                },
+                {
+                  "bucket": "17",
+                  "value": 99
+                },
+                {
+                  "bucket": "18",
+                  "value": 86
+                },
+                {
+                  "bucket": "19",
+                  "value": 374
+                },
+                {
+                  "bucket": "2",
+                  "value": 181
+                },
+                {
+                  "bucket": "20",
+                  "value": 1389
+                },
+                {
+                  "bucket": "21",
+                  "value": 188
+                },
+                {
+                  "bucket": "22",
+                  "value": 80
+                },
+                {
+                  "bucket": "23",
+                  "value": 134
+                },
+                {
+                  "bucket": "24",
+                  "value": 108
+                },
+                {
+                  "bucket": "3",
+                  "value": 138
+                },
+                {
+                  "bucket": "4",
+                  "value": 163
+                },
+                {
+                  "bucket": "5",
+                  "value": 93
+                },
+                {
+                  "bucket": "6",
+                  "value": 99
+                },
+                {
+                  "bucket": "7",
+                  "value": 190
+                },
+                {
+                  "bucket": "8",
+                  "value": 80
+                },
+                {
+                  "bucket": "9",
+                  "value": 119
+                }
+              ]
+            },
+            {
+              "parameters": {
+                "metric_id": "ordered_product_count",
+                "start_date": "2025-07-01",
+                "end_date": "2025-08-01",
+                "group_by": [
+                  "category"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "1",
+                  "value": 44
+                },
+                {
+                  "bucket": "10",
+                  "value": 45
+                },
+                {
+                  "bucket": "11",
+                  "value": 32
+                },
+                {
+                  "bucket": "12",
+                  "value": 40
+                },
+                {
+                  "bucket": "13",
+                  "value": 29
+                },
+                {
+                  "bucket": "14",
+                  "value": 34
+                },
+                {
+                  "bucket": "15",
+                  "value": 40
+                },
+                {
+                  "bucket": "16",
+                  "value": 35
+                },
+                {
+                  "bucket": "17",
+                  "value": 43
+                },
+                {
+                  "bucket": "18",
+                  "value": 34
+                },
+                {
+                  "bucket": "19",
+                  "value": 41
+                },
+                {
+                  "bucket": "2",
+                  "value": 38
+                },
+                {
+                  "bucket": "20",
+                  "value": 37
+                },
+                {
+                  "bucket": "21",
+                  "value": 32
+                },
+                {
+                  "bucket": "22",
+                  "value": 37
+                },
+                {
+                  "bucket": "23",
+                  "value": 34
+                },
+                {
+                  "bucket": "24",
+                  "value": 30
+                },
+                {
+                  "bucket": "3",
+                  "value": 34
+                },
+                {
+                  "bucket": "4",
+                  "value": 31
+                },
+                {
+                  "bucket": "5",
+                  "value": 34
+                },
+                {
+                  "bucket": "6",
+                  "value": 43
+                },
+                {
+                  "bucket": "7",
+                  "value": 41
+                },
+                {
+                  "bucket": "8",
+                  "value": 42
+                },
+                {
+                  "bucket": "9",
+                  "value": 34
+                }
+              ]
+            }
+          ]
+        },
+        "evidence": null,
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:planning:account-pair",
+      "task_category": "planning",
+      "question": "2025年5月按国家并列下单账户数和窗口内多次下单账户数，同一账户只计一次。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:planning:account-pair",
+        "original_id": "exp1:planning:account-pair"
+      },
+      "split": "validation",
+      "normalized_text_id": "e704168e963792adc1bc",
+      "semantic_group_id": "866d3427ecf7aca01be8",
+      "template_id": "f14d87a58108f473f536",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "business_plan",
+        "entity": null,
+        "metric_ids": [
+          "ordering_customer_count",
+          "repeat_ordering_customer_count"
+        ],
+        "metric_request": null,
+        "plan": {
+          "analysis_type": "summary",
+          "operation": "align_by_bucket",
+          "requests": [
+            {
+              "metric_id": "ordering_customer_count",
+              "start_date": "2025-05-01",
+              "end_date": "2025-06-01",
+              "group_by": [
+                "country"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "repeat_ordering_customer_count",
+              "start_date": "2025-05-01",
+              "end_date": "2025-06-01",
+              "group_by": [
+                "country"
+              ],
+              "filters": {}
+            }
+          ],
+          "no_cross_fact_join": true,
+          "retain_per_metric_event_time": true
+        },
+        "tool_path": "metric_query",
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "ordering_customer_count",
+                "start_date": "2025-05-01",
+                "end_date": "2025-06-01",
+                "group_by": [
+                  "country"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "AU",
+                  "value": 92
+                },
+                {
+                  "bucket": "CA",
+                  "value": 61
+                },
+                {
+                  "bucket": "DE",
+                  "value": 54
+                },
+                {
+                  "bucket": "DK",
+                  "value": 16
+                },
+                {
+                  "bucket": "ES",
+                  "value": 30
+                },
+                {
+                  "bucket": "FI",
+                  "value": 30
+                },
+                {
+                  "bucket": "FR",
+                  "value": 53
+                },
+                {
+                  "bucket": "GB",
+                  "value": 113
+                },
+                {
+                  "bucket": "IE",
+                  "value": 48
+                },
+                {
+                  "bucket": "IT",
+                  "value": 26
+                },
+                {
+                  "bucket": "NL",
+                  "value": 47
+                },
+                {
+                  "bucket": "NO",
+                  "value": 19
+                },
+                {
+                  "bucket": "NZ",
+                  "value": 52
+                },
+                {
+                  "bucket": "PT",
+                  "value": 25
+                },
+                {
+                  "bucket": "SE",
+                  "value": 31
+                },
+                {
+                  "bucket": "SI",
+                  "value": 25
+                },
+                {
+                  "bucket": "US",
+                  "value": 160
+                }
+              ]
+            },
+            {
+              "parameters": {
+                "metric_id": "repeat_ordering_customer_count",
+                "start_date": "2025-05-01",
+                "end_date": "2025-06-01",
+                "group_by": [
+                  "country"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "AU",
+                  "value": 29
+                },
+                {
+                  "bucket": "CA",
+                  "value": 15
+                },
+                {
+                  "bucket": "DE",
+                  "value": 13
+                },
+                {
+                  "bucket": "DK",
+                  "value": 2
+                },
+                {
+                  "bucket": "ES",
+                  "value": 5
+                },
+                {
+                  "bucket": "FI",
+                  "value": 5
+                },
+                {
+                  "bucket": "FR",
+                  "value": 12
+                },
+                {
+                  "bucket": "GB",
+                  "value": 24
+                },
+                {
+                  "bucket": "IE",
+                  "value": 10
+                },
+                {
+                  "bucket": "IT",
+                  "value": 3
+                },
+                {
+                  "bucket": "NL",
+                  "value": 12
+                },
+                {
+                  "bucket": "NO",
+                  "value": 5
+                },
+                {
+                  "bucket": "NZ",
+                  "value": 9
+                },
+                {
+                  "bucket": "PT",
+                  "value": 4
+                },
+                {
+                  "bucket": "SE",
+                  "value": 11
+                },
+                {
+                  "bucket": "SI",
+                  "value": 7
+                },
+                {
+                  "bucket": "US",
+                  "value": 33
+                }
+              ]
+            }
+          ]
+        },
+        "evidence": null,
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:planning:return-anomaly-pair",
+      "task_category": "planning",
+      "question": "以2025年9月为退货事件窗口，按品类并列早于下单的退货记录数和退款记录超明细净额数。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:planning:return-anomaly-pair",
+        "original_id": "exp1:planning:return-anomaly-pair"
+      },
+      "split": "validation",
+      "normalized_text_id": "888013d68540881a0d9c",
+      "semantic_group_id": "851c2494e4f4b5bcd495",
+      "template_id": "8e73942def9722842a16",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "business_plan",
+        "entity": null,
+        "metric_ids": [
+          "return_before_order_count",
+          "return_above_item_net_count"
+        ],
+        "metric_request": null,
+        "plan": {
+          "analysis_type": "summary",
+          "operation": "align_by_bucket",
+          "requests": [
+            {
+              "metric_id": "return_before_order_count",
+              "start_date": "2025-09-01",
+              "end_date": "2025-10-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "return_above_item_net_count",
+              "start_date": "2025-09-01",
+              "end_date": "2025-10-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            }
+          ],
+          "no_cross_fact_join": true,
+          "retain_per_metric_event_time": true
+        },
+        "tool_path": "metric_query",
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "return_before_order_count",
+                "start_date": "2025-09-01",
+                "end_date": "2025-10-01",
+                "group_by": [
+                  "category"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "returns.returned_at",
+              "expected_result": [
+                {
+                  "bucket": "1",
+                  "value": 7
+                },
+                {
+                  "bucket": "10",
+                  "value": 0
+                },
+                {
+                  "bucket": "11",
+                  "value": 1
+                },
+                {
+                  "bucket": "12",
+                  "value": 0
+                },
+                {
+                  "bucket": "13",
+                  "value": 0
+                },
+                {
+                  "bucket": "14",
+                  "value": 0
+                },
+                {
+                  "bucket": "15",
+                  "value": 4
+                },
+                {
+                  "bucket": "16",
+                  "value": 0
+                },
+                {
+                  "bucket": "17",
+                  "value": 0
+                },
+                {
+                  "bucket": "18",
+                  "value": 1
+                },
+                {
+                  "bucket": "19",
+                  "value": 4
+                },
+                {
+                  "bucket": "2",
+                  "value": 1
+                },
+                {
+                  "bucket": "20",
+                  "value": 8
+                },
+                {
+                  "bucket": "21",
+                  "value": 0
+                },
+                {
+                  "bucket": "22",
+                  "value": 0
+                },
+                {
+                  "bucket": "23",
+                  "value": 1
+                },
+                {
+                  "bucket": "24",
+                  "value": 0
+                },
+                {
+                  "bucket": "3",
+                  "value": 2
+                },
+                {
+                  "bucket": "4",
+                  "value": 2
+                },
+                {
+                  "bucket": "5",
+                  "value": 0
+                },
+                {
+                  "bucket": "6",
+                  "value": 0
+                },
+                {
+                  "bucket": "7",
+                  "value": 3
+                },
+                {
+                  "bucket": "8",
+                  "value": 0
+                },
+                {
+                  "bucket": "9",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "parameters": {
+                "metric_id": "return_above_item_net_count",
+                "start_date": "2025-09-01",
+                "end_date": "2025-10-01",
+                "group_by": [
+                  "category"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "returns.returned_at",
+              "expected_result": [
+                {
+                  "bucket": "1",
+                  "value": 6
+                },
+                {
+                  "bucket": "10",
+                  "value": 0
+                },
+                {
+                  "bucket": "11",
+                  "value": 1
+                },
+                {
+                  "bucket": "12",
+                  "value": 1
+                },
+                {
+                  "bucket": "13",
+                  "value": 1
+                },
+                {
+                  "bucket": "14",
+                  "value": 0
+                },
+                {
+                  "bucket": "15",
+                  "value": 4
+                },
+                {
+                  "bucket": "16",
+                  "value": 4
+                },
+                {
+                  "bucket": "17",
+                  "value": 0
+                },
+                {
+                  "bucket": "18",
+                  "value": 0
+                },
+                {
+                  "bucket": "19",
+                  "value": 4
+                },
+                {
+                  "bucket": "2",
+                  "value": 0
+                },
+                {
+                  "bucket": "20",
+                  "value": 9
+                },
+                {
+                  "bucket": "21",
+                  "value": 2
+                },
+                {
+                  "bucket": "22",
+                  "value": 0
+                },
+                {
+                  "bucket": "23",
+                  "value": 1
+                },
+                {
+                  "bucket": "24",
+                  "value": 0
+                },
+                {
+                  "bucket": "3",
+                  "value": 1
+                },
+                {
+                  "bucket": "4",
+                  "value": 0
+                },
+                {
+                  "bucket": "5",
+                  "value": 2
+                },
+                {
+                  "bucket": "6",
+                  "value": 0
+                },
+                {
+                  "bucket": "7",
+                  "value": 2
+                },
+                {
+                  "bucket": "8",
+                  "value": 0
+                },
+                {
+                  "bucket": "9",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "evidence": null,
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:planning:payment-pair",
+      "task_category": "planning",
+      "question": "2025年2月按支付方式并列支付尝试次数和失败支付尝试次数，使用支付事件时间。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:planning:payment-pair",
+        "original_id": "exp1:planning:payment-pair"
+      },
+      "split": "validation",
+      "normalized_text_id": "7effddd6fe7faeb1c74d",
+      "semantic_group_id": "37a44b89bdf2b8725bfd",
+      "template_id": "f45ef939cf57ee8d4b3f",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "business_plan",
+        "entity": null,
+        "metric_ids": [
+          "payment_attempt_count",
+          "payment_failed_attempt_count"
+        ],
+        "metric_request": null,
+        "plan": {
+          "analysis_type": "summary",
+          "operation": "align_by_bucket",
+          "requests": [
+            {
+              "metric_id": "payment_attempt_count",
+              "start_date": "2025-02-01",
+              "end_date": "2025-03-01",
+              "group_by": [
+                "method"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "payment_failed_attempt_count",
+              "start_date": "2025-02-01",
+              "end_date": "2025-03-01",
+              "group_by": [
+                "method"
+              ],
+              "filters": {}
+            }
+          ],
+          "no_cross_fact_join": true,
+          "retain_per_metric_event_time": true
+        },
+        "tool_path": "metric_query",
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "payment_attempt_count",
+                "start_date": "2025-02-01",
+                "end_date": "2025-03-01",
+                "group_by": [
+                  "method"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "payments.paid_at（失败记录也使用该源时间）",
+              "expected_result": [
+                {
+                  "bucket": "bank_transfer",
+                  "value": 193
+                },
+                {
+                  "bucket": "card",
+                  "value": 1452
+                },
+                {
+                  "bucket": "gift_card",
+                  "value": 118
+                },
+                {
+                  "bucket": "paypal",
+                  "value": 393
+                }
+              ]
+            },
+            {
+              "parameters": {
+                "metric_id": "payment_failed_attempt_count",
+                "start_date": "2025-02-01",
+                "end_date": "2025-03-01",
+                "group_by": [
+                  "method"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "payments.paid_at",
+              "expected_result": [
+                {
+                  "bucket": "bank_transfer",
+                  "value": 11
+                },
+                {
+                  "bucket": "card",
+                  "value": 80
+                },
+                {
+                  "bucket": "gift_card",
+                  "value": 5
+                },
+                {
+                  "bucket": "paypal",
+                  "value": 21
+                }
+              ]
+            }
+          ]
+        },
+        "evidence": null,
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:planning:different-axes",
+      "task_category": "planning",
+      "question": "分别按支付方式和品类对比2025年5月成功支付金额和折扣后商品销售金额，再一行一行解释差别。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:planning:different-axes",
+        "original_id": "exp1:planning:different-axes"
+      },
+      "split": "development",
+      "normalized_text_id": "d603117564bc285add4d",
+      "semantic_group_id": "0d5abd244c8ccc116d40",
+      "template_id": "795b66a68da47fdc4fbc",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "两个指标没有共同的指定粒度，需确认用户是否接受独立报表",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:planning:customer-overlap",
+      "task_category": "planning",
+      "question": "2025年春季既用电话又用网站下单的账户有多少？同一个账户只数一次。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:planning:customer-overlap",
+        "original_id": "exp1:planning:customer-overlap"
+      },
+      "split": "development",
+      "normalized_text_id": "4b50bf3714487549f854",
+      "semantic_group_id": "91d3acc3174b40e9bc13",
+      "template_id": "caea0e2c13583ffd8c8e",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "未定义用户级集合交集计划",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:planning:rates-delta",
+      "task_category": "planning",
+      "question": "按国家比较账户复购率与取消占比的差，写出两者相差多少个百分点。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:planning:rates-delta",
+        "original_id": "exp1:planning:rates-delta"
+      },
+      "split": "development",
+      "normalized_text_id": "725f4128e5d24a254b1f",
+      "semantic_group_id": "45dad2f30e6b5413bfd1",
+      "template_id": "2b575ddab13e42eadb27",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需要审核比较操作及 N/A 边界",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:planning:path-funnel",
+      "task_category": "planning",
+      "question": "我想从商品浏览到支付再到退货看一个漏斗，按品类拆。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:planning:path-funnel",
+        "original_id": "exp1:planning:path-funnel"
+      },
+      "split": "development",
+      "normalized_text_id": "225752e36c2597d1a2fd",
+      "semantic_group_id": "22c3835cdea7b4f2db59",
+      "template_id": "ccb5cb67a13c1af85036",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "缺少浏览事件和可验证漏斗定义",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:planning:department-cost",
+      "task_category": "planning",
+      "question": "把2025年各事业部毛利按退款责任人分摊，并列出影响最大的项目。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:planning:department-cost",
+        "original_id": "exp1:planning:department-cost"
+      },
+      "split": "development",
+      "normalized_text_id": "496e5dabd635f613fba2",
+      "semantic_group_id": "ccaae494a5fd1400a550",
+      "template_id": "13f342509fca49c08a05",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "缺少部门和历史成本事实",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:planning:cohort-drift",
+      "task_category": "planning",
+      "question": "对比同一批商品明细在下单后7天和30天的退货率。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:planning:cohort-drift",
+        "original_id": "exp1:planning:cohort-drift"
+      },
+      "split": "development",
+      "normalized_text_id": "71f2b5876c39d8d251e8",
+      "semantic_group_id": "b9cd816e7ac82ceaf06c",
+      "template_id": "20a66fd484306c1f7c5e",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "用户指定的观察截止未获正式支持",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:sql:gross",
+      "task_category": "sql",
+      "question": "给出从2025-04-01至2025-06-30按品类的折扣前商品记录金额，包括取消状态原始记录。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:sql:gross",
+        "original_id": "exp1:sql:gross"
+      },
+      "split": "validation",
+      "normalized_text_id": "f7be1c67fccd3924f657",
+      "semantic_group_id": "cd68dc65ff8f62f3e864",
+      "template_id": "2e5c0d273dce3f619f3e",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "metric",
+        "entity": null,
+        "metric_ids": [
+          "item_gross_sales_amount"
+        ],
+        "metric_request": {
+          "metric_id": "item_gross_sales_amount",
+          "start_date": "2025-04-01",
+          "end_date": "2025-07-01",
+          "group_by": [
+            "category"
+          ],
+          "filters": {}
+        },
+        "plan": null,
+        "tool_path": "metric_query",
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "item_gross_sales_amount",
+                "start_date": "2025-04-01",
+                "end_date": "2025-07-01",
+                "group_by": [
+                  "category"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "1",
+                  "value": "48698.90"
+                },
+                {
+                  "bucket": "10",
+                  "value": "15967.37"
+                },
+                {
+                  "bucket": "11",
+                  "value": "10365.63"
+                },
+                {
+                  "bucket": "12",
+                  "value": "58761.63"
+                },
+                {
+                  "bucket": "13",
+                  "value": "7477.80"
+                },
+                {
+                  "bucket": "14",
+                  "value": "6888.95"
+                },
+                {
+                  "bucket": "15",
+                  "value": "90718.01"
+                },
+                {
+                  "bucket": "16",
+                  "value": "56847.71"
+                },
+                {
+                  "bucket": "17",
+                  "value": "16419.48"
+                },
+                {
+                  "bucket": "18",
+                  "value": "11067.09"
+                },
+                {
+                  "bucket": "19",
+                  "value": "53948.51"
+                },
+                {
+                  "bucket": "2",
+                  "value": "26051.35"
+                },
+                {
+                  "bucket": "20",
+                  "value": "115026.10"
+                },
+                {
+                  "bucket": "21",
+                  "value": "19908.02"
+                },
+                {
+                  "bucket": "22",
+                  "value": "15512.49"
+                },
+                {
+                  "bucket": "23",
+                  "value": "13179.01"
+                },
+                {
+                  "bucket": "24",
+                  "value": "19159.49"
+                },
+                {
+                  "bucket": "3",
+                  "value": "11739.23"
+                },
+                {
+                  "bucket": "4",
+                  "value": "18029.54"
+                },
+                {
+                  "bucket": "5",
+                  "value": "13914.97"
+                },
+                {
+                  "bucket": "6",
+                  "value": "14652.58"
+                },
+                {
+                  "bucket": "7",
+                  "value": "23267.31"
+                },
+                {
+                  "bucket": "8",
+                  "value": "8517.16"
+                },
+                {
+                  "bucket": "9",
+                  "value": "14184.80"
+                }
+              ]
+            }
+          ]
+        },
+        "evidence": null,
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:sql:discount",
+      "task_category": "sql",
+      "question": "2025年4月品类ID 12内按商品统计的商品行折扣金额是多少？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:sql:discount",
+        "original_id": "exp1:sql:discount"
+      },
+      "split": "validation",
+      "normalized_text_id": "cd1400c8d55497266eae",
+      "semantic_group_id": "a5a6355bb3682d657f2b",
+      "template_id": "397268eb79f32a4c6830",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "metric",
+        "entity": null,
+        "metric_ids": [
+          "item_discount_amount"
+        ],
+        "metric_request": {
+          "metric_id": "item_discount_amount",
+          "start_date": "2025-04-01",
+          "end_date": "2025-05-01",
+          "group_by": [
+            "product"
+          ],
+          "filters": {
+            "category": 12
+          }
+        },
+        "plan": null,
+        "tool_path": "metric_query",
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "item_discount_amount",
+                "start_date": "2025-04-01",
+                "end_date": "2025-05-01",
+                "group_by": [
+                  "product"
+                ],
+                "filters": {
+                  "category": 12
+                }
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "108",
+                  "value": "1.41"
+                },
+                {
+                  "bucket": "1119",
+                  "value": "5.86"
+                },
+                {
+                  "bucket": "1187",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "1201",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "1350",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "148",
+                  "value": "0.23"
+                },
+                {
+                  "bucket": "1580",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "1708",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "176",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "1826",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "22",
+                  "value": "17.38"
+                },
+                {
+                  "bucket": "234",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "236",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "24",
+                  "value": "42.98"
+                },
+                {
+                  "bucket": "341",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "345",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "353",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "360",
+                  "value": "3.83"
+                },
+                {
+                  "bucket": "39",
+                  "value": "62.08"
+                },
+                {
+                  "bucket": "40",
+                  "value": "5.64"
+                },
+                {
+                  "bucket": "402",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "415",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "456",
+                  "value": "2.41"
+                },
+                {
+                  "bucket": "47",
+                  "value": "10.40"
+                },
+                {
+                  "bucket": "49",
+                  "value": "1.11"
+                },
+                {
+                  "bucket": "56",
+                  "value": "4.78"
+                },
+                {
+                  "bucket": "58",
+                  "value": "2.25"
+                },
+                {
+                  "bucket": "582",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "61",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "78",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "8",
+                  "value": "37.57"
+                },
+                {
+                  "bucket": "810",
+                  "value": "0.00"
+                },
+                {
+                  "bucket": "85",
+                  "value": "2.04"
+                },
+                {
+                  "bucket": "865",
+                  "value": "0.75"
+                },
+                {
+                  "bucket": "93",
+                  "value": "2.98"
+                }
+              ]
+            }
+          ]
+        },
+        "evidence": null,
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:sql:account-count",
+      "task_category": "sql",
+      "question": "2025年5月按国家查看下单账户数？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:sql:account-count",
+        "original_id": "exp1:sql:account-count"
+      },
+      "split": "validation",
+      "normalized_text_id": "856dc26437d9d9be9582",
+      "semantic_group_id": "312ba6f43f3df64d6318",
+      "template_id": "ff2478eaf6861cd117f4",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "metric",
+        "entity": null,
+        "metric_ids": [
+          "ordering_customer_count"
+        ],
+        "metric_request": {
+          "metric_id": "ordering_customer_count",
+          "start_date": "2025-05-01",
+          "end_date": "2025-06-01",
+          "group_by": [
+            "country"
+          ],
+          "filters": {}
+        },
+        "plan": null,
+        "tool_path": "metric_query",
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "ordering_customer_count",
+                "start_date": "2025-05-01",
+                "end_date": "2025-06-01",
+                "group_by": [
+                  "country"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "AU",
+                  "value": 92
+                },
+                {
+                  "bucket": "CA",
+                  "value": 61
+                },
+                {
+                  "bucket": "DE",
+                  "value": 54
+                },
+                {
+                  "bucket": "DK",
+                  "value": 16
+                },
+                {
+                  "bucket": "ES",
+                  "value": 30
+                },
+                {
+                  "bucket": "FI",
+                  "value": 30
+                },
+                {
+                  "bucket": "FR",
+                  "value": 53
+                },
+                {
+                  "bucket": "GB",
+                  "value": 113
+                },
+                {
+                  "bucket": "IE",
+                  "value": 48
+                },
+                {
+                  "bucket": "IT",
+                  "value": 26
+                },
+                {
+                  "bucket": "NL",
+                  "value": 47
+                },
+                {
+                  "bucket": "NO",
+                  "value": 19
+                },
+                {
+                  "bucket": "NZ",
+                  "value": 52
+                },
+                {
+                  "bucket": "PT",
+                  "value": 25
+                },
+                {
+                  "bucket": "SE",
+                  "value": 31
+                },
+                {
+                  "bucket": "SI",
+                  "value": 25
+                },
+                {
+                  "bucket": "US",
+                  "value": 160
+                }
+              ]
+            }
+          ]
+        },
+        "evidence": null,
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:sql:repeat-count",
+      "task_category": "sql",
+      "question": "2025年5月partner渠道的窗口内多次下单账户数是多少？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:sql:repeat-count",
+        "original_id": "exp1:sql:repeat-count"
+      },
+      "split": "validation",
+      "normalized_text_id": "f809d4ed2f196196b46a",
+      "semantic_group_id": "47d5c6cb1af4e4c51906",
+      "template_id": "0ef99825df4747027729",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "metric",
+        "entity": null,
+        "metric_ids": [
+          "repeat_ordering_customer_count"
+        ],
+        "metric_request": {
+          "metric_id": "repeat_ordering_customer_count",
+          "start_date": "2025-05-01",
+          "end_date": "2025-06-01",
+          "group_by": [],
+          "filters": {
+            "channel": "partner"
+          }
+        },
+        "plan": null,
+        "tool_path": "metric_query",
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "repeat_ordering_customer_count",
+                "start_date": "2025-05-01",
+                "end_date": "2025-06-01",
+                "group_by": [],
+                "filters": {
+                  "channel": "partner"
+                }
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "all",
+                  "value": 20
+                }
+              ]
+            }
+          ]
+        },
+        "evidence": null,
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:sql:returns-before",
+      "task_category": "sql",
+      "question": "2025年9月记录的退货中，早于下单的退货记录数按品类拆分是多少？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:sql:returns-before",
+        "original_id": "exp1:sql:returns-before"
+      },
+      "split": "validation",
+      "normalized_text_id": "f425158f4c9a45dd1e9f",
+      "semantic_group_id": "8011d831a943ca653c6e",
+      "template_id": "606edc09a56c9dbb2dbc",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "metric",
+        "entity": null,
+        "metric_ids": [
+          "return_before_order_count"
+        ],
+        "metric_request": {
+          "metric_id": "return_before_order_count",
+          "start_date": "2025-09-01",
+          "end_date": "2025-10-01",
+          "group_by": [
+            "category"
+          ],
+          "filters": {}
+        },
+        "plan": null,
+        "tool_path": "metric_query",
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "return_before_order_count",
+                "start_date": "2025-09-01",
+                "end_date": "2025-10-01",
+                "group_by": [
+                  "category"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "returns.returned_at",
+              "expected_result": [
+                {
+                  "bucket": "1",
+                  "value": 7
+                },
+                {
+                  "bucket": "10",
+                  "value": 0
+                },
+                {
+                  "bucket": "11",
+                  "value": 1
+                },
+                {
+                  "bucket": "12",
+                  "value": 0
+                },
+                {
+                  "bucket": "13",
+                  "value": 0
+                },
+                {
+                  "bucket": "14",
+                  "value": 0
+                },
+                {
+                  "bucket": "15",
+                  "value": 4
+                },
+                {
+                  "bucket": "16",
+                  "value": 0
+                },
+                {
+                  "bucket": "17",
+                  "value": 0
+                },
+                {
+                  "bucket": "18",
+                  "value": 1
+                },
+                {
+                  "bucket": "19",
+                  "value": 4
+                },
+                {
+                  "bucket": "2",
+                  "value": 1
+                },
+                {
+                  "bucket": "20",
+                  "value": 8
+                },
+                {
+                  "bucket": "21",
+                  "value": 0
+                },
+                {
+                  "bucket": "22",
+                  "value": 0
+                },
+                {
+                  "bucket": "23",
+                  "value": 1
+                },
+                {
+                  "bucket": "24",
+                  "value": 0
+                },
+                {
+                  "bucket": "3",
+                  "value": 2
+                },
+                {
+                  "bucket": "4",
+                  "value": 2
+                },
+                {
+                  "bucket": "5",
+                  "value": 0
+                },
+                {
+                  "bucket": "6",
+                  "value": 0
+                },
+                {
+                  "bucket": "7",
+                  "value": 3
+                },
+                {
+                  "bucket": "8",
+                  "value": 0
+                },
+                {
+                  "bucket": "9",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "evidence": null,
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:sql:returns-above",
+      "task_category": "sql",
+      "question": "以退货事件为时间口径，2025年9月退款记录超明细净额数按渠道怎么分布？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:sql:returns-above",
+        "original_id": "exp1:sql:returns-above"
+      },
+      "split": "validation",
+      "normalized_text_id": "e8262d584d722daddb12",
+      "semantic_group_id": "3df4d367fcb4005b7707",
+      "template_id": "753ad73129219fc2c6b6",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "metric",
+        "entity": null,
+        "metric_ids": [
+          "return_above_item_net_count"
+        ],
+        "metric_request": {
+          "metric_id": "return_above_item_net_count",
+          "start_date": "2025-09-01",
+          "end_date": "2025-10-01",
+          "group_by": [
+            "channel"
+          ],
+          "filters": {}
+        },
+        "plan": null,
+        "tool_path": "metric_query",
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "return_above_item_net_count",
+                "start_date": "2025-09-01",
+                "end_date": "2025-10-01",
+                "group_by": [
+                  "channel"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "returns.returned_at",
+              "expected_result": [
+                {
+                  "bucket": "mobile",
+                  "value": 11
+                },
+                {
+                  "bucket": "partner",
+                  "value": 0
+                },
+                {
+                  "bucket": "phone",
+                  "value": 1
+                },
+                {
+                  "bucket": "web",
+                  "value": 26
+                }
+              ]
+            }
+          ]
+        },
+        "evidence": null,
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:sql:products",
+      "task_category": "sql",
+      "question": "2025年7月按品类统计有下单明细的商品数，同一商品只计一次。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:sql:products",
+        "original_id": "exp1:sql:products"
+      },
+      "split": "validation",
+      "normalized_text_id": "c7c222be966fc2eef18c",
+      "semantic_group_id": "b6ee4b022e4969897b33",
+      "template_id": "4909bcdbdf306482812d",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "metric",
+        "entity": null,
+        "metric_ids": [
+          "ordered_product_count"
+        ],
+        "metric_request": {
+          "metric_id": "ordered_product_count",
+          "start_date": "2025-07-01",
+          "end_date": "2025-08-01",
+          "group_by": [
+            "category"
+          ],
+          "filters": {}
+        },
+        "plan": null,
+        "tool_path": "metric_query",
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "ordered_product_count",
+                "start_date": "2025-07-01",
+                "end_date": "2025-08-01",
+                "group_by": [
+                  "category"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "orders.ordered_at",
+              "expected_result": [
+                {
+                  "bucket": "1",
+                  "value": 44
+                },
+                {
+                  "bucket": "10",
+                  "value": 45
+                },
+                {
+                  "bucket": "11",
+                  "value": 32
+                },
+                {
+                  "bucket": "12",
+                  "value": 40
+                },
+                {
+                  "bucket": "13",
+                  "value": 29
+                },
+                {
+                  "bucket": "14",
+                  "value": 34
+                },
+                {
+                  "bucket": "15",
+                  "value": 40
+                },
+                {
+                  "bucket": "16",
+                  "value": 35
+                },
+                {
+                  "bucket": "17",
+                  "value": 43
+                },
+                {
+                  "bucket": "18",
+                  "value": 34
+                },
+                {
+                  "bucket": "19",
+                  "value": 41
+                },
+                {
+                  "bucket": "2",
+                  "value": 38
+                },
+                {
+                  "bucket": "20",
+                  "value": 37
+                },
+                {
+                  "bucket": "21",
+                  "value": 32
+                },
+                {
+                  "bucket": "22",
+                  "value": 37
+                },
+                {
+                  "bucket": "23",
+                  "value": 34
+                },
+                {
+                  "bucket": "24",
+                  "value": 30
+                },
+                {
+                  "bucket": "3",
+                  "value": 34
+                },
+                {
+                  "bucket": "4",
+                  "value": 31
+                },
+                {
+                  "bucket": "5",
+                  "value": 34
+                },
+                {
+                  "bucket": "6",
+                  "value": 43
+                },
+                {
+                  "bucket": "7",
+                  "value": 41
+                },
+                {
+                  "bucket": "8",
+                  "value": 42
+                },
+                {
+                  "bucket": "9",
+                  "value": 34
+                }
+              ]
+            }
+          ]
+        },
+        "evidence": null,
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:sql:payment-attempts",
+      "task_category": "sql",
+      "question": "2025年2月按支付状态查看支付尝试次数，用支付发生时间归属月份。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:sql:payment-attempts",
+        "original_id": "exp1:sql:payment-attempts"
+      },
+      "split": "validation",
+      "normalized_text_id": "a29940066fe1a1ae5b2b",
+      "semantic_group_id": "73e400e8b918ebf8b47f",
+      "template_id": "e3225e834e9acddfefc9",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "metric",
+        "entity": null,
+        "metric_ids": [
+          "payment_attempt_count"
+        ],
+        "metric_request": {
+          "metric_id": "payment_attempt_count",
+          "start_date": "2025-02-01",
+          "end_date": "2025-03-01",
+          "group_by": [
+            "status"
+          ],
+          "filters": {}
+        },
+        "plan": null,
+        "tool_path": "metric_query",
+        "sql": {
+          "method": "sql/warehouse/dws_metrics/ods.sql",
+          "query_sha256": "d1462a182fcdb20d59fd1f66616a4612668bada8b075b2fcff802f6ec10a27ef",
+          "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "calls": [
+            {
+              "parameters": {
+                "metric_id": "payment_attempt_count",
+                "start_date": "2025-02-01",
+                "end_date": "2025-03-01",
+                "group_by": [
+                  "status"
+                ],
+                "filters": {}
+              },
+              "time_attribution": "payments.paid_at（失败记录也使用该源时间）",
+              "expected_result": [
+                {
+                  "bucket": "captured",
+                  "value": 2039
+                },
+                {
+                  "bucket": "failed",
+                  "value": 117
+                }
+              ]
+            }
+          ]
+        },
+        "evidence": null,
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:conversation:keep-filter",
+      "task_category": "conversation",
+      "question": "那只看品类12呢？",
+      "context": {
+        "prior_user_text": "2025年4月web渠道的商品行折扣金额。"
+      },
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:conversation:keep-filter",
+        "original_id": "exp1:conversation:keep-filter"
+      },
+      "split": "development",
+      "normalized_text_id": "32ee0cf69ba28b9eabdb",
+      "semantic_group_id": "365b20a2e52d5a551755",
+      "template_id": "dfa68a17cf363048f727",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "待确认会话是否继承渠道和时间",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:conversation:negate",
+      "task_category": "conversation",
+      "question": "不用分渠道了。",
+      "context": {
+        "prior_user_text": "2025年5月按渠道查看下单账户数。"
+      },
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:conversation:negate",
+        "original_id": "exp1:conversation:negate"
+      },
+      "split": "development",
+      "normalized_text_id": "32bc37fa8db33c3eba4f",
+      "semantic_group_id": "1854c3bfeaab0e9a69df",
+      "template_id": "37a830424f43ea636bc1",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "待确认否定操作与已保存筛选的覆盖规则",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:conversation:replace-axis",
+      "task_category": "conversation",
+      "question": "换成按会员等级。",
+      "context": {
+        "prior_user_text": "2025年5月按国家显示下单账户数。"
+      },
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:conversation:replace-axis",
+        "original_id": "exp1:conversation:replace-axis"
+      },
+      "split": "development",
+      "normalized_text_id": "62968a58c4e1a2325df0",
+      "semantic_group_id": "a93504bfa1317b8e4181",
+      "template_id": "f6c4235ff12d810e263c",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需约定同轮替换轴和参数回执",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:conversation:replace-clock",
+      "task_category": "conversation",
+      "question": "我说的是那个月购买的。",
+      "context": {
+        "prior_user_text": "2025年9月按退货发生时间统计退货记录金额。"
+      },
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:conversation:replace-clock",
+        "original_id": "exp1:conversation:replace-clock"
+      },
+      "split": "development",
+      "normalized_text_id": "6ae0fdfcd7cf0062ebca",
+      "semantic_group_id": "c34a904f5ab95b2935bd",
+      "template_id": "9fff8033cbd98e0dd440",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "事件时间改为下单时间影响能力，需核验拒绝路径",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:conversation:mixed-add",
+      "task_category": "conversation",
+      "question": "再加一列订单商品明细数。",
+      "context": {
+        "prior_user_text": "2025年10月按商品统计下单商品件数。"
+      },
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:conversation:mixed-add",
+        "original_id": "exp1:conversation:mixed-add"
+      },
+      "split": "development",
+      "normalized_text_id": "415c7464fddcc76fff5a",
+      "semantic_group_id": "558b3f7b63603d93ffdb",
+      "template_id": "117635fee910379e5e13",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需确认继承现有窗口的联合指标计划",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:conversation:follow-ref",
+      "task_category": "conversation",
+      "question": "把刚才引用里说的旧版本处理办法再解释一下。",
+      "context": {
+        "prior_user_text": "查询资产的发布流程是什么？"
+      },
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:conversation:follow-ref",
+        "original_id": "exp1:conversation:follow-ref"
+      },
+      "split": "development",
+      "normalized_text_id": "9ac550d621d41606a74f",
+      "semantic_group_id": "409a97dfe107730cbe9a",
+      "template_id": "0c0fd0f12f8cc14bd86d",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "多文档指代需要当前来源范围证据",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:conversation:branch-time",
+      "task_category": "conversation",
+      "question": "把前者改成3月。",
+      "context": {
+        "prior_user_text": "比较2025年4月与5月的取消状态订单占比。"
+      },
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:conversation:branch-time",
+        "original_id": "exp1:conversation:branch-time"
+      },
+      "split": "development",
+      "normalized_text_id": "d1bd7ef0340d025a48fd",
+      "semantic_group_id": "c2e8eda750ba71dc37d9",
+      "template_id": "944f6dd20fb8d488559c",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需确认两窗口的会话改写保真",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:conversation:clarify-scope",
+      "task_category": "conversation",
+      "question": "我只想看测试报表里的解释。",
+      "context": {
+        "prior_user_text": "用已发布PDF解释复购率。"
+      },
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:conversation:clarify-scope",
+        "original_id": "exp1:conversation:clarify-scope"
+      },
+      "split": "development",
+      "normalized_text_id": "c5a230845629225ed014",
+      "semantic_group_id": "f60ab17ed88040285391",
+      "template_id": "95a57828d2d7959b557b",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需约定澄清回答是否给足来源范围",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:conversation:confirm-share",
+      "task_category": "conversation",
+      "question": "我指当前品类商品金额占比，分母用全渠道金额。",
+      "context": {
+        "prior_user_text": "2025年7月品类贡献占比。"
+      },
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:conversation:confirm-share",
+        "original_id": "exp1:conversation:confirm-share"
+      },
+      "split": "development",
+      "normalized_text_id": "7942dbeaf09e0fb00a86",
+      "semantic_group_id": "a81c1dd3292a7c9bdecc",
+      "template_id": "1cdf91b1880a3bac12af",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需约定澄清后份额查询的分母范围",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:conversation:invalid-carry",
+      "task_category": "conversation",
+      "question": "改看退货记录数。",
+      "context": {
+        "prior_user_text": "2025年2月按支付方式查支付尝试次数。"
+      },
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:conversation:invalid-carry",
+        "original_id": "exp1:conversation:invalid-carry"
+      },
+      "split": "development",
+      "normalized_text_id": "a5bed8e206e81af7e3c7",
+      "semantic_group_id": "f86915f3ca558b43820b",
+      "template_id": "8d94bd029c676d384fc7",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需核验不兼容维度的清除或显式拒绝",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:rag:25d2dc6118ec6632d497",
+      "task_category": "rag",
+      "question": "请查阅技术文档《表清单与字段级设计》：《表清单与字段级设计》如何约定业务事件的时间类型？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:rag:25d2dc6118ec6632d497",
+        "original_id": "exp1:rag:25d2dc6118ec6632d497"
+      },
+      "split": "validation",
+      "normalized_text_id": "724c91890876fbd60d0b",
+      "semantic_group_id": "fa0c282ad3abe98f3048",
+      "template_id": "6c264b27ebd1918914c6",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "knowledge",
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": "rag",
+        "sql": null,
+        "evidence": {
+          "source": "docs/warehouse/TABLE_DESIGN.md",
+          "version": "36345e702de1-benchmark-full-v1",
+          "content_hash": "36345e702de157a95058e0305293533cee23d4998ee6edf6854b05d6d11f0940",
+          "parser_version": "sections-v1",
+          "quote": "事件T=TIMESTAMP WITHOUT TIME ZONE",
+          "chunk": {
+            "chunk_index": 0,
+            "location": "lines:3-6",
+            "heading_path": [
+              "表清单与字段级设计"
+            ],
+            "passage_hash": "26fc57dbda95bd378e15a76aedb4fd2410e619a4b81301e93de5364a11d229d7"
+          },
+          "relevant_chunks": [
+            "0d30faedbe263d90d7713afc121af726bc3e9dcdae114c6f231c7921722cf98b"
+          ],
+          "id_kind": "source locator independent of owner and embedding index",
+          "corpus": "offline_full_document_requires_local_provisioning"
+        },
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": "manual"
+      }
+    },
+    {
+      "case_id": "exp1:rag:2e54ca78a505cd96ec60",
+      "task_category": "rag",
+      "question": "请查阅技术文档《表清单与字段级设计》：品类维度的父类为空是否合规？请引用字段级设计。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:rag:2e54ca78a505cd96ec60",
+        "original_id": "exp1:rag:2e54ca78a505cd96ec60"
+      },
+      "split": "validation",
+      "normalized_text_id": "98b97d4dcabd0ed00264",
+      "semantic_group_id": "fa0c282ad3abe98f3048",
+      "template_id": "6c264b27ebd1918914c6",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "knowledge",
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": "rag",
+        "sql": null,
+        "evidence": {
+          "source": "docs/warehouse/TABLE_DESIGN.md",
+          "version": "36345e702de1-benchmark-full-v1",
+          "content_hash": "36345e702de157a95058e0305293533cee23d4998ee6edf6854b05d6d11f0940",
+          "parser_version": "sections-v1",
+          "quote": "根 NULL 合法",
+          "chunk": {
+            "chunk_index": 3,
+            "location": "lines:23-28",
+            "heading_path": [
+              "表清单与字段级设计",
+              "DIM：5 张共享当前维度"
+            ],
+            "passage_hash": "25fe61c824c21030bbdd880010090cbb4f34a249550af577f9553ef6af494ce1"
+          },
+          "relevant_chunks": [
+            "bce97cc16fb779068fdde7bf337040b5b4c35a063b56e231e61461066cca5261"
+          ],
+          "id_kind": "source locator independent of owner and embedding index",
+          "corpus": "offline_full_document_requires_local_provisioning"
+        },
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": "manual"
+      }
+    },
+    {
+      "case_id": "exp1:rag:170703e20f96b50d1094",
+      "task_category": "rag",
+      "question": "请查阅技术文档《表清单与字段级设计》：设计里客户的姓名与邮箱会放进通用客户维度吗？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:rag:170703e20f96b50d1094",
+        "original_id": "exp1:rag:170703e20f96b50d1094"
+      },
+      "split": "validation",
+      "normalized_text_id": "4cc464bed138a60e022a",
+      "semantic_group_id": "fa0c282ad3abe98f3048",
+      "template_id": "6c264b27ebd1918914c6",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "knowledge",
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": "rag",
+        "sql": null,
+        "evidence": {
+          "source": "docs/warehouse/TABLE_DESIGN.md",
+          "version": "36345e702de1-benchmark-full-v1",
+          "content_hash": "36345e702de157a95058e0305293533cee23d4998ee6edf6854b05d6d11f0940",
+          "parser_version": "sections-v1",
+          "quote": "不复制到通用查询维度",
+          "chunk": {
+            "chunk_index": 3,
+            "location": "lines:23-28",
+            "heading_path": [
+              "表清单与字段级设计",
+              "DIM：5 张共享当前维度"
+            ],
+            "passage_hash": "25fe61c824c21030bbdd880010090cbb4f34a249550af577f9553ef6af494ce1"
+          },
+          "relevant_chunks": [
+            "bce97cc16fb779068fdde7bf337040b5b4c35a063b56e231e61461066cca5261"
+          ],
+          "id_kind": "source locator independent of owner and embedding index",
+          "corpus": "offline_full_document_requires_local_provisioning"
+        },
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": "manual"
+      }
+    },
+    {
+      "case_id": "exp1:rag:ad12f29a052a8b033aa0",
+      "task_category": "rag",
+      "question": "请查阅技术文档《表清单与字段级设计》：账户维度是否按 email 合并？请引用设计要求。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:rag:ad12f29a052a8b033aa0",
+        "original_id": "exp1:rag:ad12f29a052a8b033aa0"
+      },
+      "split": "validation",
+      "normalized_text_id": "28dca28e365ece94779b",
+      "semantic_group_id": "fa0c282ad3abe98f3048",
+      "template_id": "6c264b27ebd1918914c6",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "knowledge",
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": "rag",
+        "sql": null,
+        "evidence": {
+          "source": "docs/warehouse/TABLE_DESIGN.md",
+          "version": "36345e702de1-benchmark-full-v1",
+          "content_hash": "36345e702de157a95058e0305293533cee23d4998ee6edf6854b05d6d11f0940",
+          "parser_version": "sections-v1",
+          "quote": "按 email 去重",
+          "chunk": {
+            "chunk_index": 3,
+            "location": "lines:23-28",
+            "heading_path": [
+              "表清单与字段级设计",
+              "DIM：5 张共享当前维度"
+            ],
+            "passage_hash": "25fe61c824c21030bbdd880010090cbb4f34a249550af577f9553ef6af494ce1"
+          },
+          "relevant_chunks": [
+            "bce97cc16fb779068fdde7bf337040b5b4c35a063b56e231e61461066cca5261"
+          ],
+          "id_kind": "source locator independent of owner and embedding index",
+          "corpus": "offline_full_document_requires_local_provisioning"
+        },
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": "manual"
+      }
+    },
+    {
+      "case_id": "exp1:rag:a197dc9add7d83cc030c",
+      "task_category": "rag",
+      "question": "请查阅技术文档《表清单与字段级设计》：日期维度把 ISO 周年和日历年怎么保存？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:rag:a197dc9add7d83cc030c",
+        "original_id": "exp1:rag:a197dc9add7d83cc030c"
+      },
+      "split": "validation",
+      "normalized_text_id": "fdefedd1f28b641f9656",
+      "semantic_group_id": "fa0c282ad3abe98f3048",
+      "template_id": "6c264b27ebd1918914c6",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "knowledge",
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": "rag",
+        "sql": null,
+        "evidence": {
+          "source": "docs/warehouse/TABLE_DESIGN.md",
+          "version": "36345e702de1-benchmark-full-v1",
+          "content_hash": "36345e702de157a95058e0305293533cee23d4998ee6edf6854b05d6d11f0940",
+          "parser_version": "sections-v1",
+          "quote": "ISO 周年与日历年分列",
+          "chunk": {
+            "chunk_index": 3,
+            "location": "lines:23-28",
+            "heading_path": [
+              "表清单与字段级设计",
+              "DIM：5 张共享当前维度"
+            ],
+            "passage_hash": "25fe61c824c21030bbdd880010090cbb4f34a249550af577f9553ef6af494ce1"
+          },
+          "relevant_chunks": [
+            "bce97cc16fb779068fdde7bf337040b5b4c35a063b56e231e61461066cca5261"
+          ],
+          "id_kind": "source locator independent of owner and embedding index",
+          "corpus": "offline_full_document_requires_local_provisioning"
+        },
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": "manual"
+      }
+    },
+    {
+      "case_id": "exp1:rag:caf17293ba69d706ac6c",
+      "task_category": "rag",
+      "question": "请查阅技术文档《表清单与字段级设计》：日期维度能直接拿来标记节假日和交易日吗？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:rag:caf17293ba69d706ac6c",
+        "original_id": "exp1:rag:caf17293ba69d706ac6c"
+      },
+      "split": "validation",
+      "normalized_text_id": "314101a98574af7e2f6b",
+      "semantic_group_id": "fa0c282ad3abe98f3048",
+      "template_id": "6c264b27ebd1918914c6",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "knowledge",
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": "rag",
+        "sql": null,
+        "evidence": {
+          "source": "docs/warehouse/TABLE_DESIGN.md",
+          "version": "36345e702de1-benchmark-full-v1",
+          "content_hash": "36345e702de157a95058e0305293533cee23d4998ee6edf6854b05d6d11f0940",
+          "parser_version": "sections-v1",
+          "quote": "无来源的节假日/交易日不生成",
+          "chunk": {
+            "chunk_index": 3,
+            "location": "lines:23-28",
+            "heading_path": [
+              "表清单与字段级设计",
+              "DIM：5 张共享当前维度"
+            ],
+            "passage_hash": "25fe61c824c21030bbdd880010090cbb4f34a249550af577f9553ef6af494ce1"
+          },
+          "relevant_chunks": [
+            "bce97cc16fb779068fdde7bf337040b5b4c35a063b56e231e61461066cca5261"
+          ],
+          "id_kind": "source locator independent of owner and embedding index",
+          "corpus": "offline_full_document_requires_local_provisioning"
+        },
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": "manual"
+      }
+    },
+    {
+      "case_id": "exp1:rag:65bb92063dc947e39bcc",
+      "task_category": "rag",
+      "question": "请查阅技术文档《表清单与字段级设计》：字段级设计允许把支付事实按商品分摊吗？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:rag:65bb92063dc947e39bcc",
+        "original_id": "exp1:rag:65bb92063dc947e39bcc"
+      },
+      "split": "validation",
+      "normalized_text_id": "2b886adae253ee634e75",
+      "semantic_group_id": "fa0c282ad3abe98f3048",
+      "template_id": "6c264b27ebd1918914c6",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "knowledge",
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": "rag",
+        "sql": null,
+        "evidence": {
+          "source": "docs/warehouse/TABLE_DESIGN.md",
+          "version": "36345e702de1-benchmark-full-v1",
+          "content_hash": "36345e702de157a95058e0305293533cee23d4998ee6edf6854b05d6d11f0940",
+          "parser_version": "sections-v1",
+          "quote": "不跨商品分摊",
+          "chunk": {
+            "chunk_index": 8,
+            "location": "lines:71-72",
+            "heading_path": [
+              "表清单与字段级设计",
+              "DWD：4 张独立事实",
+              "dwd.payment_attempt_fact（已实现，一尝试，PK payment_id）"
+            ],
+            "passage_hash": "3976e3f6dd4cba8783431e50f335bb381bec8c6fc3ba66b2ad2e022b0d208461"
+          },
+          "relevant_chunks": [
+            "6191d189d6e36294ee84cf01334450b0f29a604f03304548e900a4ac2a0ab69a"
+          ],
+          "id_kind": "source locator independent of owner and embedding index",
+          "corpus": "offline_full_document_requires_local_provisioning"
+        },
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": "manual"
+      }
+    },
+    {
+      "case_id": "exp1:rag:f25e0bcbe698c4a98493",
+      "task_category": "rag",
+      "question": "请查阅技术文档《表清单与字段级设计》：退货记录表能否给 order_item_id 强制添加唯一约束？给出设计依据。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:rag:f25e0bcbe698c4a98493",
+        "original_id": "exp1:rag:f25e0bcbe698c4a98493"
+      },
+      "split": "validation",
+      "normalized_text_id": "31ada1d306e37234664f",
+      "semantic_group_id": "fa0c282ad3abe98f3048",
+      "template_id": "6c264b27ebd1918914c6",
+      "duplicate_text": false,
+      "review_status": "reviewed",
+      "review": {
+        "state": "independent_source_checked",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": "knowledge",
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": "rag",
+        "sql": null,
+        "evidence": {
+          "source": "docs/warehouse/TABLE_DESIGN.md",
+          "version": "36345e702de1-benchmark-full-v1",
+          "content_hash": "36345e702de157a95058e0305293533cee23d4998ee6edf6854b05d6d11f0940",
+          "parser_version": "sections-v1",
+          "quote": "不能声明 order_item_id UNIQUE",
+          "chunk": {
+            "chunk_index": 10,
+            "location": "lines:88-89",
+            "heading_path": [
+              "表清单与字段级设计",
+              "DWD：4 张独立事实",
+              "dwd.return_record_fact（已实现，一退货记录，PK return_id）"
+            ],
+            "passage_hash": "2bb1a38eeb1c4054754dbedd8423d8e7eb75ee21213ba938ed98f6f2f3d15893"
+          },
+          "relevant_chunks": [
+            "23a09743b1e5504b52568a7b9dcf88a9157e63e2ff00e8a5c050dd5f4e0dc57d"
+          ],
+          "id_kind": "source locator independent of owner and embedding index",
+          "corpus": "offline_full_document_requires_local_provisioning"
+        },
+        "status": "ok",
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": "manual"
+      }
+    },
+    {
+      "case_id": "exp1:pdf:pdf-metadata",
+      "task_category": "pdf",
+      "question": "扫描PDF里的 OCR 置信度会成为答案的权威证据吗？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:pdf:pdf-metadata",
+        "original_id": "exp1:pdf:pdf-metadata"
+      },
+      "split": "development",
+      "normalized_text_id": "629d78f17a801f764fbe",
+      "semantic_group_id": "8b0f8b70ca99321b5d02",
+      "template_id": "d3394362d06c2b502bfc",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需页码、发布回执和受控索引版本夹具",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:pdf:pdf-negative",
+      "task_category": "pdf",
+      "question": "本地样例PDF第3页有可引用的审核文字吗？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:pdf:pdf-negative",
+        "original_id": "exp1:pdf:pdf-negative"
+      },
+      "split": "development",
+      "normalized_text_id": "4600476215e8c9d51924",
+      "semantic_group_id": "36bbfb7957b0663ec283",
+      "template_id": "cdd01097c84a278c3691",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "现有样例第3页为空，但需要补充已发布版本索引的负例证据",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:pdf:pdf-old-ocr",
+      "task_category": "pdf",
+      "question": "昨天的扫描页数字更正后，请引用旧数字确认历史记录。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:pdf:pdf-old-ocr",
+        "original_id": "exp1:pdf:pdf-old-ocr"
+      },
+      "split": "development",
+      "normalized_text_id": "4144c4fe4a1303f81205",
+      "semantic_group_id": "0fa2f8181d1497ee182b",
+      "template_id": "643ac2278955b3f5fc6f",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需要保存两版本并验证替换后的检索过滤",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:pdf:pdf-missing-table",
+      "task_category": "pdf",
+      "question": "请引用扫描PDF里的第二行、第三列并解释这两个字段的关系。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:pdf:pdf-missing-table",
+        "original_id": "exp1:pdf:pdf-missing-table"
+      },
+      "split": "development",
+      "normalized_text_id": "3cafe0948bb9957c4adf",
+      "semantic_group_id": "323ce9e49b9fea89def8",
+      "template_id": "3370ed031a855419dbf3",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "现有样例没有表格，需独立来源及列定位真值",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:pdf:pdf-original-bbox",
+      "task_category": "pdf",
+      "question": "扫描页某行已人工修订，能给我修订文字在原件上的准确坐标吗？",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:pdf:pdf-original-bbox",
+        "original_id": "exp1:pdf:pdf-original-bbox"
+      },
+      "split": "development",
+      "normalized_text_id": "d5f6581c2e0974030256",
+      "semantic_group_id": "a653e2c9400f76477719",
+      "template_id": "18e4ca41b45a898af88f",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需已审核修订的坐标清空证据",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:pdf:pdf-shared-filename",
+      "task_category": "pdf",
+      "question": "我上传的是 report.pdf；请确认你引用的是同名文件里我的版本。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:pdf:pdf-shared-filename",
+        "original_id": "exp1:pdf:pdf-shared-filename"
+      },
+      "split": "development",
+      "normalized_text_id": "6657fbeb9483f7c496e5",
+      "semantic_group_id": "a2ca032beec272398cdc",
+      "template_id": "3ec94e098d795efa548b",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需两份同名PDF和不同Owner受控真值",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:hybrid:pdf-gross",
+      "task_category": "hybrid",
+      "question": "给出2025年4月折扣前商品记录金额，并引用已发布PDF中关于折扣披露格式的规定。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:hybrid:pdf-gross",
+        "original_id": "exp1:hybrid:pdf-gross"
+      },
+      "split": "development",
+      "normalized_text_id": "1921722f02a99e644c46",
+      "semantic_group_id": "b184d8a7bb814603c4da",
+      "template_id": "e7afb5ba7fed3b830dde",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需要归档一份已审核且分别支持两个知识要求的PDF",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:hybrid:pdf-attribution",
+      "task_category": "hybrid",
+      "question": "计算2025年5月下单账户数，同时引用PDF说明账户与自然人不能混算。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:hybrid:pdf-attribution",
+        "original_id": "exp1:hybrid:pdf-attribution"
+      },
+      "split": "development",
+      "normalized_text_id": "796bbc475c85c378ffc8",
+      "semantic_group_id": "c8ea1aeb25138da4ed73",
+      "template_id": "33991996b4a8c09b3be0",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需要来源证明及故障夹具",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:hybrid:pdf-cohort",
+      "task_category": "hybrid",
+      "question": "算2025年8月窗口内账户复购率，并引用已审核PDF里的重复下单定义做对照。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:hybrid:pdf-cohort",
+        "original_id": "exp1:hybrid:pdf-cohort"
+      },
+      "split": "development",
+      "normalized_text_id": "2395ef573b53840849dd",
+      "semantic_group_id": "119b871391a11c672053",
+      "template_id": "4435d4295a8ffe777325",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需要合适样例及查询上下文的独立证据",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    },
+    {
+      "case_id": "exp1:hybrid:pdf-distinct",
+      "task_category": "hybrid",
+      "question": "查询2025年7月有下单明细的商品数，并引用已审核PDF解释商品ID与SKU的差异。",
+      "context": {},
+      "source": {
+        "file": "tests/benchmark/expansion_cases.tsv",
+        "pointer": "exp1:hybrid:pdf-distinct",
+        "original_id": "exp1:hybrid:pdf-distinct"
+      },
+      "split": "development",
+      "normalized_text_id": "9e77232f559c80829a9e",
+      "semantic_group_id": "620e2dd3c1e4133762e7",
+      "template_id": "d07815ad45823e90b880",
+      "duplicate_text": false,
+      "review_status": "needs_review",
+      "review": {
+        "state": "pending",
+        "reason": "需独立页码与版本证据",
+        "human_signoff": null
+      },
+      "golden": {
+        "intent": null,
+        "entity": null,
+        "metric_ids": null,
+        "metric_request": null,
+        "plan": null,
+        "tool_path": null,
+        "sql": null,
+        "evidence": null,
+        "status": null,
+        "code": null
+      },
+      "scoring": {
+        "source": "independent_evidence",
+        "legacy_rule": null,
+        "citation_support": null
+      }
+    }
+  ]
+}
