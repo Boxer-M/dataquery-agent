@@ -51,9 +51,9 @@ class BusinessQueryPlanner:
             return error.response
         return {"status": "ready", "plan": plan}
 
-    def execute_plan(self, plan, *, query=None, catalog=None):
+    def execute_plan(self, plan, *, query=None, catalog=None, execution_ids=None, task_query=None):
         """Schedule the validated metric calls and optional exact Catalog lookups."""
-        plan_id, attempt_id = uuid4().hex, uuid4().hex
+        plan_id, attempt_id = execution_ids or (uuid4().hex, uuid4().hex)
         tasks = [Task(f"{plan_id}/{call['step']}", "metric", call) for call in plan["required_tool_calls"]]
         if catalog is not None:
             metric_tasks = tuple(tasks)
@@ -63,7 +63,11 @@ class BusinessQueryPlanner:
                 if not dependencies:
                     return outcome("error", "invalid_task_graph", "目录任务缺少对应的指标查询。")
                 tasks.append(Task(f"{plan_id}/{index}", "catalog", {"metric_id": mid}, dependencies))
-        handlers = {"metric": lambda call: self.call_tool(call, plan, query=query)}
+        def metric_handler(call):
+            execute = (lambda request: task_query(call["step"], request)) if task_query is not None else query
+            return self.call_tool(call, plan, query=execute)
+
+        handlers = {"metric": metric_handler}
         if catalog is not None:
             handlers["catalog"] = catalog
         try:
