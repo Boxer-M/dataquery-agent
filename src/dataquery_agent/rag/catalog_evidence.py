@@ -19,9 +19,16 @@ def exact_definitions(store, service, resolution, *, today, owner=None, missing=
     citations, lines, uncited = [], [], []
     try:
         rows = store.catalog_chunks(documents, today=today, owner=owner) if documents else []
-    except (psycopg.Error, KnowledgeError, OSError):
+    except (psycopg.errors.InsufficientPrivilege, KnowledgeError):
+        rows = []
+        trace["reason"] = "catalog_permission_denied"
+    except (psycopg.OperationalError, OSError):
+        rows = []
+        trace["reason"] = "catalog_service_unavailable"
+    except psycopg.Error:
         rows = []
         trace["reason"] = "catalog_index_unavailable"
+    reasons = {}
     for doc in documents:
         passage = doc.passages[0]
         current = [row for row in rows if row["topic"] == doc.topic and row["source_uri"] == doc.source_uri
@@ -38,6 +45,9 @@ def exact_definitions(store, service, resolution, *, today, owner=None, missing=
             line += f" [{len(citations)}] {doc.source_uri} · 版本 {doc.version}"
         else:
             uncited.append(doc.topic)
+            reasons[doc.topic] = trace.get("reason") or (
+                "catalog_index_stale" if any(row["topic"] == doc.topic for row in rows) else "catalog_index_missing"
+            )
             line += "（来自当前正式目录，知识索引缺失、失效或不可用，暂无文档引用。）"
         lines.append(line)
     if missing:
@@ -48,6 +58,7 @@ def exact_definitions(store, service, resolution, *, today, owner=None, missing=
         trace["reason"] = "formal_definition_not_found"
     trace["elapsed_ms"] = round((monotonic() - started) * 1000, 3)
     trace["candidates"] = citations
+    trace["metric_errors"] = reasons
     return {"status": "ok", "answer_zh": "\n".join(lines), "citations": citations,
             "evidence_status": "supported" if citations and not (missing or uncited) else
                                "partial" if citations else "insufficient",

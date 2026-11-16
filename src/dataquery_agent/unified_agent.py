@@ -338,7 +338,9 @@ class UnifiedAgent:
         if catalog is None:
             return self.run_business_plan(plan, frame, trace)
         plan["include_catalog_definitions"] = True
-        result = self.run_business_plan(plan, frame, trace)
+        from .catalog_recovery import checkpoint_partial
+        proof = {}
+        result = self.run_business_plan(plan, frame, trace, recovery_proof=proof if owner else None)
         if "tools" not in result:
             return result
         from .rag.routing import catalog_tasks
@@ -352,11 +354,15 @@ class UnifiedAgent:
             status = "partial"
         elif status == "error" and knowledge["citations"]:
             status = "partial"
+        if status == "partial" and result["status"] == "ok":
+            saved, subtasks = checkpoint_partial(plan, subtasks, proof.get("checkpoint"),
+                                                results=result["results"], sql_answer=result["answer_zh"])
+            result.update(saved)
         return dict(result, status=status, path="hybrid", knowledge_result=knowledge, subtasks=subtasks,
                     metric_resolution=resolution, answer_zh=result["answer_zh"] + "\n正式定义\n" + knowledge["answer_zh"])
 
 
-    def run_business_plan(self, plan, frame, trace):
+    def run_business_plan(self, plan, frame, trace, *, recovery_proof=None):
         routes = {}
         for call in plan["required_tool_calls"]:
             request = call["request"]
@@ -364,8 +370,14 @@ class UnifiedAgent:
             if route["status"] != "STANDARD_METRIC":
                 return self.route_outcome(route)
             routes[self.request_key(request)] = route
+        if recovery_proof is not None:
+            from .catalog_recovery import sql_checkpoint
+            before = sql_checkpoint(self.service, plan, list(routes.values()), capture_snapshot=True)
         result = self.planner.execute_plan(
             plan, query=lambda request: self.query(request, routes[self.request_key(request)], trace))
+        if recovery_proof is not None and before and result["status"] == "ok":
+            if sql_checkpoint(self.service, plan, list(routes.values()), capture_snapshot=True) == before:
+                recovery_proof["checkpoint"] = {key: value for key, value in before.items() if key != "snapshot"}
         if result["status"] == "error":
             result["code"] = "tool_execution_failed"
         return result

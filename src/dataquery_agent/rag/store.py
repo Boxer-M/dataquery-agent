@@ -158,11 +158,11 @@ class KnowledgeStore:
                 JOIN {VERSIONS} v USING(document_id,document_version)
                 WHERE d.source_type='catalog' AND d.owner_scope=''
                   AND d.deleted_at IS NULL AND d.active_version=c.document_version AND d.active_index=c.index_version
-                  AND (d.source_uri,v.topic,v.document_version,v.content_hash) IN (
-                      SELECT * FROM unnest(%s::text[],%s::text[],%s::text[],%s::text[])
+                  AND (d.source_uri,v.topic) IN (
+                      SELECT * FROM unnest(%s::text[],%s::text[])
                   )
                   AND (v.effective_date IS NULL OR v.effective_date<=%s)
                   AND (v.expires_on IS NULL OR v.expires_on>%s)
                 ORDER BY c.chunk_index,c.chunk_id
             """, ([doc.source_uri for doc in documents], [doc.topic for doc in documents],
-                  [doc.version for doc in documents], [doc.content_hash for doc in documents], today, today)).fetchall()
+                  today, today)).fetchall()

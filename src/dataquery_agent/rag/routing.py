@@ -27,7 +27,8 @@ def catalog_tasks(knowledge, metric_ids):
         citation = citations.get(source)
         tasks.append({"kind": "catalog", "metric_id": mid, "status": "ok" if citation else "unavailable",
                       "sources": [source], "trace_id": trace["trace_id"],
-                      "error_code": None if citation else trace.get("reason"), "citation": citation})
+                      "error_code": None if citation else trace.get("metric_errors", {}).get(mid, trace.get("reason")),
+                      "citation": citation})
     return tasks
 
 
@@ -44,11 +45,25 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
             start, end = date_window(periods[0].group(), today)
         except (ValueError, OverflowError):
             return outcome("clarify", "invalid_time", "请提供有效的指标查询时间。")
-        results, tasks = [], []
+        results, tasks, calls = [], [], []
         for mid in RETURN_METRICS:
             request = {"metric_id": mid, "start_date": start.isoformat(), "end_date": end.isoformat(), "group_by": []}
             if mid == "item_return_rate":
                 request["observation_cutoff"] = agent.service.cutoff.date().isoformat()
+            calls.append({"request": request})
+        plan = {"metric_ids": list(RETURN_METRICS), "required_tool_calls": calls,
+                "include_catalog_definitions": True, "analysis_type": "legacy_return_summary"}
+        if owner:
+            from ..catalog_recovery import checkpoint_partial, sql_checkpoint
+            routes = [agent.check_route(call["request"], frame) for call in calls]
+            if any(route["status"] != "STANDARD_METRIC" for route in routes):
+                return agent.route_outcome(next(route for route in routes if route["status"] != "STANDARD_METRIC"))
+            before = sql_checkpoint(agent.service, plan, routes, capture_snapshot=True)
+        else:
+            before = None
+        for call in calls:
+            request = call["request"]
+            mid = request["metric_id"]
             result = agent.run_metric_request(request, frame, trace)
             if result["status"] != "ok":
                 return result
@@ -56,6 +71,7 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
             tasks.append({"kind": "metric", "metric_id": mid, "status": "ok",
                           "sources": results[-1]["sources"], "trace_id": results[-1]["trace_id"]})
         resolution = {"method": "approved_hybrid", "metric_ids": list(RETURN_METRICS)}
+        after = sql_checkpoint(agent.service, plan, routes, capture_snapshot=True) if before else None
         knowledge = service.exact(agent.service, resolution, today=today, owner=owner)
         trace["tools"].append(knowledge["retrieval_trace"])
         numbers = []
@@ -67,11 +83,17 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
                      if result["metric_id"] == "item_return_rate" else "")
             numbers.append(f"{name} {value}{extra} · {', '.join(result['sources'])}")
         definitions = knowledge.get("answer_zh") or knowledge.get("message", "")
-        return {"status": "ok", "answer_zh": f"{start} 至 {end}（不含结束日）数据库结果\n"
-                + "\n".join(numbers) + "\n文档依据\n" + definitions,
+        sql_answer = f"{start} 至 {end}（不含结束日）数据库结果\n" + "\n".join(numbers)
+        tasks += catalog_tasks(knowledge, RETURN_METRICS)
+        status = "ok" if knowledge["evidence_status"] == "supported" else "partial"
+        saved = {}
+        if status == "partial" and before and before == after:
+            proof = {key: value for key, value in before.items() if key != "snapshot"}
+            saved, tasks = checkpoint_partial(plan, tasks, proof, results=[], sql_answer=sql_answer,
+                                              metric_results=results)
+        return {"status": status, "answer_zh": sql_answer + "\n文档依据\n" + definitions,
                 "metric_results": results, "knowledge_result": knowledge, "path": "hybrid",
-                "subtasks": tasks + catalog_tasks(knowledge, RETURN_METRICS),
-                "metric_resolution": resolution}
+                "subtasks": tasks, "metric_resolution": resolution, **saved}
     if suffix and periods and re.search(r"查询|多少|排行|对比|比较|环比|统计|查看", question[:suffix.start()]):
         numeric = question[:suffix.start()].strip()
         resolution = agent.planner.validator.entities.resolve(numeric)
