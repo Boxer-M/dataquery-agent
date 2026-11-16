@@ -1,0 +1,2623 @@
+{
+  "baseline_version": 1,
+  "aggregated_across_modes": false,
+  "runs": [
+    {
+      "report_version": 1,
+      "identity": {
+        "mode": "deterministic",
+        "code_commit": "cca9b61c30ade25a32ee6cb0dc30f485b3262b04",
+        "code_dirty": false,
+        "dataset_version": "benchmark-golden-v1",
+        "dataset_sha256": "752e9753d233b8e028e27139f0c9fa63f346cea2623afbc9bfda5e52ea7af8a9",
+        "case_ids_sha256": "5281d29542142829535b70e24a588084200a5855cac5cd4a046863bd22ff95c2",
+        "database_snapshot": null,
+        "model_config": {},
+        "prompt_versions_observed": [],
+        "observed_models": [],
+        "python": "3.12.13"
+      },
+      "comparison_key": "09240c9ef2e9f837cbbf811ae21396b196dd20dde22368b0f9ed58ddd2eb1c69",
+      "started_at_utc": "2026-11-16T12:38:01.166935+00:00",
+      "completed_at_utc": "2026-11-16T12:38:01.435346+00:00",
+      "number_of_cases": 15,
+      "run_failure": null,
+      "metrics": {
+        "intent_accuracy": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15,
+          "value": null
+        },
+        "plan_validity": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15,
+          "value": null
+        },
+        "tool_route_accuracy": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15,
+          "value": null
+        },
+        "sql_result_accuracy": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15,
+          "value": null
+        },
+        "citation_validity": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15,
+          "value": null
+        },
+        "task_success": {
+          "numerator": 15,
+          "denominator": 15,
+          "not_applicable": 0,
+          "value": 1.0
+        },
+        "entity_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15,
+          "value": null
+        },
+        "entity_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15,
+          "value": null
+        },
+        "entity_f1": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15,
+          "value": null
+        },
+        "retrieval_recall_at_6": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15,
+          "value": null
+        },
+        "retrieval_mrr_at_6": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15,
+          "value": null
+        },
+        "citation_semantic_support": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15,
+          "value": null,
+          "evaluation": "manual"
+        }
+      },
+      "telemetry": {
+        "model_calls": {
+          "value": 0,
+          "numerator": 0,
+          "denominator": 15,
+          "not_applicable": 0
+        },
+        "tool_calls": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15
+        },
+        "prompt_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15
+        },
+        "output_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15
+        },
+        "total_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 15
+        },
+        "latency_ms": {
+          "p50": 3,
+          "p95": 62,
+          "denominator": 15,
+          "not_applicable": 0
+        },
+        "error_categories": {}
+      },
+      "cases": [
+        {
+          "case_id": "test_unified_agent.UnifiedAgentTests.test_business_preflight_blocks_all_calls_if_one_route_denied",
+          "task_success": true,
+          "latency_ms": 16,
+          "model_calls": 0,
+          "error_category": null
+        },
+        {
+          "case_id": "test_unified_agent.UnifiedAgentTests.test_candidate_model_cannot_confirm_without_independent_evidence",
+          "task_success": true,
+          "latency_ms": 5,
+          "model_calls": 0,
+          "error_category": null
+        },
+        {
+          "case_id": "test_unified_agent.UnifiedAgentTests.test_retry_keeps_all_attempts_and_token_usage",
+          "task_success": true,
+          "latency_ms": 5,
+          "model_calls": 0,
+          "error_category": null
+        },
+        {
+          "case_id": "test_unified_agent.UnifiedAgentTests.test_source_mismatch_does_not_publish_result",
+          "task_success": true,
+          "latency_ms": 5,
+          "model_calls": 0,
+          "error_category": null
+        },
+        {
+          "case_id": "test_unified_agent.UnifiedAgentTests.test_versioned_business_cases",
+          "task_success": true,
+          "latency_ms": 9,
+          "model_calls": 0,
+          "error_category": null
+        },
+        {
+          "case_id": "test_business_query_planner.BusinessPlannerTests.test_cross_filter_without_required_metric_preserves_success",
+          "task_success": true,
+          "latency_ms": 2,
+          "model_calls": 0,
+          "error_category": null
+        },
+        {
+          "case_id": "test_business_query_planner.BusinessPlannerTests.test_invalid_ratio_fails_step",
+          "task_success": true,
+          "latency_ms": 2,
+          "model_calls": 0,
+          "error_category": null
+        },
+        {
+          "case_id": "test_business_query_planner.BusinessPlannerTests.test_model_cannot_invent_metric_or_change_sort",
+          "task_success": true,
+          "latency_ms": 2,
+          "model_calls": 0,
+          "error_category": null
+        },
+        {
+          "case_id": "test_business_query_planner.BusinessPlannerTests.test_plan_budget_preserves_completed_step",
+          "task_success": true,
+          "latency_ms": 2,
+          "model_calls": 0,
+          "error_category": null
+        },
+        {
+          "case_id": "test_business_query_planner.BusinessPlannerTests.test_ratio_plan_requires_components_before_call",
+          "task_success": true,
+          "latency_ms": 2,
+          "model_calls": 0,
+          "error_category": null
+        },
+        {
+          "case_id": "test_business_query_planner.BusinessPlannerTests.test_versioned_business_suite",
+          "task_success": true,
+          "latency_ms": 3,
+          "model_calls": 0,
+          "error_category": null
+        },
+        {
+          "case_id": "test_metadata_capability.CapabilityUnitTests.test_access_changes_version_without_changing_schema",
+          "task_success": true,
+          "latency_ms": 6,
+          "model_calls": 0,
+          "error_category": null
+        },
+        {
+          "case_id": "test_metadata_capability.CapabilityUnitTests.test_admin_config_rejected",
+          "task_success": true,
+          "latency_ms": 0,
+          "model_calls": 0,
+          "error_category": null
+        },
+        {
+          "case_id": "test_metadata_capability.CapabilityUnitTests.test_missing_unique_key_blocks_logical_join",
+          "task_success": true,
+          "latency_ms": 3,
+          "model_calls": 0,
+          "error_category": null
+        },
+        {
+          "case_id": "test_metadata_capability.CapabilityUnitTests.test_versioned_business_cases",
+          "task_success": true,
+          "latency_ms": 62,
+          "model_calls": 0,
+          "error_category": null
+        }
+      ]
+    },
+    {
+      "report_version": 1,
+      "identity": {
+        "mode": "fixed",
+        "code_commit": "cca9b61c30ade25a32ee6cb0dc30f485b3262b04",
+        "code_dirty": false,
+        "dataset_version": "benchmark-golden-v1",
+        "dataset_sha256": "752e9753d233b8e028e27139f0c9fa63f346cea2623afbc9bfda5e52ea7af8a9",
+        "case_ids_sha256": "aec97f367873a0e819ec5d176ded486a71f23511c833df553672ad7520c94c3b",
+        "database_snapshot": null,
+        "model_config": {
+          "provider": "fixed"
+        },
+        "prompt_versions_observed": [
+          "business-plan-v1",
+          "intent-v3",
+          "metric-resolution-v2"
+        ],
+        "observed_models": [],
+        "python": "3.12.13"
+      },
+      "comparison_key": "aa19c227ef74546fd81ec9fa53c3b1b85b121ff97700b8fb44289594db132ceb",
+      "started_at_utc": "2026-11-16T12:38:01.488721+00:00",
+      "completed_at_utc": "2026-11-16T12:38:01.610023+00:00",
+      "number_of_cases": 52,
+      "run_failure": null,
+      "metrics": {
+        "intent_accuracy": {
+          "numerator": 33,
+          "denominator": 33,
+          "not_applicable": 19,
+          "value": 1.0
+        },
+        "plan_validity": {
+          "numerator": 10,
+          "denominator": 10,
+          "not_applicable": 42,
+          "value": 1.0
+        },
+        "tool_route_accuracy": {
+          "numerator": 52,
+          "denominator": 52,
+          "not_applicable": 0,
+          "value": 1.0
+        },
+        "sql_result_accuracy": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 52,
+          "value": null
+        },
+        "citation_validity": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 52,
+          "value": null
+        },
+        "task_success": {
+          "numerator": 52,
+          "denominator": 52,
+          "not_applicable": 0,
+          "value": 1.0
+        },
+        "entity_precision": {
+          "numerator": 12,
+          "denominator": 12,
+          "not_applicable": 41,
+          "value": 1.0
+        },
+        "entity_recall": {
+          "numerator": 12,
+          "denominator": 12,
+          "not_applicable": 41,
+          "value": 1.0
+        },
+        "entity_f1": {
+          "numerator": 24,
+          "denominator": 24,
+          "not_applicable": 41,
+          "value": 1.0
+        },
+        "retrieval_recall_at_6": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 52,
+          "value": null
+        },
+        "retrieval_mrr_at_6": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 52,
+          "value": null
+        },
+        "citation_semantic_support": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 52,
+          "value": null,
+          "evaluation": "manual"
+        }
+      },
+      "telemetry": {
+        "model_calls": {
+          "value": 0,
+          "numerator": 0,
+          "denominator": 52,
+          "not_applicable": 0
+        },
+        "tool_calls": {
+          "value": 33,
+          "numerator": 33,
+          "denominator": 52,
+          "not_applicable": 0
+        },
+        "prompt_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 52
+        },
+        "output_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 52
+        },
+        "total_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 52
+        },
+        "latency_ms": {
+          "p50": 0,
+          "p95": 0,
+          "denominator": 52,
+          "not_applicable": 0
+        },
+        "error_categories": {}
+      },
+      "cases": [
+        {
+          "case_id": "unified_agent_v1:order",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count"
+            ],
+            [
+              "order_count"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:synonym",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count"
+            ],
+            [
+              "order_count"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:sales",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "item_net_sales_amount"
+            ],
+            [
+              "item_net_sales_amount"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:payment",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "payment_attempt_success_rate"
+            ],
+            [
+              "payment_attempt_success_rate"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:channel",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count"
+            ],
+            [
+              "order_count"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:cohort",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "item_return_rate"
+            ],
+            [
+              "item_return_rate"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:longtail",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "captured_payment_amount"
+            ],
+            [
+              "captured_payment_amount"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 1,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 2,
+          "prompt_versions": [
+            "intent-v3",
+            "metric-resolution-v2"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:longtail_order",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count"
+            ],
+            [
+              "order_count"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 2,
+          "prompt_versions": [
+            "intent-v3",
+            "metric-resolution-v2"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:inferred_only",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 2,
+          "prompt_versions": [
+            "intent-v3",
+            "metric-resolution-v2"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:negated_capture",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 2,
+          "prompt_versions": [
+            "intent-v3",
+            "metric-resolution-v2"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:invented",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 2,
+          "prompt_versions": [
+            "intent-v3",
+            "metric-resolution-v2"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:ungrounded",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 2,
+          "prompt_versions": [
+            "intent-v3",
+            "metric-resolution-v2"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:ambiguous_sales",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 0,
+          "prompt_versions": [],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:ambiguous_refund",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 0,
+          "prompt_versions": [],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:income",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 0,
+          "prompt_versions": [],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:profit",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 0,
+          "prompt_versions": [],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:refund_arrival",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 0,
+          "prompt_versions": [],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:browse",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 0,
+          "prompt_versions": [],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:unverified",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:clock_conflict",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:no_time",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:bad_group",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:sequence",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:order_detail",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:unsupported_order_status",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:unknown_detail",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 0,
+          "prompt_versions": [],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:injection",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 0,
+          "prompt_versions": [],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:broken_json",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:tool_down",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:multi",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "captured_payment_amount",
+              "order_count"
+            ],
+            [
+              "order_count",
+              "captured_payment_amount"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:mom",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "item_net_sales_amount"
+            ],
+            [
+              "item_net_sales_amount"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:rank",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count"
+            ],
+            [
+              "order_count"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:partial",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "business_planning_v1:multi",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:channel_top",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:periods",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:mom",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:failure_rate",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:cross",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:ambiguous",
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:income",
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:invalid_group",
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:empty",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:zero",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:partial",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:invalid_json",
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:detail",
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:unavailable",
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:omitted_filter",
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:zero_ratio",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:step_limit",
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:grain",
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "latency_ms": 0,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        }
+      ]
+    },
+    {
+      "report_version": 1,
+      "identity": {
+        "mode": "replay",
+        "code_commit": "cca9b61c30ade25a32ee6cb0dc30f485b3262b04",
+        "code_dirty": false,
+        "dataset_version": "benchmark-golden-v1",
+        "dataset_sha256": "752e9753d233b8e028e27139f0c9fa63f346cea2623afbc9bfda5e52ea7af8a9",
+        "case_ids_sha256": "ba74a45c040fa4f7a76bc257051c959bce929269fb77c6277e3f23343469cebb",
+        "database_snapshot": {
+          "id": "archived:aec817ba47dde016d3a1153aa1453dce9df75dee1e025621582bd9ce8969b72e",
+          "scope": "independent archived ODS results; original database fingerprint unavailable"
+        },
+        "model_config": {
+          "archive_variant": "baseline",
+          "captured_revision": "1994f12",
+          "captured_model_attempts": 8,
+          "captured_models": [
+            "gemini-3.5-flash-lite"
+          ],
+          "latency_scope": "archived latency excluded from replay"
+        },
+        "prompt_versions_observed": [
+          "business-plan-v1",
+          "intent-v3",
+          "knowledge-extractive-v1"
+        ],
+        "observed_models": [],
+        "python": "3.12.13"
+      },
+      "comparison_key": "bdbbc929ada95096f69bb91c84e4cf6ba12a4270bb9ab00bc87738068c7a5c01",
+      "started_at_utc": "2026-11-16T12:38:01.663380+00:00",
+      "completed_at_utc": "2026-11-16T12:38:01.761949+00:00",
+      "number_of_cases": 13,
+      "run_failure": null,
+      "metrics": {
+        "intent_accuracy": {
+          "numerator": 13,
+          "denominator": 13,
+          "not_applicable": 0,
+          "value": 1.0
+        },
+        "plan_validity": {
+          "numerator": 2,
+          "denominator": 2,
+          "not_applicable": 11,
+          "value": 1.0
+        },
+        "tool_route_accuracy": {
+          "numerator": 13,
+          "denominator": 13,
+          "not_applicable": 0,
+          "value": 1.0
+        },
+        "sql_result_accuracy": {
+          "numerator": 5,
+          "denominator": 5,
+          "not_applicable": 8,
+          "value": 1.0
+        },
+        "citation_validity": {
+          "numerator": 3,
+          "denominator": 3,
+          "not_applicable": 10,
+          "value": 1.0
+        },
+        "task_success": {
+          "numerator": 13,
+          "denominator": 13,
+          "not_applicable": 0,
+          "value": 1.0
+        },
+        "entity_precision": {
+          "numerator": 15,
+          "denominator": 15,
+          "not_applicable": 0,
+          "value": 1.0
+        },
+        "entity_recall": {
+          "numerator": 15,
+          "denominator": 15,
+          "not_applicable": 0,
+          "value": 1.0
+        },
+        "entity_f1": {
+          "numerator": 30,
+          "denominator": 30,
+          "not_applicable": 0,
+          "value": 1.0
+        },
+        "retrieval_recall_at_6": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 13,
+          "value": null
+        },
+        "retrieval_mrr_at_6": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 13,
+          "value": null
+        },
+        "citation_semantic_support": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 13,
+          "value": null,
+          "evaluation": "manual"
+        }
+      },
+      "telemetry": {
+        "model_calls": {
+          "value": 0,
+          "numerator": 0,
+          "denominator": 13,
+          "not_applicable": 0
+        },
+        "tool_calls": {
+          "value": 15,
+          "numerator": 15,
+          "denominator": 13,
+          "not_applicable": 0
+        },
+        "prompt_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 13
+        },
+        "output_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 13
+        },
+        "total_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 13
+        },
+        "latency_ms": {
+          "p50": null,
+          "p95": null,
+          "denominator": 0,
+          "not_applicable": 13
+        },
+        "error_categories": {}
+      },
+      "cases": [
+        {
+          "case_id": "agent_e2e_v1:metric_id",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "item_return_rate"
+            ],
+            [
+              "item_return_rate"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "citation_validity": true,
+          "retrieval": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": null,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 0,
+          "prompt_versions": [],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "agent_e2e_v1:metric_name",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "item_return_rate"
+            ],
+            [
+              "item_return_rate"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "citation_validity": true,
+          "retrieval": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": null,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 0,
+          "prompt_versions": [],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "agent_e2e_v1:single",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count"
+            ],
+            [
+              "order_count"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "citation_validity": null,
+          "retrieval": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": null,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "agent_e2e_v1:alias",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count"
+            ],
+            [
+              "order_count"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "citation_validity": null,
+          "retrieval": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": null,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "agent_e2e_v1:multi",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count",
+              "captured_payment_amount"
+            ],
+            [
+              "order_count",
+              "captured_payment_amount"
+            ]
+          ],
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "citation_validity": null,
+          "retrieval": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": null,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "agent_e2e_v1:hybrid",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count",
+              "order_item_count"
+            ],
+            [
+              "order_count",
+              "order_item_count"
+            ]
+          ],
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "citation_validity": true,
+          "retrieval": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": null,
+          "tool_calls": 5,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "agent_e2e_v1:ambiguous",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "item_gross_sales_amount",
+              "item_net_sales_amount",
+              "captured_payment_amount"
+            ],
+            [
+              "item_gross_sales_amount",
+              "item_net_sales_amount",
+              "captured_payment_amount"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "citation_validity": null,
+          "retrieval": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": null,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 0,
+          "prompt_versions": [],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "agent_e2e_v1:unknown",
+          "intent_accuracy": true,
+          "entities": [
+            [],
+            []
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "citation_validity": null,
+          "retrieval": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": null,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 0,
+          "prompt_versions": [],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "agent_e2e_v1:bad_dimension",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count",
+              "captured_payment_amount"
+            ],
+            [
+              "order_count",
+              "captured_payment_amount"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "citation_validity": null,
+          "retrieval": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": null,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "agent_e2e_v1:followup",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count"
+            ],
+            [
+              "order_count"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "citation_validity": null,
+          "retrieval": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": null,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 0,
+          "prompt_versions": [],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "agent_e2e_v1:policy",
+          "intent_accuracy": true,
+          "entities": [
+            [],
+            []
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "citation_validity": null,
+          "retrieval": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": null,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "knowledge-extractive-v1"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "agent_e2e_v1:policy_gap",
+          "intent_accuracy": true,
+          "entities": [
+            [],
+            []
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "citation_validity": null,
+          "retrieval": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": null,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "knowledge-extractive-v1"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "agent_e2e_v1:no_time",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count"
+            ],
+            [
+              "order_count"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "citation_validity": null,
+          "retrieval": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": null,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        }
+      ]
+    },
+    {
+      "report_version": 1,
+      "identity": {
+        "mode": "postgres",
+        "code_commit": "cca9b61c30ade25a32ee6cb0dc30f485b3262b04",
+        "code_dirty": false,
+        "dataset_version": "benchmark-golden-v1",
+        "dataset_sha256": "752e9753d233b8e028e27139f0c9fa63f346cea2623afbc9bfda5e52ea7af8a9",
+        "case_ids_sha256": "e5b9ab1c5d49028a1cbdf12254c14fb8dfea9f0a5bf5bca1adabb77853e2c984",
+        "database_snapshot": {
+          "id": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+          "scope": "SQL Shed ODS content",
+          "tables": {
+            "categories": {
+              "rows": 24,
+              "content_md5": "5cac5091dbbe88826c58998f31570921"
+            },
+            "customers": {
+              "rows": 12000,
+              "content_md5": "75bf913bc65867ac3a41b59d66eacef5"
+            },
+            "products": {
+              "rows": 2000,
+              "content_md5": "fdcbbacc00836de01307ccf720f4c651"
+            },
+            "orders": {
+              "rows": 90000,
+              "content_md5": "0a4bd95a352845982d324af546d6f696"
+            },
+            "order_items": {
+              "rows": 215000,
+              "content_md5": "c58761707e304e4d016f560a9d7bb195"
+            },
+            "payments": {
+              "rows": 95000,
+              "content_md5": "2543325831bac99012e472c90eb12070"
+            },
+            "returns": {
+              "rows": 12000,
+              "content_md5": "d3743924071d9b0e61061cd9f1c6029a"
+            }
+          }
+        },
+        "model_config": {
+          "provider": "fixed",
+          "embedding": "fixed-ngram-test-768-v1"
+        },
+        "prompt_versions_observed": [
+          "business-plan-v1",
+          "intent-v3",
+          "knowledge-extractive-v1",
+          "metric-resolution-v2"
+        ],
+        "observed_models": [],
+        "python": "3.12.13"
+      },
+      "comparison_key": "4fac101eaaeca45cc6339088c057bdb375315e664d49bff47bfaac649d399b49",
+      "started_at_utc": "2026-11-16T12:38:01.809044+00:00",
+      "completed_at_utc": "2026-11-16T12:38:04.321105+00:00",
+      "number_of_cases": 21,
+      "run_failure": null,
+      "metrics": {
+        "intent_accuracy": {
+          "numerator": 15,
+          "denominator": 15,
+          "not_applicable": 6,
+          "value": 1.0
+        },
+        "plan_validity": {
+          "numerator": 6,
+          "denominator": 6,
+          "not_applicable": 15,
+          "value": 1.0
+        },
+        "tool_route_accuracy": {
+          "numerator": 21,
+          "denominator": 21,
+          "not_applicable": 0,
+          "value": 1.0
+        },
+        "sql_result_accuracy": {
+          "numerator": 17,
+          "denominator": 17,
+          "not_applicable": 4,
+          "value": 1.0
+        },
+        "citation_validity": {
+          "numerator": 1,
+          "denominator": 1,
+          "not_applicable": 20,
+          "value": 1.0
+        },
+        "task_success": {
+          "numerator": 21,
+          "denominator": 21,
+          "not_applicable": 0,
+          "value": 1.0
+        },
+        "entity_precision": {
+          "numerator": 12,
+          "denominator": 12,
+          "not_applicable": 10,
+          "value": 1.0
+        },
+        "entity_recall": {
+          "numerator": 12,
+          "denominator": 12,
+          "not_applicable": 10,
+          "value": 1.0
+        },
+        "entity_f1": {
+          "numerator": 24,
+          "denominator": 24,
+          "not_applicable": 10,
+          "value": 1.0
+        },
+        "retrieval_recall_at_6": {
+          "numerator": 1,
+          "denominator": 1,
+          "not_applicable": 20,
+          "value": 1.0
+        },
+        "retrieval_mrr_at_6": {
+          "numerator": 1.0,
+          "denominator": 1,
+          "not_applicable": 20,
+          "value": 1.0
+        },
+        "citation_semantic_support": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 21,
+          "value": null,
+          "evaluation": "manual"
+        }
+      },
+      "telemetry": {
+        "model_calls": {
+          "value": 0,
+          "numerator": 0,
+          "denominator": 21,
+          "not_applicable": 0
+        },
+        "tool_calls": {
+          "value": 25,
+          "numerator": 25,
+          "denominator": 21,
+          "not_applicable": 0
+        },
+        "prompt_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 21
+        },
+        "output_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 21
+        },
+        "total_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 21
+        },
+        "latency_ms": {
+          "p50": 10,
+          "p95": 22,
+          "denominator": 21,
+          "not_applicable": 0
+        },
+        "error_categories": {}
+      },
+      "cases": [
+        {
+          "case_id": "unified_agent_v1:order",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count"
+            ],
+            [
+              "order_count"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 8,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:synonym",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count"
+            ],
+            [
+              "order_count"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 7,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:sales",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "item_net_sales_amount"
+            ],
+            [
+              "item_net_sales_amount"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 9,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:payment",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "payment_attempt_success_rate"
+            ],
+            [
+              "payment_attempt_success_rate"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 7,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:channel",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count"
+            ],
+            [
+              "order_count"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 8,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:cohort",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "item_return_rate"
+            ],
+            [
+              "item_return_rate"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 8,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:longtail",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "captured_payment_amount"
+            ],
+            [
+              "captured_payment_amount"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 10,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 2,
+          "prompt_versions": [
+            "intent-v3",
+            "metric-resolution-v2"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:longtail_order",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count"
+            ],
+            [
+              "order_count"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 8,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 2,
+          "prompt_versions": [
+            "intent-v3",
+            "metric-resolution-v2"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:sequence",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:order_detail",
+          "intent_accuracy": true,
+          "entities": null,
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": null,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 0,
+          "tool_calls": 0,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "intent-v3"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:multi",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "captured_payment_amount",
+              "order_count"
+            ],
+            [
+              "order_count",
+              "captured_payment_amount"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 14,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:mom",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "item_net_sales_amount"
+            ],
+            [
+              "item_net_sales_amount"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 16,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "unified_agent_v1:rank",
+          "intent_accuracy": true,
+          "entities": [
+            [
+              "order_count"
+            ],
+            [
+              "order_count"
+            ]
+          ],
+          "plan_validity": null,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "error_category": null,
+          "latency_ms": 12,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "business_planning_v1:multi",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "latency_ms": 16,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:channel_top",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "latency_ms": 8,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:periods",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "latency_ms": 19,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:mom",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "latency_ms": 20,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:failure_rate",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "latency_ms": 10,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "business_planning_v1:cross",
+          "plan_validity": true,
+          "tool_route_accuracy": true,
+          "sql_result_accuracy": true,
+          "task_success": true,
+          "tool_calls": 2,
+          "model_calls": 0,
+          "latency_ms": 18,
+          "prompt_versions": [
+            "business-plan-v1"
+          ],
+          "error_category": null
+        },
+        {
+          "case_id": "agent_e2e_v1:policy",
+          "task_success": true,
+          "intent_accuracy": true,
+          "tool_route_accuracy": true,
+          "citation_validity": true,
+          "retrieval": [
+            [
+              "fixture:refund_fixture.md#可申请条件"
+            ],
+            [
+              "fixture:refund_fixture.md#可申请条件",
+              "2db149e0f1c969ce12b4de3fe54a88bbca67d5ed5b968cf427955dbc2019d8b7",
+              "af5fb9fe31cbbaf2569439a9811555ebd0c05a64a113a9c62e13dd6abaf23e02"
+            ]
+          ],
+          "error_category": null,
+          "latency_ms": 24,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "knowledge-extractive-v1"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        },
+        {
+          "case_id": "agent_e2e_v1:policy_gap",
+          "task_success": true,
+          "intent_accuracy": true,
+          "tool_route_accuracy": true,
+          "citation_validity": null,
+          "retrieval": null,
+          "error_category": null,
+          "latency_ms": 22,
+          "tool_calls": 1,
+          "model_calls": 0,
+          "recorded_model_attempts": 1,
+          "prompt_versions": [
+            "knowledge-extractive-v1"
+          ],
+          "observed_models": [],
+          "prompt_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null
+        }
+      ]
+    }
+  ],
+  "gemini": "not_executed",
+  "browser": "not_executed",
+  "regression": {
+    "python_passed": 202,
+    "python_optional_skipped": 1,
+    "frontend_passed": 5,
+    "typescript": "passed",
+    "frontend_build": "passed"
+  }
+}

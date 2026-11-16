@@ -131,7 +131,7 @@ def evaluate_case(case, mode, service, reference, live_generator):
         "id": case["id"], "passed": passed, "plan_correct": plan_ok if "type" in expected else None, "tool_calls_correct": calls_ok,
         "numeric_correct": numeric_ok, "clarify_or_reject_correct": (
             outcome_ok and plan_ok and calls_ok if expected["status"] in {"clarify", "unsupported"} else None),
-        "elapsed_ms": elapsed, "status": result["status"], "code": result.get("code"),
+        "elapsed_ms": elapsed, "tool_call_count": len(seen), "status": result["status"], "code": result.get("code"),
         "tool_errors": [tool["error_code"] for tool in result.get("tools", []) if "error_code" in tool],
         "failures": failures, "provider_failure": provider_failure,
         **({"demo": {"plan": result["plan"], "results": result["results"], "tools": result["tools"],
