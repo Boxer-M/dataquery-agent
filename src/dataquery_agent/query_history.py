@@ -46,6 +46,7 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         "metric_results": result.get("metric_results", []),
     }
     return {
+        **({"recovery": result["recovery"]} if "recovery" in result else {}),
         **({"subtasks": result["subtasks"]} if "subtasks" in result else {}),
         **({"knowledge": knowledge_audit} if knowledge_audit is not None else {}),
         **({"query_asset": result["query_asset"]} if strategy == "published_asset" else {}),
@@ -56,7 +57,7 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         "execution_strategy": strategy, "execution_status": answer["status"],
         "metric_id": metric.get("metric_id") or (request or {}).get("metric_id"),
         "analysis_id": detail.get("analysis_id") or result.get("operation"),
-        "resolved_request": request or plan or payload.get("parameters") or detail.get("time_constraints"),
+        "resolved_request": plan or request or payload.get("parameters") or detail.get("time_constraints"),
         "template_id": detail.get("template_id"), "template_version": detail.get("template_version"),
         "sql": statement,
         "sql_asset_reference": ("sql/warehouse/dws_metrics/dws.sql#" + request["metric_id"] if request

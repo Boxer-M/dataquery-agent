@@ -43,3 +43,26 @@ PYTHONPATH=src .venv/bin/python tests/evaluate_conversation.py --mode fixed
 PYTHONPATH=src .venv/bin/python tests/evaluate_conversation.py --mode live
 CONVERSATION_POSTGRES_TESTS=1 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -p test_conversation.py -v
 ```
+
+## Catalog 子任务定向恢复
+
+当联合查询的全部指标子任务已成功、部分或全部目录引用不可用时，会话可以保留一个可恢复计划。恢复命令使用原查询 ID。查询历史保留原计划 ID、稳定的子任务 ID、首次失败与每次恢复的 Attempt ID。成功恢复后，外层会话状态沿用 `ok`，恢复状态为 `completed`。
+
+```bash
+PYTHONPATH=src .venv/bin/python -m dataquery_agent.conversation_manager recover-catalog "$CONVERSATION_ID" "$QUERY_ID" --message-id "$MESSAGE_ID"
+PYTHONPATH=src .venv/bin/python -m dataquery_agent.conversation_manager history "$RECOVERY_QUERY_ID"
+```
+
+| 目录状态 | 后续操作 |
+|---|---|
+| `catalog_index_missing` | 先补齐正式目录索引，再发起一次恢复 |
+| `catalog_index_stale` | 先修复索引的版本、哈希或原文，然后使用同一计划恢复 |
+| `catalog_service_unavailable` | 服务恢复后可显式重试 |
+| `catalog_permission_denied` | 先恢复授权。所有者变更时拒绝使用原会话 |
+| `recovery_checkpoint_invalid` | 数据、读取权限或指标契约无法证明仍有效，需要提交新分析 |
+
+首次执行前后以既有指标只读身份核对已授权来源列的内容、物理表身份以及 PostgreSQL 快照。恢复前后重算内容指纹并验证请求、当前指标契约和能力。过去已成功的目录引用复核活跃 Chunk 身份。会话 Lease 串行化尝试，既有历史事务提交状态和响应。相同消息 ID 重放已保存响应，已完成计划收到新的恢复消息 ID 时也返回之前的完成回执。
+
+旧历史缺少内容证明，只有当前会话的已验证计划可以恢复。超过 64 KiB 的保存结果、来源表变更或数据库重启会使计划无法恢复。首次读取期间 PostgreSQL 快照变化也会保守地禁用恢复。来源指纹需要扫描授权列，数据量较大时可能触及查询超时。恢复结果反映最后一次校验时的数据。
+
+[验收报告与恢复 Trace](../../reports/warehouse/catalog_recovery_v1.json)

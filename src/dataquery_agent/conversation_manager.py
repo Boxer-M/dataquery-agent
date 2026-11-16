@@ -12,7 +12,7 @@ from dotenv import dotenv_values
 from .conversation_context import (
     CONTEXT_VERSION, RESET, ContextError, edit_for_message, pending_for, redact, resume_request,
 )
-from .conversation_store import ConversationError, ConversationStore
+from .conversation_store import ConversationError, ConversationStore, identifier
 from .intent_time import TIME
 from .metrics import ROOT
 from .query_history import build_record, replay_summary
@@ -43,9 +43,13 @@ class ConversationManager:
         if not isinstance(message, str) or not message.strip() or len(message) > 500:
             return response("clarify", "invalid_message", "请提供不超过 500 字的业务消息。")
         try:
-            claim = self.store.claim(owner, conversation_id, message_id, message)
-        except ConversationError as error:
-            return response("error", error.code, "会话不可用、正在处理或消息标识冲突。")
+            target = str(identifier(message.split()[1])) if message.startswith("recover-catalog ") else None
+            if target:
+                claim = self.store.claim(owner, conversation_id, message_id, message, recovery_target=target)
+            else:
+                claim = self.store.claim(owner, conversation_id, message_id, message)
+        except (ConversationError, IndexError) as error:
+            return response("error", getattr(error, "code", "invalid_recovery_target"), "会话不可用、正在处理或标识无效。")
         except psycopg.Error:
             return response("error", "management_unavailable", "暂时无法保存会话消息。")
         ids = {"conversation_id": str(conversation_id), "message_id": str(message_id)}
@@ -55,8 +59,15 @@ class ConversationManager:
         began = monotonic()
         today = today or datetime.now(ZoneInfo("Asia/Shanghai")).date()
         try:
-            answer, context, pending, operation = self.dispatch(message, claim["state"], today, owner=owner)
+            if target:
+                answer, context, pending, operation = self.resume_catalog(owner, claim["state"], target, today)
+            else:
+                answer, context, pending, operation = self.dispatch(message, claim["state"], today, owner=owner)
             record = build_record(claim, message, answer, operation, round((monotonic() - began) * 1000))
+            if recovery := record.get("recovery"):
+                context = {"kind": "catalog_recovery", "root_query_id": target or record["query_id"],
+                           "latest_query_id": record["query_id"], "message_id": str(message_id),
+                           "status": recovery["status"]}
         except Exception:
             answer = response("error", "agent_failed", "查询处理失败，请稍后重试。")
             context = claim["state"]["active_query_context"]
@@ -73,6 +84,20 @@ class ConversationManager:
             return {**response("error", code, "查询状态和历史未提交，请使用新消息重试。"), **ids}
         return {**answer, **ids, "query_id": record["query_id"], "context_operation": record["context_operation"],
                 "state_version": claim["state"]["state_version"] + 1, "replayed": False}
+
+    def resume_catalog(self, owner, state, target, today):
+        from .catalog_recovery import recover_catalog
+
+        active = state["active_query_context"]
+        pending = state["pending_clarification"]
+        if (active or {}).get("root_query_id") != target:
+            answer = response("error", "recovery_target_inactive", "当前会话没有对应的可恢复计划。")
+        else:
+            prior = self.store.history(owner, active["latest_query_id"])
+            answer = recover_catalog(self.agent, prior, owner, today, response("ok", None, ""))
+            if answer is None:
+                answer = response("error", "recovery_checkpoint_invalid", "无法确认原计划、数据版本或读取权限仍有效。")
+        return answer, active, pending, "catalog_recovery"
 
     def dispatch(self, message, state, today, *, owner=None):
         active = state["active_query_context"]
@@ -200,11 +225,16 @@ def main():
     send.add_argument("conversation_id")
     send.add_argument("message")
     send.add_argument("--message-id")
+    recover = sub.add_parser("recover-catalog")
+    recover.add_argument("conversation_id")
+    recover.add_argument("query_id")
+    recover.add_argument("--message-id")
     args = parser.parse_args()
     try:
-        if args.command == "send":
+        if args.command in {"send", "recover-catalog"}:
             manager, owner = local_manager()
-            result = manager.process_message(owner, args.conversation_id, args.message, args.message_id or uuid4())
+            message = args.message if args.command == "send" else f"recover-catalog {args.query_id}"
+            result = manager.process_message(owner, args.conversation_id, message, args.message_id or uuid4())
         else:
             cfg = dotenv_values(ROOT / ".env.agent-meta")
             store, owner = ConversationStore(cfg.get("AGENT_META_DSN")), cfg.get("AGENT_OWNER_TOKEN")

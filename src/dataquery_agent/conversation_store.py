@@ -75,7 +75,7 @@ class ConversationStore:
             raise ConversationError("conversation_not_found")
         return row
 
-    def claim(self, owner, conversation_id, message_id, message):
+    def claim(self, owner, conversation_id, message_id, message, *, recovery_target=None):
         cid, mid, owner_key = identifier(conversation_id), identifier(message_id), owner_hash(owner)
         digest = sha256(message.encode()).hexdigest()
         with self.transaction() as pg:
@@ -102,6 +102,15 @@ class ConversationStore:
                 return {"replay": prior["response"]}
             if state["leased"]:
                 raise ConversationError("conversation_busy")
+            active = state["active_query_context"] or {}
+            if (recovery_target and active.get("root_query_id") == recovery_target
+                    and active.get("status") == "completed"):
+                completed = pg.execute("SELECT response FROM agent_meta.messages "
+                                       "WHERE conversation_id=%s AND message_id=%s AND status='completed'",
+                                       (cid, active["message_id"])).fetchone()
+                if completed:
+                    return {"replay": completed["response"]}
+                raise ConversationError("recovery_history_unavailable")
             claim_id = uuid4()
             started = pg.execute(
                 "INSERT INTO agent_meta.messages(conversation_id,message_id,claim_id,digest,status) "
