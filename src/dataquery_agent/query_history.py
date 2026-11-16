@@ -19,7 +19,7 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         sources.update(tool.get("sources", []))
     request = routes[0].get("metric_request") if len(routes) == 1 else None
     plan = result.get("plan")
-    knowledge = result.get("knowledge_result", result) if result.get("path") in {"knowledge", "hybrid"} else None
+    knowledge = result.get("knowledge_result", result) if result.get("path") in {"knowledge", "hybrid", "sql_document_hybrid"} else None
     strategy = (result["path"] if knowledge is not None else
                 "published_asset" if result.get("path") == "published_asset" else
                 "dynamic_sql" if result.get("path") == "dynamic_sql" else

@@ -1,11 +1,13 @@
 """Narrow, explicit knowledge and hybrid routes over the existing metric contract."""
 import re
+
+import psycopg
 from uuid import uuid4
 
 from ..intent_time import TIME, date_window
 from ..intent_semantic_resolver import ALIASES, outcome
 from ..metric_entity import DEFINITION_ALIASES, MetricEntityResolver, normalize
-from .documents import CATALOG_PATH
+from .documents import CATALOG_PATH, KnowledgeError
 
 EXPLANATION = re.compile(r"怎么定义|如何定义|定义是什么|业务定义|口径|有什么区别|有何区别|字段含义|文档|政策|规则|指标定义|正式定义|怎么算")
 RETURN_METRICS = ("return_record_count", "return_record_amount", "item_return_rate")
@@ -43,13 +45,22 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
         return None
     service = agent.knowledge
     periods = list(TIME.finditer(question))
-    pdf_clause = re.search(r"(?:并|同时)(?:请)?(?:引用|摘录|结合|对照)[^，,。；;]{0,40}pdf", question, re.I)
-    if pdf_clause:
-        numeric = question[:pdf_clause.start()]
-        if TIME.search(numeric) and agent.semantic.metric_pattern.search(numeric) and re.search(r"查询|统计|查看|多少|排行|环比|同比", numeric):
-            frame["task"] = "unsupported"
-            return outcome("unsupported", "sql_pdf_combination_unsupported",
-                           "当前会话可以分别查询指标和已审核 PDF。请将两个问题分开提交。")
+    pdf_clause = re.search(r"(?:并|同时)\s*(?:请\s*)?(?:引用|摘录|结合|对照|参考)\s*(?P<subject>.+)",
+                           question)
+    if pdf_clause and PDF.search(pdf_clause["subject"]):
+        numeric = question[:pdf_clause.start()].strip(" ，,；;")
+        entities = agent.planner.validator.entities.resolve(numeric)
+        if (entities["metric_ids"] or entities["unknown_ids"]
+                or (TIME.search(numeric) and re.search(r"查询|统计|多少", numeric))):
+            frame["task"] = "hybrid"
+            subject = pdf_clause["subject"].strip()
+            if FORMAL_DEFINITION.search(subject):
+                return outcome("clarify", "pdf_formal_definition", "正式指标定义来自指标目录。请指定另需引用的 PDF 主题。")
+            if not re.sub(r"已审核|已发布|文档|内容|说明|[的和\W_]", "", PDF.sub("", subject)):
+                return outcome("clarify", "missing_pdf_scope", "请提供要引用的 PDF 主题、规则或文档名称。")
+            if not owner:
+                return outcome("unsupported", "pdf_owner_required", "请在已授权的会话中查询 PDF。")
+            return agent.business(numeric, runtime, frame, trace, today, owner=owner, pdf_question=subject)
     if len(periods) == 1 and GENERIC_RETURNS.fullmatch(TIME.sub("", question).strip()):
         frame["task"] = "hybrid"
         try:
@@ -130,6 +141,61 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
     return dict(result, path="knowledge", knowledge_topic="document", plan_id=plan_id, attempt_id=attempt_id,
                 subtasks=[task])
 
+
+
+def run_document_plan(agent, plan, runtime, frame, trace, today, owner):
+    """Run the validated metric and scoped PDF through the existing DAG."""
+    from ..specialists import KnowledgeAgent
+
+    specialist = KnowledgeAgent(
+        lookup_catalog=None,
+        answer_document=lambda question, _: agent.knowledge.answer(question, runtime, today=today,
+                                                                    owner=owner, pdf_only=True),
+    )
+
+    def document(params):
+        evidence = specialist.execute("technical_document", params["question"],
+                                      known_metrics=agent.service.metrics, runtime=runtime)
+        citations = evidence["citations"]
+        if citations:
+            try:
+                current = agent.knowledge.retriever.store.current_pdf_citations(citations, owner=owner)
+            except (psycopg.Error, KnowledgeError, OSError, ValueError):
+                current = []
+            if len(current) != len(citations):
+                evidence.update(citations=[], answer_zh="PDF 证据版本或权限已变化。",
+                                evidence_status="unavailable", code="pdf_evidence_invalidated")
+        state = evidence["evidence_status"]
+        status = {"supported": "ok", "partial": "partial"}.get(state, "unavailable")
+        code = evidence.get("code") or (None if status == "ok" else f"pdf_evidence_{state}")
+        retrieval = evidence.get("retrieval_trace", {})
+        return {"status": status, "error_code": code, "agent_call": evidence["agent_call"],
+                "trace_id": retrieval.get("trace_id"), "elapsed_ms": retrieval.get("elapsed_ms"),
+                "sources": list(dict.fromkeys(item["source_uri"] for item in evidence["citations"]))}, evidence
+
+    result = agent.run_business_plan(plan, frame, trace, document=document)
+    if "pdf_result" not in result:
+        return result
+    metric, pdf, summary = result["subtasks"]
+    knowledge = result.pop("pdf_result") or {"evidence_status": "unavailable", "citations": []}
+    assembled = result.pop("pdf_summary")
+    for task in result["subtasks"]:
+        task["plan_id"] = result["plan_id"]
+    trace["agent_calls"] = [{key: task[key] for key in ("plan_id", "task_id", "attempt_id")} | task["agent_call"]
+                            for task in (metric, pdf) if "agent_call" in task]
+    if retrieval := knowledge.get("retrieval_trace"):
+        trace["tools"].append({**retrieval, **{key: pdf[key] for key in
+                               ("plan_id", "task_id", "attempt_id", "kind", "status", "error_code", "sources")},
+                               "agent": "knowledge", "tool": "rag_retrieval", "scope": "reviewed_pdf"})
+
+    status = "ok" if summary["status"] == "ok" else (
+        "partial" if metric["status"] == "ok" or knowledge["citations"] else "error")
+    code = (summary.get("error_code") if metric["status"] == pdf["status"] == "ok"
+            else pdf.get("error_code") if metric["status"] == "ok" else metric.get("error_code"))
+    sql_text = result["answer_zh"] if metric["status"] == "ok" else "SQL 指标数值不可用。"
+    pdf_text = knowledge.get("answer_zh") if knowledge["citations"] else "缺少可验证的 PDF 证据。"
+    return dict(result, status=status, code=code, path="sql_document_hybrid", knowledge_result=knowledge,
+                answer_zh=assembled or f"数据库结果\n{sql_text}\n\nPDF 证据\n{pdf_text}")
 
 def knowledge_followup(message, active):
     if (active or {}).get("kind") != "knowledge" or active.get("topic") != "metric_definition":

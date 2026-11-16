@@ -270,6 +270,38 @@ try {
     pdfEvidence = { query_id: pdf.query_id, citation, history_matches: true }
   }
 
+  let sqlDocument
+  if (process.env.WORKSPACE_SQL_DOCUMENT_E2E) {
+    const question = '2025年1月订单量是多少，并引用PDF扫描页的 Order count 原文。'
+    async function askJoint() {
+      const response = page.waitForResponse(item => item.url() === origin + '/api/chat', { timeout: 100_000 })
+      await submit(question)
+      return (await response).json()
+    }
+    const completed = await askJoint()
+    assert.equal(completed.status, 'completed', completed.error?.code)
+    assert.equal(completed.rows[0].metrics.order_count.value, '2312')
+    assert.equal(completed.citations[0].page_number, 2)
+    assert.equal(completed.citations[0].quote, 'Order count: 48')
+    assert.deepEqual(completed.trace.tasks.map(task => task.kind), ['metric', 'pdf', 'summary'])
+    const completeMessage = page.locator('.message').last()
+    await completeMessage.locator('.answer-text').filter({ hasText: /数据库结果.*PDF 证据/s }).waitFor()
+    await completeMessage.getByText('查看引用 · Synthetic PDF verification').waitFor()
+
+    const partial = await askJoint()
+    assert.equal(partial.status, 'partial', partial.error?.code)
+    assert.equal(partial.rows[0].metrics.order_count.value, '2312')
+    assert.equal(partial.citations.length, 0)
+    const partialMessage = page.locator('.message').last()
+    await partialMessage.getByText('部分完成', { exact: true }).waitFor()
+    await partialMessage.getByText(/PDF 证据不可用/).waitFor()
+    await partialMessage.getByText(/联合汇总未完成/).waitFor()
+    sqlDocument = {
+      completed: { query_id: completed.query_id, rows: completed.rows, citations: completed.citations, trace: completed.trace },
+      partial: { query_id: partial.query_id, rows: partial.rows, error: partial.error, trace: partial.trace },
+    }
+  }
+
   // Controlled HTTP fixtures exercise partial and timeout presentation.
   await page.route('**/api/chat', route => {
     const request = route.request().postDataJSON()
@@ -314,7 +346,7 @@ try {
     history: { same_trace: true, tasks: history.trace.tasks.length, capability: history.trace.capability.length, tools: history.trace.tools.length, additional_chat_requests: 0 },
     clarification: { status: clarify.status, selection: choice.metric_id, followup_status: selection.status, query_id: selection.query_id },
     retry_same_message_id: true, idempotent_replay_query_id: retried.query_id,
-    pdf: pdfEvidence, browser_authorization_sent: false,
+    pdf: pdfEvidence, sql_document: sqlDocument, browser_authorization_sent: false,
     simulated: ['interrupted_network', 'partial_truncated_precision_html', 'history_skipped_recovery_missing', 'failed', 'gateway_timeout'],
   }, null, 2))
 } finally {

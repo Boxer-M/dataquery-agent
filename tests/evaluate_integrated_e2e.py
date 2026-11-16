@@ -3,6 +3,7 @@ from collections import Counter
 from contextlib import ExitStack
 from datetime import date
 from decimal import Decimal
+from hashlib import sha256
 import json
 from math import ceil
 from pathlib import Path
@@ -77,9 +78,26 @@ def check_extra(case, answer, history, manager, owner, pg):
         ) == (definition, "catalog", manager.agent.service.catalog["catalog_version"])
         verification["guardrail"] = not any(item.get("query_embedding_called") for item in trace["tools"])
     elif mode == "combined":
+        from evaluate_agent_e2e import numeric_check
+        from dataquery_agent.capability_trace import capability_link
+
+        calls = [tool for tool in trace["tools"] if tool.get("request")]
+        verification["sql_numeric"], expected = numeric_check(
+            {"ids": ["order_count"]}, result, [tool["request"] for tool in calls], pg)
+        verification["sql_provenance"] = len(calls) == 1 and capability_link(
+            calls[0], trace.get("capability_records", [])) is not None
+        verified = manager.agent.knowledge.retriever.store.current_pdf_citations(
+            result.get("knowledge_result", {}).get("citations", []), owner=owner)
+        verification["pdf_citation"] = len(verified) == len(citations) == 1 and (
+            citations[0].page_number, citations[0].quote, citations[0].source_hash
+        ) == (case["page"], case["quote"], sha256(PDF.read_bytes()).hexdigest())
+        tasks = response.trace.tasks
+        verification["dag"] = [task.kind for task in tasks] == ["metric", "pdf", "summary"] and (
+            tasks[2].depends_on == [task.task_id for task in tasks[:2]]
+            and all(task.status == "ok" for task in tasks))
         verification["sql_plus_pdf"] = bool(citations) and any(c.source_type == "reviewed_pdf" for c in citations) and bool(response.rows)
-        verification["guardrail"] = (answer["code"] == "sql_pdf_combination_unsupported"
-                                     and not trace["tools"] and not trace["model_attempts"])
+        verification["joint_model_proposal"] = {x["stage"] for x in trace["model_attempts"]
+                                                  if x["status"] == "received"} == {"planning", "knowledge"}
     else:
         verification["guardrail"] = response.evidence_status == "insufficient" and not citations and not trace["model_attempts"]
     return verification, expected
@@ -87,7 +105,7 @@ def check_extra(case, answer, history, manager, owner, pg):
 
 def capture(case, manager, owner, conversation, embedding, backend, source):
     outputs = []
-    manager.generate = safe_generate(backend, outputs, source, case["question"])
+    manager.generate = safe_generate(backend, outputs, source, case["question"], joint=case.get("clauses"))
     begin = len(embedding.batches)
     started = monotonic()
     answer = manager.process_message(owner, conversation, case["question"], uuid4(), today=TODAY)
@@ -164,7 +182,7 @@ def run():
             else:
                 scores, ods = check_extra(case, item["answer"], item["history"], manager, case_owner, pg)
                 failure = next((key for key, passed in scores.items() if not passed), None)
-                if failure == "sql_plus_pdf" and scores["guardrail"]:
+                if failure and item["answer"]["code"]:
                     failure = item["answer"]["code"]
                 item.update(scores=scores, ods=ods, failure=failure, passed=failure is None)
                 added.append(item)
