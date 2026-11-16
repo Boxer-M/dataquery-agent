@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Alert, Button, Input, Spin } from 'antd'
 import {
   ApartmentOutlined, ArrowUpOutlined, BarChartOutlined, CalendarOutlined,
@@ -6,8 +6,9 @@ import {
 } from '@ant-design/icons'
 import { createConversation, health, RequestError, sendQuestion } from './api'
 import type { ChatRequest, ChatResponse } from './api'
-import { QueryResult } from './query-result'
-import { QueryHistory } from './query-history'
+
+const QueryResult = lazy(() => import('./query-result').then(module => ({ default: module.QueryResult })))
+const QueryHistory = lazy(() => import('./query-history').then(module => ({ default: module.QueryHistory })))
 
 type Message = { request: ChatRequest; response?: ChatResponse; error?: string; retryable?: boolean }
 
@@ -126,9 +127,11 @@ export function App() {
         <div className="messages">{messages.map((message, index) => <article className="message" key={message.request.message_id}>
           <div className="user-message"><span>你</span><p>{message.request.question}</p></div>
           <div className="agent-message">
-            {message.response ? <QueryResult result={message.response}
-              busy={busy || messages.slice(index + 1).some(item => item.response && item.response.status !== 'failed')}
-              onClarify={submit} />
+            {message.response ? <Suspense fallback={<div className="loading"><Spin size="small" /> 正在加载查询结果</div>}>
+              <QueryResult result={message.response}
+                busy={busy || messages.slice(index + 1).some(item => item.response && item.response.status !== 'failed')}
+                onClarify={submit} />
+            </Suspense>
               : message.error ? <Alert type="error" showIcon title={message.error} />
               : <div className="loading"><Spin size="small" /> 正在查询</div>}
             {message.response?.query_id && <Button size="small"
@@ -157,8 +160,12 @@ export function App() {
         </form>
       </div>
     </main>
-    {historyId && <QueryHistory key={historyId} queryId={historyId}
-      current={messages.find(message => message.response?.query_id === historyId)?.response}
-      onOpen={setHistoryId} onClose={() => setHistoryId(undefined)} />}
+    {historyId && <Suspense fallback={<div className="history-chunk-loading" role="status">
+      <Spin size="small" /> 正在加载查询历史
+    </div>}>
+      <QueryHistory key={historyId} queryId={historyId}
+        current={messages.find(message => message.response?.query_id === historyId)?.response}
+        onOpen={setHistoryId} onClose={() => setHistoryId(undefined)} />
+    </Suspense>}
   </div>
 }

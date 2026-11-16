@@ -106,3 +106,5 @@ button { font: inherit; }
 @media (max-width: 760px) {
   .session-history { display: none; }
 }
+
+.history-chunk-loading { position: fixed; z-index: 10; top: 16px; right: 16px; display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #fff; border: 1px solid #dce7df; border-radius: 8px; }
