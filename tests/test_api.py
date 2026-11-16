@@ -107,7 +107,10 @@ class ApiPostgresTests(unittest.IsolatedAsyncioTestCase):
             history = (await http.get(history_path, headers=AUTH)).json()
             self.assertEqual(history["trace"]["capability"], hybrid["trace"]["capability"])
             self.assertEqual(history["trace"]["tasks"], hybrid["trace"]["tasks"])
+            self.assertEqual(history["trace"]["tools"], hybrid["trace"]["tools"])
             self.assertEqual(history["citations"], hybrid["citations"])
+            self.assertEqual([task["schedule_position"] for task in history["trace"]["tasks"]], [1, 2, 3, 4])
+            self.assertTrue(all(task["agent_elapsed_ms"] >= 0 for task in history["trace"]["tasks"]))
             self.assertEqual(history["status"], "completed")
             replay = (await http.post("/api/chat", json=body, headers=AUTH)).json()
             self.assertTrue(replay["replayed"])
@@ -124,6 +127,16 @@ class ApiPostgresTests(unittest.IsolatedAsyncioTestCase):
             with patch.object(manager.agent.service, "query", return_value={
                 "status": "error", "error": {"code": "query_timeout"},
             }):
+                _, skipped = await ask(QUESTION)
+                tasks = skipped["trace"]["tasks"]
+                failed_ids = {task["task_id"] for task in tasks if task["status"] == "error"}
+                catalog_tasks = [task for task in tasks if task["kind"] == "catalog"]
+                self.assertEqual(len(catalog_tasks), 2)
+                for task in catalog_tasks:
+                    self.assertEqual(task["status"], "skipped")
+                    self.assertEqual(task["code"], "dependency_failed")
+                    self.assertTrue(set(task["failed_dependencies"]) <= failed_ids
+                                    and task["failed_dependencies"])
                 _, failed = await ask("2025年1月订单量是多少？")
             self.assertEqual(failed["status"], "failed")
             self.assertEqual(failed["error"]["code"], "query_timeout")

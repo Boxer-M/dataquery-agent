@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { chromium } from 'playwright-core'
 
-const origin = 'http://127.0.0.1:5173'
+const origin = process.env.WORKSPACE_ORIGIN ?? 'http://127.0.0.1:5173'
 const browser = await chromium.launch({
   executablePath: process.env.CHROME_BIN ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
 })
@@ -69,6 +69,61 @@ try {
     await page.screenshot({ path: process.env.WORKSPACE_HYBRID_SCREENSHOT })
     await page.setViewportSize({ width: 1360, height: 850 })
   }
+
+  const historyPath = `${origin}/api/queries/${hybrid.query_id}`
+  const callsBeforeHistory = submitted.length
+  const historyResponse = page.waitForResponse(response => response.url() === historyPath && response.request().method() === 'GET')
+  await joint.getByRole('button', { name: '查看查询历史' }).click()
+  const receipt = await historyResponse
+  assert.equal(receipt.request().headers().authorization, undefined)
+  assert.equal(receipt.status(), 200)
+  const history = await receipt.json()
+  for (const key of ['plan_id', 'attempt_id', 'tasks', 'capability', 'tools']) {
+    assert.deepEqual(history.trace[key], hybrid.trace[key], key)
+  }
+  assert.deepEqual(history.citations, hybrid.citations)
+  assert.deepEqual(history.trace.tasks.map(task => task.kind).sort(), ['catalog', 'catalog', 'metric', 'metric'])
+  assert.deepEqual(history.trace.tasks.map(task => task.agent).sort(), ['data_analysis', 'data_analysis', 'knowledge', 'knowledge'])
+  assert.deepEqual(history.trace.tasks.map(task => task.schedule_position), [1, 2, 3, 4])
+  for (const event of history.trace.tools.filter(item => item.kind === 'metric')) {
+    assert.ok(history.trace.capability.some(record => record.trace_id === event.capability_trace_id
+      && record.task_id === event.task_id && record.attempt_id === event.attempt_id
+      && record.capability_phase === 'execution_recheck'))
+  }
+  const drawer = page.getByRole('dialog', { name: '查询历史详情' })
+  await drawer.getByText('当前回执与已保存 Trace 的可对照标识一致。').waitFor()
+  await drawer.getByRole('button', { name: /SQL 指标 · order_count/ }).first().click()
+  await drawer.getByText('Data Analysis Agent', { exact: true }).waitFor()
+  if (process.env.WORKSPACE_HISTORY_SCREENSHOT) {
+    await drawer.getByRole('button', { name: /SQL 指标 · order_count/ }).first().evaluate(
+      node => node.scrollIntoView({ block: 'start' }),
+    )
+    await page.screenshot({ path: process.env.WORKSPACE_HISTORY_SCREENSHOT, animations: 'disabled' })
+  }
+  assert.equal(submitted.length, callsBeforeHistory)
+  await page.keyboard.press('Escape')
+  await drawer.waitFor({ state: 'hidden' })
+
+  const recoveryId = '11111111-1111-4111-8111-111111111111'
+  await page.route(historyPath, route => route.fulfill({ json: {
+    query_id: hybrid.query_id, status: 'partial', trace: {
+      attempt_id: 'second_attempt', previous_query_id: recoveryId, tasks: [{
+        task_id: 'dependent_task', attempt_id: 'first_attempt', kind: 'catalog',
+        status: 'skipped', code: 'dependency_failed', failed_dependencies: ['failed_metric'],
+      }],
+    },
+  } }), { times: 1 })
+  await page.route(`${origin}/api/queries/${recoveryId}`, route => route.fulfill({ status: 404 }), { times: 1 })
+  await joint.getByRole('button', { name: '查看查询历史' }).click()
+  await drawer.getByText('second_attempt、first_attempt').waitFor()
+  await drawer.getByRole('button', { name: /Catalog.*skipped/ }).click()
+  await drawer.getByText('dependency_failed', { exact: true }).waitFor()
+  await drawer.getByText('failed_metric', { exact: true }).waitFor()
+  await drawer.getByRole('button', { name: '查看上一次执行记录' }).click()
+  await drawer.getByText('记录不存在或当前身份无权查看。').waitFor()
+  assert.equal(submitted.length, callsBeforeHistory)
+  await page.keyboard.press('Escape')
+  await drawer.waitFor({ state: 'hidden' })
 
   const clarifyResponse = page.waitForResponse(response => response.url() === origin + '/api/chat')
   await submit('2025年1月销售额')
@@ -140,12 +195,13 @@ try {
   assert.deepEqual(browserErrors, [])
   assert.equal(await page.evaluate(() => localStorage.length + sessionStorage.length), 0)
   console.log(JSON.stringify({
-    browser: 'Chrome', first: { status: first.status, value: first.rows[0].value, query_id: first.query_id },
+    browser: 'Chrome', origin, first: { status: first.status, value: first.rows[0].value, query_id: first.query_id },
     followup: { status: second.status, value: second.rows[0].value, query_id: second.query_id },
     hybrid: { query_id: hybrid.query_id, values: ['2312', '5538'], verified_citations: hybrid.citations.length },
+    history: { same_trace: true, tasks: history.trace.tasks.length, capability: history.trace.capability.length, tools: history.trace.tools.length, additional_chat_requests: 0 },
     clarification: { status: clarify.status, selection: choice.metric_id, followup_status: selection.status, query_id: selection.query_id },
     retry_same_message_id: true, browser_authorization_sent: false,
-    simulated: ['interrupted_network', 'partial_truncated_precision_html', 'failed', 'gateway_timeout'],
+    simulated: ['interrupted_network', 'partial_truncated_precision_html', 'history_skipped_recovery_missing', 'failed', 'gateway_timeout'],
   }, null, 2))
 } finally {
   await browser.close()

@@ -7,6 +7,7 @@ import {
 import { createConversation, health, RequestError, sendQuestion } from './api'
 import type { ChatRequest, ChatResponse } from './api'
 import { QueryResult } from './query-result'
+import { QueryHistory } from './query-history'
 
 type Message = { request: ChatRequest; response?: ChatResponse; error?: string; retryable?: boolean }
 
@@ -20,6 +21,7 @@ export function App() {
   const [connection, setConnection] = useState<'checking' | 'online' | 'offline'>('checking')
   const [conversation, setConversation] = useState<string>()
   const [messages, setMessages] = useState<Message[]>([])
+  const [historyId, setHistoryId] = useState<string>()
   const [draft, setDraft] = useState('')
   const [busy, setBusy] = useState(false)
   const [notice, setNotice] = useState('')
@@ -84,6 +86,7 @@ export function App() {
       const active = await createConversation()
       setConversation(active)
       setMessages([])
+      setHistoryId(undefined)
       setDraft('')
       setConnection('online')
     })
@@ -97,6 +100,12 @@ export function App() {
       <div className="session"><MessageOutlined /><div><strong>{conversation ? '数据问答' : '尚未开始'}</strong>
         {conversation && <small title={conversation}>{conversation}</small>}
       </div></div>
+      <div className="session-history" aria-label="当前页面查询历史">
+        {messages.some(message => message.response?.query_id) && <div className="sidebar-label">当前页面查询</div>}
+        {messages.filter(message => message.response?.query_id).map(message =>
+          <button type="button" key={message.request.message_id}
+            onClick={() => setHistoryId(message.response?.query_id)}>{message.request.question}</button>)}
+      </div>
       <div className="sidebar-footer"><span className={`status-dot ${connection}`} />
         {{ checking: '正在连接 API', online: 'API 已连接', offline: 'API 未连接' }[connection]}
         <button type="button" aria-label="重新检查 API 连接" onClick={() => void refreshHealth()}><ReloadOutlined /></button>
@@ -122,6 +131,8 @@ export function App() {
               onClarify={submit} />
               : message.error ? <Alert type="error" showIcon title={message.error} />
               : <div className="loading"><Spin size="small" /> 正在查询</div>}
+            {message.response?.query_id && <Button size="small"
+              onClick={() => setHistoryId(message.response?.query_id)}>查看查询历史</Button>}
             {message.retryable && <Button icon={<ReloadOutlined />} disabled={busy}
               onClick={() => void run(() => execute(message.request))}>重试原消息</Button>}
           </div>
@@ -146,5 +157,8 @@ export function App() {
         </form>
       </div>
     </main>
+    {historyId && <QueryHistory key={historyId} queryId={historyId}
+      current={messages.find(message => message.response?.query_id === historyId)?.response}
+      onOpen={setHistoryId} onClose={() => setHistoryId(undefined)} />}
   </div>
 }

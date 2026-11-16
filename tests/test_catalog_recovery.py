@@ -7,6 +7,7 @@ from uuid import uuid4
 
 import psycopg
 
+from dataquery_agent.api_models import public_response
 from dataquery_agent.conversation_manager import local_manager
 from dataquery_agent.rag.documents import catalog_document
 from test_business_planner_v2 import PROPOSE, QUESTION, TODAY
@@ -55,6 +56,12 @@ class CatalogRecoveryTests(unittest.TestCase):
             self.assertTrue(all(task["status"] == "ok" for task in final["subtasks"]))
             self.assertNotEqual(final["subtasks"][2]["attempt_id"], initial["subtasks"][2]["attempt_id"])
             self.assertEqual(manager.get_query(owner, original["query_id"]), initial)
+            live_trace = public_response(recovered).trace
+            saved_trace = public_response(final, history=True).trace
+            self.assertEqual(live_trace, saved_trace)
+            self.assertEqual(str(saved_trace.previous_query_id), missing["query_id"])
+            self.assertEqual(len({task.attempt_id for task in saved_trace.tasks}), 2)
+            self.assertIsNone(saved_trace.tasks[2].schedule_position)
             self.assertEqual(query.call_count, 2)
             replay = manager.process_message(owner, cid, command, uuid4(), today=TODAY)
             self.assertTrue(replay["replayed"])
