@@ -1,11 +1,11 @@
-"""Sequential scheduling for validated metric and Catalog tasks."""
+"""Sequential scheduling for validated metric and evidence tasks."""
 from dataclasses import dataclass
 from time import monotonic
 
 from .business_plan import MAX_STEPS
 
 MAX_TASKS = MAX_STEPS + 5
-TASK_TYPES = {"metric", "catalog"}
+TASK_TYPES = {"metric", "catalog", "pdf", "summary"}
 
 
 class TaskGraphError(ValueError):
@@ -58,6 +58,8 @@ def execute_tasks(tasks, handlers, *, attempt_id, deadline, clock=monotonic):
         elif clock() >= deadline:
             event = {"status": "skipped", "error_code": "plan_timeout", "elapsed_ms": 0}
             payload = None
+        elif task.task_type == "summary":
+            event, payload = handlers["summary"](task.parameters, [outcomes[dep] for dep in task.depends_on])
         else:
             event, payload = handlers[task.task_type](task.parameters)
         outcomes[task.task_id] = ({

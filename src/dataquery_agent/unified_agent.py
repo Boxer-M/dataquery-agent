@@ -328,14 +328,21 @@ class UnifiedAgent:
         return {"status": "ok", "detail_result": result,
                 "answer_zh": f"{start} 至 {end}（不含结束日），{result['definition']}。{summary}"}
 
-    def business(self, question, runtime, frame, trace, today, *, catalog=None, owner=None):
+    def business(self, question, runtime, frame, trace, today, *, catalog=None, owner=None, pdf_question=None):
         prepared = self.planner.prepare(
-            question, lambda prompt: runtime.call("planning", f"[{PROMPT_VERSIONS['planning']}] {prompt}"), today)
+            question, lambda prompt: runtime.call("planning", f"[{PROMPT_VERSIONS['planning']}] {prompt}"), today,
+            pdf_question=pdf_question)
         if prepared["status"] != "ready":
             if prepared.get("code") == "invalid_model_output":
                 runtime.invalid_output()
+            if pdf_question is not None and prepared.get("choices"):
+                names = "、".join(choice["name"] for choice in prepared["choices"])
+                return outcome("clarify", prepared["code"], f"请在原问题中明确指标口径（{names}），并保留 PDF 查询需求。")
             return prepared
         plan = prepared["plan"]
+        if pdf_question is not None:
+            from .rag.routing import run_document_plan
+            return run_document_plan(self, plan, runtime, frame, trace, today, owner)
         if catalog is None:
             return self.run_business_plan(plan, frame, trace)
         return self.run_hybrid_plan(plan, catalog, frame, trace, today, owner)
@@ -410,7 +417,7 @@ class UnifiedAgent:
                     metric_resolution=resolution, metric_results=metric_results,
                     answer_zh=result["answer_zh"] + "\n正式定义\n" + knowledge["answer_zh"])
 
-    def run_business_plan(self, plan, frame, trace, *, recovery_proof=None, catalog=None, metric_results=None):
+    def run_business_plan(self, plan, frame, trace, *, recovery_proof=None, catalog=None, metric_results=None, document=None):
         plan_id, attempt_id = uuid4().hex, uuid4().hex
         routes = {}
         records = trace.setdefault("capability_records", [])
@@ -434,11 +441,11 @@ class UnifiedAgent:
 
         def query(step, request):
             def execute(request, route):
-                phase = "execution_recheck" if catalog is not None else "preflight"
+                phase = "execution_recheck" if catalog is not None or document is not None else "preflight"
                 binding = {key: routes[step][key] for key in BINDING_FIELDS} | {"capability_phase": phase}
                 return self.query(request, route, trace, binding=binding)
 
-            if catalog is not None:
+            if catalog is not None or document is not None:
                 from .specialists import DataAnalysisAgent
                 specialist = DataAnalysisAgent(
                     resolve=lambda request: resolve(request, step, "execution_recheck"),
@@ -451,7 +458,7 @@ class UnifiedAgent:
                 metric_results.append(result)
             return result
 
-        result = self.planner.execute_plan(plan, task_query=query, catalog=catalog,
+        result = self.planner.execute_plan(plan, task_query=query, catalog=catalog, document=document,
                                            execution_ids=(plan_id, attempt_id))
         if recovery_proof is not None and before and result["status"] == "ok":
             if sql_checkpoint(self.service, plan, list(routes.values()), capture_snapshot=True) == before:

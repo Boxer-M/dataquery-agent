@@ -6,7 +6,7 @@
   {"id":"native_pdf","question":"PDF 中带有 Native verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。","check":"pdf","page":1,"quote":"Order count: 24"},
   {"id":"ocr_pdf","question":"PDF 中带有 Scanned verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。","check":"pdf","page":2,"quote":"Order count: 48"},
   {"id":"catalog_over_pdf","question":"PDF 里订单量的正式定义是什么？","check":"catalog"},
-  {"id":"sql_and_pdf","question":"2025年1月订单量是多少，并引用PDF扫描页的 Order count 原文。","check":"combined"},
+  {"id":"sql_and_pdf","question":"2025年1月订单量是多少，并引用PDF扫描页的 Order count 原文。","check":"combined","page":2,"quote":"Order count: 48","clauses":["2025年1月订单量是多少","PDF扫描页的 Order count 原文。"]},
   {"id":"foreign_pdf","question":"PDF 中带有 Scanned verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。","check":"absent","foreign":true},
   {"id":"withdrawn_pdf","question":"PDF 中带有 Scanned verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。","check":"absent","withdraw":true}
 ]

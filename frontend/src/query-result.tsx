@@ -77,7 +77,7 @@ export function QueryResult({ result, busy, onClarify }: {
   const scalar = rows.length === 1 && Object.hasOwn(rows[0], 'value') && rows[0].bucket === 'all'
     && keys.every(key => ['bucket', 'value', 'unit', 'month', 'start_date', 'end_date', 'numerator', 'denominator'].includes(key))
     && result.definitions.length === 1 ? rows[0] : undefined
-  const unavailable = result.trace?.tasks?.filter(task => ['unavailable', 'failed', 'error', 'skipped'].includes(task.status ?? '')) ?? []
+  const unavailable = result.trace?.tasks?.filter(task => ['unavailable', 'failed', 'error', 'skipped', 'partial'].includes(task.status ?? '')) ?? []
   const otherCitations = citations.filter(item => !result.definitions.some(definition =>
     definition.metric_id && citationMetric(item) === definition.metric_id))
 
@@ -91,7 +91,9 @@ export function QueryResult({ result, busy, onClarify }: {
       description={unavailable.length > 0 && <ul>{unavailable.map((task, index) => {
         const id = task.metric_id
         return <li key={task.task_id ?? index}>{id ? metricNames.get(id) ?? id : '子任务'} · {
-          task.kind === 'catalog' ? '正式定义引用不可用' : '任务未完成'
+          task.kind === 'catalog' ? '正式定义引用不可用'
+            : task.kind === 'pdf' ? (task.status === 'partial' ? 'PDF 证据不完整' : 'PDF 证据不可用')
+              : task.kind === 'summary' ? '联合汇总未完成' : '任务未完成'
         }{task.code && `（${task.code}）`}</li>
       })}</ul>} />}
     {result.status === 'clarification_required' && <div className="choices">

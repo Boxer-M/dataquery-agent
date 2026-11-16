@@ -33,6 +33,9 @@ def run():
 
     def traced(*args, **kwargs):
         result = process(*args, **kwargs)
+        if (os.getenv("WORKSPACE_SQL_DOCUMENT_E2E") and
+                result.get("result", {}).get("path") == "sql_document_hybrid" and result["status"] == "ok"):
+            writer.delete(doc_id, owner=owner)
         attempts.append({"query_id": result.get("query_id"), "replayed": result.get("replayed", False),
                          "model_attempts": result.get("trace", {}).get("model_attempts", [])})
         return result

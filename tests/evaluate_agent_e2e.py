@@ -47,7 +47,7 @@ def numeric_check(case, result, calls, pg):
     return ({mid: Decimal(str(value)) for mid, value in values.items() if value is not None} == expected), expected
 
 
-def safe_generate(backend, records, fixture, question):
+def safe_generate(backend, records, fixture, question, *, joint=None):
     """Reuse the approved synthetic document only, plus existing public planning inputs."""
     def generate(prompt):
         stage = prompt.split("]", 1)[0].removeprefix("[")
@@ -56,10 +56,11 @@ def safe_generate(backend, records, fixture, question):
         if stage.startswith("knowledge-"):
             payload = json.loads(prompt.split("\n", 1)[1])
             texts = {chunk.text for chunk in fixture.passages}
-            if payload["question"] != question or not all(item["text"] in texts for item in payload["evidence"]):
+            if payload["question"] != (joint[1] if joint else question) or not all(item["text"] in texts for item in payload["evidence"]):
                 record["error"] = "external_scope_rejected"
                 raise ValueError("external_scope_rejected")
-        elif stage not in {"intent-v3", "business-plan-v1"} or question.split("，并给出正式定义")[0] not in prompt:
+        elif (stage not in {"intent-v3", "business-plan-v1"} or
+              not all(fragment in prompt for fragment in (joint or (question.split("，并给出正式定义")[0],)))):
             record["error"] = "external_scope_rejected"
             raise ValueError("external_scope_rejected")
         try:

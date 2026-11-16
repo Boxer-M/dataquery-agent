@@ -1,0 +1,646 @@
+{
+  "browser": {
+    "browser": "Chrome",
+    "origin": "http://127.0.0.1:5173",
+    "first": {
+      "status": "completed",
+      "value": "2312",
+      "query_id": "b092db63-254d-4654-977d-53ed9aa7acd6"
+    },
+    "followup": {
+      "status": "completed",
+      "value": "2049",
+      "query_id": "2b24da9d-6367-4557-adc4-edfe6638a37b"
+    },
+    "hybrid": {
+      "query_id": "7ae26805-1ffa-41b1-afd6-21c3ab4c54b6",
+      "values": [
+        "2312",
+        "5538"
+      ],
+      "verified_citations": 2
+    },
+    "grouped": {
+      "query_id": "ce44e374-c9d4-41fa-aa51-ea9eaa825dce",
+      "rows": [
+        [
+          "mobile",
+          "685"
+        ],
+        [
+          "partner",
+          "207"
+        ],
+        [
+          "phone",
+          "83"
+        ],
+        [
+          "web",
+          "1337"
+        ]
+      ],
+      "visualization": "bar"
+    },
+    "monthly": {
+      "query_id": "0e3dee6b-d2e3-4e85-93e6-f3c529143e8b",
+      "rows": [
+        [
+          "2025-01",
+          "2312"
+        ],
+        [
+          "2025-02",
+          "2049"
+        ],
+        [
+          "2025-03",
+          "2225"
+        ],
+        [
+          "2025-04",
+          "2251"
+        ],
+        [
+          "2025-05",
+          "2306"
+        ],
+        [
+          "2025-06",
+          "2275"
+        ],
+        [
+          "2025-07",
+          "2350"
+        ],
+        [
+          "2025-08",
+          "2236"
+        ],
+        [
+          "2025-09",
+          "2262"
+        ],
+        [
+          "2025-10",
+          "2318"
+        ],
+        [
+          "2025-11",
+          "3437"
+        ],
+        [
+          "2025-12",
+          "4128"
+        ]
+      ],
+      "visualization": "line"
+    },
+    "history": {
+      "same_trace": true,
+      "tasks": 4,
+      "capability": 4,
+      "tools": 5,
+      "additional_chat_requests": 0
+    },
+    "clarification": {
+      "status": "clarification_required",
+      "selection": "item_net_sales_amount",
+      "followup_status": "completed",
+      "query_id": "71fc8d8d-da44-4edb-9d69-1d7ccfaa3ef8"
+    },
+    "retry_same_message_id": true,
+    "idempotent_replay_query_id": "769f61f0-2cf6-4cf4-9e3d-12c9808c0c47",
+    "pdf": {
+      "query_id": "7c5cd41b-b6e2-4a48-b67f-70f991bb118d",
+      "citation": {
+        "document_id": "1fea70b4cb472439e35a178ff2221e6380e0641fa611dd38693d37bfabbc61a5",
+        "document_version": "pdf-7d4d1ee81eed9302cd376405ba5edaab24d030e68826206c",
+        "chunk_id": "ee50b62d2041adc8e6e0977ec1dc87799ee8d1f6d6dbc9c92f6414d4c675c0f6",
+        "title": "Synthetic PDF verification",
+        "source_uri": "reviewed-pdf:integrated-9fd7e20b6be02c47",
+        "source_location": "page:2;lines:1-3",
+        "source_type": "reviewed_pdf",
+        "quote": "Order count: 48",
+        "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+        "page_number": 2,
+        "line_start": 1,
+        "line_end": 3,
+        "extraction_method": "ocr",
+        "access_scope": "owner"
+      },
+      "history_matches": true
+    },
+    "sql_document": {
+      "completed": {
+        "query_id": "b135c6d3-7396-496f-adb7-16a7c10c4516",
+        "rows": [
+          {
+            "bucket": "all",
+            "month": null,
+            "metrics": {
+              "order_count": {
+                "value": "2312"
+              }
+            }
+          }
+        ],
+        "citations": [
+          {
+            "document_id": "1fea70b4cb472439e35a178ff2221e6380e0641fa611dd38693d37bfabbc61a5",
+            "document_version": "pdf-7d4d1ee81eed9302cd376405ba5edaab24d030e68826206c",
+            "chunk_id": "ee50b62d2041adc8e6e0977ec1dc87799ee8d1f6d6dbc9c92f6414d4c675c0f6",
+            "title": "Synthetic PDF verification",
+            "source_uri": "reviewed-pdf:integrated-9fd7e20b6be02c47",
+            "source_location": "page:2;lines:1-3",
+            "source_type": "reviewed_pdf",
+            "quote": "Order count: 48",
+            "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+            "page_number": 2,
+            "line_start": 1,
+            "line_end": 3,
+            "extraction_method": "ocr",
+            "access_scope": "owner"
+          }
+        ],
+        "trace": {
+          "trace_id": "e8113e72ff9b4f799cf7a86c8bc09db7",
+          "plan_id": "8c8f52e5560e4feb99ab71cb236e40b4",
+          "attempt_id": "81bb67ff656e4a948a23ad7edbd600b6",
+          "tasks": [
+            {
+              "trace_id": "753b5747f3bc41b2ae928d467f09dd4e",
+              "plan_id": "8c8f52e5560e4feb99ab71cb236e40b4",
+              "task_id": "8c8f52e5560e4feb99ab71cb236e40b4/1",
+              "attempt_id": "81bb67ff656e4a948a23ad7edbd600b6",
+              "metric_id": "order_count",
+              "agent": "data_analysis",
+              "tool": "metric_query_service",
+              "kind": "metric",
+              "status": "ok",
+              "sources": [
+                "dws.order_day"
+              ],
+              "depends_on": [],
+              "schedule_position": 1,
+              "elapsed_ms": 19,
+              "agent_elapsed_ms": 19.392
+            },
+            {
+              "trace_id": "b8344f60e18f432cbb4034f4db1e92f1",
+              "plan_id": "8c8f52e5560e4feb99ab71cb236e40b4",
+              "task_id": "8c8f52e5560e4feb99ab71cb236e40b4/2",
+              "attempt_id": "81bb67ff656e4a948a23ad7edbd600b6",
+              "agent": "knowledge",
+              "tool": "rag_retrieval",
+              "kind": "pdf",
+              "status": "ok",
+              "sources": [
+                "reviewed-pdf:integrated-9fd7e20b6be02c47"
+              ],
+              "depends_on": [],
+              "schedule_position": 2,
+              "elapsed_ms": 1814,
+              "agent_elapsed_ms": 4421.902
+            },
+            {
+              "plan_id": "8c8f52e5560e4feb99ab71cb236e40b4",
+              "task_id": "8c8f52e5560e4feb99ab71cb236e40b4/3",
+              "attempt_id": "81bb67ff656e4a948a23ad7edbd600b6",
+              "kind": "summary",
+              "status": "ok",
+              "sources": [],
+              "depends_on": [
+                "8c8f52e5560e4feb99ab71cb236e40b4/1",
+                "8c8f52e5560e4feb99ab71cb236e40b4/2"
+              ],
+              "schedule_position": 3
+            }
+          ],
+          "capability": [
+            {
+              "trace_id": "7fe2f8e6b04f4537b1afaf08afaf7321",
+              "plan_id": "8c8f52e5560e4feb99ab71cb236e40b4",
+              "task_id": "8c8f52e5560e4feb99ab71cb236e40b4/1",
+              "attempt_id": "81bb67ff656e4a948a23ad7edbd600b6",
+              "capability_phase": "preflight",
+              "metric_id": "order_count",
+              "status": "STANDARD_METRIC",
+              "code": "verified_metric_service",
+              "sources": []
+            },
+            {
+              "trace_id": "465adc349386402c96be1939b64262e5",
+              "plan_id": "8c8f52e5560e4feb99ab71cb236e40b4",
+              "task_id": "8c8f52e5560e4feb99ab71cb236e40b4/1",
+              "attempt_id": "81bb67ff656e4a948a23ad7edbd600b6",
+              "capability_phase": "execution_recheck",
+              "metric_id": "order_count",
+              "status": "STANDARD_METRIC",
+              "code": "verified_metric_service",
+              "sources": []
+            }
+          ],
+          "tools": [
+            {
+              "trace_id": "753b5747f3bc41b2ae928d467f09dd4e",
+              "plan_id": "8c8f52e5560e4feb99ab71cb236e40b4",
+              "task_id": "8c8f52e5560e4feb99ab71cb236e40b4/1",
+              "attempt_id": "81bb67ff656e4a948a23ad7edbd600b6",
+              "capability_trace_id": "465adc349386402c96be1939b64262e5",
+              "capability_phase": "execution_recheck",
+              "metric_id": "order_count",
+              "kind": "metric",
+              "status": "ok",
+              "sources": [
+                "dws.order_day"
+              ],
+              "elapsed_ms": 19
+            },
+            {
+              "trace_id": "b8344f60e18f432cbb4034f4db1e92f1",
+              "plan_id": "8c8f52e5560e4feb99ab71cb236e40b4",
+              "task_id": "8c8f52e5560e4feb99ab71cb236e40b4/2",
+              "attempt_id": "81bb67ff656e4a948a23ad7edbd600b6",
+              "agent": "knowledge",
+              "tool": "rag_retrieval",
+              "kind": "pdf",
+              "status": "ok",
+              "sources": [
+                "reviewed-pdf:integrated-9fd7e20b6be02c47"
+              ],
+              "elapsed_ms": 1814,
+              "scope": "reviewed_pdf",
+              "includes_reviewed_pdf": true
+            }
+          ]
+        }
+      },
+      "partial": {
+        "query_id": "0ddadaa8-8e69-4c59-866c-74347dc8b989",
+        "rows": [
+          {
+            "bucket": "all",
+            "month": null,
+            "metrics": {
+              "order_count": {
+                "value": "2312"
+              }
+            }
+          }
+        ],
+        "error": {
+          "code": "pdf_evidence_insufficient",
+          "message": "部分任务未能完成。"
+        },
+        "trace": {
+          "trace_id": "3ee0e351ebd54de0bbbc481dad4f78d6",
+          "plan_id": "6f4a692d5b7248929edb1d8224257abe",
+          "attempt_id": "920b23c603bc42cf94ef10f13b841623",
+          "tasks": [
+            {
+              "trace_id": "4db8f9faee5346d986c777471dad7164",
+              "plan_id": "6f4a692d5b7248929edb1d8224257abe",
+              "task_id": "6f4a692d5b7248929edb1d8224257abe/1",
+              "attempt_id": "920b23c603bc42cf94ef10f13b841623",
+              "metric_id": "order_count",
+              "agent": "data_analysis",
+              "tool": "metric_query_service",
+              "kind": "metric",
+              "status": "ok",
+              "sources": [
+                "dws.order_day"
+              ],
+              "depends_on": [],
+              "schedule_position": 1,
+              "elapsed_ms": 21,
+              "agent_elapsed_ms": 20.62
+            },
+            {
+              "trace_id": "f4caca68be044c7caaebe3ddd79a6c94",
+              "plan_id": "6f4a692d5b7248929edb1d8224257abe",
+              "task_id": "6f4a692d5b7248929edb1d8224257abe/2",
+              "attempt_id": "920b23c603bc42cf94ef10f13b841623",
+              "agent": "knowledge",
+              "tool": "rag_retrieval",
+              "kind": "pdf",
+              "status": "unavailable",
+              "code": "pdf_evidence_insufficient",
+              "sources": [],
+              "depends_on": [],
+              "schedule_position": 2,
+              "elapsed_ms": 1770,
+              "agent_elapsed_ms": 1769.701
+            },
+            {
+              "plan_id": "6f4a692d5b7248929edb1d8224257abe",
+              "task_id": "6f4a692d5b7248929edb1d8224257abe/3",
+              "attempt_id": "920b23c603bc42cf94ef10f13b841623",
+              "kind": "summary",
+              "status": "skipped",
+              "code": "dependency_failed",
+              "sources": [],
+              "depends_on": [
+                "6f4a692d5b7248929edb1d8224257abe/1",
+                "6f4a692d5b7248929edb1d8224257abe/2"
+              ],
+              "failed_dependencies": [
+                "6f4a692d5b7248929edb1d8224257abe/2"
+              ],
+              "schedule_position": 3,
+              "elapsed_ms": 0
+            }
+          ],
+          "capability": [
+            {
+              "trace_id": "97a806e336a54ec180d85f0721d2e9bc",
+              "plan_id": "6f4a692d5b7248929edb1d8224257abe",
+              "task_id": "6f4a692d5b7248929edb1d8224257abe/1",
+              "attempt_id": "920b23c603bc42cf94ef10f13b841623",
+              "capability_phase": "preflight",
+              "metric_id": "order_count",
+              "status": "STANDARD_METRIC",
+              "code": "verified_metric_service",
+              "sources": []
+            },
+            {
+              "trace_id": "c01f0009eee047c1935b4e3de49cbe72",
+              "plan_id": "6f4a692d5b7248929edb1d8224257abe",
+              "task_id": "6f4a692d5b7248929edb1d8224257abe/1",
+              "attempt_id": "920b23c603bc42cf94ef10f13b841623",
+              "capability_phase": "execution_recheck",
+              "metric_id": "order_count",
+              "status": "STANDARD_METRIC",
+              "code": "verified_metric_service",
+              "sources": []
+            }
+          ],
+          "tools": [
+            {
+              "trace_id": "4db8f9faee5346d986c777471dad7164",
+              "plan_id": "6f4a692d5b7248929edb1d8224257abe",
+              "task_id": "6f4a692d5b7248929edb1d8224257abe/1",
+              "attempt_id": "920b23c603bc42cf94ef10f13b841623",
+              "capability_trace_id": "c01f0009eee047c1935b4e3de49cbe72",
+              "capability_phase": "execution_recheck",
+              "metric_id": "order_count",
+              "kind": "metric",
+              "status": "ok",
+              "sources": [
+                "dws.order_day"
+              ],
+              "elapsed_ms": 21
+            },
+            {
+              "trace_id": "f4caca68be044c7caaebe3ddd79a6c94",
+              "plan_id": "6f4a692d5b7248929edb1d8224257abe",
+              "task_id": "6f4a692d5b7248929edb1d8224257abe/2",
+              "attempt_id": "920b23c603bc42cf94ef10f13b841623",
+              "agent": "knowledge",
+              "tool": "rag_retrieval",
+              "kind": "pdf",
+              "status": "unavailable",
+              "code": "pdf_evidence_insufficient",
+              "sources": [],
+              "elapsed_ms": 1770,
+              "scope": "reviewed_pdf",
+              "includes_reviewed_pdf": true
+            }
+          ]
+        }
+      }
+    },
+    "browser_authorization_sent": false,
+    "simulated": [
+      "interrupted_network",
+      "partial_truncated_precision_html",
+      "history_skipped_recovery_missing",
+      "failed",
+      "gateway_timeout"
+    ]
+  },
+  "embedding_batches": [
+    {
+      "task_type": "RETRIEVAL_DOCUMENT",
+      "elapsed_ms": 1794,
+      "token_counts": [
+        null,
+        null
+      ]
+    },
+    {
+      "task_type": "RETRIEVAL_QUERY",
+      "elapsed_ms": 2460,
+      "token_counts": [
+        null
+      ]
+    },
+    {
+      "task_type": "RETRIEVAL_QUERY",
+      "elapsed_ms": 1777,
+      "token_counts": [
+        null
+      ]
+    },
+    {
+      "task_type": "RETRIEVAL_QUERY",
+      "elapsed_ms": 1729,
+      "token_counts": [
+        null
+      ]
+    }
+  ],
+  "api_requests": [
+    {
+      "query_id": "b092db63-254d-4654-977d-53ed9aa7acd6",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 214,
+            "output": 29,
+            "total": 243
+          },
+          "status": "received",
+          "elapsed_ms": 2474
+        }
+      ]
+    },
+    {
+      "query_id": "2b24da9d-6367-4557-adc4-edfe6638a37b",
+      "replayed": false,
+      "model_attempts": []
+    },
+    {
+      "query_id": "ce44e374-c9d4-41fa-aa51-ea9eaa825dce",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 216,
+            "output": 54,
+            "total": 270
+          },
+          "status": "received",
+          "elapsed_ms": 2347
+        }
+      ]
+    },
+    {
+      "query_id": "73b50ae3-090f-45b2-b140-29ffa55cb657",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 212,
+            "output": 35,
+            "total": 247
+          },
+          "status": "received",
+          "elapsed_ms": 1985
+        }
+      ]
+    },
+    {
+      "query_id": "0e3dee6b-d2e3-4e85-93e6-f3c529143e8b",
+      "replayed": false,
+      "model_attempts": []
+    },
+    {
+      "query_id": "7ae26805-1ffa-41b1-afd6-21c3ab4c54b6",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 793,
+            "output": 118,
+            "total": 911
+          },
+          "status": "received",
+          "elapsed_ms": 3434
+        }
+      ]
+    },
+    {
+      "query_id": "4683f631-21ae-4f3f-a204-b04f8ea55cea",
+      "replayed": false,
+      "model_attempts": []
+    },
+    {
+      "query_id": "71fc8d8d-da44-4edb-9d69-1d7ccfaa3ef8",
+      "replayed": false,
+      "model_attempts": []
+    },
+    {
+      "query_id": "769f61f0-2cf6-4cf4-9e3d-12c9808c0c47",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 220,
+            "output": 61,
+            "total": 281
+          },
+          "status": "received",
+          "elapsed_ms": 2296
+        }
+      ]
+    },
+    {
+      "query_id": "769f61f0-2cf6-4cf4-9e3d-12c9808c0c47",
+      "replayed": true,
+      "model_attempts": []
+    },
+    {
+      "query_id": "7c5cd41b-b6e2-4a48-b67f-70f991bb118d",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "knowledge",
+          "attempt": 1,
+          "prompt_version": "knowledge-extractive-v1",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 323,
+            "output": 104,
+            "total": 427
+          },
+          "status": "received",
+          "elapsed_ms": 2035
+        }
+      ]
+    },
+    {
+      "query_id": "b135c6d3-7396-496f-adb7-16a7c10c4516",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 834,
+            "output": 126,
+            "total": 960
+          },
+          "status": "received",
+          "elapsed_ms": 3227
+        },
+        {
+          "stage": "knowledge",
+          "attempt": 1,
+          "prompt_version": "knowledge-extractive-v1",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 305,
+            "output": 104,
+            "total": 409
+          },
+          "status": "received",
+          "elapsed_ms": 2592
+        }
+      ]
+    },
+    {
+      "query_id": "0ddadaa8-8e69-4c59-866c-74347dc8b989",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 834,
+            "output": 126,
+            "total": 960
+          },
+          "status": "received",
+          "elapsed_ms": 1953
+        }
+      ]
+    }
+  ],
+  "fixture_deactivated": true
+}

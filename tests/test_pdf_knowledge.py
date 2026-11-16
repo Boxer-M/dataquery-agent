@@ -94,13 +94,64 @@ class PdfKnowledgePostgresTests(unittest.TestCase):
             self.assertFalse(exact["result"]["retrieval_trace"]["query_embedding_called"])
             self.assertEqual(exact["result"]["retrieval_trace"]["strategy"], "catalog_exact")
 
-            joint = manager.process_message(
-                owner, cid, "2025年1月订单量是多少，并引用PDF扫描页的 Order count 原文。", uuid4(), today=TODAY,
-            )
-            self.assertEqual(joint["code"], "sql_pdf_combination_unsupported")
-            self.assertEqual(joint["trace"]["tools"], [])
-            self.assertEqual(joint["trace"]["model_attempts"], [])
-            self.assertEqual(manager.get_query(owner, joint["query_id"])["error_code"], joint["code"])
+            joint_question = "2025年1月订单量是多少，并引用PDF扫描页的 Order count 原文。"
+
+            def plan_then_quote(prompt):
+                if prompt.startswith("[business-plan-v1]"):
+                    from test_business_planner_v2 import PROPOSE
+                    return json.dumps(dict(PROPOSE, metric_ids=["order_count"], pdf_question="PDF扫描页的 Order count 原文。"))
+                return proposal("Order count: 48")(prompt)
+
+            def joint(user=owner, conversation=cid):
+                manager.generate = plan_then_quote
+                return manager.process_message(user, conversation, joint_question, uuid4(), today=TODAY)
+
+            for question_text, code in (
+                ("查询2025年1月订单量，并参考已审核的PDF。", "missing_pdf_scope"),
+                ("查询2025年1月订单量，并引用PDF中的正式指标定义。", "pdf_formal_definition"),
+            ):
+                clarification = manager.process_message(owner, cid, question_text, uuid4(), today=TODAY)
+                self.assertEqual(clarification["status"], "clarify")
+                self.assertEqual(clarification["code"], code)
+                self.assertFalse(clarification["trace"]["tools"])
+
+            completed = joint()
+            self.assertEqual(completed["status"], "ok", completed["code"])
+            live = public_response(completed)
+            saved = public_response(manager.get_query(owner, completed["query_id"]), history=True)
+            self.assertEqual(live.trace, saved.trace)
+            self.assertEqual(live.citations, saved.citations)
+            self.assertEqual(live.rows[0]["metrics"]["order_count"]["value"], "2312")
+            self.assertEqual([task.status for task in live.trace.tasks], ["ok", "ok", "ok"])
+            self.assertEqual(live.trace.tasks[2].depends_on, [task.task_id for task in live.trace.tasks[:2]])
+
+            from unittest.mock import patch
+            partial = joint(other, other_cid)
+            self.assertEqual(partial["status"], "partial")
+            self.assertEqual(partial["code"], "pdf_evidence_insufficient")
+            self.assertFalse(public_response(partial).citations)
+            self.assertEqual(partial["result"]["subtasks"][-1]["status"], "skipped")
+            with patch.object(manager.agent.service, "query", return_value={
+                "status": "error", "error": {"code": "query_timeout"},
+            }):
+                pdf_only = public_response(joint())
+                self.assertEqual(pdf_only.status, "partial")
+                self.assertEqual(pdf_only.error.code, "query_timeout")
+                self.assertFalse(pdf_only.rows)
+                self.assertEqual(pdf_only.citations[0].page_number, 2)
+                self.assertEqual(pdf_only.trace.tasks[2].code, "dependency_failed")
+                failed = public_response(joint(other, other_cid))
+                self.assertEqual(failed.status, "failed")
+                self.assertFalse(failed.rows or failed.citations)
+
+            with patch.object(manager.agent.knowledge.retriever.store, "current_pdf_citations",
+                              side_effect=[completed["result"]["knowledge_result"]["citations"], []]) as check:
+                invalidated = public_response(joint())
+            self.assertEqual(check.call_count, 2)
+            self.assertEqual(invalidated.status, "partial")
+            self.assertEqual(invalidated.error.code, "pdf_evidence_invalidated")
+            self.assertFalse(invalidated.citations)
+            self.assertNotIn("Order count: 48", invalidated.answer)
 
             switched = {}
             def supersede():
