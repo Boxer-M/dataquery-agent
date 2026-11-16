@@ -1,0 +1,163 @@
+{
+  "status": "completed",
+  "conversation_id": "e5649750-e695-4d82-93c3-398ca72c9e5a",
+  "message_id": "cff9b096-0759-4084-98c4-550c00ce281e",
+  "query_id": "37223437-9109-4dcd-9289-ca2786970753",
+  "answer": "2025-01-01 至 2026-01-01（不含结束日），订单量：all=2312、all=2049、all=2225、all=2251、all=2306、all=2275、all=2350、all=2236。时间窗内创建的订单记录数，含取消订单。",
+  "rows": [
+    {
+      "end_date": "2025-02-01",
+      "bucket": "all",
+      "start_date": "2025-01-01",
+      "month": "2025-01",
+      "value": "2312"
+    },
+    {
+      "end_date": "2025-03-01",
+      "bucket": "all",
+      "start_date": "2025-02-01",
+      "month": "2025-02",
+      "value": "2049"
+    },
+    {
+      "end_date": "2025-04-01",
+      "bucket": "all",
+      "start_date": "2025-03-01",
+      "month": "2025-03",
+      "value": "2225"
+    },
+    {
+      "end_date": "2025-05-01",
+      "bucket": "all",
+      "start_date": "2025-04-01",
+      "month": "2025-04",
+      "value": "2251"
+    },
+    {
+      "end_date": "2025-06-01",
+      "bucket": "all",
+      "start_date": "2025-05-01",
+      "month": "2025-05",
+      "value": "2306"
+    },
+    {
+      "end_date": "2025-07-01",
+      "bucket": "all",
+      "start_date": "2025-06-01",
+      "month": "2025-06",
+      "value": "2275"
+    },
+    {
+      "end_date": "2025-08-01",
+      "bucket": "all",
+      "start_date": "2025-07-01",
+      "month": "2025-07",
+      "value": "2350"
+    },
+    {
+      "end_date": "2025-09-01",
+      "bucket": "all",
+      "start_date": "2025-08-01",
+      "month": "2025-08",
+      "value": "2236"
+    },
+    {
+      "end_date": "2025-10-01",
+      "bucket": "all",
+      "start_date": "2025-09-01",
+      "month": "2025-09",
+      "value": "2262"
+    },
+    {
+      "end_date": "2025-11-01",
+      "bucket": "all",
+      "start_date": "2025-10-01",
+      "month": "2025-10",
+      "value": "2318"
+    },
+    {
+      "end_date": "2025-12-01",
+      "bucket": "all",
+      "start_date": "2025-11-01",
+      "month": "2025-11",
+      "value": "3437"
+    },
+    {
+      "end_date": "2026-01-01",
+      "bucket": "all",
+      "start_date": "2025-12-01",
+      "month": "2025-12",
+      "value": "4128"
+    }
+  ],
+  "rows_truncated": false,
+  "row_count": 12,
+  "citations": [],
+  "definitions": [
+    {
+      "metric_id": "order_count",
+      "definition": "时间窗内创建的订单记录数，含取消订单。",
+      "definition_version": "1.0.0"
+    }
+  ],
+  "clarification_choices": [],
+  "trace": {
+    "trace_id": "975038f8731c4adb89748e49e90c2552",
+    "tasks": [],
+    "capability": [],
+    "tools": [
+      {
+        "trace_id": "246a96304abd44a88127406a2a18c7e3",
+        "capability_trace_id": "9cfe547cf6a0495e87e0914fa76c0a76",
+        "metric_id": "order_count",
+        "kind": "metric",
+        "status": "ok",
+        "sources": [
+          "dws.order_day"
+        ],
+        "elapsed_ms": 17
+      }
+    ]
+  },
+  "replayed": false,
+  "visualization": {
+    "version": "1",
+    "metric": {
+      "metric_id": "order_count",
+      "name": "订单量",
+      "unit": "笔",
+      "unit_type": "count",
+      "sources": [
+        "dws.order_day"
+      ]
+    },
+    "dimension": {
+      "field": "month",
+      "type": "time",
+      "semantic": "month",
+      "order": "calendar_asc"
+    },
+    "window": {
+      "start_date": "2025-01-01",
+      "end_date": "2026-01-01",
+      "end_exclusive": true
+    },
+    "value_path": [
+      "value"
+    ],
+    "row_order": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  }
+}

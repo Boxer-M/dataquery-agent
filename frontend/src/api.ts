@@ -34,6 +34,16 @@ export type PublicTrace = {
   tasks?: TraceStep[]; capability?: TraceStep[]; tools?: TraceStep[]
 }
 
+export type Visualization = {
+  version: '1'
+  metric: { metric_id: string; name: string; unit: string; unit_type: 'count'; sources: string[] }
+  dimension: { field: 'month' | 'bucket'; type: 'time' | 'category'; semantic: 'month' | 'channel';
+    order: 'calendar_asc' | 'category_code_asc' }
+  window: { start_date: string; end_date: string; end_exclusive: true }
+  value_path: string[]
+  row_order: number[]
+}
+
 export type ChatResponse = {
   status: Status
   conversation_id?: string
@@ -49,6 +59,8 @@ export type ChatResponse = {
   clarification_choices: MetricDefinition[]
   trace?: PublicTrace
   replayed: boolean
+  visualization?: Visualization
+  visualization_unavailable_reason?: string
 }
 
 export class RequestError extends Error {

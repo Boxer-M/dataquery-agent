@@ -70,6 +70,64 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
             self.assertNotIn("credential", escaped.text)
 
 
+    async def test_visualization_metadata_and_fallback(self):
+        manager = Mock()
+        app = create_app(token=TOKEN, manager_factory=lambda: (manager, "server-owner"))
+        body = {"conversation_id": str(uuid4()), "message_id": str(uuid4()), "question": "订单量"}
+        months = [
+            {"bucket": "all", "month": "2025-02", "start_date": "2025-02-01",
+             "end_date": "2025-03-01", "value": "9007199254740993"},
+            {"bucket": "all", "month": "2025-01", "start_date": "2025-01-01",
+             "end_date": "2025-02-01", "value": "2312"},
+        ]
+        request = {"metric_id": "order_count", "group_by": ["month"], "start_date": "2025-01-01",
+                   "end_date": "2025-03-01"}
+        metric = request | {"status": "ok", "sources": ["dws.order_day"], "results": months}
+        async with client(app) as http:
+            async def ask(result):
+                manager.process_message.return_value = {"status": "ok", "result": result}
+                response = await http.post("/api/chat", headers=AUTH, json=body)
+                self.assertEqual(response.status_code, 200, response.text)
+                return response.json()
+
+            result = await ask({"query_result": metric})
+            self.assertEqual(result["rows"], months)
+            self.assertEqual(result["visualization"], {
+                "version": "1",
+                "metric": {"metric_id": "order_count", "name": "订单量", "unit": "笔",
+                           "unit_type": "count", "sources": ["dws.order_day"]},
+                "dimension": {"field": "month", "type": "time", "semantic": "month", "order": "calendar_asc"},
+                "window": {"start_date": "2025-01-01", "end_date": "2025-03-01", "end_exclusive": True},
+                "value_path": ["value"], "row_order": [1, 0],
+            })
+            for changes, reason in [
+                ({"group_by": []}, "unsupported_dimension"),
+                ({"group_by": ["month", "channel"]}, "unsupported_dimension"),
+                ({"metric_id": "item_net_sales_amount"}, "unit_not_approved"),
+                ({"sources": ["dws.private"]}, "unverified_metadata"),
+                ({"results": months * 26}, "rows_truncated"),
+                ({"results": [months[0], months[0]]}, "invalid_dimension_rows"),
+                ({"results": [months[0], months[1] | {"value": None}]}, "invalid_value"),
+                ({"results": []}, "insufficient_rows"),
+            ]:
+                with self.subTest(reason=reason):
+                    result = await ask({"query_result": metric | changes})
+                    self.assertNotIn("visualization", result)
+                    self.assertEqual(result["visualization_unavailable_reason"], reason)
+            grouped = request | {"group_by": ["channel"]}
+            result = await ask({
+                "plan": {"metric_ids": ["order_count"]},
+                "tools": [{"request": grouped, "status": "ok", "sources": ["dws.order_day"]}],
+                "results": [{"bucket": bucket, "metrics": {"order_count": {"value": "1"}}}
+                            for bucket in ("web", "mobile")],
+            })
+            self.assertEqual(result["visualization"]["dimension"],
+                             {"field": "bucket", "type": "category", "semantic": "channel",
+                              "order": "category_code_asc"})
+            self.assertEqual(result["visualization"]["value_path"], ["metrics", "order_count", "value"])
+            self.assertEqual(result["visualization"]["row_order"], [1, 0])
+
+
 @unittest.skipUnless(os.getenv("API_POSTGRES_TESTS") == "1", "PostgreSQL opt-in")
 class ApiPostgresTests(unittest.IsolatedAsyncioTestCase):
     async def test_real_queries_replay_trace_and_owner_isolation(self):
@@ -100,6 +158,7 @@ class ApiPostgresTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(hybrid["status"], "completed", hybrid)
             self.assertEqual(hybrid["rows"][0]["metrics"]["order_item_count"]["value"], "5538")
             self.assertEqual(len(hybrid["citations"]), 2)
+            self.assertNotIn("visualization", hybrid)
             self.assertEqual(len(hybrid["trace"]["tasks"]), 4)
             self.assertIn("plan_id", hybrid["trace"])
             self.assertIn("attempt_id", hybrid["trace"])
