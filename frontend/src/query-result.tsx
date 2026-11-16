@@ -1,5 +1,11 @@
+import { lazy, Suspense, useMemo, useState } from 'react'
 import { Alert, Button, Table, Tag } from 'antd'
 import type { Cell, ChatResponse, Citation, Row, Status } from './api'
+import { orderChartData } from './chart-data'
+
+const OrderChart = lazy(() => import('./order-chart').catch(() => ({
+  default: () => <Alert showIcon type="warning" title="图表加载失败，可切换查看表格。" />,
+})))
 
 const statuses: Record<Status, { label: string; color: string }> = {
   completed: { label: '查询完成', color: 'success' },
@@ -44,6 +50,9 @@ function CitationDetails({ citation }: { citation: Citation }) {
 export function QueryResult({ result, busy, onClarify }: {
   result: ChatResponse; busy: boolean; onClarify: (text: string) => void
 }) {
+  const [tableSelected, setTableSelected] = useState(false)
+  const chart = useMemo(() => orderChartData(result), [result])
+  const showChart = chart && !tableSelected
   const state = statuses[result.status]
   const citations = result.citations.filter(item => item.document_id && item.chunk_id)
   const metricNames = new Map(result.definitions.flatMap(item => item.metric_id && item.name
@@ -92,7 +101,14 @@ export function QueryResult({ result, busy, onClarify }: {
       })}
       <small>也可以在输入框中补充完整问题。</small>
     </div>}
-    {scalar ? <div className="metric-card">
+    {chart && <div className="chart-view-switch" aria-label="结果视图">
+      <Button size="small" aria-label="图表" aria-pressed={!tableSelected} onClick={() => setTableSelected(false)}>图表</Button>
+      <Button size="small" aria-label="表格" aria-pressed={tableSelected} onClick={() => setTableSelected(true)}>表格</Button>
+    </div>}
+    {!chart && result.visualization && <small>图表数据未通过格式或精度校验，已保留原始结果。</small>}
+    {showChart ? <Suspense fallback={<p role="status">正在加载图表</p>}>
+      <OrderChart data={chart} />
+    </Suspense> : scalar ? <div className="metric-card">
       <h3>{result.definitions[0].name || metricNames.get(result.definitions[0].metric_id ?? '')
         || result.definitions[0].metric_id || '指标数值'}</h3>
       <strong className="metric-value">{cellText(scalar.value)}</strong>

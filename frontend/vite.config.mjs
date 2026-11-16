@@ -6,6 +6,7 @@ import { localApi } from './server/local-api.mjs'
 export default defineConfig({
   plugins: [react(), localApi(new URL('../.env.api', import.meta.url))],
   envPrefix: 'DATAQUERY_PUBLIC_',
+  optimizeDeps: { include: ['echarts/core', 'echarts/charts', 'echarts/components', 'echarts/renderers'] },
   server: {
     host: '127.0.0.1',
     port: 5173,

@@ -9,11 +9,13 @@ try {
   const page = await browser.newPage({ viewport: { width: 1360, height: 850 } })
   const submitted = []
   const featureModules = new Set()
+  let chartCoreUrl
   const browserErrors = []
   page.on('pageerror', (error) => browserErrors.push(error.message))
   page.on('request', (request) => {
     const path = new URL(request.url()).pathname
-    if (path === '/src/query-result.tsx' || path === '/src/query-history.tsx') featureModules.add(path)
+    if (['/src/query-result.tsx', '/src/query-history.tsx', '/src/order-chart.tsx'].includes(path)) featureModules.add(path)
+    if (path.includes('/echarts_core.js')) chartCoreUrl = request.url()
     if (request.url() === origin + '/api/chat') {
       submitted.push(request.postDataJSON())
       assert.equal(request.headers().authorization, undefined)
@@ -40,6 +42,7 @@ try {
   await page.locator('.metric-card .metric-value').filter({ hasText: /^2312$/ }).waitFor()
   assert.ok(featureModules.has('/src/query-result.tsx'))
   assert.ok(!featureModules.has('/src/query-history.tsx'))
+  assert.ok(!featureModules.has('/src/order-chart.tsx'))
   if (process.env.WORKSPACE_SCREENSHOT) await page.screenshot({ path: process.env.WORKSPACE_SCREENSHOT })
 
   const nextResponse = page.waitForResponse(response => response.url() === origin + '/api/chat', { timeout: 100_000 })
@@ -59,15 +62,62 @@ try {
   assert.equal(grouped.rows_truncated, false)
   const expected = [['mobile', '685'], ['partner', '207'], ['phone', '83'], ['web', '1337']]
   assert.deepEqual(grouped.rows.map(row => [row.bucket, row.value]), expected)
-  const table = page.locator('.message').last().getByRole('table')
-  await table.waitFor()
+  async function verifyChart(message, data, kind, screenshot) {
+    const plot = message.getByRole('img', { name: /订单量.*图/ })
+    await plot.locator('canvas').waitFor()
+    assert.ok(chartCoreUrl)
+    const rendered = await plot.evaluate(async (element, url) => {
+      const { getInstanceByDom } = await import(url)
+      const option = getInstanceByDom(element).getOption()
+      const series = option.series[0]
+      return {
+        kind: series.type,
+        labels: option.xAxis[0].data,
+        values: series.data,
+        tooltip: option.tooltip[0].formatter({ dataIndex: 0 }),
+      }
+    }, chartCoreUrl)
+    assert.equal(rendered.kind, kind)
+    const contract = data.visualization
+    const expectedPoints = contract.row_order.map(i => ({
+      label: data.rows[i][contract.dimension.field],
+      raw: contract.value_path.reduce((value, field) => value[field], data.rows[i]),
+      index: i,
+    }))
+    assert.deepEqual(rendered.labels, expectedPoints.map(point => point.label))
+    assert.deepEqual(rendered.values.map(point => [point.name, point.raw, point.rowIndex]),
+      expectedPoints.map(point => [point.label, point.raw, point.index]))
+    assert.deepEqual(rendered.values.map(point => String(point.value)), expectedPoints.map(point => point.raw))
+    assert.ok(rendered.tooltip.includes(contract.metric.name) && rendered.tooltip.includes(expectedPoints[0].raw))
+    if (screenshot) {
+      await message.locator('.agent-message').evaluate(node => node.scrollIntoView({ block: 'start' }))
+      await page.screenshot({ path: screenshot, animations: 'disabled' })
+    }
+    return expectedPoints.map(({ label, raw }) => [label, raw])
+  }
+
+  const groupedMessage = page.locator('.message').last()
+  assert.deepEqual(await verifyChart(groupedMessage, grouped, 'bar', process.env.WORKSPACE_CHANNEL_SCREENSHOT), expected)
+  const beforeToggle = submitted.length
+  await groupedMessage.getByRole('button', { name: '表格', exact: true }).click()
+  const table = groupedMessage.getByRole('table')
   for (const [bucket, value] of expected) {
     const row = table.getByRole('row').filter({ has: page.getByRole('cell', { name: bucket, exact: true }) })
     await row.getByRole('cell', { name: value, exact: true }).waitFor()
   }
-  if (process.env.WORKSPACE_GROUPED_SCREENSHOT) {
-    await page.screenshot({ path: process.env.WORKSPACE_GROUPED_SCREENSHOT, animations: 'disabled' })
-  }
+  await groupedMessage.getByRole('button', { name: '图表', exact: true }).click()
+  await groupedMessage.locator('canvas').waitFor()
+  assert.equal(submitted.length, beforeToggle)
+
+  const annualResponse = page.waitForResponse(response => response.url() === origin + '/api/chat', { timeout: 100_000 })
+  await submit('2025年订单量是多少？')
+  assert.equal((await (await annualResponse).json()).status, 'completed')
+  const monthlyResponse = page.waitForResponse(response => response.url() === origin + '/api/chat', { timeout: 100_000 })
+  await submit('按月拆分')
+  const monthly = await (await monthlyResponse).json()
+  assert.equal(monthly.status, 'completed')
+  assert.equal(monthly.rows.length, 12)
+  const monthlyPoints = await verifyChart(page.locator('.message').last(), monthly, 'line', process.env.WORKSPACE_MONTH_SCREENSHOT)
 
   const hybridResponse = page.waitForResponse(response => response.url() === origin + '/api/chat', { timeout: 100_000 })
   await submit('查询2025年1月订单量和订单商品明细数，并给出正式定义')
@@ -222,7 +272,8 @@ try {
     browser: 'Chrome', origin, first: { status: first.status, value: first.rows[0].value, query_id: first.query_id },
     followup: { status: second.status, value: second.rows[0].value, query_id: second.query_id },
     hybrid: { query_id: hybrid.query_id, values: ['2312', '5538'], verified_citations: hybrid.citations.length },
-    grouped: { query_id: grouped.query_id, rows: expected, visualization: 'table' },
+    grouped: { query_id: grouped.query_id, rows: expected, visualization: 'bar' },
+    monthly: { query_id: monthly.query_id, rows: monthlyPoints, visualization: 'line' },
     history: { same_trace: true, tasks: history.trace.tasks.length, capability: history.trace.capability.length, tools: history.trace.tools.length, additional_chat_requests: 0 },
     clarification: { status: clarify.status, selection: choice.metric_id, followup_status: selection.status, query_id: selection.query_id },
     retry_same_message_id: true, browser_authorization_sent: false,
