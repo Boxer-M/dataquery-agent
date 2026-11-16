@@ -108,3 +108,10 @@ button { font: inherit; }
 }
 
 .history-chunk-loading { position: fixed; z-index: 10; top: 16px; right: 16px; display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #fff; border: 1px solid #dce7df; border-radius: 8px; }
+
+.chart-view-switch { display: flex; gap: 6px; }
+.chart-view-switch [aria-pressed="true"] { color: #126753; border-color: #126753; background: #edf7f1; }
+.order-chart { margin: 0; padding: 14px 12px 0; background: #f7faf8; border: 1px solid #dce7df; border-radius: 10px; }
+.order-chart figcaption { display: grid; gap: 3px; padding-left: 5px; }
+.order-chart figcaption span { color: #58716b; font-size: 12px; }
+.order-chart-plot { width: 100%; height: 290px; }
