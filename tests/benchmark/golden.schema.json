@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DataQuery benchmark Golden Dataset v1",
+  "type": "object",
+  "required": ["version", "cases"],
+  "properties": {
+    "version": {"const": "benchmark-golden-v1"},
+    "cases": {"type": "array", "items": {"$ref": "#/$defs/case"}}
+  },
+  "$defs": {
+    "group": {"type": "string", "pattern": "^[0-9a-f]{20}$"},
+    "nullableString": {"type": ["string", "null"]},
+    "case": {
+      "type": "object",
+      "required": ["case_id", "source", "question", "task_category", "semantic_group_id", "template_id",
+                   "normalized_text_id", "split", "review_status", "context", "golden", "scoring", "duplicate_text"],
+      "properties": {
+        "case_id": {"type": "string", "minLength": 1},
+        "source": {
+          "type": "object", "required": ["file", "pointer", "original_id"],
+          "properties": {"file": {"type": "string"}, "pointer": {"type": "string"},
+                         "original_id": {"$ref": "#/$defs/nullableString"}}
+        },
+        "question": {"type": "string", "minLength": 1},
+        "task_category": {"enum": ["intent", "planning", "conversation", "sql", "rag", "pdf", "hybrid"]},
+        "semantic_group_id": {"$ref": "#/$defs/group"},
+        "template_id": {"$ref": "#/$defs/group"},
+        "normalized_text_id": {"$ref": "#/$defs/group"},
+        "duplicate_text": {"type": "boolean"},
+        "split": {"enum": ["development", "validation", "holdout"]},
+        "review_status": {"enum": ["legacy_reviewed", "needs_review", "reviewed"]},
+        "context": {"type": "object"},
+        "golden": {
+          "type": "object",
+          "required": ["intent", "entity", "metric_ids", "metric_request", "plan", "tool_path",
+                       "sql", "evidence", "status", "code"],
+          "properties": {
+            "intent": {"$ref": "#/$defs/nullableString"},
+            "entity": {"type": ["object", "null"]},
+            "metric_ids": {"type": ["array", "null"], "items": {"type": "string"}, "uniqueItems": true},
+            "metric_request": {"type": ["object", "null"]},
+            "plan": {"type": ["object", "null"]},
+            "tool_path": {"$ref": "#/$defs/nullableString"},
+            "sql": {
+              "type": ["object", "null"], "required": ["method", "snapshot"],
+              "properties": {"method": {"type": "string"}, "snapshot": {"type": "string"},
+                             "expected_result": {}, "parameters": {"type": "object"}}
+            },
+            "evidence": {
+              "type": ["object", "null"], "required": ["source"],
+              "properties": {"source": {"type": "string"}, "page": {"type": "integer", "minimum": 1},
+                             "heading": {"type": "string"}, "quote": {"type": "string"},
+                             "version": {"type": "string"}, "content_hash": {"type": "string"},
+                             "relevant_chunks": {"type": "array", "items": {"type": "string"}},
+                             "effective_date": {"type": "string"}, "expires_on": {"type": "string"}}
+            },
+            "status": {"$ref": "#/$defs/nullableString"},
+            "code": {"$ref": "#/$defs/nullableString"}
+          }
+        },
+        "scoring": {"type": "object", "required": ["source", "citation_support", "legacy_rule"]}
+      }
+    }
+  }
+}

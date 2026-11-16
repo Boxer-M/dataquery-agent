@@ -1,0 +1,106 @@
+{
+  "question_records": 101,
+  "unique_normalized_texts": 79,
+  "duplicate_text_groups": 15,
+  "cross_file_duplicate_groups": 12,
+  "cross_file_groups": [
+    {
+      "normalized_text_id": "f1cb773c2e835a1d6984",
+      "case_ids": [
+        "agent_e2e_v1:alias",
+        "unified_agent_v1:synonym"
+      ]
+    },
+    {
+      "normalized_text_id": "1a876af1bc4f82c45f50",
+      "case_ids": [
+        "dynamic_sql_v1:top",
+        "query_assets_v1:history_to_publish"
+      ]
+    },
+    {
+      "normalized_text_id": "ba351e67b5efdfdee9e6",
+      "case_ids": [
+        "controlled_detail_v1:sales_order",
+        "unified_agent_v1:order_detail"
+      ]
+    },
+    {
+      "normalized_text_id": "40fa7dc39211892d3d62",
+      "case_ids": [
+        "business_planning_v1:income",
+        "unified_agent_v1:income"
+      ]
+    },
+    {
+      "normalized_text_id": "f15c7e5fbe55ed97aee5",
+      "case_ids": [
+        "agent_e2e_v1:single",
+        "intent_business_v1:catalog_name",
+        "unified_agent_v1:order"
+      ]
+    },
+    {
+      "normalized_text_id": "1699b708d2b9ae738ff9",
+      "case_ids": [
+        "agent_e2e_v1:multi",
+        "business_planning_v1:multi"
+      ]
+    },
+    {
+      "normalized_text_id": "d68c62b7ba07e57924e8",
+      "case_ids": [
+        "business_planning_v1:invalid_json",
+        "intent_business_v1:model_invalid",
+        "intent_business_v1:model_invented",
+        "intent_business_v1:tool_error",
+        "unified_agent_v1:broken_json",
+        "unified_agent_v1:tool_down"
+      ]
+    },
+    {
+      "normalized_text_id": "92f3bc80de4f3319b038",
+      "case_ids": [
+        "agent_e2e_v1:bad_dimension",
+        "business_planning_v1:invalid_group"
+      ]
+    },
+    {
+      "normalized_text_id": "6115fd1cae5a57190880",
+      "case_ids": [
+        "agent_e2e_v1:ambiguous",
+        "unified_agent_v1:ambiguous_sales"
+      ]
+    },
+    {
+      "normalized_text_id": "f11e8baeeb7207bad977",
+      "case_ids": [
+        "agent_e2e_v1:policy",
+        "rag_v1:policy"
+      ]
+    },
+    {
+      "normalized_text_id": "5a398e5a8803c44b186b",
+      "case_ids": [
+        "agent_e2e_v1:policy_gap",
+        "rag_v1:policy_gap"
+      ]
+    },
+    {
+      "normalized_text_id": "0811f5f5d7d9e0f171fd",
+      "case_ids": [
+        "agent_e2e_v1:no_time",
+        "unified_agent_v1:no_time"
+      ]
+    }
+  ],
+  "semantic_groups": 73,
+  "templates": 71,
+  "review_status": {
+    "legacy_reviewed": 94,
+    "needs_review": 7
+  },
+  "split": {
+    "development": 101
+  }
+}
