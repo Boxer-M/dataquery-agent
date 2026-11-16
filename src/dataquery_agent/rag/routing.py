@@ -91,7 +91,14 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
         result = service.exact(agent.service, resolution, today=today, owner=owner, missing=missing)
         trace["tools"].append(result["retrieval_trace"])
         return dict(result, path="knowledge", knowledge_topic="metric_definition", metric_resolution=resolution)
-    result = service.answer(question, runtime, today=today, owner=owner, rules=bool(re.search(r"政策|规则", question)))
+    from ..specialists import KnowledgeAgent
+    kind = "business_rule" if re.search(r"政策|规则", question) else "technical_document"
+    specialist = KnowledgeAgent(
+        lookup_catalog=None,
+        answer_document=lambda subject, rules: service.answer(subject, runtime, today=today, owner=owner, rules=rules),
+    )
+    result = specialist.execute(kind, question, known_metrics=agent.service.metrics, runtime=runtime)
+    trace["agent_calls"] = [result["agent_call"]]
     trace["tools"].append(result["retrieval_trace"])
     return dict(result, path="knowledge", knowledge_topic="document")
 

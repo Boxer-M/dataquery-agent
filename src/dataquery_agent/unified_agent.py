@@ -342,17 +342,27 @@ class UnifiedAgent:
     def run_hybrid_plan(self, plan, resolution, frame, trace, today, owner, *, keep_metric_results=False):
         from .catalog_recovery import checkpoint_partial
         from .rag.routing import catalog_tasks
+        from .specialists import KnowledgeAgent
 
         plan["include_catalog_definitions"] = True
         resolution = dict(resolution, method=resolution.get("method", "validated_plan"),
                           metric_ids=plan["metric_ids"])
 
+        specialist = KnowledgeAgent(
+            lookup_catalog=lambda mid: self.knowledge.exact(self.service, dict(resolution, metric_ids=[mid]),
+                                                            today=today, owner=owner),
+            answer_document=None,
+        )
+
         def catalog(params):
             mid = params["metric_id"]
-            evidence = self.knowledge.exact(self.service, dict(resolution, metric_ids=[mid]),
-                                            today=today, owner=owner)
+            evidence = specialist.execute("formal_definition", mid, known_metrics=self.service.metrics)
+            if "retrieval_trace" not in evidence:
+                return {"status": "unavailable", "error_code": evidence["code"], "sources": [],
+                        "agent_call": evidence["agent_call"]}, evidence
             trace["tools"].append(evidence["retrieval_trace"])
-            return catalog_tasks(evidence, [mid])[0], evidence
+            task = catalog_tasks(evidence, [mid])[0]
+            return dict(task, agent_call=evidence["agent_call"]), evidence
 
         proof, metric_results = {}, []
         result = self.run_business_plan(plan, frame, trace, catalog=catalog, recovery_proof=proof if owner else None,
@@ -360,6 +370,8 @@ class UnifiedAgent:
         if "tools" not in result:
             return result
         subtasks = result["subtasks"]
+        trace["agent_calls"] = [{"task_id": task["task_id"], **task["agent_call"]}
+                                for task in subtasks if "agent_call" in task]
         catalogs = [task for task in subtasks if task["kind"] == "catalog"]
         citations = [task["citation"] for task in catalogs if task["status"] == "ok"]
         evidence_status = ("supported" if len(citations) == len(catalogs)
@@ -408,8 +420,17 @@ class UnifiedAgent:
         if recovery_proof is not None:
             from .catalog_recovery import sql_checkpoint
             before = sql_checkpoint(self.service, plan, list(routes.values()), capture_snapshot=True)
+        specialist = None
+        if catalog is not None:
+            from .specialists import DataAnalysisAgent
+            specialist = DataAnalysisAgent(
+                resolve=lambda request: self.check_route(request, {**frame, "routes": []}),
+                query_metric=lambda request, route: self.query(request, route, trace),
+            )
+
         def query(request):
-            result = self.query(request, routes[self.request_key(request)], trace)
+            route = routes[self.request_key(request)]
+            result = specialist.execute(request, route) if specialist else self.query(request, route, trace)
             if metric_results is not None and result["status"] == "ok":
                 metric_results.append(result)
             return result
