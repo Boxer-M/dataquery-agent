@@ -221,9 +221,13 @@ try {
   assert.equal(submitted.at(-1).question, choice.metric_id)
   assert.ok(await choiceMessage.getByRole('button', { name: choice.name }).isDisabled())
 
-  // Simulate only the transport failure, then let the real API handle the retry.
-  await page.route('**/api/chat', route => route.abort('failed'), { times: 1 })
-  await submit('折扣后商品销售金额')
+  // Let the server commit before dropping the response to exercise real idempotency.
+  let committed
+  await page.route('**/api/chat', async route => {
+    committed = await (await route.fetch()).json()
+    await route.abort('failed')
+  }, { times: 1 })
+  await submit('2025年1月折扣后商品销售金额是多少？')
   const retry = page.getByRole('button', { name: '重试原消息' })
   await retry.waitFor()
   const failedMessage = submitted.at(-1)
@@ -232,6 +236,39 @@ try {
   const retried = await (await retriedResponse).json()
   assert.deepEqual(submitted.at(-1), failedMessage)
   assert.equal(retried.message_id, failedMessage.message_id)
+  assert.equal(committed.status, 'completed')
+  assert.equal(retried.replayed, true)
+  assert.equal(retried.query_id, committed.query_id)
+
+  let pdfEvidence
+  if (process.env.WORKSPACE_PDF_E2E) {
+    const pdfResponse = page.waitForResponse(response => response.url() === origin + '/api/chat', { timeout: 100_000 })
+    await submit('PDF 中带有 Scanned verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。')
+    const pdf = await (await pdfResponse).json()
+    assert.equal(pdf.evidence_status, 'supported')
+    const citation = pdf.citations.find(item => item.source_type === 'reviewed_pdf')
+    assert.equal(citation.page_number, 2)
+    assert.equal(citation.quote, 'Order count: 48')
+    const pdfMessage = page.locator('.message').last()
+    const details = pdfMessage.locator('.result-details').filter({ hasText: citation.title })
+    await details.locator('summary').click()
+    await details.getByText(citation.source_hash, { exact: true }).waitFor()
+    await details.getByText('1–3', { exact: true }).waitFor()
+    const before = submitted.length
+    const pdfHistory = page.waitForResponse(response => response.url() === `${origin}/api/queries/${pdf.query_id}`)
+    await pdfMessage.getByRole('button', { name: '查看查询历史' }).click()
+    const saved = await (await pdfHistory).json()
+    assert.deepEqual(saved.citations, pdf.citations)
+    assert.deepEqual(saved.trace, pdf.trace)
+    assert.equal(submitted.length, before)
+    await page.keyboard.press('Escape')
+    await drawer.waitFor({ state: 'hidden' })
+    if (process.env.WORKSPACE_PDF_SCREENSHOT) {
+      await pdfMessage.locator('.agent-message').evaluate(node => node.scrollIntoView({ block: 'start' }))
+      await page.screenshot({ path: process.env.WORKSPACE_PDF_SCREENSHOT, animations: 'disabled' })
+    }
+    pdfEvidence = { query_id: pdf.query_id, citation, history_matches: true }
+  }
 
   // Controlled HTTP fixtures exercise partial and timeout presentation.
   await page.route('**/api/chat', route => {
@@ -276,7 +313,8 @@ try {
     monthly: { query_id: monthly.query_id, rows: monthlyPoints, visualization: 'line' },
     history: { same_trace: true, tasks: history.trace.tasks.length, capability: history.trace.capability.length, tools: history.trace.tools.length, additional_chat_requests: 0 },
     clarification: { status: clarify.status, selection: choice.metric_id, followup_status: selection.status, query_id: selection.query_id },
-    retry_same_message_id: true, browser_authorization_sent: false,
+    retry_same_message_id: true, idempotent_replay_query_id: retried.query_id,
+    pdf: pdfEvidence, browser_authorization_sent: false,
     simulated: ['interrupted_network', 'partial_truncated_precision_html', 'history_skipped_recovery_missing', 'failed', 'gateway_timeout'],
   }, null, 2))
 } finally {

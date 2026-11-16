@@ -43,6 +43,13 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
         return None
     service = agent.knowledge
     periods = list(TIME.finditer(question))
+    pdf_clause = re.search(r"(?:并|同时)(?:请)?(?:引用|摘录|结合|对照)[^，,。；;]{0,40}pdf", question, re.I)
+    if pdf_clause:
+        numeric = question[:pdf_clause.start()]
+        if TIME.search(numeric) and agent.semantic.metric_pattern.search(numeric) and re.search(r"查询|统计|查看|多少|排行|环比|同比", numeric):
+            frame["task"] = "unsupported"
+            return outcome("unsupported", "sql_pdf_combination_unsupported",
+                           "当前会话可以分别查询指标和已审核 PDF。请将两个问题分开提交。")
     if len(periods) == 1 and GENERIC_RETURNS.fullmatch(TIME.sub("", question).strip()):
         frame["task"] = "hybrid"
         try:

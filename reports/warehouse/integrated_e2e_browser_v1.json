@@ -1,0 +1,302 @@
+{
+  "browser": {
+    "browser": "Chrome",
+    "origin": "http://127.0.0.1:5173",
+    "first": {
+      "status": "completed",
+      "value": "2312",
+      "query_id": "cd5347c9-32c5-4980-8894-18e8b1d8ea97"
+    },
+    "followup": {
+      "status": "completed",
+      "value": "2049",
+      "query_id": "a827a7e3-e3b4-46ec-b165-e08a44f6bca5"
+    },
+    "hybrid": {
+      "query_id": "962c373a-16f2-4ca9-9142-eec7612e2da4",
+      "values": [
+        "2312",
+        "5538"
+      ],
+      "verified_citations": 2
+    },
+    "grouped": {
+      "query_id": "a81c99c9-daa8-4b85-b626-3486925f37b5",
+      "rows": [
+        [
+          "mobile",
+          "685"
+        ],
+        [
+          "partner",
+          "207"
+        ],
+        [
+          "phone",
+          "83"
+        ],
+        [
+          "web",
+          "1337"
+        ]
+      ],
+      "visualization": "bar"
+    },
+    "monthly": {
+      "query_id": "f8e1c8f4-6599-4091-ae66-ca7115437ffc",
+      "rows": [
+        [
+          "2025-01",
+          "2312"
+        ],
+        [
+          "2025-02",
+          "2049"
+        ],
+        [
+          "2025-03",
+          "2225"
+        ],
+        [
+          "2025-04",
+          "2251"
+        ],
+        [
+          "2025-05",
+          "2306"
+        ],
+        [
+          "2025-06",
+          "2275"
+        ],
+        [
+          "2025-07",
+          "2350"
+        ],
+        [
+          "2025-08",
+          "2236"
+        ],
+        [
+          "2025-09",
+          "2262"
+        ],
+        [
+          "2025-10",
+          "2318"
+        ],
+        [
+          "2025-11",
+          "3437"
+        ],
+        [
+          "2025-12",
+          "4128"
+        ]
+      ],
+      "visualization": "line"
+    },
+    "history": {
+      "same_trace": true,
+      "tasks": 4,
+      "capability": 4,
+      "tools": 5,
+      "additional_chat_requests": 0
+    },
+    "clarification": {
+      "status": "clarification_required",
+      "selection": "item_net_sales_amount",
+      "followup_status": "completed",
+      "query_id": "61f5f92d-deb0-45c0-9022-6c9eb218449b"
+    },
+    "retry_same_message_id": true,
+    "idempotent_replay_query_id": "6e5eaad9-27b8-4e74-a329-13a4df4b1b14",
+    "pdf": {
+      "query_id": "c65d2f94-9022-4231-9f00-3f7109411c54",
+      "citation": {
+        "document_id": "371ed4e49373e42d925d6df302943cad51ae68f61a6ac55eda802c4f7b897be7",
+        "document_version": "pdf-97d62aca3251403bc05aa11387644dd4840b244ad362183c",
+        "chunk_id": "528b70ce7092b31d1329b40ec1c34d0d74ac1e6c7d77e2eb2a3a566a1afe9d89",
+        "title": "Synthetic PDF verification",
+        "source_uri": "reviewed-pdf:integrated-de9fd55b3a951b8c",
+        "source_location": "page:2;lines:1-3",
+        "source_type": "reviewed_pdf",
+        "quote": "Order count: 48",
+        "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+        "page_number": 2,
+        "line_start": 1,
+        "line_end": 3,
+        "extraction_method": "ocr",
+        "access_scope": "owner"
+      },
+      "history_matches": true
+    },
+    "browser_authorization_sent": false,
+    "simulated": [
+      "interrupted_network",
+      "partial_truncated_precision_html",
+      "history_skipped_recovery_missing",
+      "failed",
+      "gateway_timeout"
+    ]
+  },
+  "embedding_batches": [
+    {
+      "task_type": "RETRIEVAL_DOCUMENT",
+      "elapsed_ms": 2108,
+      "token_counts": [
+        null,
+        null
+      ]
+    },
+    {
+      "task_type": "RETRIEVAL_QUERY",
+      "elapsed_ms": 1605,
+      "token_counts": [
+        null
+      ]
+    }
+  ],
+  "api_requests": [
+    {
+      "query_id": "cd5347c9-32c5-4980-8894-18e8b1d8ea97",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 214,
+            "output": 52,
+            "total": 266
+          },
+          "status": "received",
+          "elapsed_ms": 2568
+        }
+      ]
+    },
+    {
+      "query_id": "a827a7e3-e3b4-46ec-b165-e08a44f6bca5",
+      "replayed": false,
+      "model_attempts": []
+    },
+    {
+      "query_id": "a81c99c9-daa8-4b85-b626-3486925f37b5",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 216,
+            "output": 66,
+            "total": 282
+          },
+          "status": "received",
+          "elapsed_ms": 2278
+        }
+      ]
+    },
+    {
+      "query_id": "1cfcc7b1-b0a8-419c-b6e7-76acbe33f8f0",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 212,
+            "output": 35,
+            "total": 247
+          },
+          "status": "received",
+          "elapsed_ms": 2310
+        }
+      ]
+    },
+    {
+      "query_id": "f8e1c8f4-6599-4091-ae66-ca7115437ffc",
+      "replayed": false,
+      "model_attempts": []
+    },
+    {
+      "query_id": "962c373a-16f2-4ca9-9142-eec7612e2da4",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 793,
+            "output": 118,
+            "total": 911
+          },
+          "status": "received",
+          "elapsed_ms": 2153
+        }
+      ]
+    },
+    {
+      "query_id": "6e9e5463-3586-4620-8890-cd5906b695fb",
+      "replayed": false,
+      "model_attempts": []
+    },
+    {
+      "query_id": "61f5f92d-deb0-45c0-9022-6c9eb218449b",
+      "replayed": false,
+      "model_attempts": []
+    },
+    {
+      "query_id": "6e5eaad9-27b8-4e74-a329-13a4df4b1b14",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 220,
+            "output": 40,
+            "total": 260
+          },
+          "status": "received",
+          "elapsed_ms": 2475
+        }
+      ]
+    },
+    {
+      "query_id": "6e5eaad9-27b8-4e74-a329-13a4df4b1b14",
+      "replayed": true,
+      "model_attempts": []
+    },
+    {
+      "query_id": "c65d2f94-9022-4231-9f00-3f7109411c54",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "knowledge",
+          "attempt": 1,
+          "prompt_version": "knowledge-extractive-v1",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 325,
+            "output": 106,
+            "total": 431
+          },
+          "status": "received",
+          "elapsed_ms": 4659
+        }
+      ]
+    }
+  ],
+  "fixture_deactivated": true
+}
