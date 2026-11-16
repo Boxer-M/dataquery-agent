@@ -1,7 +1,11 @@
 import { readFile } from 'node:fs/promises'
 import { request } from 'node:http'
 
-const origin = 'http://127.0.0.1:5173'
+const origins = new Map([
+  ['127.0.0.1:5173', 'http://127.0.0.1:5173'],
+  ['localhost:5173', 'http://localhost:5173'],
+])
+const queryPath = /^\/api\/queries\/[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i
 const upstream = 'http://127.0.0.1:8000'
 const routes = new Map([
   ['/api/health', 'GET'],
@@ -16,14 +20,16 @@ function error(response, status, code, message) {
 
 export function checkAccess(req) {
   const { headers, socket, url, method } = req
-  if (socket.remoteAddress !== '127.0.0.1' || headers.host !== '127.0.0.1:5173'
+  const origin = origins.get(headers.host)
+  if (socket.remoteAddress !== '127.0.0.1' || !origin
       || (headers.origin && headers.origin !== origin)
       || (headers['sec-fetch-site'] && headers['sec-fetch-site'] !== 'same-origin')
       || headers['x-dataquery-client'] !== 'workspace') {
     return [403, 'proxy_access_denied', '只允许本地工作台发起同源请求。']
   }
-  if (!routes.has(url)) return [404, 'proxy_route_not_found', '此接口未开放。']
-  if (routes.get(url) !== method) return [405, 'proxy_method_not_allowed', '请求方法不受支持。']
+  const allowedMethod = routes.get(url) ?? (queryPath.test(url) ? 'GET' : undefined)
+  if (!allowedMethod) return [404, 'proxy_route_not_found', '此接口未开放。']
+  if (allowedMethod !== method) return [405, 'proxy_method_not_allowed', '请求方法不受支持。']
   if (method === 'POST' && headers.origin !== origin) {
     return [403, 'proxy_origin_required', '写入请求需要工作台的本地 Origin。']
   }
@@ -58,7 +64,7 @@ export function localApi(tokenFile) {
         }
 
         const headers = { Accept: 'application/json' }
-        if (req.method === 'POST') {
+        if (req.url !== '/api/health') {
           let token
           try {
             const config = await readFile(tokenFile, 'utf8')
@@ -68,7 +74,7 @@ export function localApi(tokenFile) {
           }
           if (!token) return error(res, 503, 'proxy_not_configured', '本地代理的访问配置尚未就绪。')
           headers.Authorization = `Bearer ${token}`
-          headers['Content-Type'] = 'application/json'
+          if (req.method === 'POST') headers['Content-Type'] = 'application/json'
         }
 
         const call = request(new URL(req.url, upstream), { method: req.method, headers }, (response) => {

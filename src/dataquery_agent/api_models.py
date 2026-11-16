@@ -65,10 +65,15 @@ class TraceStep(BaseModel):
     status: str | None = None
     code: str | None = None
     sources: list[str] = Field(default_factory=list)
-    depends_on: list[str] = Field(default_factory=list)
+    depends_on: list[str] | None = None
+    failed_dependencies: list[str] | None = None
+    schedule_position: int | None = None
+    elapsed_ms: int | float | None = None
+    agent_elapsed_ms: int | float | None = None
 
 
 class PublicTrace(BaseModel):
+    previous_query_id: UUID | None = None
     trace_id: str | None = None
     plan_id: str | None = None
     attempt_id: str | None = None
@@ -118,13 +123,21 @@ def steps(items):
         details = item.get("agent_call", {})
         request = item.get("request") or item.get("authorization_subject") or {}
         fields = {key: identifier(item.get(key)) if key in identifiers else text(item.get(key), 120)
-                  for key in TraceStep.model_fields if key not in {"sources", "depends_on"}}
+                  for key in TraceStep.model_fields if key not in {"sources", "depends_on", "failed_dependencies", "schedule_position", "elapsed_ms", "agent_elapsed_ms"}}
         fields.update(metric_id=text(item.get("metric_id") or request.get("metric_id"), 120),
                       agent=text(details.get("agent") or item.get("agent"), 120),
+                      kind=text(item.get("kind") or ("metric" if item.get("request", {}).get("metric_id") else None), 120),
                       tool=text(details.get("tool") or item.get("tool") or item.get("strategy"), 120),
                       code=text(item.get("code") or item.get("error_code") or item.get("reason_code"), 120))
         fields["sources"] = [text(source, 150) for source in item.get("sources", [])[:10] if isinstance(source, str)]
-        fields["depends_on"] = [value for dep in item.get("depends_on", [])[:12] if (value := identifier(dep))]
+        for key in ("depends_on", "failed_dependencies"):
+            if key in item:
+                fields[key] = [value for dep in item[key][:12] if (value := identifier(dep))]
+        for key, value in (("schedule_position", item.get("schedule_position")),
+                           ("elapsed_ms", item.get("elapsed_ms")),
+                           ("agent_elapsed_ms", details.get("elapsed_ms"))):
+            if type(value) in (int, float) and 0 <= value < 1e9:
+                fields[key] = value
         output.append(TraceStep(**fields))
     return output
 
@@ -179,7 +192,8 @@ def public_response(data, *, history=False):
         definitions=[projection(MetricDefinition, item) for item in
                      ([primary] if "query_result" in result else tasks)[:12] if item.get("definition")],
         clarification_choices=[projection(MetricDefinition, item) for item in data.get("choices", [])[:8]],
-        trace=PublicTrace(trace_id=identifier(trace.get("trace_id") or data.get("trace_id")),
+        trace=PublicTrace(previous_query_id=(result.get("recovery") or data.get("recovery") or {}).get("previous_query_id"),
+                          trace_id=identifier(trace.get("trace_id") or data.get("trace_id")),
                           plan_id=identifier(result.get("plan_id") or data.get("plan_id")),
                           attempt_id=identifier(result.get("attempt_id") or data.get("attempt_id")),
                           tasks=steps(tasks), capability=steps(capabilities), tools=steps(tools)),

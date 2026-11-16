@@ -76,8 +76,9 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         "source_models": sorted(sources),
         "result_summary": {"row_count": len(rows), "truncated": bool(payload.get("truncated")), "scalar": scalar},
         "latency_ms": elapsed_ms, "error_code": answer.get("code"),
-        "tool_traces": [{**{key: tool[key] for key in (*BINDING_FIELDS, "capability_trace_id", "request", "sources")
+        "tool_traces": [{**{key: tool[key] for key in (*BINDING_FIELDS, "capability_trace_id", "request")
                            if key in tool and "task_id" in tool},
+                         **{key: tool[key] for key in ("strategy", "kind", "tool", "elapsed_ms", "sources") if key in tool},
                          "trace_id": tool.get("trace_id"), "status": tool.get("status"),
                          "code": tool.get("code") or tool.get("error_code")}
                         for tool in trace.get("tools", [])],

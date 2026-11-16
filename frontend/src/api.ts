@@ -21,6 +21,19 @@ export type Citation = Partial<Record<
   'source_uri' | 'source_location' | 'source_type' | 'quote', string | null
 >>
 
+export type TraceStep = {
+  trace_id?: string; plan_id?: string; task_id?: string; attempt_id?: string
+  capability_trace_id?: string; capability_phase?: string; metric_id?: string
+  agent?: string; tool?: string; kind?: string; status?: string; code?: string
+  sources?: string[]; depends_on?: string[]; failed_dependencies?: string[]
+  schedule_position?: number; elapsed_ms?: number; agent_elapsed_ms?: number
+}
+
+export type PublicTrace = {
+  plan_id?: string; attempt_id?: string; trace_id?: string; previous_query_id?: string
+  tasks?: TraceStep[]; capability?: TraceStep[]; tools?: TraceStep[]
+}
+
 export type ChatResponse = {
   status: Status
   conversation_id?: string
@@ -34,7 +47,7 @@ export type ChatResponse = {
   definitions: MetricDefinition[]
   citations: Citation[]
   clarification_choices: MetricDefinition[]
-  trace?: { tasks?: { task_id?: string; metric_id?: string; kind?: string; status?: string; code?: string }[] }
+  trace?: PublicTrace
   replayed: boolean
 }
 
@@ -58,6 +71,9 @@ async function jsonRequest<T>(path: string, method: 'GET' | 'POST', body?: ChatR
     })
     const value = await response.json().catch(() => null)
     if (!response.ok) {
+      if (path.startsWith('/api/queries/') && (response.status === 403 || response.status === 404)) {
+        throw new RequestError('记录不存在或当前身份无权查看。', false)
+      }
       const message = typeof value?.error?.message === 'string' ? value.error.message : `请求失败（HTTP ${response.status}）。`
       throw new RequestError(message, response.status >= 500)
     }
@@ -65,7 +81,8 @@ async function jsonRequest<T>(path: string, method: 'GET' | 'POST', body?: ChatR
     return value as T
   } catch (error) {
     if (error instanceof RequestError) throw error
-    if (controller.signal.aborted) throw new RequestError('请求超时，可重试原消息。', true)
+    if (controller.signal.aborted) throw new RequestError(
+      method === 'GET' ? '读取超时，请重试。' : '请求超时，可重试原消息。', true)
     throw new RequestError('网络连接中断，请确认本地 API 正在运行。', true)
   } finally {
     window.clearTimeout(deadline)
@@ -94,4 +111,19 @@ export async function sendQuestion(body: ChatRequest) {
     throw new RequestError('API 回执不完整或与当前消息不匹配。', true)
   }
   return value
+}
+
+export async function readQuery(queryId: string) {
+  const value = await jsonRequest<ChatResponse>(`/api/queries/${encodeURIComponent(queryId)}`, 'GET')
+  if (!['completed', 'partial', 'clarification_required', 'failed'].includes(value.status)) {
+    throw new RequestError('API 返回了无效的历史状态。', false)
+  }
+  if (value.query_id !== queryId) throw new RequestError('历史记录与请求的查询 ID 不匹配。', false)
+  return {
+    ...value,
+    rows: value.rows ?? [],
+    definitions: value.definitions ?? [],
+    citations: value.citations ?? [],
+    clarification_choices: value.clarification_choices ?? [],
+  }
 }

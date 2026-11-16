@@ -12,14 +12,20 @@ const withHeaders = headers => ({ ...request, headers: { ...request.headers, ...
 test('allows only the same-origin routes and intended methods', () => {
   assert.equal(checkAccess(request), undefined)
   assert.equal(checkAccess({ ...request, method: 'GET', url: '/api/health' }), undefined)
-  assert.equal(checkAccess({ ...request, url: '/api/queries/123' })[0], 404)
+  const url = '/api/queries/2f074dc9-2d98-4824-a765-09fc65ead286'
+  assert.equal(checkAccess({ ...request, method: 'GET', url }), undefined)
+  assert.equal(checkAccess({ ...request, url })[0], 405)
+  for (const path of ['/api/queries/123', url + '?test=1', url + '/extra', '/api/queries/']) {
+    assert.equal(checkAccess({ ...request, method: 'GET', url: path })[0], 404)
+  }
+  assert.equal(checkAccess(withHeaders({ host: 'localhost:5173', origin: 'http://localhost:5173' })), undefined)
   assert.equal(checkAccess({ ...request, url: '/api/chat?url=https://example.invalid' })[0], 404)
   assert.equal(checkAccess({ ...request, method: 'OPTIONS' })[0], 405)
 })
 
 test('blocks forged hosts, origins, cross-site and non-loopback clients', () => {
   for (const headers of [
-    { host: 'example.invalid' }, { origin: 'https://example.invalid' },
+    { host: 'example.invalid' }, { host: 'localhost:5173' }, { origin: 'http://localhost:5173' }, { origin: 'https://example.invalid' },
     { 'sec-fetch-site': 'cross-site' }, { 'x-dataquery-client': undefined }, { origin: undefined },
   ]) {
     assert.equal(checkAccess(withHeaders(headers))[0], 403)
