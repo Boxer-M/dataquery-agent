@@ -46,3 +46,7 @@ LEARNING_MAP.md
 # Local warehouse release pointer; immutable aggregate reports are versioned
 reports/warehouse/current.json
 reports/warehouse/*.json.part
+
+# Frontend local dependencies and build
+frontend/node_modules/
+frontend/dist/
