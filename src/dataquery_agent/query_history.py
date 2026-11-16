@@ -31,7 +31,13 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         scalar = {key: rows[0][key] for key in ("value", "numerator", "denominator") if key in rows[0]}
     if len(rows) == 1 and set(rows[0]) == {"order_count"}:
         scalar = {"order_count": rows[0]["order_count"]}
+    retrieval = {} if knowledge is None else knowledge.get("retrieval_trace", {})
+    resolution = result.get("metric_resolution")
     knowledge_audit = None if knowledge is None else {
+        "execution_path": retrieval.get("strategy") or ("catalog_clarification" if resolution else None),
+        "query_embedding_called": retrieval.get("query_embedding_called", False if resolution else None),
+        "metric_resolution": resolution,
+        "reason": retrieval.get("reason") or answer.get("code"),
         "evidence_status": knowledge["evidence_status"], "citations": knowledge["citations"],
         "retrieval_strategy": knowledge.get("retrieval_trace", {}).get("strategy"),
         "embedding_version": knowledge.get("retrieval_trace", {}).get("embedding_version"),

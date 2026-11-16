@@ -1,0 +1,1111 @@
+{
+  "cases": [
+    {
+      "question": "item_return_rate",
+      "history": {
+        "reason": null,
+        "citations": [
+          {
+            "quote": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。",
+            "title": "商品明细退货率",
+            "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+            "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+            "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+            "source_type": "catalog",
+            "access_scope": "public",
+            "content_hash": "2c622f278c209123de6517ae256b955898a79a9ac30937d243cfa9a241ddb22b",
+            "heading_path": [
+              "商品明细退货率"
+            ],
+            "effective_date": null,
+            "authority_level": 4,
+            "retrieval_score": null,
+            "source_location": "#/metrics[metric_id=item_return_rate]",
+            "document_version": "1.1.1-ads",
+            "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1"
+          }
+        ],
+        "execution_path": "catalog_exact",
+        "metric_results": [],
+        "evidence_status": "supported",
+        "embedding_version": null,
+        "metric_resolution": {
+          "method": "metric_id",
+          "status": "unique",
+          "matches": [
+            {
+              "term": "item_return_rate",
+              "method": "metric_id",
+              "metric_ids": [
+                "item_return_rate"
+              ]
+            }
+          ],
+          "metric_ids": [
+            "item_return_rate"
+          ]
+        },
+        "retrieval_strategy": "catalog_exact",
+        "retrieval_trace_id": "db84f96409b042d49d78a7edc60e544f",
+        "answer_prompt_version": null,
+        "query_embedding_called": false
+      },
+      "trace": {
+        "trace_id": "11c0748da8c14d319f42cf5ce79f5324",
+        "model_attempts": [],
+        "tools": [
+          {
+            "trace_id": "db84f96409b042d49d78a7edc60e544f",
+            "strategy": "catalog_exact",
+            "query_embedding_called": false,
+            "resolution_method": "metric_id",
+            "metric_ids": [
+              "item_return_rate"
+            ],
+            "candidates": [
+              {
+                "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+                "document_version": "1.1.1-ads",
+                "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+                "title": "商品明细退货率",
+                "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+                "source_location": "#/metrics[metric_id=item_return_rate]",
+                "heading_path": [
+                  "商品明细退货率"
+                ],
+                "retrieval_score": null,
+                "authority_level": 4,
+                "source_type": "catalog",
+                "effective_date": null,
+                "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+                "content_hash": "2c622f278c209123de6517ae256b955898a79a9ac30937d243cfa9a241ddb22b",
+                "access_scope": "public",
+                "quote": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。"
+              }
+            ],
+            "elapsed_ms": 6.916
+          }
+        ],
+        "elapsed_ms": 8
+      }
+    },
+    {
+      "question": "商品明细退货率怎么定义？",
+      "history": {
+        "reason": null,
+        "citations": [
+          {
+            "quote": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。",
+            "title": "商品明细退货率",
+            "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+            "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+            "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+            "source_type": "catalog",
+            "access_scope": "public",
+            "content_hash": "2c622f278c209123de6517ae256b955898a79a9ac30937d243cfa9a241ddb22b",
+            "heading_path": [
+              "商品明细退货率"
+            ],
+            "effective_date": null,
+            "authority_level": 4,
+            "retrieval_score": null,
+            "source_location": "#/metrics[metric_id=item_return_rate]",
+            "document_version": "1.1.1-ads",
+            "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1"
+          }
+        ],
+        "execution_path": "catalog_exact",
+        "metric_results": [],
+        "evidence_status": "supported",
+        "embedding_version": null,
+        "metric_resolution": {
+          "method": "formal_name",
+          "status": "unique",
+          "matches": [
+            {
+              "term": "商品明细退货率",
+              "method": "formal_name",
+              "metric_ids": [
+                "item_return_rate"
+              ]
+            }
+          ],
+          "metric_ids": [
+            "item_return_rate"
+          ]
+        },
+        "retrieval_strategy": "catalog_exact",
+        "retrieval_trace_id": "b76fa868d80443ff8173c45400812a0d",
+        "answer_prompt_version": null,
+        "query_embedding_called": false
+      },
+      "trace": {
+        "trace_id": "41d5d04b03b340379b5f23343dc61ea6",
+        "model_attempts": [],
+        "tools": [
+          {
+            "trace_id": "b76fa868d80443ff8173c45400812a0d",
+            "strategy": "catalog_exact",
+            "query_embedding_called": false,
+            "resolution_method": "formal_name",
+            "metric_ids": [
+              "item_return_rate"
+            ],
+            "candidates": [
+              {
+                "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+                "document_version": "1.1.1-ads",
+                "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+                "title": "商品明细退货率",
+                "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+                "source_location": "#/metrics[metric_id=item_return_rate]",
+                "heading_path": [
+                  "商品明细退货率"
+                ],
+                "retrieval_score": null,
+                "authority_level": 4,
+                "source_type": "catalog",
+                "effective_date": null,
+                "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+                "content_hash": "2c622f278c209123de6517ae256b955898a79a9ac30937d243cfa9a241ddb22b",
+                "access_scope": "public",
+                "quote": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。"
+              }
+            ],
+            "elapsed_ms": 7.329
+          }
+        ],
+        "elapsed_ms": 8
+      }
+    },
+    {
+      "question": "商品退款率怎么定义？",
+      "history": {
+        "reason": null,
+        "citations": [
+          {
+            "quote": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。",
+            "title": "商品明细退货率",
+            "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+            "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+            "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+            "source_type": "catalog",
+            "access_scope": "public",
+            "content_hash": "2c622f278c209123de6517ae256b955898a79a9ac30937d243cfa9a241ddb22b",
+            "heading_path": [
+              "商品明细退货率"
+            ],
+            "effective_date": null,
+            "authority_level": 4,
+            "retrieval_score": null,
+            "source_location": "#/metrics[metric_id=item_return_rate]",
+            "document_version": "1.1.1-ads",
+            "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1"
+          }
+        ],
+        "execution_path": "catalog_exact",
+        "metric_results": [],
+        "evidence_status": "supported",
+        "embedding_version": null,
+        "metric_resolution": {
+          "method": "approved_alias",
+          "status": "unique",
+          "matches": [
+            {
+              "term": "商品退款率",
+              "method": "approved_alias",
+              "metric_ids": [
+                "item_return_rate"
+              ]
+            }
+          ],
+          "metric_ids": [
+            "item_return_rate"
+          ]
+        },
+        "retrieval_strategy": "catalog_exact",
+        "retrieval_trace_id": "32524d3c6408418c897fea73b9774aa2",
+        "answer_prompt_version": null,
+        "query_embedding_called": false
+      },
+      "trace": {
+        "trace_id": "de4fd84fc5864233bb3e3ab2fa4433d9",
+        "model_attempts": [],
+        "tools": [
+          {
+            "trace_id": "32524d3c6408418c897fea73b9774aa2",
+            "strategy": "catalog_exact",
+            "query_embedding_called": false,
+            "resolution_method": "approved_alias",
+            "metric_ids": [
+              "item_return_rate"
+            ],
+            "candidates": [
+              {
+                "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+                "document_version": "1.1.1-ads",
+                "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+                "title": "商品明细退货率",
+                "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+                "source_location": "#/metrics[metric_id=item_return_rate]",
+                "heading_path": [
+                  "商品明细退货率"
+                ],
+                "retrieval_score": null,
+                "authority_level": 4,
+                "source_type": "catalog",
+                "effective_date": null,
+                "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+                "content_hash": "2c622f278c209123de6517ae256b955898a79a9ac30937d243cfa9a241ddb22b",
+                "access_scope": "public",
+                "quote": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。"
+              }
+            ],
+            "elapsed_ms": 7.572
+          }
+        ],
+        "elapsed_ms": 8
+      }
+    },
+    {
+      "question": "那订单退款率呢？",
+      "history": {
+        "reason": "formal_definition_not_found",
+        "citations": [],
+        "execution_path": "catalog_exact",
+        "metric_results": [],
+        "evidence_status": "insufficient",
+        "embedding_version": null,
+        "metric_resolution": {
+          "method": "not_found",
+          "status": "not_found",
+          "matches": [],
+          "metric_ids": []
+        },
+        "retrieval_strategy": "catalog_exact",
+        "retrieval_trace_id": "f404392271ea4c6b91ed92c57a5506d0",
+        "answer_prompt_version": null,
+        "query_embedding_called": false
+      },
+      "trace": {
+        "trace_id": "75801d1479314fdb8bda1b03214557e5",
+        "model_attempts": [],
+        "tools": [
+          {
+            "trace_id": "f404392271ea4c6b91ed92c57a5506d0",
+            "strategy": "catalog_exact",
+            "query_embedding_called": false,
+            "resolution_method": "not_found",
+            "metric_ids": [],
+            "candidates": [],
+            "reason": "formal_definition_not_found",
+            "elapsed_ms": 0.01
+          }
+        ],
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "question": "订单退货率怎么定义？",
+      "history": {
+        "reason": "formal_definition_not_found",
+        "citations": [],
+        "execution_path": "catalog_exact",
+        "metric_results": [],
+        "evidence_status": "insufficient",
+        "embedding_version": null,
+        "metric_resolution": {
+          "method": "not_found",
+          "status": "not_found",
+          "matches": [],
+          "metric_ids": []
+        },
+        "retrieval_strategy": "catalog_exact",
+        "retrieval_trace_id": "a5d77723fcba48139e6cfaea2715f9f9",
+        "answer_prompt_version": null,
+        "query_embedding_called": false
+      },
+      "trace": {
+        "trace_id": "376f7a968b0444278f2ceb4571e66303",
+        "model_attempts": [],
+        "tools": [
+          {
+            "trace_id": "a5d77723fcba48139e6cfaea2715f9f9",
+            "strategy": "catalog_exact",
+            "query_embedding_called": false,
+            "resolution_method": "not_found",
+            "metric_ids": [],
+            "candidates": [],
+            "reason": "formal_definition_not_found",
+            "elapsed_ms": 0.006
+          }
+        ],
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "question": "退货率怎么定义？",
+      "history": {
+        "reason": "ambiguous_metric",
+        "citations": [],
+        "execution_path": "catalog_clarification",
+        "metric_results": [],
+        "evidence_status": "insufficient",
+        "embedding_version": null,
+        "metric_resolution": {
+          "method": "ambiguous",
+          "status": "ambiguous",
+          "matches": [
+            {
+              "term": "退货率",
+              "method": "ambiguous",
+              "metric_ids": [
+                "item_return_rate",
+                "unit_return_rate"
+              ]
+            }
+          ],
+          "metric_ids": [
+            "item_return_rate",
+            "unit_return_rate"
+          ]
+        },
+        "retrieval_strategy": null,
+        "retrieval_trace_id": null,
+        "answer_prompt_version": null,
+        "query_embedding_called": false
+      },
+      "trace": {
+        "trace_id": "e3d9248387494723964067cb14396812",
+        "model_attempts": [],
+        "tools": [
+          {
+            "strategy": "catalog_clarification",
+            "reason": "ambiguous_metric",
+            "query_embedding_called": false,
+            "metric_ids": [
+              "item_return_rate",
+              "unit_return_rate"
+            ],
+            "resolution_method": "ambiguous"
+          }
+        ],
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "question": "item_return_rate_v99 怎么定义？",
+      "history": {
+        "reason": "formal_definition_not_found",
+        "citations": [],
+        "execution_path": "catalog_exact",
+        "metric_results": [],
+        "evidence_status": "insufficient",
+        "embedding_version": null,
+        "metric_resolution": {
+          "method": "not_found",
+          "status": "not_found",
+          "matches": [],
+          "metric_ids": []
+        },
+        "retrieval_strategy": "catalog_exact",
+        "retrieval_trace_id": "61e9512cfdf545c0a7facfa22b885886",
+        "answer_prompt_version": null,
+        "query_embedding_called": false
+      },
+      "trace": {
+        "trace_id": "bdb05f3422e34d00892fd9c401eeae4b",
+        "model_attempts": [],
+        "tools": [
+          {
+            "trace_id": "61e9512cfdf545c0a7facfa22b885886",
+            "strategy": "catalog_exact",
+            "query_embedding_called": false,
+            "resolution_method": "not_found",
+            "metric_ids": [],
+            "candidates": [],
+            "reason": "formal_definition_not_found",
+            "elapsed_ms": 0.005
+          }
+        ],
+        "elapsed_ms": 0
+      }
+    }
+  ],
+  "stale_catalog": {
+    "status": "ok",
+    "answer_zh": "商品明细退货率：下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。 校验变更。（来自当前正式目录，知识索引缺失、失效或不可用，暂无文档引用。）",
+    "citations": [],
+    "evidence_status": "insufficient",
+    "uncited_metric_ids": [
+      "item_return_rate"
+    ],
+    "retrieval_trace": {
+      "trace_id": "f3378628851c48549f2aeaee64bc29e6",
+      "strategy": "catalog_exact",
+      "query_embedding_called": false,
+      "resolution_method": "metric_id",
+      "metric_ids": [
+        "item_return_rate"
+      ],
+      "candidates": [],
+      "reason": "catalog_index_missing_or_stale",
+      "elapsed_ms": 6.07
+    }
+  },
+  "hybrid": {
+    "task": "hybrid",
+    "routes": [
+      {
+        "trace_id": "31c7bade7d1d4aa0b1b1ea984d18da2c",
+        "metadata_source": "PostgreSQL pg_catalog",
+        "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+        "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+        "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+        "contract_version": "1.0.0",
+        "metric_version": "1.1.1-ads",
+        "selected_source": "dws.return_day",
+        "candidate_sources": [
+          {
+            "source": "dws.return_day",
+            "reason": "满足口径、键及权限检查。",
+            "selected": true
+          }
+        ],
+        "required_fields": {
+          "dws.return_day": [
+            "channel",
+            "dq_negative_amount_count",
+            "dq_refund_above_item_net_count",
+            "dq_return_before_order_count",
+            "product_id",
+            "return_date",
+            "return_record_amount",
+            "return_record_count"
+          ],
+          "dim.product": [
+            "category_id",
+            "product_id"
+          ]
+        },
+        "dimensions": [],
+        "join_paths": [
+          {
+            "from": "dws.return_day",
+            "to": "dim.product",
+            "from_column": "product_id",
+            "to_column": "product_id",
+            "evidence": "business_contract",
+            "relationship_cardinality": "many_to_one"
+          }
+        ],
+        "risks": [
+          "退货事件不代表退款到账，源记录的时间与金额异常保留。",
+          "品类关联采用当前快照属性。",
+          "逻辑关联来自验收契约，数据库未为所有关联建立物理外键。"
+        ],
+        "status": "STANDARD_METRIC",
+        "metric_id": "return_record_count",
+        "metric_request": {
+          "metric_id": "return_record_count",
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "group_by": []
+        },
+        "metric_definition": "按退货事件时间统计源退货记录。",
+        "time_constraints": {
+          "event_time": "return_record_time",
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "boundary": "[start_date,end_date)",
+          "physical_fields": {
+            "return_record_time": "return_date"
+          }
+        },
+        "grain": [
+          "return_date",
+          "channel",
+          "product_id"
+        ],
+        "reason_code": "verified_metric_service",
+        "reason": "标准模板满足已验证指标口径、时间和维度。"
+      },
+      {
+        "trace_id": "b1c2f092dce94ebcbe340a41e7c0d0e4",
+        "metadata_source": "PostgreSQL pg_catalog",
+        "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+        "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+        "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+        "contract_version": "1.0.0",
+        "metric_version": "1.1.1-ads",
+        "selected_source": "dws.return_day",
+        "candidate_sources": [
+          {
+            "source": "dws.return_day",
+            "reason": "满足口径、键及权限检查。",
+            "selected": true
+          }
+        ],
+        "required_fields": {
+          "dws.return_day": [
+            "channel",
+            "dq_negative_amount_count",
+            "dq_refund_above_item_net_count",
+            "dq_return_before_order_count",
+            "product_id",
+            "return_date",
+            "return_record_amount",
+            "return_record_count"
+          ],
+          "dim.product": [
+            "category_id",
+            "product_id"
+          ]
+        },
+        "dimensions": [],
+        "join_paths": [
+          {
+            "from": "dws.return_day",
+            "to": "dim.product",
+            "from_column": "product_id",
+            "to_column": "product_id",
+            "evidence": "business_contract",
+            "relationship_cardinality": "many_to_one"
+          }
+        ],
+        "risks": [
+          "退货事件不代表退款到账，源记录的时间与金额异常保留。",
+          "品类关联采用当前快照属性。",
+          "逻辑关联来自验收契约，数据库未为所有关联建立物理外键。"
+        ],
+        "status": "STANDARD_METRIC",
+        "metric_id": "return_record_amount",
+        "metric_request": {
+          "metric_id": "return_record_amount",
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "group_by": []
+        },
+        "metric_definition": "按退货事件时间合计源 refund_amount。",
+        "time_constraints": {
+          "event_time": "return_record_time",
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "boundary": "[start_date,end_date)",
+          "physical_fields": {
+            "return_record_time": "return_date"
+          }
+        },
+        "grain": [
+          "return_date",
+          "channel",
+          "product_id"
+        ],
+        "reason_code": "verified_metric_service",
+        "reason": "标准模板满足已验证指标口径、时间和维度。"
+      },
+      {
+        "trace_id": "cf895fa04b2c421798ca4a8445a32800",
+        "metadata_source": "PostgreSQL pg_catalog",
+        "metadata_version": "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad",
+        "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+        "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+        "contract_version": "1.0.0",
+        "metric_version": "1.1.1-ads",
+        "selected_source": "dws.item_return_cohort_day",
+        "candidate_sources": [
+          {
+            "source": "dws.item_return_cohort_day",
+            "reason": "满足口径、键及权限检查。",
+            "selected": true
+          }
+        ],
+        "required_fields": {
+          "dws.item_return_cohort_day": [
+            "anomalous_return_item_count",
+            "as_of",
+            "channel",
+            "cohort_item_count",
+            "order_date",
+            "product_id",
+            "returned_item_count"
+          ],
+          "dim.product": [
+            "category_id",
+            "product_id"
+          ]
+        },
+        "dimensions": [],
+        "join_paths": [
+          {
+            "from": "dws.item_return_cohort_day",
+            "to": "dim.product",
+            "from_column": "product_id",
+            "to_column": "product_id",
+            "evidence": "business_contract",
+            "relationship_cardinality": "many_to_one"
+          }
+        ],
+        "risks": [
+          "包含源退货异常；分子按有退货的不同商品明细计数，固定观察截止。",
+          "品类关联采用当前快照属性。",
+          "逻辑关联来自验收契约，数据库未为所有关联建立物理外键。"
+        ],
+        "status": "STANDARD_METRIC",
+        "metric_id": "item_return_rate",
+        "metric_request": {
+          "metric_id": "item_return_rate",
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "group_by": [],
+          "observation_cutoff": "2026-01-01"
+        },
+        "metric_definition": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。",
+        "time_constraints": {
+          "event_time": "order_time",
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "boundary": "[start_date,end_date)",
+          "observation_cutoff": "2026-01-01",
+          "physical_fields": {
+            "order_time": "order_date",
+            "observation_cutoff": "as_of"
+          }
+        },
+        "grain": [
+          "order_date",
+          "channel",
+          "product_id",
+          "as_of"
+        ],
+        "reason_code": "verified_metric_service",
+        "reason": "标准模板满足已验证指标口径、时间和维度。"
+      }
+    ],
+    "match": null,
+    "event_time_hint": null,
+    "status": "ok",
+    "code": null,
+    "answer_zh": "2025-01-01 至 2025-02-01（不含结束日）数据库结果\n退货记录数 329 · dim.product, dws.return_day\n退货记录金额 12833.47 · dim.product, dws.return_day\n商品明细退货率 0.05669917（314/5538，观察截止 2026-01-01） · dim.product, dws.item_return_cohort_day\n文档依据\n退货记录数：按退货事件时间统计源退货记录。 [1] metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_record_count] · 版本 1.1.1-ads\n退货记录金额：按退货事件时间合计源 refund_amount。 [2] metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_record_amount] · 版本 1.1.1-ads\n商品明细退货率：下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。 [3] metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate] · 版本 1.1.1-ads",
+    "choices": [],
+    "result": {
+      "status": "ok",
+      "answer_zh": "2025-01-01 至 2025-02-01（不含结束日）数据库结果\n退货记录数 329 · dim.product, dws.return_day\n退货记录金额 12833.47 · dim.product, dws.return_day\n商品明细退货率 0.05669917（314/5538，观察截止 2026-01-01） · dim.product, dws.item_return_cohort_day\n文档依据\n退货记录数：按退货事件时间统计源退货记录。 [1] metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_record_count] · 版本 1.1.1-ads\n退货记录金额：按退货事件时间合计源 refund_amount。 [2] metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_record_amount] · 版本 1.1.1-ads\n商品明细退货率：下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。 [3] metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate] · 版本 1.1.1-ads",
+      "metric_results": [
+        {
+          "metric_id": "return_record_count",
+          "trace_id": "b5b3dcdd44b84162b951f44c0c7fc865",
+          "definition": "按退货事件时间统计源退货记录。",
+          "definition_version": "1.0.0",
+          "event_time": "returns.returned_at",
+          "time_semantics": "returns.returned_at",
+          "source_grain": "一行一个 return_id",
+          "group_by": [],
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "observation_cutoff": null,
+          "sources": [
+            "dim.product",
+            "dws.return_day"
+          ],
+          "status": "ok",
+          "results": [
+            {
+              "bucket": "all",
+              "value": "329"
+            }
+          ],
+          "error": null
+        },
+        {
+          "metric_id": "return_record_amount",
+          "trace_id": "45af7edea5284dd79d55f367072b7a4a",
+          "definition": "按退货事件时间合计源 refund_amount。",
+          "definition_version": "1.0.0",
+          "event_time": "returns.returned_at",
+          "time_semantics": "returns.returned_at",
+          "source_grain": "一行一个 return_id",
+          "group_by": [],
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "observation_cutoff": null,
+          "sources": [
+            "dim.product",
+            "dws.return_day"
+          ],
+          "status": "ok",
+          "results": [
+            {
+              "bucket": "all",
+              "value": "12833.47"
+            }
+          ],
+          "error": null
+        },
+        {
+          "metric_id": "item_return_rate",
+          "trace_id": "ce93d0f134fc416ea9a6445044ace4a7",
+          "definition": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。",
+          "definition_version": "1.0.0",
+          "event_time": "按 orders.ordered_at 归属批次；returns.returned_at < as_of 为观察截止",
+          "time_semantics": "按 orders.ordered_at 归属批次；returns.returned_at < as_of 为观察截止",
+          "source_grain": "订单下单批次中的唯一商品明细",
+          "group_by": [],
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "observation_cutoff": "2026-01-01",
+          "sources": [
+            "dim.product",
+            "dws.item_return_cohort_day"
+          ],
+          "status": "ok",
+          "results": [
+            {
+              "bucket": "all",
+              "value": "0.05669917",
+              "numerator": "314",
+              "denominator": "5538"
+            }
+          ],
+          "error": null
+        }
+      ],
+      "knowledge_result": {
+        "status": "ok",
+        "answer_zh": "退货记录数：按退货事件时间统计源退货记录。 [1] metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_record_count] · 版本 1.1.1-ads\n退货记录金额：按退货事件时间合计源 refund_amount。 [2] metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_record_amount] · 版本 1.1.1-ads\n商品明细退货率：下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。 [3] metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate] · 版本 1.1.1-ads",
+        "citations": [
+          {
+            "document_id": "8ce7e256b8f9d0dca0932182f79be062bbd56c5c6ea1032639679cb2b4fcfc56",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "450b475ae62efeb17c662112b04842f957122dee99009e2ee0f0ea87cddbccad",
+            "title": "退货记录数",
+            "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_record_count]",
+            "source_location": "#/metrics[metric_id=return_record_count]",
+            "heading_path": [
+              "退货记录数"
+            ],
+            "retrieval_score": null,
+            "authority_level": 4,
+            "source_type": "catalog",
+            "effective_date": null,
+            "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+            "content_hash": "79e22fce72ff893e4013eabb042eaec55c93a33dc7b0e8997b2cf51229f9406c",
+            "access_scope": "public",
+            "quote": "按退货事件时间统计源退货记录。"
+          },
+          {
+            "document_id": "7a7aadf387d06f6f60921cf470285607d21e57f2380a967735bfaa54d0900d47",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "931ff2e145dca8907bfb4706891efee96cb77a06b071ac1758c860aecad5a9f2",
+            "title": "退货记录金额",
+            "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_record_amount]",
+            "source_location": "#/metrics[metric_id=return_record_amount]",
+            "heading_path": [
+              "退货记录金额"
+            ],
+            "retrieval_score": null,
+            "authority_level": 4,
+            "source_type": "catalog",
+            "effective_date": null,
+            "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+            "content_hash": "517a047fa6222e2d4104405dd2dc03fed1bff2677c9a6e3e91b9899ca5b48053",
+            "access_scope": "public",
+            "quote": "按退货事件时间合计源 refund_amount。"
+          },
+          {
+            "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+            "document_version": "1.1.1-ads",
+            "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+            "title": "商品明细退货率",
+            "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+            "source_location": "#/metrics[metric_id=item_return_rate]",
+            "heading_path": [
+              "商品明细退货率"
+            ],
+            "retrieval_score": null,
+            "authority_level": 4,
+            "source_type": "catalog",
+            "effective_date": null,
+            "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+            "content_hash": "2c622f278c209123de6517ae256b955898a79a9ac30937d243cfa9a241ddb22b",
+            "access_scope": "public",
+            "quote": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。"
+          }
+        ],
+        "evidence_status": "supported",
+        "uncited_metric_ids": [],
+        "retrieval_trace": {
+          "trace_id": "f19c48ccbd1643278ce7f2348572d737",
+          "strategy": "catalog_exact",
+          "query_embedding_called": false,
+          "resolution_method": "approved_hybrid",
+          "metric_ids": [
+            "return_record_count",
+            "return_record_amount",
+            "item_return_rate"
+          ],
+          "candidates": [
+            {
+              "document_id": "8ce7e256b8f9d0dca0932182f79be062bbd56c5c6ea1032639679cb2b4fcfc56",
+              "document_version": "1.1.1-ads",
+              "chunk_id": "450b475ae62efeb17c662112b04842f957122dee99009e2ee0f0ea87cddbccad",
+              "title": "退货记录数",
+              "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_record_count]",
+              "source_location": "#/metrics[metric_id=return_record_count]",
+              "heading_path": [
+                "退货记录数"
+              ],
+              "retrieval_score": null,
+              "authority_level": 4,
+              "source_type": "catalog",
+              "effective_date": null,
+              "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+              "content_hash": "79e22fce72ff893e4013eabb042eaec55c93a33dc7b0e8997b2cf51229f9406c",
+              "access_scope": "public",
+              "quote": "按退货事件时间统计源退货记录。"
+            },
+            {
+              "document_id": "7a7aadf387d06f6f60921cf470285607d21e57f2380a967735bfaa54d0900d47",
+              "document_version": "1.1.1-ads",
+              "chunk_id": "931ff2e145dca8907bfb4706891efee96cb77a06b071ac1758c860aecad5a9f2",
+              "title": "退货记录金额",
+              "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_record_amount]",
+              "source_location": "#/metrics[metric_id=return_record_amount]",
+              "heading_path": [
+                "退货记录金额"
+              ],
+              "retrieval_score": null,
+              "authority_level": 4,
+              "source_type": "catalog",
+              "effective_date": null,
+              "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+              "content_hash": "517a047fa6222e2d4104405dd2dc03fed1bff2677c9a6e3e91b9899ca5b48053",
+              "access_scope": "public",
+              "quote": "按退货事件时间合计源 refund_amount。"
+            },
+            {
+              "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+              "document_version": "1.1.1-ads",
+              "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+              "title": "商品明细退货率",
+              "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+              "source_location": "#/metrics[metric_id=item_return_rate]",
+              "heading_path": [
+                "商品明细退货率"
+              ],
+              "retrieval_score": null,
+              "authority_level": 4,
+              "source_type": "catalog",
+              "effective_date": null,
+              "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+              "content_hash": "2c622f278c209123de6517ae256b955898a79a9ac30937d243cfa9a241ddb22b",
+              "access_scope": "public",
+              "quote": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。"
+            }
+          ],
+          "elapsed_ms": 8.642
+        }
+      },
+      "path": "hybrid",
+      "metric_resolution": {
+        "method": "approved_hybrid",
+        "metric_ids": [
+          "return_record_count",
+          "return_record_amount",
+          "item_return_rate"
+        ]
+      }
+    },
+    "trace": {
+      "trace_id": "40e722b7a65e49208cb1dfb0f046b7f7",
+      "model_attempts": [],
+      "tools": [
+        {
+          "request": {
+            "metric_id": "return_record_count",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": []
+          },
+          "status": "ok",
+          "code": null,
+          "trace_id": "b5b3dcdd44b84162b951f44c0c7fc865",
+          "sources": [
+            "dim.product",
+            "dws.return_day"
+          ],
+          "capability_trace_id": "31c7bade7d1d4aa0b1b1ea984d18da2c",
+          "elapsed_ms": 7
+        },
+        {
+          "request": {
+            "metric_id": "return_record_amount",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": []
+          },
+          "status": "ok",
+          "code": null,
+          "trace_id": "45af7edea5284dd79d55f367072b7a4a",
+          "sources": [
+            "dim.product",
+            "dws.return_day"
+          ],
+          "capability_trace_id": "b1c2f092dce94ebcbe340a41e7c0d0e4",
+          "elapsed_ms": 6
+        },
+        {
+          "request": {
+            "metric_id": "item_return_rate",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "observation_cutoff": "2026-01-01"
+          },
+          "status": "ok",
+          "code": null,
+          "trace_id": "ce93d0f134fc416ea9a6445044ace4a7",
+          "sources": [
+            "dim.product",
+            "dws.item_return_cohort_day"
+          ],
+          "capability_trace_id": "cf895fa04b2c421798ca4a8445a32800",
+          "elapsed_ms": 8
+        },
+        {
+          "trace_id": "f19c48ccbd1643278ce7f2348572d737",
+          "strategy": "catalog_exact",
+          "query_embedding_called": false,
+          "resolution_method": "approved_hybrid",
+          "metric_ids": [
+            "return_record_count",
+            "return_record_amount",
+            "item_return_rate"
+          ],
+          "candidates": [
+            {
+              "document_id": "8ce7e256b8f9d0dca0932182f79be062bbd56c5c6ea1032639679cb2b4fcfc56",
+              "document_version": "1.1.1-ads",
+              "chunk_id": "450b475ae62efeb17c662112b04842f957122dee99009e2ee0f0ea87cddbccad",
+              "title": "退货记录数",
+              "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_record_count]",
+              "source_location": "#/metrics[metric_id=return_record_count]",
+              "heading_path": [
+                "退货记录数"
+              ],
+              "retrieval_score": null,
+              "authority_level": 4,
+              "source_type": "catalog",
+              "effective_date": null,
+              "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+              "content_hash": "79e22fce72ff893e4013eabb042eaec55c93a33dc7b0e8997b2cf51229f9406c",
+              "access_scope": "public",
+              "quote": "按退货事件时间统计源退货记录。"
+            },
+            {
+              "document_id": "7a7aadf387d06f6f60921cf470285607d21e57f2380a967735bfaa54d0900d47",
+              "document_version": "1.1.1-ads",
+              "chunk_id": "931ff2e145dca8907bfb4706891efee96cb77a06b071ac1758c860aecad5a9f2",
+              "title": "退货记录金额",
+              "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_record_amount]",
+              "source_location": "#/metrics[metric_id=return_record_amount]",
+              "heading_path": [
+                "退货记录金额"
+              ],
+              "retrieval_score": null,
+              "authority_level": 4,
+              "source_type": "catalog",
+              "effective_date": null,
+              "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+              "content_hash": "517a047fa6222e2d4104405dd2dc03fed1bff2677c9a6e3e91b9899ca5b48053",
+              "access_scope": "public",
+              "quote": "按退货事件时间合计源 refund_amount。"
+            },
+            {
+              "document_id": "3991c9b3a240a6a612339450bc7930b12f292d5fc3f1f9e6f74bafa9e3d66765",
+              "document_version": "1.1.1-ads",
+              "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+              "title": "商品明细退货率",
+              "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+              "source_location": "#/metrics[metric_id=item_return_rate]",
+              "heading_path": [
+                "商品明细退货率"
+              ],
+              "retrieval_score": null,
+              "authority_level": 4,
+              "source_type": "catalog",
+              "effective_date": null,
+              "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+              "content_hash": "2c622f278c209123de6517ae256b955898a79a9ac30937d243cfa9a241ddb22b",
+              "access_scope": "public",
+              "quote": "下单批次内，观察截止前存在退货记录的不同明细数 / 该批次全部明细数。"
+            }
+          ],
+          "elapsed_ms": 8.642
+        }
+      ],
+      "elapsed_ms": 30
+    },
+    "conversation_id": "a9ea8f40-6393-49e9-8296-277cbb6097d0",
+    "message_id": "171f99cf-fc38-44a1-9363-040a0c3ad982",
+    "query_id": "32b15ca5-d460-4aa7-9c7d-8c2f600cbed0",
+    "context_operation": "new",
+    "state_version": 8,
+    "replayed": false
+  },
+  "hybrid_ods_truth": {
+    "return_record_count": {
+      "expected": {
+        "bucket": "all",
+        "value": 329
+      },
+      "actual": {
+        "bucket": "all",
+        "value": "329"
+      },
+      "equal": true
+    },
+    "return_record_amount": {
+      "expected": {
+        "bucket": "all",
+        "value": "12833.47"
+      },
+      "actual": {
+        "bucket": "all",
+        "value": "12833.47"
+      },
+      "equal": true
+    },
+    "item_return_rate": {
+      "expected": {
+        "bucket": "all",
+        "value": "0.05669917",
+        "numerator": 314,
+        "denominator": 5538
+      },
+      "actual": {
+        "bucket": "all",
+        "value": "0.05669917",
+        "numerator": "314",
+        "denominator": "5538"
+      },
+      "equal": true
+    }
+  },
+  "embedding_calls": 0,
+  "generation_calls": 0,
+  "baseline": {
+    "report": "reports/warehouse/repository_embeddings_v1.json",
+    "topic_filtered_cases_ms": [
+      4652,
+      4586
+    ],
+    "query_embedding_calls_per_request": 1,
+    "same_question_benchmark": false
+  },
+  "regression": {
+    "passed": 170,
+    "skipped": 1,
+    "seconds": 18.884
+  }
+}

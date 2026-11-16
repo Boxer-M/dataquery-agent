@@ -69,7 +69,7 @@ class Retriever:
                     row[key] = row[key].isoformat()
         rows = [row for row in rows if topics is not None or row["exact_match"] or row["retrieval_score"] >= 0.43]
         trace = {
-            "trace_id": uuid4().hex, "strategy": STRATEGY, "embedding_model": self.embedding.model,
+            "trace_id": uuid4().hex, "strategy": STRATEGY, "query_embedding_called": True, "embedding_model": self.embedding.model,
             "embedding_version": self.embedding.version, "index_incompatible": incompatible,
             "query": query, "scope": "rules" if rules else "catalog" if topics else "all", "elapsed_ms": round((monotonic() - started) * 1000),
             "candidates": [{key: row[key] for key in ("document_id", "document_version", "chunk_id", "retrieval_score",

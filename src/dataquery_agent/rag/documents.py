@@ -163,12 +163,15 @@ def validate_document(doc):
                           [" ".join(chunk.heading_path) + "\n" + chunk.text for chunk in doc.passages]))
 
 
+def catalog_document(metric_id, metric, version):
+    title = metric["name_zh"]
+    keys = ("definition", "formula", "event_time", "grain", "deduplication", "limitations")
+    body = "\n".join([title] + [metric[key] for key in keys if metric.get(key)])
+    position = f"#/metrics[metric_id={metric_id}]"
+    return Document(title, "catalog", CATALOG_PATH + position, fingerprint(metric), version,
+                    (Passage(body, (title,), position),), topic=metric_id)
+
+
 def catalog_documents(service):
     for metric_id, metric in service.metrics.items():
-        title = metric["name_zh"]
-        keys = ("definition", "formula", "event_time", "grain", "deduplication", "limitations")
-        body = "\n".join([title] + [metric[key] for key in keys if metric.get(key)])
-        position = f"#/metrics[metric_id={metric_id}]"
-        yield Document(title, "catalog", CATALOG_PATH + position,
-                       fingerprint(metric), service.catalog["catalog_version"],
-                       (Passage(body, (title,), position),), topic=metric_id)
+        yield catalog_document(metric_id, metric, service.catalog["catalog_version"])

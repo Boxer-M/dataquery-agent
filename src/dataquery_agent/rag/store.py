@@ -145,3 +145,24 @@ class KnowledgeStore:
                 FROM {CHUNKS} c JOIN {DOCS} d USING(document_id)
                 WHERE c.document_id=%s AND d.owner_scope=%s ORDER BY c.last_indexed_at,c.chunk_index""",
                               (document_id, scope)).fetchall()
+
+    def catalog_chunks(self, documents, *, today, owner=None):
+        """Read current catalog evidence through the existing RLS policies."""
+        with self.transaction(owner) as pg:
+            return pg.execute(f"""
+                SELECT d.document_id,d.source_type,d.source_uri,false AS private,
+                       v.document_version,v.title,v.topic,v.authority_level,v.effective_date::text AS effective_date,
+                       v.content_hash AS document_hash,c.chunk_id,c.chunk_text,c.heading_path,c.source_location,
+                       c.content_hash,c.embedding_version,NULL AS retrieval_score,'active' AS evidence_date_status
+                FROM {CHUNKS} c JOIN {DOCS} d USING(document_id)
+                JOIN {VERSIONS} v USING(document_id,document_version)
+                WHERE d.source_type='catalog' AND d.owner_scope=''
+                  AND d.deleted_at IS NULL AND d.active_version=c.document_version AND d.active_index=c.index_version
+                  AND (d.source_uri,v.topic,v.document_version,v.content_hash) IN (
+                      SELECT * FROM unnest(%s::text[],%s::text[],%s::text[],%s::text[])
+                  )
+                  AND (v.effective_date IS NULL OR v.effective_date<=%s)
+                  AND (v.expires_on IS NULL OR v.expires_on>%s)
+                ORDER BY c.chunk_index,c.chunk_id
+            """, ([doc.source_uri for doc in documents], [doc.topic for doc in documents],
+                  [doc.version for doc in documents], [doc.content_hash for doc in documents], today, today)).fetchall()
