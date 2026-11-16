@@ -66,3 +66,17 @@ KNOWLEDGE_POSTGRES_TESTS=1 PYTHONPATH=src .venv/bin/python -m unittest discover 
 ```
 
 [真实 PostgreSQL 联合查询验收](../../reports/warehouse/business_planner_v2.json)使用固定候选计划、真实指标服务和独立 ODS 查询，并包含模拟目录索引缺失的 Trace。自由组合技术文档和跨任务调度留待后续工作。
+
+## Orchestrator v2 顺序 DAG
+
+已验证的 Business Plan 转成 `metric` 与 `catalog` 两类节点。每个节点包含任务 ID、类型、依赖 ID 和已验证参数。指标节点按时间窗调用既有只读指标服务。每个目录节点依赖同一指标的全部 SQL 窗口，使用既有 Catalog Exact Lookup。固定退货联合查询也进入同一执行层，继续返回原有指标结果字段。
+
+执行前核对任务 ID 唯一性、依赖存在、无环、任务类型与最多 11 个节点的上限。有效图按确定顺序在当前请求内运行。必要依赖失败时，下游标记 `skipped` 并记录 `dependency_failed` 和失败依赖 ID。独立节点继续运行。计划沿用 30 秒启动预算和各工具超时。
+
+历史记录沿用会话 Lease 与幂等回执，并保存计划 ID、Attempt ID、节点依赖和调度位置。Catalog 恢复沿用原有入口、检查点和历史安全校验。SQL 节点成功且满足检查点条件时，恢复会复用已保存的结果，更新待恢复目录节点的 Attempt ID。
+
+```bash
+KNOWLEDGE_POSTGRES_TESTS=1 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -p test_task_dag.py -v
+```
+
+[真实 PostgreSQL 验收与 Trace](../../reports/warehouse/task_dag_v1.json)包含合法计划、受控指标故障和定向恢复。在未来扩展并行或多 Agent 执行时，可沿用节点状态和依赖契约，并为并发新增单独的执行与故障测试。

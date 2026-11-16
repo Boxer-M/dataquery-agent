@@ -45,55 +45,18 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
             start, end = date_window(periods[0].group(), today)
         except (ValueError, OverflowError):
             return outcome("clarify", "invalid_time", "请提供有效的指标查询时间。")
-        results, tasks, calls = [], [], []
-        for mid in RETURN_METRICS:
-            request = {"metric_id": mid, "start_date": start.isoformat(), "end_date": end.isoformat(), "group_by": []}
+        calls = []
+        window = {"start_date": start.isoformat(), "end_date": end.isoformat()}
+        for step, mid in enumerate(RETURN_METRICS, 1):
+            request = {"metric_id": mid, **window, "group_by": []}
             if mid == "item_return_rate":
                 request["observation_cutoff"] = agent.service.cutoff.date().isoformat()
-            calls.append({"request": request})
-        plan = {"metric_ids": list(RETURN_METRICS), "required_tool_calls": calls,
-                "include_catalog_definitions": True, "analysis_type": "legacy_return_summary"}
-        if owner:
-            from ..catalog_recovery import checkpoint_partial, sql_checkpoint
-            routes = [agent.check_route(call["request"], frame) for call in calls]
-            if any(route["status"] != "STANDARD_METRIC" for route in routes):
-                return agent.route_outcome(next(route for route in routes if route["status"] != "STANDARD_METRIC"))
-            before = sql_checkpoint(agent.service, plan, routes, capture_snapshot=True)
-        else:
-            before = None
-        for call in calls:
-            request = call["request"]
-            mid = request["metric_id"]
-            result = agent.run_metric_request(request, frame, trace)
-            if result["status"] != "ok":
-                return result
-            results.append(result["query_result"])
-            tasks.append({"kind": "metric", "metric_id": mid, "status": "ok",
-                          "sources": results[-1]["sources"], "trace_id": results[-1]["trace_id"]})
-        resolution = {"method": "approved_hybrid", "metric_ids": list(RETURN_METRICS)}
-        after = sql_checkpoint(agent.service, plan, routes, capture_snapshot=True) if before else None
-        knowledge = service.exact(agent.service, resolution, today=today, owner=owner)
-        trace["tools"].append(knowledge["retrieval_trace"])
-        numbers = []
-        for result in results:
-            name = agent.service.metrics[result["metric_id"]]["name_zh"]
-            row = result["results"][0]
-            value = row["value"] if row["value"] is not None else "无可计算结果"
-            extra = (f"（{row['numerator']}/{row['denominator']}，观察截止 {result['observation_cutoff']}）"
-                     if result["metric_id"] == "item_return_rate" else "")
-            numbers.append(f"{name} {value}{extra} · {', '.join(result['sources'])}")
-        definitions = knowledge.get("answer_zh") or knowledge.get("message", "")
-        sql_answer = f"{start} 至 {end}（不含结束日）数据库结果\n" + "\n".join(numbers)
-        tasks += catalog_tasks(knowledge, RETURN_METRICS)
-        status = "ok" if knowledge["evidence_status"] == "supported" else "partial"
-        saved = {}
-        if status == "partial" and before and before == after:
-            proof = {key: value for key, value in before.items() if key != "snapshot"}
-            saved, tasks = checkpoint_partial(plan, tasks, proof, results=[], sql_answer=sql_answer,
-                                              metric_results=results)
-        return {"status": status, "answer_zh": sql_answer + "\n文档依据\n" + definitions,
-                "metric_results": results, "knowledge_result": knowledge, "path": "hybrid",
-                "subtasks": tasks, "metric_resolution": resolution, **saved}
+            calls.append({"step": step, "window_index": 0, "request": request})
+        plan = {"metric_ids": list(RETURN_METRICS), "required_tool_calls": calls, "analysis_type": "summary",
+                "time_windows": [window], "group_by": [], "conditions": [], "sort_rule": None,
+                "comparison_type": None, "limit": None}
+        return agent.run_hybrid_plan(plan, {"method": "approved_hybrid"}, frame, trace, today, owner,
+                                     keep_metric_results=True)
     if suffix and periods and re.search(r"查询|多少|排行|对比|比较|环比|统计|查看", question[:suffix.start()]):
         numeric = question[:suffix.start()].strip()
         resolution = agent.planner.validator.entities.resolve(numeric)

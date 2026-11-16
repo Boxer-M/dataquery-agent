@@ -1,0 +1,1508 @@
+{
+  "base_commit": "aed8f1a",
+  "full_regression": {
+    "passed": 177,
+    "skipped": 1,
+    "seconds": 28.395
+  },
+  "final_focused_regression": {
+    "passed": 11,
+    "seconds": 13.961
+  },
+  "success": {
+    "question": "查询2025年1月订单量和订单商品明细数，并给出正式定义",
+    "ods_values": {
+      "order_count": 2312,
+      "order_item_count": 5538
+    },
+    "result": [
+      {
+        "month": null,
+        "bucket": "all",
+        "metrics": {
+          "order_count": {
+            "value": "2312"
+          },
+          "order_item_count": {
+            "value": "5538"
+          }
+        }
+      }
+    ],
+    "subtasks": [
+      {
+        "kind": "metric",
+        "step": 1,
+        "status": "ok",
+        "request": {
+          "filters": {},
+          "end_date": "2025-02-01",
+          "group_by": [],
+          "metric_id": "order_count",
+          "start_date": "2025-01-01"
+        },
+        "sources": [
+          "dws.order_day"
+        ],
+        "task_id": "7ad924f155294fc5bdddcd93fa34f204/1",
+        "trace_id": "a1b51d44915641aa9c36a8e378ea9658",
+        "metric_id": "order_count",
+        "row_count": 1,
+        "attempt_id": "a7437a472eac4821bb22661008342d19",
+        "definition": "时间窗内创建的订单记录数，含取消订单。",
+        "depends_on": [],
+        "elapsed_ms": 10,
+        "event_time": "orders.ordered_at",
+        "window_index": 0,
+        "schedule_position": 1
+      },
+      {
+        "kind": "metric",
+        "step": 2,
+        "status": "ok",
+        "request": {
+          "filters": {},
+          "end_date": "2025-02-01",
+          "group_by": [],
+          "metric_id": "order_item_count",
+          "start_date": "2025-01-01"
+        },
+        "sources": [
+          "dim.product",
+          "dws.product_sales_day"
+        ],
+        "task_id": "7ad924f155294fc5bdddcd93fa34f204/2",
+        "trace_id": "96dedd844bd148d094e9852d0a01caae",
+        "metric_id": "order_item_count",
+        "row_count": 1,
+        "attempt_id": "a7437a472eac4821bb22661008342d19",
+        "definition": "按下单时间统计的商品明细记录数，每个明细主键计一次。",
+        "depends_on": [],
+        "elapsed_ms": 10,
+        "event_time": "orders.ordered_at",
+        "window_index": 0,
+        "schedule_position": 2
+      },
+      {
+        "kind": "catalog",
+        "status": "ok",
+        "sources": [
+          "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_count]"
+        ],
+        "task_id": "7ad924f155294fc5bdddcd93fa34f204/3",
+        "citation": {
+          "quote": "时间窗内创建的订单记录数，含取消订单。",
+          "title": "订单量",
+          "chunk_id": "4f6056568a5d2c15bfca065885e37f2ba06d494cfcba02648f9a3653705090ea",
+          "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_count]",
+          "document_id": "0a462ef188e629bec3761148c5ee3070216a039cef85c73e87e39bd7bc40f178",
+          "source_type": "catalog",
+          "access_scope": "public",
+          "content_hash": "b18f08ac77d16e95f1f8caa5d8f3fccac5149d32490d14005f6fbab18d15aff7",
+          "heading_path": [
+            "订单量"
+          ],
+          "effective_date": null,
+          "authority_level": 4,
+          "retrieval_score": null,
+          "source_location": "#/metrics[metric_id=order_count]",
+          "document_version": "1.1.1-ads",
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1"
+        },
+        "trace_id": "f967e29554b343899ec2c31f04baa77f",
+        "metric_id": "order_count",
+        "attempt_id": "a7437a472eac4821bb22661008342d19",
+        "depends_on": [
+          "7ad924f155294fc5bdddcd93fa34f204/1"
+        ],
+        "error_code": null,
+        "schedule_position": 3
+      },
+      {
+        "kind": "catalog",
+        "status": "ok",
+        "sources": [
+          "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]"
+        ],
+        "task_id": "7ad924f155294fc5bdddcd93fa34f204/4",
+        "citation": {
+          "quote": "按下单时间统计的商品明细记录数，每个明细主键计一次。",
+          "title": "订单商品明细数",
+          "chunk_id": "cf0172f1310337598de30701fd81be9d51d265d9962fd1f5c1c10e94c718dabb",
+          "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]",
+          "document_id": "1921956db016452864a9ad8ec966b98c8e47813534d236e49bd491231dda39af",
+          "source_type": "catalog",
+          "access_scope": "public",
+          "content_hash": "efec1e36037c8010127630aa30b313ec5e60e51d0137b936c3cfc844510021ef",
+          "heading_path": [
+            "订单商品明细数"
+          ],
+          "effective_date": null,
+          "authority_level": 4,
+          "retrieval_score": null,
+          "source_location": "#/metrics[metric_id=order_item_count]",
+          "document_version": "1.1.1-ads",
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1"
+        },
+        "trace_id": "1445446b7d3f48e4a3bd0a09f5efd33d",
+        "metric_id": "order_item_count",
+        "attempt_id": "a7437a472eac4821bb22661008342d19",
+        "depends_on": [
+          "7ad924f155294fc5bdddcd93fa34f204/2"
+        ],
+        "error_code": null,
+        "schedule_position": 4
+      }
+    ],
+    "trace": {
+      "trace_id": "662d1c48184c43ae81f475260d70715d",
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "usage": {},
+          "status": "received",
+          "elapsed_ms": 0
+        }
+      ],
+      "tools": [
+        {
+          "request": {
+            "metric_id": "order_count",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "filters": {}
+          },
+          "status": "ok",
+          "code": null,
+          "trace_id": "a1b51d44915641aa9c36a8e378ea9658",
+          "sources": [
+            "dws.order_day"
+          ],
+          "capability_trace_id": "ddc869004a7f4418a13bf39431d7a1fc",
+          "elapsed_ms": 10
+        },
+        {
+          "request": {
+            "metric_id": "order_item_count",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "filters": {}
+          },
+          "status": "ok",
+          "code": null,
+          "trace_id": "96dedd844bd148d094e9852d0a01caae",
+          "sources": [
+            "dim.product",
+            "dws.product_sales_day"
+          ],
+          "capability_trace_id": "45ba665b2f6b41368c00fac0331e34a9",
+          "elapsed_ms": 10
+        },
+        {
+          "trace_id": "f967e29554b343899ec2c31f04baa77f",
+          "strategy": "catalog_exact",
+          "query_embedding_called": false,
+          "resolution_method": "validated_plan",
+          "metric_ids": [
+            "order_count"
+          ],
+          "candidates": [
+            {
+              "document_id": "0a462ef188e629bec3761148c5ee3070216a039cef85c73e87e39bd7bc40f178",
+              "document_version": "1.1.1-ads",
+              "chunk_id": "4f6056568a5d2c15bfca065885e37f2ba06d494cfcba02648f9a3653705090ea",
+              "title": "订单量",
+              "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_count]",
+              "source_location": "#/metrics[metric_id=order_count]",
+              "heading_path": [
+                "订单量"
+              ],
+              "retrieval_score": null,
+              "authority_level": 4,
+              "source_type": "catalog",
+              "effective_date": null,
+              "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+              "content_hash": "b18f08ac77d16e95f1f8caa5d8f3fccac5149d32490d14005f6fbab18d15aff7",
+              "access_scope": "public",
+              "quote": "时间窗内创建的订单记录数，含取消订单。"
+            }
+          ],
+          "elapsed_ms": 8.645,
+          "metric_errors": {}
+        },
+        {
+          "trace_id": "1445446b7d3f48e4a3bd0a09f5efd33d",
+          "strategy": "catalog_exact",
+          "query_embedding_called": false,
+          "resolution_method": "validated_plan",
+          "metric_ids": [
+            "order_item_count"
+          ],
+          "candidates": [
+            {
+              "document_id": "1921956db016452864a9ad8ec966b98c8e47813534d236e49bd491231dda39af",
+              "document_version": "1.1.1-ads",
+              "chunk_id": "cf0172f1310337598de30701fd81be9d51d265d9962fd1f5c1c10e94c718dabb",
+              "title": "订单商品明细数",
+              "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]",
+              "source_location": "#/metrics[metric_id=order_item_count]",
+              "heading_path": [
+                "订单商品明细数"
+              ],
+              "retrieval_score": null,
+              "authority_level": 4,
+              "source_type": "catalog",
+              "effective_date": null,
+              "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+              "content_hash": "efec1e36037c8010127630aa30b313ec5e60e51d0137b936c3cfc844510021ef",
+              "access_scope": "public",
+              "quote": "按下单时间统计的商品明细记录数，每个明细主键计一次。"
+            }
+          ],
+          "elapsed_ms": 8.822,
+          "metric_errors": {}
+        },
+        {
+          "trace_id": "039a13cbae444d539488d5beaccfe77c",
+          "strategy": "catalog_exact",
+          "query_embedding_called": false,
+          "metric_ids": [
+            "order_count",
+            "order_item_count"
+          ],
+          "candidates": [
+            {
+              "document_id": "0a462ef188e629bec3761148c5ee3070216a039cef85c73e87e39bd7bc40f178",
+              "document_version": "1.1.1-ads",
+              "chunk_id": "4f6056568a5d2c15bfca065885e37f2ba06d494cfcba02648f9a3653705090ea",
+              "title": "订单量",
+              "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_count]",
+              "source_location": "#/metrics[metric_id=order_count]",
+              "heading_path": [
+                "订单量"
+              ],
+              "retrieval_score": null,
+              "authority_level": 4,
+              "source_type": "catalog",
+              "effective_date": null,
+              "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+              "content_hash": "b18f08ac77d16e95f1f8caa5d8f3fccac5149d32490d14005f6fbab18d15aff7",
+              "access_scope": "public",
+              "quote": "时间窗内创建的订单记录数，含取消订单。"
+            },
+            {
+              "document_id": "1921956db016452864a9ad8ec966b98c8e47813534d236e49bd491231dda39af",
+              "document_version": "1.1.1-ads",
+              "chunk_id": "cf0172f1310337598de30701fd81be9d51d265d9962fd1f5c1c10e94c718dabb",
+              "title": "订单商品明细数",
+              "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]",
+              "source_location": "#/metrics[metric_id=order_item_count]",
+              "heading_path": [
+                "订单商品明细数"
+              ],
+              "retrieval_score": null,
+              "authority_level": 4,
+              "source_type": "catalog",
+              "effective_date": null,
+              "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+              "content_hash": "efec1e36037c8010127630aa30b313ec5e60e51d0137b936c3cfc844510021ef",
+              "access_scope": "public",
+              "quote": "按下单时间统计的商品明细记录数，每个明细主键计一次。"
+            }
+          ],
+          "metric_errors": {}
+        }
+      ],
+      "elapsed_ms": 1992
+    },
+    "partial": [
+      {
+        "step": 1,
+        "window_index": 0,
+        "request": {
+          "metric_id": "order_count",
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "group_by": [],
+          "filters": {}
+        },
+        "status": "ok",
+        "elapsed_ms": 6,
+        "trace_id": "3347507b2cda4825a305077e2fe0430c",
+        "sources": [
+          "dws.order_day"
+        ],
+        "row_count": 1,
+        "definition": "时间窗内创建的订单记录数，含取消订单。",
+        "event_time": "orders.ordered_at",
+        "task_id": "a51f65d879de406197529c0c77303bfc/1",
+        "kind": "metric",
+        "attempt_id": "f9f2a4c3e69344b0a59da997faabe9cc",
+        "depends_on": [],
+        "schedule_position": 1,
+        "metric_id": "order_count"
+      },
+      {
+        "step": 2,
+        "window_index": 0,
+        "request": {
+          "metric_id": "order_item_count",
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "group_by": [],
+          "filters": {}
+        },
+        "status": "ok",
+        "elapsed_ms": 8,
+        "trace_id": "3d044fa4782b44f0821db30ba3f44631",
+        "sources": [
+          "dim.product",
+          "dws.product_sales_day"
+        ],
+        "row_count": 1,
+        "definition": "按下单时间统计的商品明细记录数，每个明细主键计一次。",
+        "event_time": "orders.ordered_at",
+        "task_id": "a51f65d879de406197529c0c77303bfc/2",
+        "kind": "metric",
+        "attempt_id": "f9f2a4c3e69344b0a59da997faabe9cc",
+        "depends_on": [],
+        "schedule_position": 2,
+        "metric_id": "order_item_count"
+      },
+      {
+        "metric_id": "order_count",
+        "kind": "catalog",
+        "status": "unavailable",
+        "sources": [
+          "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_count]"
+        ],
+        "trace_id": "3ba3bd82be184b83b5a89b3418457fa6",
+        "error_code": "catalog_index_missing",
+        "citation": null,
+        "task_id": "a51f65d879de406197529c0c77303bfc/3",
+        "attempt_id": "f9f2a4c3e69344b0a59da997faabe9cc",
+        "depends_on": [
+          "a51f65d879de406197529c0c77303bfc/1"
+        ],
+        "schedule_position": 3
+      },
+      {
+        "metric_id": "order_item_count",
+        "kind": "catalog",
+        "status": "unavailable",
+        "sources": [
+          "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]"
+        ],
+        "trace_id": "c6ab3c04abf9457fb5a95b05a9ae4f62",
+        "error_code": "catalog_index_missing",
+        "citation": null,
+        "task_id": "a51f65d879de406197529c0c77303bfc/4",
+        "attempt_id": "f9f2a4c3e69344b0a59da997faabe9cc",
+        "depends_on": [
+          "a51f65d879de406197529c0c77303bfc/2"
+        ],
+        "schedule_position": 4
+      }
+    ],
+    "query_embedding_calls": 0
+  },
+  "dependency_failure": {
+    "injected_failure": "order_count timeout",
+    "ods_order_item_count": 5538,
+    "status": "partial",
+    "subtasks": [
+      {
+        "kind": "metric",
+        "step": 1,
+        "status": "error",
+        "request": {
+          "filters": {},
+          "end_date": "2025-02-01",
+          "group_by": [],
+          "metric_id": "order_count",
+          "start_date": "2025-01-01"
+        },
+        "sources": [],
+        "task_id": "1f75cf8606734066a7ae0d6751e950fb/1",
+        "trace_id": null,
+        "metric_id": "order_count",
+        "attempt_id": "1170e188cede4f3493049fecb5fce746",
+        "depends_on": [],
+        "elapsed_ms": 0,
+        "error_code": "simulated_timeout",
+        "window_index": 0,
+        "schedule_position": 1
+      },
+      {
+        "kind": "metric",
+        "step": 2,
+        "status": "ok",
+        "request": {
+          "filters": {},
+          "end_date": "2025-02-01",
+          "group_by": [],
+          "metric_id": "order_item_count",
+          "start_date": "2025-01-01"
+        },
+        "sources": [
+          "dim.product",
+          "dws.product_sales_day"
+        ],
+        "task_id": "1f75cf8606734066a7ae0d6751e950fb/2",
+        "trace_id": "274fd71736984f9d8a70fdc09efe9393",
+        "metric_id": "order_item_count",
+        "row_count": 1,
+        "attempt_id": "1170e188cede4f3493049fecb5fce746",
+        "definition": "按下单时间统计的商品明细记录数，每个明细主键计一次。",
+        "depends_on": [],
+        "elapsed_ms": 10,
+        "event_time": "orders.ordered_at",
+        "window_index": 0,
+        "schedule_position": 2
+      },
+      {
+        "kind": "catalog",
+        "status": "skipped",
+        "task_id": "1f75cf8606734066a7ae0d6751e950fb/3",
+        "metric_id": "order_count",
+        "attempt_id": "1170e188cede4f3493049fecb5fce746",
+        "depends_on": [
+          "1f75cf8606734066a7ae0d6751e950fb/1"
+        ],
+        "elapsed_ms": 0,
+        "error_code": "dependency_failed",
+        "schedule_position": 3,
+        "failed_dependencies": [
+          "1f75cf8606734066a7ae0d6751e950fb/1"
+        ]
+      },
+      {
+        "kind": "catalog",
+        "status": "ok",
+        "sources": [
+          "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]"
+        ],
+        "task_id": "1f75cf8606734066a7ae0d6751e950fb/4",
+        "citation": {
+          "quote": "按下单时间统计的商品明细记录数，每个明细主键计一次。",
+          "title": "订单商品明细数",
+          "chunk_id": "cf0172f1310337598de30701fd81be9d51d265d9962fd1f5c1c10e94c718dabb",
+          "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]",
+          "document_id": "1921956db016452864a9ad8ec966b98c8e47813534d236e49bd491231dda39af",
+          "source_type": "catalog",
+          "access_scope": "public",
+          "content_hash": "efec1e36037c8010127630aa30b313ec5e60e51d0137b936c3cfc844510021ef",
+          "heading_path": [
+            "订单商品明细数"
+          ],
+          "effective_date": null,
+          "authority_level": 4,
+          "retrieval_score": null,
+          "source_location": "#/metrics[metric_id=order_item_count]",
+          "document_version": "1.1.1-ads",
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1"
+        },
+        "trace_id": "1fba212579834c77b0673123a0e2c430",
+        "metric_id": "order_item_count",
+        "attempt_id": "1170e188cede4f3493049fecb5fce746",
+        "depends_on": [
+          "1f75cf8606734066a7ae0d6751e950fb/2"
+        ],
+        "error_code": null,
+        "schedule_position": 4
+      }
+    ],
+    "trace": {
+      "trace_id": "128696520a1b4c5bbdb9ac961cdc9aa2",
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "usage": {},
+          "status": "received",
+          "elapsed_ms": 0
+        }
+      ],
+      "tools": [
+        {
+          "request": {
+            "metric_id": "order_count",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "filters": {}
+          },
+          "status": "error",
+          "code": "simulated_timeout",
+          "trace_id": null,
+          "sources": [],
+          "capability_trace_id": "941833796f864061960d809c8ec28b8e",
+          "elapsed_ms": 0
+        },
+        {
+          "request": {
+            "metric_id": "order_item_count",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "filters": {}
+          },
+          "status": "ok",
+          "code": null,
+          "trace_id": "274fd71736984f9d8a70fdc09efe9393",
+          "sources": [
+            "dim.product",
+            "dws.product_sales_day"
+          ],
+          "capability_trace_id": "ef94dcbf736b42ceb5a25f3b163e09cd",
+          "elapsed_ms": 10
+        },
+        {
+          "trace_id": "1fba212579834c77b0673123a0e2c430",
+          "strategy": "catalog_exact",
+          "query_embedding_called": false,
+          "resolution_method": "validated_plan",
+          "metric_ids": [
+            "order_item_count"
+          ],
+          "candidates": [
+            {
+              "document_id": "1921956db016452864a9ad8ec966b98c8e47813534d236e49bd491231dda39af",
+              "document_version": "1.1.1-ads",
+              "chunk_id": "cf0172f1310337598de30701fd81be9d51d265d9962fd1f5c1c10e94c718dabb",
+              "title": "订单商品明细数",
+              "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]",
+              "source_location": "#/metrics[metric_id=order_item_count]",
+              "heading_path": [
+                "订单商品明细数"
+              ],
+              "retrieval_score": null,
+              "authority_level": 4,
+              "source_type": "catalog",
+              "effective_date": null,
+              "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+              "content_hash": "efec1e36037c8010127630aa30b313ec5e60e51d0137b936c3cfc844510021ef",
+              "access_scope": "public",
+              "quote": "按下单时间统计的商品明细记录数，每个明细主键计一次。"
+            }
+          ],
+          "elapsed_ms": 9.671,
+          "metric_errors": {}
+        },
+        {
+          "trace_id": "2c2bb55394e24376b73a0c04f77807e5",
+          "strategy": "catalog_exact",
+          "query_embedding_called": false,
+          "metric_ids": [
+            "order_count",
+            "order_item_count"
+          ],
+          "candidates": [
+            {
+              "document_id": "1921956db016452864a9ad8ec966b98c8e47813534d236e49bd491231dda39af",
+              "document_version": "1.1.1-ads",
+              "chunk_id": "cf0172f1310337598de30701fd81be9d51d265d9962fd1f5c1c10e94c718dabb",
+              "title": "订单商品明细数",
+              "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]",
+              "source_location": "#/metrics[metric_id=order_item_count]",
+              "heading_path": [
+                "订单商品明细数"
+              ],
+              "retrieval_score": null,
+              "authority_level": 4,
+              "source_type": "catalog",
+              "effective_date": null,
+              "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+              "content_hash": "efec1e36037c8010127630aa30b313ec5e60e51d0137b936c3cfc844510021ef",
+              "access_scope": "public",
+              "quote": "按下单时间统计的商品明细记录数，每个明细主键计一次。"
+            }
+          ],
+          "metric_errors": {
+            "order_count": "dependency_failed"
+          }
+        }
+      ],
+      "elapsed_ms": 961
+    },
+    "plan_id": "1f75cf8606734066a7ae0d6751e950fb",
+    "attempt_id": "1170e188cede4f3493049fecb5fce746",
+    "replayed": true
+  },
+  "catalog_recovery": {
+    "index_outage": "simulated empty lookup; restored lookups use PostgreSQL",
+    "initial": {
+      "sql": null,
+      "plan_id": "f5287240d3e24266a46390d3f57b60fc",
+      "query_id": "b5da4b96-4dc1-4cb9-aafd-87216d1e11d3",
+      "recovery": {
+        "status": "partial",
+        "plan_id": "f5287240d3e24266a46390d3f57b60fc",
+        "results": [
+          {
+            "month": null,
+            "bucket": "all",
+            "metrics": {
+              "order_count": {
+                "value": "2312"
+              },
+              "order_item_count": {
+                "value": "5538"
+              }
+            }
+          }
+        ],
+        "attempt_id": "4e9a660e032c4401855d001cb6bf8b37",
+        "checkpoint": {
+          "data": "a64b03efe90ddf1563e229acc9e7447c0801f7a75f185569b43a7e16c7d20edb",
+          "plan": "935b9ab44e355595eab0a4c4325ef16f71b3a41b8f51ffd440fd98d1452ec1f2",
+          "sources": [
+            "dim.product",
+            "dws.order_day",
+            "dws.product_sales_day"
+          ],
+          "contract": "cd3055c30e4f8e0e23e355d4d6f663314b0daac5310b6fa3db2f53a2e9c289db"
+        },
+        "sql_answer": "统计窗口 [2025-01-01, 2025-02-01)。\n汇总：订单量 2312；订单商品明细数 5538。\n订单量按orders.ordered_at统计。时间窗内创建的订单记录数，含取消订单。\n订单商品明细数按orders.ordered_at统计。按下单时间统计的商品明细记录数，每个明细主键计一次。\n步骤 1 · 来源 dws.order_day · Trace 54337705b6b9403fbae6c03cc8abceac\n步骤 2 · 来源 dim.product、dws.product_sales_day · Trace e4480abff45d4e31b7e4a984a296b3e6",
+        "metric_results": []
+      },
+      "subtasks": [
+        {
+          "kind": "metric",
+          "step": 1,
+          "status": "ok",
+          "request": {
+            "filters": {},
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "metric_id": "order_count",
+            "start_date": "2025-01-01"
+          },
+          "sources": [
+            "dws.order_day"
+          ],
+          "task_id": "f5287240d3e24266a46390d3f57b60fc/1",
+          "trace_id": "54337705b6b9403fbae6c03cc8abceac",
+          "metric_id": "order_count",
+          "row_count": 1,
+          "attempt_id": "4e9a660e032c4401855d001cb6bf8b37",
+          "definition": "时间窗内创建的订单记录数，含取消订单。",
+          "depends_on": [],
+          "elapsed_ms": 7,
+          "event_time": "orders.ordered_at",
+          "window_index": 0,
+          "schedule_position": 1
+        },
+        {
+          "kind": "metric",
+          "step": 2,
+          "status": "ok",
+          "request": {
+            "filters": {},
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "metric_id": "order_item_count",
+            "start_date": "2025-01-01"
+          },
+          "sources": [
+            "dim.product",
+            "dws.product_sales_day"
+          ],
+          "task_id": "f5287240d3e24266a46390d3f57b60fc/2",
+          "trace_id": "e4480abff45d4e31b7e4a984a296b3e6",
+          "metric_id": "order_item_count",
+          "row_count": 1,
+          "attempt_id": "4e9a660e032c4401855d001cb6bf8b37",
+          "definition": "按下单时间统计的商品明细记录数，每个明细主键计一次。",
+          "depends_on": [],
+          "elapsed_ms": 7,
+          "event_time": "orders.ordered_at",
+          "window_index": 0,
+          "schedule_position": 2
+        },
+        {
+          "kind": "catalog",
+          "status": "unavailable",
+          "sources": [
+            "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_count]"
+          ],
+          "task_id": "f5287240d3e24266a46390d3f57b60fc/3",
+          "citation": null,
+          "trace_id": "d98ce5aaa7da4a3591e5f4801ba6047e",
+          "metric_id": "order_count",
+          "attempt_id": "4e9a660e032c4401855d001cb6bf8b37",
+          "depends_on": [
+            "f5287240d3e24266a46390d3f57b60fc/1"
+          ],
+          "error_code": "catalog_index_missing",
+          "schedule_position": 3
+        },
+        {
+          "kind": "catalog",
+          "status": "unavailable",
+          "sources": [
+            "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]"
+          ],
+          "task_id": "f5287240d3e24266a46390d3f57b60fc/4",
+          "citation": null,
+          "trace_id": "d4257a1e938c45e1a4aca478bae586b0",
+          "metric_id": "order_item_count",
+          "attempt_id": "4e9a660e032c4401855d001cb6bf8b37",
+          "depends_on": [
+            "f5287240d3e24266a46390d3f57b60fc/2"
+          ],
+          "error_code": "catalog_index_missing",
+          "schedule_position": 4
+        }
+      ],
+      "trace_id": "93283ab1b2f54525b0135001e08e6f6d",
+      "knowledge": {
+        "reason": null,
+        "citations": [],
+        "execution_path": "catalog_exact",
+        "metric_results": [],
+        "evidence_status": "insufficient",
+        "embedding_version": null,
+        "metric_resolution": {
+          "method": "validated_plan",
+          "status": "multiple",
+          "matches": [
+            {
+              "term": "订单量",
+              "method": "formal_name",
+              "metric_ids": [
+                "order_count"
+              ]
+            },
+            {
+              "term": "订单商品明细数",
+              "method": "formal_name",
+              "metric_ids": [
+                "order_item_count"
+              ]
+            }
+          ],
+          "metric_ids": [
+            "order_count",
+            "order_item_count"
+          ],
+          "unknown_ids": []
+        },
+        "retrieval_strategy": "catalog_exact",
+        "retrieval_trace_id": "446c1fb5897d40fc94dacfc84ddeee5c",
+        "answer_prompt_version": null,
+        "query_embedding_called": false
+      },
+      "metric_id": null,
+      "attempt_id": "4e9a660e032c4401855d001cb6bf8b37",
+      "error_code": null,
+      "latency_ms": 1844,
+      "message_id": "015ea342-3c31-4ea2-aea0-dd945b5e060b",
+      "route_type": "hybrid",
+      "analysis_id": null,
+      "template_id": null,
+      "tool_traces": [
+        {
+          "code": null,
+          "status": "ok",
+          "trace_id": "54337705b6b9403fbae6c03cc8abceac"
+        },
+        {
+          "code": null,
+          "status": "ok",
+          "trace_id": "e4480abff45d4e31b7e4a984a296b3e6"
+        },
+        {
+          "code": null,
+          "status": null,
+          "trace_id": "d98ce5aaa7da4a3591e5f4801ba6047e"
+        },
+        {
+          "code": null,
+          "status": null,
+          "trace_id": "d4257a1e938c45e1a4aca478bae586b0"
+        },
+        {
+          "code": null,
+          "status": null,
+          "trace_id": "446c1fb5897d40fc94dacfc84ddeee5c"
+        }
+      ],
+      "source_models": [
+        "dim.product",
+        "dws.order_day",
+        "dws.product_sales_day"
+      ],
+      "result_summary": {
+        "scalar": {},
+        "row_count": 1,
+        "truncated": false
+      },
+      "context_version": "conversation-rules-v1",
+      "conversation_id": "06a0a45a-7baf-4c51-a0df-681f9ec431a9",
+      "prompt_versions": [
+        "business-plan-v1"
+      ],
+      "execution_status": "partial",
+      "resolved_request": {
+        "limit": null,
+        "filters": {},
+        "group_by": [],
+        "sort_rule": null,
+        "conditions": [],
+        "metric_ids": [
+          "order_count",
+          "order_item_count"
+        ],
+        "time_windows": [
+          {
+            "end_date": "2025-02-01",
+            "start_date": "2025-01-01"
+          }
+        ],
+        "analysis_type": "summary",
+        "comparison_type": null,
+        "required_tool_calls": [
+          {
+            "step": 1,
+            "request": {
+              "filters": {},
+              "end_date": "2025-02-01",
+              "group_by": [],
+              "metric_id": "order_count",
+              "start_date": "2025-01-01"
+            },
+            "window_index": 0
+          },
+          {
+            "step": 2,
+            "request": {
+              "filters": {},
+              "end_date": "2025-02-01",
+              "group_by": [],
+              "metric_id": "order_item_count",
+              "start_date": "2025-01-01"
+            },
+            "window_index": 0
+          }
+        ],
+        "unresolved_business_rules": [],
+        "include_catalog_definitions": true
+      },
+      "template_version": null,
+      "context_operation": "new",
+      "metadata_versions": [
+        "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad"
+      ],
+      "original_question": "查询2025年1月订单量和订单商品明细数，并给出正式定义",
+      "parameter_summary": null,
+      "data_build_version": null,
+      "execution_strategy": "hybrid",
+      "sql_asset_reference": null,
+      "metric_definition_version": null,
+      "started_at": "2026-11-16 01:36:14.490261+00:00",
+      "completed_at": "2026-11-16 01:36:16.341498+00:00"
+    },
+    "missing_attempt": {
+      "sql": null,
+      "plan_id": "f5287240d3e24266a46390d3f57b60fc",
+      "query_id": "76c93a73-566b-45e4-93d4-ea6424c9f4a8",
+      "recovery": {
+        "status": "partial",
+        "plan_id": "f5287240d3e24266a46390d3f57b60fc",
+        "results": [
+          {
+            "month": null,
+            "bucket": "all",
+            "metrics": {
+              "order_count": {
+                "value": "2312"
+              },
+              "order_item_count": {
+                "value": "5538"
+              }
+            }
+          }
+        ],
+        "attempt_id": "ce5644c708684541b1b46b328255c8f3",
+        "checkpoint": {
+          "data": "a64b03efe90ddf1563e229acc9e7447c0801f7a75f185569b43a7e16c7d20edb",
+          "plan": "935b9ab44e355595eab0a4c4325ef16f71b3a41b8f51ffd440fd98d1452ec1f2",
+          "sources": [
+            "dim.product",
+            "dws.order_day",
+            "dws.product_sales_day"
+          ],
+          "contract": "cd3055c30e4f8e0e23e355d4d6f663314b0daac5310b6fa3db2f53a2e9c289db"
+        },
+        "sql_answer": "统计窗口 [2025-01-01, 2025-02-01)。\n汇总：订单量 2312；订单商品明细数 5538。\n订单量按orders.ordered_at统计。时间窗内创建的订单记录数，含取消订单。\n订单商品明细数按orders.ordered_at统计。按下单时间统计的商品明细记录数，每个明细主键计一次。\n步骤 1 · 来源 dws.order_day · Trace 54337705b6b9403fbae6c03cc8abceac\n步骤 2 · 来源 dim.product、dws.product_sales_day · Trace e4480abff45d4e31b7e4a984a296b3e6",
+        "metric_results": [],
+        "previous_query_id": "b5da4b96-4dc1-4cb9-aafd-87216d1e11d3"
+      },
+      "subtasks": [
+        {
+          "kind": "metric",
+          "step": 1,
+          "status": "ok",
+          "request": {
+            "filters": {},
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "metric_id": "order_count",
+            "start_date": "2025-01-01"
+          },
+          "sources": [
+            "dws.order_day"
+          ],
+          "task_id": "f5287240d3e24266a46390d3f57b60fc/1",
+          "trace_id": "54337705b6b9403fbae6c03cc8abceac",
+          "metric_id": "order_count",
+          "row_count": 1,
+          "attempt_id": "4e9a660e032c4401855d001cb6bf8b37",
+          "definition": "时间窗内创建的订单记录数，含取消订单。",
+          "depends_on": [],
+          "elapsed_ms": 7,
+          "event_time": "orders.ordered_at",
+          "window_index": 0,
+          "schedule_position": 1
+        },
+        {
+          "kind": "metric",
+          "step": 2,
+          "status": "ok",
+          "request": {
+            "filters": {},
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "metric_id": "order_item_count",
+            "start_date": "2025-01-01"
+          },
+          "sources": [
+            "dim.product",
+            "dws.product_sales_day"
+          ],
+          "task_id": "f5287240d3e24266a46390d3f57b60fc/2",
+          "trace_id": "e4480abff45d4e31b7e4a984a296b3e6",
+          "metric_id": "order_item_count",
+          "row_count": 1,
+          "attempt_id": "4e9a660e032c4401855d001cb6bf8b37",
+          "definition": "按下单时间统计的商品明细记录数，每个明细主键计一次。",
+          "depends_on": [],
+          "elapsed_ms": 7,
+          "event_time": "orders.ordered_at",
+          "window_index": 0,
+          "schedule_position": 2
+        },
+        {
+          "kind": "catalog",
+          "status": "unavailable",
+          "sources": [
+            "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_count]"
+          ],
+          "task_id": "f5287240d3e24266a46390d3f57b60fc/3",
+          "citation": null,
+          "trace_id": "84e66067ff934440b283eee16f437ba1",
+          "metric_id": "order_count",
+          "attempt_id": "ce5644c708684541b1b46b328255c8f3",
+          "depends_on": [
+            "f5287240d3e24266a46390d3f57b60fc/1"
+          ],
+          "error_code": "catalog_index_missing",
+          "schedule_position": 3
+        },
+        {
+          "kind": "catalog",
+          "status": "unavailable",
+          "sources": [
+            "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]"
+          ],
+          "task_id": "f5287240d3e24266a46390d3f57b60fc/4",
+          "citation": null,
+          "trace_id": "84e66067ff934440b283eee16f437ba1",
+          "metric_id": "order_item_count",
+          "attempt_id": "ce5644c708684541b1b46b328255c8f3",
+          "depends_on": [
+            "f5287240d3e24266a46390d3f57b60fc/2"
+          ],
+          "error_code": "catalog_index_missing",
+          "schedule_position": 4
+        }
+      ],
+      "trace_id": "e954d53440e34011bdda37bb76edee3d",
+      "knowledge": {
+        "reason": "catalog_index_missing_or_stale",
+        "citations": [],
+        "execution_path": "catalog_exact",
+        "metric_results": [],
+        "evidence_status": "insufficient",
+        "embedding_version": null,
+        "metric_resolution": {
+          "method": "catalog_recovery",
+          "metric_ids": [
+            "order_count",
+            "order_item_count"
+          ]
+        },
+        "retrieval_strategy": "catalog_exact",
+        "retrieval_trace_id": "84e66067ff934440b283eee16f437ba1",
+        "answer_prompt_version": null,
+        "query_embedding_called": false
+      },
+      "metric_id": null,
+      "attempt_id": "ce5644c708684541b1b46b328255c8f3",
+      "error_code": null,
+      "latency_ms": 1910,
+      "message_id": "63e196d0-5412-418e-a763-52dd1b078795",
+      "route_type": "hybrid",
+      "analysis_id": null,
+      "template_id": null,
+      "tool_traces": [
+        {
+          "code": null,
+          "status": null,
+          "trace_id": "84e66067ff934440b283eee16f437ba1"
+        }
+      ],
+      "source_models": [],
+      "result_summary": {
+        "scalar": {},
+        "row_count": 1,
+        "truncated": false
+      },
+      "context_version": "conversation-rules-v1",
+      "conversation_id": "06a0a45a-7baf-4c51-a0df-681f9ec431a9",
+      "prompt_versions": [],
+      "execution_status": "partial",
+      "resolved_request": {
+        "limit": null,
+        "filters": {},
+        "group_by": [],
+        "sort_rule": null,
+        "conditions": [],
+        "metric_ids": [
+          "order_count",
+          "order_item_count"
+        ],
+        "time_windows": [
+          {
+            "end_date": "2025-02-01",
+            "start_date": "2025-01-01"
+          }
+        ],
+        "analysis_type": "summary",
+        "comparison_type": null,
+        "required_tool_calls": [
+          {
+            "step": 1,
+            "request": {
+              "filters": {},
+              "end_date": "2025-02-01",
+              "group_by": [],
+              "metric_id": "order_count",
+              "start_date": "2025-01-01"
+            },
+            "window_index": 0
+          },
+          {
+            "step": 2,
+            "request": {
+              "filters": {},
+              "end_date": "2025-02-01",
+              "group_by": [],
+              "metric_id": "order_item_count",
+              "start_date": "2025-01-01"
+            },
+            "window_index": 0
+          }
+        ],
+        "unresolved_business_rules": [],
+        "include_catalog_definitions": true
+      },
+      "template_version": null,
+      "context_operation": "catalog_recovery",
+      "metadata_versions": [
+        "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad"
+      ],
+      "original_question": "recover-catalog b5da4b96-4dc1-4cb9-aafd-87216d1e11d3",
+      "parameter_summary": null,
+      "data_build_version": null,
+      "execution_strategy": "hybrid",
+      "sql_asset_reference": null,
+      "metric_definition_version": null,
+      "started_at": "2026-11-16 01:36:16.356977+00:00",
+      "completed_at": "2026-11-16 01:36:18.276021+00:00"
+    },
+    "recovered": {
+      "sql": null,
+      "plan_id": "f5287240d3e24266a46390d3f57b60fc",
+      "query_id": "1629c201-25f0-4d5e-b817-0689ceb4a94e",
+      "recovery": {
+        "status": "completed",
+        "plan_id": "f5287240d3e24266a46390d3f57b60fc",
+        "results": [
+          {
+            "month": null,
+            "bucket": "all",
+            "metrics": {
+              "order_count": {
+                "value": "2312"
+              },
+              "order_item_count": {
+                "value": "5538"
+              }
+            }
+          }
+        ],
+        "attempt_id": "a9555061198941b8bc7e8361b9e01843",
+        "checkpoint": {
+          "data": "a64b03efe90ddf1563e229acc9e7447c0801f7a75f185569b43a7e16c7d20edb",
+          "plan": "935b9ab44e355595eab0a4c4325ef16f71b3a41b8f51ffd440fd98d1452ec1f2",
+          "sources": [
+            "dim.product",
+            "dws.order_day",
+            "dws.product_sales_day"
+          ],
+          "contract": "cd3055c30e4f8e0e23e355d4d6f663314b0daac5310b6fa3db2f53a2e9c289db"
+        },
+        "sql_answer": "统计窗口 [2025-01-01, 2025-02-01)。\n汇总：订单量 2312；订单商品明细数 5538。\n订单量按orders.ordered_at统计。时间窗内创建的订单记录数，含取消订单。\n订单商品明细数按orders.ordered_at统计。按下单时间统计的商品明细记录数，每个明细主键计一次。\n步骤 1 · 来源 dws.order_day · Trace 54337705b6b9403fbae6c03cc8abceac\n步骤 2 · 来源 dim.product、dws.product_sales_day · Trace e4480abff45d4e31b7e4a984a296b3e6",
+        "metric_results": [],
+        "previous_query_id": "76c93a73-566b-45e4-93d4-ea6424c9f4a8"
+      },
+      "subtasks": [
+        {
+          "kind": "metric",
+          "step": 1,
+          "status": "ok",
+          "request": {
+            "filters": {},
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "metric_id": "order_count",
+            "start_date": "2025-01-01"
+          },
+          "sources": [
+            "dws.order_day"
+          ],
+          "task_id": "f5287240d3e24266a46390d3f57b60fc/1",
+          "trace_id": "54337705b6b9403fbae6c03cc8abceac",
+          "metric_id": "order_count",
+          "row_count": 1,
+          "attempt_id": "4e9a660e032c4401855d001cb6bf8b37",
+          "definition": "时间窗内创建的订单记录数，含取消订单。",
+          "depends_on": [],
+          "elapsed_ms": 7,
+          "event_time": "orders.ordered_at",
+          "window_index": 0,
+          "schedule_position": 1
+        },
+        {
+          "kind": "metric",
+          "step": 2,
+          "status": "ok",
+          "request": {
+            "filters": {},
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "metric_id": "order_item_count",
+            "start_date": "2025-01-01"
+          },
+          "sources": [
+            "dim.product",
+            "dws.product_sales_day"
+          ],
+          "task_id": "f5287240d3e24266a46390d3f57b60fc/2",
+          "trace_id": "e4480abff45d4e31b7e4a984a296b3e6",
+          "metric_id": "order_item_count",
+          "row_count": 1,
+          "attempt_id": "4e9a660e032c4401855d001cb6bf8b37",
+          "definition": "按下单时间统计的商品明细记录数，每个明细主键计一次。",
+          "depends_on": [],
+          "elapsed_ms": 7,
+          "event_time": "orders.ordered_at",
+          "window_index": 0,
+          "schedule_position": 2
+        },
+        {
+          "kind": "catalog",
+          "status": "ok",
+          "sources": [
+            "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_count]"
+          ],
+          "task_id": "f5287240d3e24266a46390d3f57b60fc/3",
+          "citation": {
+            "quote": "时间窗内创建的订单记录数，含取消订单。",
+            "title": "订单量",
+            "chunk_id": "4f6056568a5d2c15bfca065885e37f2ba06d494cfcba02648f9a3653705090ea",
+            "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_count]",
+            "document_id": "0a462ef188e629bec3761148c5ee3070216a039cef85c73e87e39bd7bc40f178",
+            "source_type": "catalog",
+            "access_scope": "public",
+            "content_hash": "b18f08ac77d16e95f1f8caa5d8f3fccac5149d32490d14005f6fbab18d15aff7",
+            "heading_path": [
+              "订单量"
+            ],
+            "effective_date": null,
+            "authority_level": 4,
+            "retrieval_score": null,
+            "source_location": "#/metrics[metric_id=order_count]",
+            "document_version": "1.1.1-ads",
+            "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1"
+          },
+          "trace_id": "f174dda954064932842ff6b6bc51f17e",
+          "metric_id": "order_count",
+          "attempt_id": "a9555061198941b8bc7e8361b9e01843",
+          "depends_on": [
+            "f5287240d3e24266a46390d3f57b60fc/1"
+          ],
+          "error_code": null,
+          "schedule_position": 3
+        },
+        {
+          "kind": "catalog",
+          "status": "ok",
+          "sources": [
+            "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]"
+          ],
+          "task_id": "f5287240d3e24266a46390d3f57b60fc/4",
+          "citation": {
+            "quote": "按下单时间统计的商品明细记录数，每个明细主键计一次。",
+            "title": "订单商品明细数",
+            "chunk_id": "cf0172f1310337598de30701fd81be9d51d265d9962fd1f5c1c10e94c718dabb",
+            "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]",
+            "document_id": "1921956db016452864a9ad8ec966b98c8e47813534d236e49bd491231dda39af",
+            "source_type": "catalog",
+            "access_scope": "public",
+            "content_hash": "efec1e36037c8010127630aa30b313ec5e60e51d0137b936c3cfc844510021ef",
+            "heading_path": [
+              "订单商品明细数"
+            ],
+            "effective_date": null,
+            "authority_level": 4,
+            "retrieval_score": null,
+            "source_location": "#/metrics[metric_id=order_item_count]",
+            "document_version": "1.1.1-ads",
+            "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1"
+          },
+          "trace_id": "f174dda954064932842ff6b6bc51f17e",
+          "metric_id": "order_item_count",
+          "attempt_id": "a9555061198941b8bc7e8361b9e01843",
+          "depends_on": [
+            "f5287240d3e24266a46390d3f57b60fc/2"
+          ],
+          "error_code": null,
+          "schedule_position": 4
+        }
+      ],
+      "trace_id": "8ed688f65f4549279f9abaec43c1babe",
+      "knowledge": {
+        "reason": null,
+        "citations": [
+          {
+            "quote": "时间窗内创建的订单记录数，含取消订单。",
+            "title": "订单量",
+            "chunk_id": "4f6056568a5d2c15bfca065885e37f2ba06d494cfcba02648f9a3653705090ea",
+            "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_count]",
+            "document_id": "0a462ef188e629bec3761148c5ee3070216a039cef85c73e87e39bd7bc40f178",
+            "source_type": "catalog",
+            "access_scope": "public",
+            "content_hash": "b18f08ac77d16e95f1f8caa5d8f3fccac5149d32490d14005f6fbab18d15aff7",
+            "heading_path": [
+              "订单量"
+            ],
+            "effective_date": null,
+            "authority_level": 4,
+            "retrieval_score": null,
+            "source_location": "#/metrics[metric_id=order_count]",
+            "document_version": "1.1.1-ads",
+            "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1"
+          },
+          {
+            "quote": "按下单时间统计的商品明细记录数，每个明细主键计一次。",
+            "title": "订单商品明细数",
+            "chunk_id": "cf0172f1310337598de30701fd81be9d51d265d9962fd1f5c1c10e94c718dabb",
+            "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]",
+            "document_id": "1921956db016452864a9ad8ec966b98c8e47813534d236e49bd491231dda39af",
+            "source_type": "catalog",
+            "access_scope": "public",
+            "content_hash": "efec1e36037c8010127630aa30b313ec5e60e51d0137b936c3cfc844510021ef",
+            "heading_path": [
+              "订单商品明细数"
+            ],
+            "effective_date": null,
+            "authority_level": 4,
+            "retrieval_score": null,
+            "source_location": "#/metrics[metric_id=order_item_count]",
+            "document_version": "1.1.1-ads",
+            "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1"
+          }
+        ],
+        "execution_path": "catalog_exact",
+        "metric_results": [],
+        "evidence_status": "supported",
+        "embedding_version": null,
+        "metric_resolution": {
+          "method": "catalog_recovery",
+          "metric_ids": [
+            "order_count",
+            "order_item_count"
+          ]
+        },
+        "retrieval_strategy": "catalog_exact",
+        "retrieval_trace_id": "f174dda954064932842ff6b6bc51f17e",
+        "answer_prompt_version": null,
+        "query_embedding_called": false
+      },
+      "metric_id": null,
+      "attempt_id": "a9555061198941b8bc7e8361b9e01843",
+      "error_code": null,
+      "latency_ms": 1904,
+      "message_id": "12f2f908-42b0-4de0-9cfe-32b365477979",
+      "route_type": "hybrid",
+      "analysis_id": null,
+      "template_id": null,
+      "tool_traces": [
+        {
+          "code": null,
+          "status": null,
+          "trace_id": "f174dda954064932842ff6b6bc51f17e"
+        }
+      ],
+      "source_models": [],
+      "result_summary": {
+        "scalar": {},
+        "row_count": 1,
+        "truncated": false
+      },
+      "context_version": "conversation-rules-v1",
+      "conversation_id": "06a0a45a-7baf-4c51-a0df-681f9ec431a9",
+      "prompt_versions": [],
+      "execution_status": "ok",
+      "resolved_request": {
+        "limit": null,
+        "filters": {},
+        "group_by": [],
+        "sort_rule": null,
+        "conditions": [],
+        "metric_ids": [
+          "order_count",
+          "order_item_count"
+        ],
+        "time_windows": [
+          {
+            "end_date": "2025-02-01",
+            "start_date": "2025-01-01"
+          }
+        ],
+        "analysis_type": "summary",
+        "comparison_type": null,
+        "required_tool_calls": [
+          {
+            "step": 1,
+            "request": {
+              "filters": {},
+              "end_date": "2025-02-01",
+              "group_by": [],
+              "metric_id": "order_count",
+              "start_date": "2025-01-01"
+            },
+            "window_index": 0
+          },
+          {
+            "step": 2,
+            "request": {
+              "filters": {},
+              "end_date": "2025-02-01",
+              "group_by": [],
+              "metric_id": "order_item_count",
+              "start_date": "2025-01-01"
+            },
+            "window_index": 0
+          }
+        ],
+        "unresolved_business_rules": [],
+        "include_catalog_definitions": true
+      },
+      "template_version": null,
+      "context_operation": "catalog_recovery",
+      "metadata_versions": [
+        "3ebf12180846b88e4cc564500484a3574e1007bcc9ca534200294d1aee551cad"
+      ],
+      "original_question": "recover-catalog b5da4b96-4dc1-4cb9-aafd-87216d1e11d3",
+      "parameter_summary": null,
+      "data_build_version": null,
+      "execution_strategy": "hybrid",
+      "sql_asset_reference": null,
+      "metric_definition_version": null,
+      "started_at": "2026-11-16 01:36:18.352078+00:00",
+      "completed_at": "2026-11-16 01:36:20.264948+00:00"
+    },
+    "recovery_trace": {
+      "trace_id": "8ed688f65f4549279f9abaec43c1babe",
+      "model_attempts": [],
+      "tools": [
+        {
+          "trace_id": "f174dda954064932842ff6b6bc51f17e",
+          "strategy": "catalog_exact",
+          "query_embedding_called": false,
+          "resolution_method": "catalog_recovery",
+          "metric_ids": [
+            "order_count",
+            "order_item_count"
+          ],
+          "candidates": [
+            {
+              "document_id": "0a462ef188e629bec3761148c5ee3070216a039cef85c73e87e39bd7bc40f178",
+              "document_version": "1.1.1-ads",
+              "chunk_id": "4f6056568a5d2c15bfca065885e37f2ba06d494cfcba02648f9a3653705090ea",
+              "title": "订单量",
+              "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_count]",
+              "source_location": "#/metrics[metric_id=order_count]",
+              "heading_path": [
+                "订单量"
+              ],
+              "retrieval_score": null,
+              "authority_level": 4,
+              "source_type": "catalog",
+              "effective_date": null,
+              "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+              "content_hash": "b18f08ac77d16e95f1f8caa5d8f3fccac5149d32490d14005f6fbab18d15aff7",
+              "access_scope": "public",
+              "quote": "时间窗内创建的订单记录数，含取消订单。"
+            },
+            {
+              "document_id": "1921956db016452864a9ad8ec966b98c8e47813534d236e49bd491231dda39af",
+              "document_version": "1.1.1-ads",
+              "chunk_id": "cf0172f1310337598de30701fd81be9d51d265d9962fd1f5c1c10e94c718dabb",
+              "title": "订单商品明细数",
+              "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_item_count]",
+              "source_location": "#/metrics[metric_id=order_item_count]",
+              "heading_path": [
+                "订单商品明细数"
+              ],
+              "retrieval_score": null,
+              "authority_level": 4,
+              "source_type": "catalog",
+              "effective_date": null,
+              "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+              "content_hash": "efec1e36037c8010127630aa30b313ec5e60e51d0137b936c3cfc844510021ef",
+              "access_scope": "public",
+              "quote": "按下单时间统计的商品明细记录数，每个明细主键计一次。"
+            }
+          ],
+          "elapsed_ms": 9.949,
+          "metric_errors": {}
+        }
+      ]
+    },
+    "duplicate_query_id": "1629c201-25f0-4d5e-b817-0689ceb4a94e",
+    "metric_calls_initial": 2,
+    "metric_calls_during_recovery": 0,
+    "denied_owner": "conversation_not_found",
+    "changed_catalog": "recovery_checkpoint_invalid"
+  }
+}

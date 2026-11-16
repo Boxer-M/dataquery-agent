@@ -68,19 +68,12 @@ def sql_checkpoint(service, plan, routes, *, capture_snapshot=False):
         return None
 
 
-def tag_tasks(tasks, plan_id, attempt_id):
-    return [dict(task, task_id=f"{plan_id}/{index}", attempt_id=attempt_id)
-            for index, task in enumerate(tasks, 1)]
-
-
-def checkpoint_partial(plan, tasks, checkpoint, *, results, sql_answer, metric_results=None):
+def checkpoint_partial(checkpoint, *, results, sql_answer, metric_results=None, plan_id, attempt_id):
     payload = {"results": results, "metric_results": metric_results or []}
     if not checkpoint or len(json.dumps(payload, default=str).encode()) > 65536:
-        return {}, tasks
-    plan_id, attempt_id = uuid4().hex, uuid4().hex
-    recovery = {"plan_id": plan_id, "attempt_id": attempt_id, "status": "partial",
+        return None
+    return {"plan_id": plan_id, "attempt_id": attempt_id, "status": "partial",
                 "checkpoint": checkpoint, "sql_answer": sql_answer, **payload}
-    return {"plan": plan, "recovery": recovery}, tag_tasks(tasks, plan_id, attempt_id)
 
 
 def recover_catalog(agent, prior, owner, today, answer):
@@ -110,7 +103,7 @@ def recover_catalog(agent, prior, owner, today, answer):
     replacements = {task["metric_id"]: task for task in catalog_tasks(knowledge, missing)}
     attempt_id = uuid4().hex
     updated = [
-        dict(replacements[task["metric_id"]], task_id=task["task_id"], attempt_id=attempt_id)
+        dict(task | replacements[task["metric_id"]], attempt_id=attempt_id)
         if task["kind"] == "catalog" and task["metric_id"] in replacements else task
         for task in tasks
     ]
@@ -123,7 +116,7 @@ def recover_catalog(agent, prior, owner, today, answer):
     older_evidence = [task["citation"] for task in retained]
     definitions = "\n".join(f"{item['quote']}（{item['source_uri']} · {item['document_version']}）"
                             for item in older_evidence)
-    result = {"path": "hybrid", "plan": plan, "results": saved["results"], "metric_results": saved["metric_results"], "subtasks": updated,
+    result = {"path": "hybrid", "plan": plan, "plan_id": saved["plan_id"], "attempt_id": attempt_id, "results": saved["results"], "metric_results": saved["metric_results"], "subtasks": updated,
               "metric_resolution": resolution, "knowledge_result": knowledge,
               "recovery": dict(saved, attempt_id=attempt_id, previous_query_id=prior["query_id"],
                                status="completed" if complete else "partial")}
