@@ -1,99 +1,65 @@
 # DataQuery Agent
 
-DataQuery Agent 是面向电商经营分析的自然语言查询项目。它将中文问题映射为经过验证的指标请求，使用只读查询执行，并返回带有业务口径、数据来源和 Trace 的结果。
+DataQuery Agent 是一个面向电商经营分析的本地工作台。使用者可以用中文查询订单、商品和渠道指标，按月或按渠道查看图表，追问上一轮结果，并核对计算口径和来源。对于“查 1 月订单量，并引用 PDF 规则”的问题，系统分别返回数据库数值和文档原文，记录各项任务的执行状态。
 
-SQL Shed 是采用 CC0 许可的公开合成测试数据集，独立存放于 `sqlshed.ods`。数据用于数仓构建、指标对账和查询回归。另有 Olist 数据接入和审计测试。详见[数据接入说明](docs/SQLSHED_INGESTION.md)和[数据来源](docs/DATA_SOURCE.md)。
+SQL Shed 提供 CC0 公开合成电商数据，覆盖 7 张 ODS 表、4 张 DWD 事实表、5 张维度表、6 张 DWS 汇总表和 3 个 ADS 视图。目录收录 38 项指标，26 项已通过数据验证。[数据来源与入库验收](docs/SQLSHED_INGESTION.md)
 
-## 当前能力
+## 核心功能
 
-| 能力 | 说明 |
-|---|---|
-| 电商数仓 | 7 张 ODS、4 张 DWD、5 张 DIM、6 张 DWS、3 个 ADS 视图。[数仓设计与验收](docs/warehouse/README.md) |
-| 指标目录与只读服务 | 38 项指标中，26 项已验证、4 项待验证、8 项不支持。已验证指标可通过 Python 或 CLI 查询。[指标目录](metrics/warehouse_catalog_v1.json) · [查询服务](docs/warehouse/METRIC_QUERY_SERVICE.md) |
-| 自然语言指标解析 | 提取指标、时间和分组，遇到多个合理口径时返回澄清选项。[自然语言指标解析](docs/warehouse/INTENT_SEMANTIC_RESOLVER.md) |
-| 经营查询规划 | 支持多指标查询、跨期比较、排行和分组阈值筛选。[经营查询规划](docs/warehouse/BUSINESS_QUERY_PLANNING.md) |
-| 元数据与能力判断 | 校验数据库结构、关联键和权限，返回标准指标路径、明细候选或拒绝理由。明细候选仅用于规划。[元数据与能力判断](docs/warehouse/METADATA_CAPABILITY.md) |
-| 统一 Agent | 从中文问题选择单指标、多指标、受控明细或澄清路径，并关联模型、能力和查询 Trace。[统一查询入口](docs/warehouse/UNIFIED_AGENT.md) |
-| 受控明细查询 | 固定模板执行同单支付顺序与订单商品净额查询。[受控明细](docs/warehouse/CONTROLLED_DETAIL_EXECUTION.md) |
-| 动态 SQL | 对已批准的新分析生成候选 SQL，经 AST 与业务口径验证后只读执行。[动态 SQL](docs/warehouse/DYNAMIC_SQL_ENGINE.md) |
-| 会话与历史 | 支持结构化追问、澄清恢复和按查询 ID 追溯。[会话状态与查询历史](docs/warehouse/CONVERSATION_QUERY_HISTORY.md) |
-| 查询资产 | 独立验证并发布可复用的查询版本，在执行前检查依赖。[查询资产治理](docs/warehouse/QUERY_ASSET_GOVERNANCE.md) |
-| 业务知识 | 按权限检索版本化文档，引用原文，并与正式指标查询组合。[业务知识 RAG](docs/warehouse/BUSINESS_KNOWLEDGE_RAG.md) |
+- **自然语言问数**。标准指标、多指标比较与筛选、歧义澄清、会话追问、月度与渠道图表。
+- **可追溯执行**。指标服务使用受控 SQL。部分明细需求通过固定模板或经 SQLGlot 和 Capability 校验的 SQL 执行。History 可查看计划、任务、执行批次、工具和来源。
+- **审核式 PDF 知识库**。本地上传、逐页检查原生提取和 OCR、修订、签名审核及授权发布。问答返回有效版本的真实页码和原文。
+- **SQL 与 PDF 联合分析**。一个正式指标及统计窗口可结合一个明确 PDF 主题。DAG 保留可验证的部分结果和各节点失败原因。
 
-## 测试与验证
+## 技术与架构
 
-项目使用单元测试、版本化业务用例、真实 PostgreSQL 对账和 Gemini 端到端测试验证查询流程。各模块的复现命令和覆盖范围见对应文档。[统一 Agent 端到端报告](reports/warehouse/unified_agent_v1.json)
+React、TypeScript、Ant Design 和 ECharts 提供工作台，Vite 同源代理将请求送到 Python 3.12 的 FastAPI。PostgreSQL 16 保存数仓、会话和 pgvector 知识索引，SQLite 保存本机 PDF 暂存记录。pypdf 提取原生文本，macOS Apple Vision 识别扫描页。
 
-## Python 版本
-
-- Python 3.12
-- 项目虚拟环境：`.venv`
-
-## 激活虚拟环境
-
-在项目根目录执行：
-
-```bash
-source .venv/bin/activate
-python --version
+```mermaid
+flowchart LR
+    UI["React · ECharts · 文档审核"] --> Proxy["Vite 同源代理"] --> API["FastAPI · 会话与 Owner"]
+    API --> Agent["Unified Agent"]
+    Agent --> LLM["Gemini · 意图与候选计划"]
+    LLM --> Validator["确定性 Validator · Capability"]
+    Agent --> Validator
+    Validator --> DAG["顺序 DAG"]
+    DAG --> Data["Data Analysis Agent · 工具选择"]
+    DAG --> Knowledge["Knowledge Agent · 工具选择"]
+    Data --> SQL["只读指标 SQL"] --> PG["PostgreSQL 数仓"]
+    Knowledge --> Catalog["正式 Catalog 精确查找"]
+    Knowledge --> RAG["Gemini Embedding · pgvector · 原文验证"]
+    API --> PDF["pypdf / Apple Vision · 签名审核"]
+    PDF --> RAG
+    SQL --> Result["结果 · 引用 · Trace"]
+    Catalog --> Result
+    RAG --> Result
 ```
 
-退出虚拟环境：
+真实 Gemini 调用负责自然语言意图、候选计划、知识摘录及向量计算。专业 Agent 的工具选择与 DAG 调度由确定性代码执行。Capability 验证通过后，数据侧以只读账号取数。知识侧引用审核文档的有效页码及原文，正式指标定义走 Catalog 精确查找。联合请求的汇总节点依赖两个独立任务，数据库事实和文档摘录分别展示。[联合分析数据流](docs/warehouse/SQL_DOCUMENT_HYBRID_V1.md)
 
-```bash
-deactivate
+## 本地运行
+
+准备 Python 3.12、Node 22.12+ 和 Docker Compose。完整扫描 PDF 演示需要 macOS、Apple Vision 与 Xcode Command Line Tools。浏览器验收需要 Chrome。首次初始化后运行：
+
+```sh
+.venv/bin/python scripts/local_workspace.py --check
+.venv/bin/python scripts/local_workspace.py
 ```
 
-## 运行测试与复现数据审计
+打开 [本地工作台](http://127.0.0.1:5173/)。Ctrl-C 停止工作台和 API，数据库可独立停止。[首次安装、启动、停止及故障定位](docs/warehouse/LOCAL_RELEASE.md)
 
-运行默认测试套件：
+## 三组演示
 
-```bash
-PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
-```
+| 场景 | 操作 | 已核对的结果 |
+| --- | --- | --- |
+| 指标、追问与图表 | 查 2025 年 1 月订单量，追问 2 月；查 2025 全年后输入「按月拆分」 | 1 月 **2312**、2 月 **2049**，12 个 ECharts 月度数据点 |
+| 审核式 PDF 问答 | 上传样例，修订并审核发布第 2 页，查询修订行 | 第 2 页、审核文本行号、逐字引文和原件 SHA-256 |
+| SQL 与 PDF | 查 2025 年 1 月订单量，并引用 PDF 扫描页的 Order count 原文 | SQL **2312**，PDF 第 2 页 `Order count: 48`；History 可查看指标、PDF、汇总节点 |
 
-按[数据下载说明](data/README.md)准备 Olist 原始文件后，运行只读审计：
+[完整演示脚本、来源及复现步骤](docs/warehouse/RELEASE_DEMOS.md)
 
-```bash
-PYTHONPATH=src .venv/bin/python -m dataquery_agent.data_audit \
-  --raw-dir data/raw \
-  --output reports/d1_data_audit.json
-```
+## 验收、安全与限制
 
-审计脚本只读 `data/raw/`，不会自动删除、去重、补值或覆盖源文件。
+发布准备复跑现有 **23/23 个综合场景**并通过 Python 与前端回归。指标结果与独立 ODS 对账，PDF 引用与当前版本、Owner 权限和原件 Hash 核对。报告分别记录真实 Gemini 调用与受控故障注入。[发布验收](docs/warehouse/RELEASE_ACCEPTANCE_V1.md) · [既有 23 场景基线](reports/warehouse/sql_document_hybrid_v1.json)
 
-## 数据审计资料
-
-- 数据来源、字段、关系及能力边界：`docs/DATA_SOURCE.md`
-- 机器可读审计结果：`reports/d1_data_audit.json`
-
-## PostgreSQL ODS
-
-本地数据库使用 Docker Compose 管理的 PostgreSQL 16，只映射到 `127.0.0.1:5433`。本地密码保存在不进入 Git 的 `.env`。
-
-| ODS 表 | 记录数 |
-|---|---:|
-| `ods.customers` | 99,441 |
-| `ods.geolocation` | 1,000,163 |
-| `ods.order_items` | 112,650 |
-| `ods.order_payments` | 103,886 |
-| `ods.order_reviews` | 99,224 |
-| `ods.orders` | 99,441 |
-| `ods.products` | 32,951 |
-| `ods.sellers` | 3,095 |
-| `ods.product_category_name_translation` | 71 |
-
-在已创建 `ods` Schema 的空 `olist` 数据库中复现建表和导入：
-
-```bash
-docker compose up -d db
-scripts/import_olist_ods.sh
-```
-
-导入脚本发现任一目标表已存在时会停止，不会删除、清空或重复追加。只读验证命令：
-
-```bash
-docker compose exec -T db sh -c \
-  'PGPASSWORD="$POSTGRES_PASSWORD" psql -h 127.0.0.1 -U "$POSTGRES_USER" -d olist -w -f -' \
-  < sql/validate_olist_ods.sql
-```
+服务绑定环回地址。Vite 保管本地 Bearer 并校验 Host、Origin 及精确路由。发布检查 Owner、版本和审核签名，明确授权后才发送审核文本生成向量。原始 PDF 留在本机。项目适合单人本地演示，合成数据缺少实际利润、退款到账等口径。完整扫描 OCR 依赖 macOS。已知 Document ID 可在刷新后重开。首次上传回执丢失且没有 ID 时，需人工确认是否已创建。知识检索以标题作为线索，当前范围没有 Document ID 定向检索或完整文档列表。[安全核查与版本行为](docs/warehouse/RELEASE_ACCEPTANCE_V1.md)
