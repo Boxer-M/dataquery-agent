@@ -4,9 +4,10 @@ import re
 from datetime import timedelta
 
 from .business_results import RATIO_COMPONENT_METRICS
-from .intent_semantic_resolver import COVERAGE, MODIFIERS, SemanticResolver, alternation, outcome
+from .intent_semantic_resolver import ALIASES, COVERAGE, MODIFIERS, SemanticResolver, alternation, outcome
 from .intent_time import TIME, date_window, next_month
 from .metric_query_service import RequestError
+from .metric_entity import MetricEntityResolver, normalize
 
 MAX_STEPS = 6
 MAX_TOP = 100
@@ -64,6 +65,7 @@ class PlanValidator:
     def __init__(self, service):
         self.service = service
         self.resolver = SemanticResolver(service)
+        self.entities = MetricEntityResolver(service.metrics, ALIASES)
         metric_names = alternation(self.resolver.names)
         self.sort_pattern = re.compile(rf"按\s*({metric_names})\s*({alternation(DIRECTIONS)})")
         self.condition_pattern = re.compile(
@@ -88,18 +90,21 @@ class PlanValidator:
         )
 
     def metrics(self, question, proposal):
-        mentions = list(dict.fromkeys(match.group() for match in self.resolver.metric_pattern.finditer(question)))
-        remainder = self.resolver.metric_pattern.sub("", question)
+        resolved = self.entities.resolve(question)
+        remainder = self.entities.pattern.sub("", normalize(question))
         if re.search(r"收入|经营表现", remainder):
             reject("ambiguous_metric", "请明确想看商品销售金额、成功支付金额，还是其他已定义指标。", "clarify")
-        metrics = []
-        for name in mentions:
-            ids = self.resolver.names[name]
-            if len(ids) > 1:
+        for match in resolved["matches"]:
+            if len(match["metric_ids"]) > 1:
                 error = PlanError("clarify", "ambiguous_metric", "请明确采用哪种指标口径。")
-                error.response = self.resolver.clarify_metric(ids)
+                error.response = self.resolver.clarify_metric(match["metric_ids"])
                 raise error
-            mid = ids[0]
+        if resolved["unknown_ids"]:
+            reject("unknown_metric", "问题中包含正式目录未登记的指标 ID。", "clarify")
+        metrics = resolved["metric_ids"]
+        if len(metrics) > 5:
+            reject("metric_limit", "一次最多查询五个正式指标。")
+        for mid in metrics:
             metric = self.service.metrics[mid]
             if mid not in self.service.registry:
                 status = metric["definition_status"]
@@ -112,8 +117,6 @@ class PlanValidator:
                     r"\bAS\s+denominator\b|,\s*denominator\s+FROM\b", template, re.I
                 ):
                     reject("ratio_components_missing", f"指标「{metric['name_zh']}」缺少可验证的比率组成。")
-            if mid not in metrics:
-                metrics.append(mid)
         if UNSUPPORTED.search(remainder):
             reject("unsupported_analysis", "当前支持标准指标并列、跨期比较、排行和分组阈值筛选。")
         if not metrics:

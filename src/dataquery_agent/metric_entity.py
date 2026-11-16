@@ -16,6 +16,9 @@ def normalize(text):
     return " ".join(unicodedata.normalize("NFKC", text).casefold().split())
 
 
+METRIC_ID_TOKEN = re.compile(r"(?<![a-z0-9_])[a-z][a-z0-9]*(?:_[a-z0-9]+)+(?![a-z0-9_])")
+
+
 class MetricEntityResolver:
     def __init__(self, metrics, aliases):
         self.terms = defaultdict(dict)
@@ -35,11 +38,15 @@ class MetricEntityResolver:
         ) or r"(?!)")
 
     def resolve(self, question):
+        text = normalize(question)
         matches = []
-        for term in dict.fromkeys(match.group() for match in self.pattern.finditer(normalize(question))):
+        for term in dict.fromkeys(match.group() for match in self.pattern.finditer(text)):
             ids = self.terms[term]
             matches.append({"term": term, "metric_ids": list(ids),
                             "method": next(iter(ids.values())) if len(ids) == 1 else "ambiguous"})
         ids = list(dict.fromkeys(mid for match in matches for mid in match["metric_ids"]))
-        return {"status": "ambiguous" if len(ids) > 1 else "unique" if ids else "not_found",
-                "metric_ids": ids, "matches": matches}
+        ambiguous = any(len(match["metric_ids"]) > 1 for match in matches)
+        return {"status": "ambiguous" if ambiguous else "multiple" if len(ids) > 1 else "unique" if ids else "not_found",
+                "metric_ids": ids, "matches": matches,
+                "unknown_ids": list(dict.fromkeys(token for token in METRIC_ID_TOKEN.findall(text)
+                                                   if token not in self.terms))}
