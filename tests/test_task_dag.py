@@ -69,6 +69,9 @@ class TaskDagPostgresTests(unittest.TestCase):
         first, second, blocked, cited = result["subtasks"]
         self.assertEqual([task["status"] for task in result["subtasks"]], ["error", "ok", "skipped", "ok"])
         self.assertEqual(blocked["error_code"], "dependency_failed")
+        self.assertNotIn("agent_call", blocked)
+        self.assertEqual([call["agent"] for call in answer["trace"]["agent_calls"]],
+                         ["data_analysis", "data_analysis", "knowledge"])
         self.assertEqual(blocked["failed_dependencies"], [first["task_id"]])
         self.assertEqual(cited["depends_on"], [second["task_id"]])
         self.assertEqual(cited["citation"]["quote"], service.metrics["order_item_count"]["definition"])

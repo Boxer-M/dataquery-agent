@@ -45,7 +45,9 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         "answer_prompt_version": knowledge.get("answer_prompt_version"),
         "metric_results": result.get("metric_results", []),
     }
+    agent_calls = trace.get("agent_calls", [])
     return {
+        **({"agent_calls": agent_calls} if agent_calls else {}),
         **({key: result[key] for key in ("plan_id", "attempt_id") if key in result}),
         **({"recovery": result["recovery"]} if "recovery" in result else {}),
         **({"subtasks": result["subtasks"]} if "subtasks" in result else {}),

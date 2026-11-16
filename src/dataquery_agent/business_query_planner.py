@@ -105,6 +105,8 @@ class BusinessQueryPlanner:
         trace.update(status="error", elapsed_ms=round((monotonic() - started) * 1000))
         if not isinstance(result, dict):
             return dict(trace, error_code="invalid_tool_response"), None
+        if "agent_call" in result:
+            trace["agent_call"] = result["agent_call"]
         trace["trace_id"] = result.get("trace_id")
         trace["sources"] = result.get("sources", [])
         if result.get("status") != "ok":

@@ -103,7 +103,8 @@ def recover_catalog(agent, prior, owner, today, answer):
     replacements = {task["metric_id"]: task for task in catalog_tasks(knowledge, missing)}
     attempt_id = uuid4().hex
     updated = [
-        dict(task | replacements[task["metric_id"]], attempt_id=attempt_id)
+        dict({key: value for key, value in task.items() if key != "agent_call"}
+             | replacements[task["metric_id"]], attempt_id=attempt_id)
         if task["kind"] == "catalog" and task["metric_id"] in replacements else task
         for task in tasks
     ]
