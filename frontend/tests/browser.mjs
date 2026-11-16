@@ -8,9 +8,12 @@ const browser = await chromium.launch({
 try {
   const page = await browser.newPage({ viewport: { width: 1360, height: 850 } })
   const submitted = []
+  const featureModules = new Set()
   const browserErrors = []
   page.on('pageerror', (error) => browserErrors.push(error.message))
   page.on('request', (request) => {
+    const path = new URL(request.url()).pathname
+    if (path === '/src/query-result.tsx' || path === '/src/query-history.tsx') featureModules.add(path)
     if (request.url() === origin + '/api/chat') {
       submitted.push(request.postDataJSON())
       assert.equal(request.headers().authorization, undefined)
@@ -18,6 +21,7 @@ try {
   })
   await page.goto(origin)
   await page.getByText('API 已连接', { exact: true }).waitFor()
+  assert.equal(featureModules.size, 0)
   if (process.env.WORKSPACE_EMPTY_SCREENSHOT) await page.screenshot({ path: process.env.WORKSPACE_EMPTY_SCREENSHOT })
   const created = page.waitForResponse(response => response.url() === origin + '/api/conversations')
   await page.getByRole('button', { name: '新建会话' }).click()
@@ -34,6 +38,8 @@ try {
   assert.equal(first.status, 'completed', first.error?.code)
   assert.equal(first.rows[0].value, '2312')
   await page.locator('.metric-card .metric-value').filter({ hasText: /^2312$/ }).waitFor()
+  assert.ok(featureModules.has('/src/query-result.tsx'))
+  assert.ok(!featureModules.has('/src/query-history.tsx'))
   if (process.env.WORKSPACE_SCREENSHOT) await page.screenshot({ path: process.env.WORKSPACE_SCREENSHOT })
 
   const nextResponse = page.waitForResponse(response => response.url() === origin + '/api/chat', { timeout: 100_000 })
@@ -45,6 +51,23 @@ try {
   assert.equal(first.conversation_id, conversation_id)
   assert.equal(second.conversation_id, conversation_id)
   assert.notEqual(first.message_id, second.message_id)
+
+  const groupedResponse = page.waitForResponse(response => response.url() === origin + '/api/chat', { timeout: 100_000 })
+  await submit('查询2025年1月按渠道统计订单量')
+  const grouped = await (await groupedResponse).json()
+  assert.equal(grouped.status, 'completed')
+  assert.equal(grouped.rows_truncated, false)
+  const expected = [['mobile', '685'], ['partner', '207'], ['phone', '83'], ['web', '1337']]
+  assert.deepEqual(grouped.rows.map(row => [row.bucket, row.value]), expected)
+  const table = page.locator('.message').last().getByRole('table')
+  await table.waitFor()
+  for (const [bucket, value] of expected) {
+    const row = table.getByRole('row').filter({ has: page.getByRole('cell', { name: bucket, exact: true }) })
+    await row.getByRole('cell', { name: value, exact: true }).waitFor()
+  }
+  if (process.env.WORKSPACE_GROUPED_SCREENSHOT) {
+    await page.screenshot({ path: process.env.WORKSPACE_GROUPED_SCREENSHOT, animations: 'disabled' })
+  }
 
   const hybridResponse = page.waitForResponse(response => response.url() === origin + '/api/chat', { timeout: 100_000 })
   await submit('查询2025年1月订单量和订单商品明细数，并给出正式定义')
@@ -77,6 +100,7 @@ try {
   const receipt = await historyResponse
   assert.equal(receipt.request().headers().authorization, undefined)
   assert.equal(receipt.status(), 200)
+  assert.ok(featureModules.has('/src/query-history.tsx'))
   const history = await receipt.json()
   for (const key of ['plan_id', 'attempt_id', 'tasks', 'capability', 'tools']) {
     assert.deepEqual(history.trace[key], hybrid.trace[key], key)
@@ -198,6 +222,7 @@ try {
     browser: 'Chrome', origin, first: { status: first.status, value: first.rows[0].value, query_id: first.query_id },
     followup: { status: second.status, value: second.rows[0].value, query_id: second.query_id },
     hybrid: { query_id: hybrid.query_id, values: ['2312', '5538'], verified_citations: hybrid.citations.length },
+    grouped: { query_id: grouped.query_id, rows: expected, visualization: 'table' },
     history: { same_trace: true, tasks: history.trace.tasks.length, capability: history.trace.capability.length, tools: history.trace.tools.length, additional_chat_requests: 0 },
     clarification: { status: clarify.status, selection: choice.metric_id, followup_status: selection.status, query_id: selection.query_id },
     retry_same_message_id: true, browser_authorization_sent: false,
