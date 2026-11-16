@@ -49,7 +49,6 @@ button { font: inherit; }
 .loading, .result-heading, .result-meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .result-heading { font-weight: 650; }
 .answer-text { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; line-height: 1.7; }
-.choices { padding-left: 22px; margin: 0; line-height: 1.7; }
 .result-meta { color: #58716b; font-size: 12px; }
 .result-meta code { overflow-wrap: anywhere; }
 .composer-area { padding: 9px 28px 25px; }
@@ -74,3 +73,21 @@ button { font: inherit; }
   .starters { grid-template-columns: 1fr; }
   .empty-state p { margin-bottom: 15px; }
 }
+
+.metric-card { padding: 15px 17px; background: #edf7f1; border: 1px solid #d4e9de; border-radius: 9px; }
+.metric-card h3, .metric-definitions h3, .definition h4 { margin: 0 0 6px; font-size: 14px; }
+.metric-value { display: inline-block; margin-right: 8px; color: #10594c; font-size: clamp(20px, 4vw, 32px); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.metric-definitions { display: grid; gap: 8px; }
+.definition { padding: 12px; border: 1px solid #e0e8e2; border-radius: 8px; }
+.definition p { margin: 0 0 6px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.definition small, .choices small { color: #58716b; }
+.definition .unavailable { display: block; }
+.result-details { font-size: 13px; min-width: 0; }
+.result-details summary { width: fit-content; cursor: pointer; color: #176351; }
+.result-details dl, .result-details blockquote, .result-details pre { margin: 8px 0 0; padding: 9px; background: #f4f8f5; border-radius: 6px; overflow-wrap: anywhere; }
+.result-details pre, .result-details blockquote { white-space: pre-wrap; }
+.result-details dl div { display: flex; align-items: baseline; gap: 8px; }
+.result-details dt { flex: 0 0 48px; color: #58716b; }
+.result-details dd { min-width: 0; margin: 0; }
+.choices { display: grid; gap: 8px; line-height: 1.7; }
+.choices > div { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }

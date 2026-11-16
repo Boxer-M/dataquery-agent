@@ -1,74 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
-import { Alert, Button, Input, Spin, Table, Tag } from 'antd'
+import { Alert, Button, Input, Spin } from 'antd'
 import {
   ApartmentOutlined, ArrowUpOutlined, BarChartOutlined, CalendarOutlined,
   MessageOutlined, PlusOutlined, ReloadOutlined,
 } from '@ant-design/icons'
 import { createConversation, health, RequestError, sendQuestion } from './api'
-import type { Cell, ChatRequest, ChatResponse, Row, Status } from './api'
+import type { ChatRequest, ChatResponse } from './api'
+import { QueryResult } from './query-result'
 
 type Message = { request: ChatRequest; response?: ChatResponse; error?: string; retryable?: boolean }
-
-const statuses: Record<Status, { label: string; color: string }> = {
-  completed: { label: '查询完成', color: 'success' },
-  partial: { label: '部分完成', color: 'warning' },
-  clarification_required: { label: '需要澄清', color: 'processing' },
-  failed: { label: '查询失败', color: 'error' },
-}
 
 const starterQuestions = [
   { label: '查询订单量', icon: <BarChartOutlined />, question: '2025年1月订单量是多少？' },
   { label: '比较订单与明细', icon: <ApartmentOutlined />, question: '查询2025年1月订单量和订单商品明细数，并给出正式定义' },
   { label: '理解退货口径', icon: <CalendarOutlined />, question: '商品明细退货率怎么定义？' },
 ]
-
-const equivalentLabels: Record<string, string> = {
-  bucket: '分组', value: '数值', month: '月份', start_date: '开始日期', end_date: '结束日期',
-  numerator: '分子', denominator: '分母', order_count: '订单量', order_item_count: '商品明细数',
-  captured_payment_amount: '成功支付金额',
-}
-
-function flatten(row: Row): Row {
-  const { metrics, ...rest } = row
-  if (!metrics || typeof metrics !== 'object') return rest
-  return { ...rest, ...Object.fromEntries(Object.entries(metrics).map(([key, cell]) => [
-    key, cell && typeof cell === 'object' && 'value' in cell ? cell.value : cell,
-  ])) }
-}
-
-function cellText(value: Cell | undefined): string {
-  if (value == null) return '—'
-  if (typeof value !== 'object') return String(value)
-  return JSON.stringify(value)
-}
-
-function QueryResult({ result }: { result: ChatResponse }) {
-  const state = statuses[result.status]
-  const rows = result.rows.map(flatten)
-  const keys = Array.from(new Set(rows.flatMap(Object.keys)))
-  return <>
-    <div className="result-heading"><span>查询结果</span><Tag color={state.color}>{state.label}</Tag></div>
-    {result.answer && <p className="answer-text">{result.answer}</p>}
-    {result.error && <Alert type={result.status === 'failed' ? 'error' : 'warning'} showIcon
-      title={result.error.message} description={result.error.code} />}
-    {result.clarification_choices.length > 0 && <ul className="choices">
-      {result.clarification_choices.map((choice, index) => <li key={choice.metric_id ?? index}>
-        <strong>{choice.name ?? choice.metric_id}</strong>{choice.definition && <span> · {choice.definition}</span>}
-      </li>)}
-    </ul>}
-    {rows.length > 0 && <Table<Row>
-      size="small" pagination={false} scroll={{ x: 'max-content' }}
-      columns={keys.map(key => ({ key, title: equivalentLabels[key] ?? key, render: (_, row) => cellText(row[key]) }))}
-      dataSource={rows} rowKey={(_, index) => String(index)}
-    />}
-    {result.rows_truncated && <Alert type="warning" showIcon title="结果已截断，表格显示 API 返回的部分数据。" />}
-    <div className="result-meta">
-      {typeof result.row_count === 'number' && <span>{result.row_count} 行</span>}
-      {result.query_id && <span>查询 ID <code>{result.query_id}</code></span>}
-      {result.replayed && <span>已重放原查询回执</span>}
-    </div>
-  </>
-}
 
 export function App() {
   const [connection, setConnection] = useState<'checking' | 'online' | 'offline'>('checking')
@@ -120,8 +66,8 @@ export function App() {
     }
   }
 
-  function submit() {
-    const question = draft.trim()
+  function submit(input = draft) {
+    const question = input.trim()
     if (!question || question.length > 500) return
     void run(async () => {
       const active = conversation ?? await createConversation()
@@ -168,10 +114,12 @@ export function App() {
             <span className="starter-icon">{item.icon}</span><span>{item.label}</span><ArrowUpOutlined className="starter-arrow" />
           </button>)}</div>
         </div>}
-        <div className="messages">{messages.map(message => <article className="message" key={message.request.message_id}>
+        <div className="messages">{messages.map((message, index) => <article className="message" key={message.request.message_id}>
           <div className="user-message"><span>你</span><p>{message.request.question}</p></div>
           <div className="agent-message">
-            {message.response ? <QueryResult result={message.response} />
+            {message.response ? <QueryResult result={message.response}
+              busy={busy || messages.slice(index + 1).some(item => item.response && item.response.status !== 'failed')}
+              onClarify={submit} />
               : message.error ? <Alert type="error" showIcon title={message.error} />
               : <div className="loading"><Spin size="small" /> 正在查询</div>}
             {message.retryable && <Button icon={<ReloadOutlined />} disabled={busy}
