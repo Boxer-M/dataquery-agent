@@ -1,0 +1,418 @@
+{
+  "browser": {
+    "browser": "Chrome",
+    "origin": "http://127.0.0.1:5173",
+    "first": {
+      "status": "completed",
+      "value": "2312",
+      "query_id": "f1f3728d-9316-4860-9edc-7ede81317a78"
+    },
+    "followup": {
+      "status": "completed",
+      "value": "2049",
+      "query_id": "c4e303e8-45f0-446e-8ca1-2a1fdc5d2d81"
+    },
+    "hybrid": {
+      "query_id": "a91ceace-e594-4530-9818-b9d9edef93dd",
+      "values": [
+        "2312",
+        "5538"
+      ],
+      "verified_citations": 2
+    },
+    "grouped": {
+      "query_id": "a6c2cae5-7a0e-432b-b664-d2bd7d69b460",
+      "rows": [
+        [
+          "mobile",
+          "685"
+        ],
+        [
+          "partner",
+          "207"
+        ],
+        [
+          "phone",
+          "83"
+        ],
+        [
+          "web",
+          "1337"
+        ]
+      ],
+      "visualization": "bar"
+    },
+    "monthly": {
+      "query_id": "3472cf40-2128-4ded-b8fa-c351f67ea18e",
+      "rows": [
+        [
+          "2025-01",
+          "2312"
+        ],
+        [
+          "2025-02",
+          "2049"
+        ],
+        [
+          "2025-03",
+          "2225"
+        ],
+        [
+          "2025-04",
+          "2251"
+        ],
+        [
+          "2025-05",
+          "2306"
+        ],
+        [
+          "2025-06",
+          "2275"
+        ],
+        [
+          "2025-07",
+          "2350"
+        ],
+        [
+          "2025-08",
+          "2236"
+        ],
+        [
+          "2025-09",
+          "2262"
+        ],
+        [
+          "2025-10",
+          "2318"
+        ],
+        [
+          "2025-11",
+          "3437"
+        ],
+        [
+          "2025-12",
+          "4128"
+        ]
+      ],
+      "visualization": "line"
+    },
+    "history": {
+      "same_trace": true,
+      "tasks": 4,
+      "capability": 4,
+      "tools": 5,
+      "additional_chat_requests": 0
+    },
+    "clarification": {
+      "status": "clarification_required",
+      "selection": "item_net_sales_amount",
+      "followup_status": "completed",
+      "query_id": "b2467b07-baff-4fae-bdd4-bd482a8ad203"
+    },
+    "retry_same_message_id": true,
+    "idempotent_replay_query_id": "9a44dd14-6be5-4a47-84d4-f4b294a06731",
+    "pdf": {
+      "query_id": "28a60340-d042-46d8-a2bd-af7d68f981f3",
+      "citation": {
+        "document_id": "2a1f34115b29740be97e7f1c15fb6f05d281f74ee4365e9e7ea114266c0d9e06",
+        "document_version": "pdf-8f283f2df4d43b697b774009465e06ff43439794045324a6",
+        "chunk_id": "10437b118496b305480c05d63570d7efe82606a12afc72de60f0c7f98350d82f",
+        "title": "Synthetic PDF verification",
+        "source_uri": "reviewed-pdf:integrated-cfd2211e3ae74d9a",
+        "source_location": "page:2;lines:1-3",
+        "source_type": "reviewed_pdf",
+        "quote": "Order count: 48",
+        "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+        "page_number": 2,
+        "line_start": 1,
+        "line_end": 3,
+        "extraction_method": "ocr",
+        "access_scope": "owner"
+      },
+      "history_matches": true
+    },
+    "browser_authorization_sent": false,
+    "simulated": [
+      "interrupted_network",
+      "partial_truncated_precision_html",
+      "history_skipped_recovery_missing",
+      "failed",
+      "gateway_timeout"
+    ]
+  },
+  "document_ui": {
+    "native": [
+      {
+        "page": 1,
+        "method": "native_text",
+        "status": "ok",
+        "error": null,
+        "extractor_version": "pypdf 7.1.0"
+      }
+    ],
+    "scanned": [
+      {
+        "page": 1,
+        "method": "native_text",
+        "status": "ok",
+        "error": null,
+        "extractor_version": "pypdf 7.1.0"
+      },
+      {
+        "page": 2,
+        "method": "ocr",
+        "status": "ok",
+        "error": null,
+        "extractor_version": "Apple Vision revision 3, Version 15.7.7 (Build 24G720)"
+      },
+      {
+        "page": 3,
+        "method": "ocr",
+        "status": "no_text",
+        "error": null,
+        "extractor_version": "Apple Vision revision 3, Version 15.7.7 (Build 24G720)"
+      }
+    ],
+    "review_version": "pdf-152493339aa82c8fc4dfce3ed3a5be0fa463f2d9d4f160ca",
+    "publication": {
+      "document_id": "1f0e7d04e0f92cfc9ef85031a3f137272dbfbbb58d5c66f713aecc04c5be5e23",
+      "version": "pdf-152493339aa82c8fc4dfce3ed3a5be0fa463f2d9d4f160ca",
+      "indexed": true
+    },
+    "repeat_publication": {
+      "document_id": "1f0e7d04e0f92cfc9ef85031a3f137272dbfbbb58d5c66f713aecc04c5be5e23",
+      "version": "pdf-152493339aa82c8fc4dfce3ed3a5be0fa463f2d9d4f160ca",
+      "indexed": false
+    },
+    "citation": {
+      "document_id": "1f0e7d04e0f92cfc9ef85031a3f137272dbfbbb58d5c66f713aecc04c5be5e23",
+      "document_version": "pdf-152493339aa82c8fc4dfce3ed3a5be0fa463f2d9d4f160ca",
+      "chunk_id": "f115c4d45ee76a508860ace3372d9b2347a75f944386e6895b12c65051f2a383",
+      "title": "Document UI synthetic PDF verification",
+      "source_uri": "reviewed-pdf:api-7d555917-2f3a-4f6e-84b5-b582b9c364c7",
+      "source_location": "page:2;lines:1-4",
+      "source_type": "reviewed_pdf",
+      "quote": "Reviewed UI appendix: confirmed by human review.",
+      "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+      "page_number": 2,
+      "line_start": 1,
+      "line_end": 4,
+      "extraction_method": "ocr",
+      "access_scope": "owner"
+    },
+    "query_id": "eb14004a-b331-4cf8-947c-72c8af0175d1",
+    "failure": "document_service_unavailable",
+    "upload_network_attempts": 1,
+    "stale": {
+      "status": 409,
+      "code": "stale_upload_version"
+    },
+    "browser_authorization_sent": false,
+    "index_batches": [
+      {
+        "task_type": "RETRIEVAL_DOCUMENT",
+        "elapsed_ms": 2278,
+        "token_counts": [
+          null,
+          null
+        ]
+      }
+    ],
+    "injected_timeouts": 1
+  },
+  "embedding_batches": [
+    {
+      "task_type": "RETRIEVAL_DOCUMENT",
+      "elapsed_ms": 2152,
+      "token_counts": [
+        null,
+        null
+      ]
+    },
+    {
+      "task_type": "RETRIEVAL_QUERY",
+      "elapsed_ms": 1725,
+      "token_counts": [
+        null
+      ]
+    },
+    {
+      "task_type": "RETRIEVAL_QUERY",
+      "elapsed_ms": 1601,
+      "token_counts": [
+        null
+      ]
+    }
+  ],
+  "api_requests": [
+    {
+      "query_id": "eb14004a-b331-4cf8-947c-72c8af0175d1",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "knowledge",
+          "attempt": 1,
+          "prompt_version": "knowledge-extractive-v1",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 534,
+            "output": 111,
+            "total": 645
+          },
+          "status": "received",
+          "elapsed_ms": 3412
+        }
+      ]
+    },
+    {
+      "query_id": "f1f3728d-9316-4860-9edc-7ede81317a78",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 214,
+            "output": 37,
+            "total": 251
+          },
+          "status": "received",
+          "elapsed_ms": 3235
+        }
+      ]
+    },
+    {
+      "query_id": "c4e303e8-45f0-446e-8ca1-2a1fdc5d2d81",
+      "replayed": false,
+      "model_attempts": []
+    },
+    {
+      "query_id": "a6c2cae5-7a0e-432b-b664-d2bd7d69b460",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 216,
+            "output": 66,
+            "total": 282
+          },
+          "status": "received",
+          "elapsed_ms": 2477
+        }
+      ]
+    },
+    {
+      "query_id": "c90580ce-5570-40f1-8428-79222705b67e",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 212,
+            "output": 56,
+            "total": 268
+          },
+          "status": "received",
+          "elapsed_ms": 2897
+        }
+      ]
+    },
+    {
+      "query_id": "3472cf40-2128-4ded-b8fa-c351f67ea18e",
+      "replayed": false,
+      "model_attempts": []
+    },
+    {
+      "query_id": "a91ceace-e594-4530-9818-b9d9edef93dd",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "status": "error",
+          "error_type": "ServerError",
+          "http_status": 503,
+          "elapsed_ms": 2614
+        },
+        {
+          "stage": "planning",
+          "attempt": 2,
+          "prompt_version": "business-plan-v1",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 793,
+            "output": 118,
+            "total": 911
+          },
+          "status": "received",
+          "elapsed_ms": 2642
+        }
+      ]
+    },
+    {
+      "query_id": "b42ca03c-d789-402c-87f7-56089e4322fc",
+      "replayed": false,
+      "model_attempts": []
+    },
+    {
+      "query_id": "b2467b07-baff-4fae-bdd4-bd482a8ad203",
+      "replayed": false,
+      "model_attempts": []
+    },
+    {
+      "query_id": "9a44dd14-6be5-4a47-84d4-f4b294a06731",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 220,
+            "output": 32,
+            "total": 252
+          },
+          "status": "received",
+          "elapsed_ms": 2369
+        }
+      ]
+    },
+    {
+      "query_id": "9a44dd14-6be5-4a47-84d4-f4b294a06731",
+      "replayed": true,
+      "model_attempts": []
+    },
+    {
+      "query_id": "28a60340-d042-46d8-a2bd-af7d68f981f3",
+      "replayed": false,
+      "model_attempts": [
+        {
+          "stage": "knowledge",
+          "attempt": 1,
+          "prompt_version": "knowledge-extractive-v1",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 534,
+            "output": 108,
+            "total": 642
+          },
+          "status": "received",
+          "elapsed_ms": 2859
+        }
+      ]
+    }
+  ],
+  "fixture_deactivated": true,
+  "build_contains_local_credentials": false
+}

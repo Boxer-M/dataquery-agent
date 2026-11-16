@@ -14,6 +14,7 @@ button { font: inherit; }
 .brand div span { display: block; color: #9eb9b8; margin-top: 5px; font-size: 12px; }
 .mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; background: #bce9d7; color: #164f46; font-size: 20px; }
 .new-session.ant-btn { width: 100%; height: 41px; justify-content: flex-start; background: #e1f4eb; color: #123e38; border: 0; font-weight: 650; }
+.document-entry.ant-btn { justify-content: flex-start; background: #214049; border-color: #31505a; color: #e4f0ef; }
 .sidebar-label { color: #9eb9b8; font-size: 12px; padding: 17px 9px 0; }
 .session { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 12px; border-radius: 9px; background: #214049; }
 .session div { min-width: 0; }

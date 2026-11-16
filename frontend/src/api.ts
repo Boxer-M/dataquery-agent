@@ -69,16 +69,17 @@ export class RequestError extends Error {
   }
 }
 
-async function jsonRequest<T>(path: string, method: 'GET' | 'POST', body?: ChatRequest): Promise<T> {
+export async function jsonRequest<T>(path: string, method: 'GET' | 'POST', body?: object): Promise<T> {
   const controller = new AbortController()
   const deadline = window.setTimeout(() => controller.abort(), path === '/api/health' ? 4_000 : 95_000)
+  const pdf = body instanceof File
   try {
     const response = await fetch(path, {
       method,
       mode: 'same-origin',
       cache: 'no-store',
-      headers: { 'X-DataQuery-Client': 'workspace', ...(body ? { 'Content-Type': 'application/json' } : {}) },
-      body: body ? JSON.stringify(body) : undefined,
+      headers: { 'X-DataQuery-Client': 'workspace', ...(body ? { 'Content-Type': pdf ? 'application/pdf' : 'application/json' } : {}) },
+      body: pdf ? body : body ? JSON.stringify(body) : undefined,
       signal: controller.signal,
     })
     const value = await response.json().catch(() => null)
@@ -94,7 +95,9 @@ async function jsonRequest<T>(path: string, method: 'GET' | 'POST', body?: ChatR
   } catch (error) {
     if (error instanceof RequestError) throw error
     if (controller.signal.aborted) throw new RequestError(
-      method === 'GET' ? '读取超时，请重试。' : '请求超时，可重试原消息。', true)
+      method === 'GET' ? '读取超时，请重试。'
+        : path === '/api/chat' ? '请求超时，可重试原消息。'
+          : pdf ? '上传超时，结果待确认。' : '请求超时，请检查状态。', true)
     throw new RequestError('网络连接中断，请确认本地 API 正在运行。', true)
   } finally {
     window.clearTimeout(deadline)
