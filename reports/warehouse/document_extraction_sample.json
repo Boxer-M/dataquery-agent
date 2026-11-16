@@ -1,0 +1,69 @@
+{
+  "document_id": "1bfb7567c8310b42ca537766bb2fa5b2c8df5d43f7138ea765185ca5d4974556",
+  "owner_scope": "856083a95d41ce9b71295afed5426d242d8be18805239956cba20fe82ba84a5a",
+  "file_sha256": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+  "document_version": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+  "extraction_version": "pdf-extraction-v1",
+  "review_state": "unreviewed",
+  "ocr_bounds_space": "normalized_rotated_crop_box_lower_left",
+  "pages": [
+    {
+      "page": 1,
+      "method": "native_text",
+      "text": "Native verification page\n本地样本：订单数量\nOrder count: 24",
+      "extractor_version": "pypdf 7.1.0",
+      "status": "ok",
+      "error": null,
+      "blocks": []
+    },
+    {
+      "page": 2,
+      "method": "ocr",
+      "text": "Scanned verification page\n扫描样本：订单数量\nOrder count: 48",
+      "extractor_version": "Apple Vision revision 3, Version 15.7.7 (Build 24G720)",
+      "status": "ok",
+      "error": null,
+      "blocks": [
+        {
+          "text": "Scanned verification page",
+          "bounds": [
+            0.08139534954507913,
+            0.7694013310188955,
+            0.546511621026121,
+            0.0654823891075117
+          ],
+          "confidence": 1
+        },
+        {
+          "text": "扫描样本：订单数量",
+          "bounds": [
+            0.07994186009194416,
+            0.5554323743830714,
+            0.3997093052745196,
+            0.07480018260473686
+          ],
+          "confidence": 0.5
+        },
+        {
+          "text": "Order count: 48",
+          "bounds": [
+            0.0813953476636755,
+            0.4232558130955437,
+            0.27034884212419924,
+            0.060465116987207246
+          ],
+          "confidence": 0.5
+        }
+      ]
+    },
+    {
+      "page": 3,
+      "method": "ocr",
+      "text": "",
+      "extractor_version": "Apple Vision revision 3, Version 15.7.7 (Build 24G720)",
+      "status": "no_text",
+      "error": null,
+      "blocks": []
+    }
+  ]
+}
