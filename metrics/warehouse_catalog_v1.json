@@ -1,6 +1,9 @@
 {
   "catalog_version": "1.1.1-ads",
   "design_only": false,
+  "visualization_units": {
+    "order_count": {"unit": "笔", "unit_type": "count"}
+  },
   "approved_base": {
     "path": "metrics/ecommerce_v1.json",
     "version": "1.0.0",

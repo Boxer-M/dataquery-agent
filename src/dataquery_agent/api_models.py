@@ -6,6 +6,7 @@ from pydantic import BaseModel, ConfigDict, Field, JsonValue, StringConstraints
 from typing_extensions import Annotated
 
 from .conversation_context import redact
+from .visualization import Visualization, chart_metadata
 
 Status = Literal["completed", "partial", "clarification_required", "failed"]
 STATUS = {"ok": "completed", "partial": "partial", "clarify": "clarification_required"}
@@ -97,6 +98,8 @@ class QueryResponse(BaseModel):
     clarification_choices: list[MetricDefinition] = Field(default_factory=list)
     trace: PublicTrace
     replayed: bool = False
+    visualization: Visualization | None = None
+    visualization_unavailable_reason: str | None = None
 
 
 def text(value, limit=MAX_TEXT):
@@ -183,11 +186,17 @@ def public_response(data, *, history=False):
         error = ApiError(code=code, message="部分任务未能完成。")
     citations = [projection(Citation, item, ids={"document_id", "chunk_id"})
                  for item in knowledge.get("citations", [])[:10]]
+    public_rows = [metric_row(row) for row in rows[:MAX_ROWS] if isinstance(row, dict)]
+    truncated = bool(len(rows) > MAX_ROWS or summary.get("truncated") or primary.get("truncated"))
+    visualization, visualization_reason = chart_metadata(
+        result, public_rows, status=status, truncated=truncated,
+        summary_only=history or bool(data.get("replayed")),
+    )
     return QueryResponse(
+        visualization=visualization, visualization_unavailable_reason=visualization_reason,
         status=status, query_id=data.get("query_id"), conversation_id=data.get("conversation_id"),
         message_id=data.get("message_id"), answer=text(data.get("answer_zh")) if status != "failed" else None,
-        error=error, rows=[metric_row(row) for row in rows[:MAX_ROWS] if isinstance(row, dict)],
-        rows_truncated=bool(len(rows) > MAX_ROWS or summary.get("truncated") or primary.get("truncated")),
+        error=error, rows=public_rows, rows_truncated=truncated,
         row_count=summary.get("row_count", len(rows)), citations=citations,
         definitions=[projection(MetricDefinition, item) for item in
                      ([primary] if "query_result" in result else tasks)[:12] if item.get("definition")],

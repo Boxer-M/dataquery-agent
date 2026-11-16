@@ -1,0 +1,87 @@
+{
+  "status": "completed",
+  "conversation_id": "e5649750-e695-4d82-93c3-398ca72c9e5a",
+  "message_id": "c1f86075-1e80-4827-982d-ec533c59292c",
+  "query_id": "acce1fc1-e67b-46e4-8e92-1620280190c2",
+  "answer": "2025-01-01 至 2025-02-01（不含结束日），订单量：mobile=685、partner=207、phone=83、web=1337。时间窗内创建的订单记录数，含取消订单。",
+  "rows": [
+    {
+      "value": "685",
+      "bucket": "mobile"
+    },
+    {
+      "value": "207",
+      "bucket": "partner"
+    },
+    {
+      "value": "83",
+      "bucket": "phone"
+    },
+    {
+      "value": "1337",
+      "bucket": "web"
+    }
+  ],
+  "rows_truncated": false,
+  "row_count": 4,
+  "citations": [],
+  "definitions": [
+    {
+      "metric_id": "order_count",
+      "definition": "时间窗内创建的订单记录数，含取消订单。",
+      "definition_version": "1.0.0"
+    }
+  ],
+  "clarification_choices": [],
+  "trace": {
+    "trace_id": "a70072a6a2dc48a988026a506e741669",
+    "tasks": [],
+    "capability": [],
+    "tools": [
+      {
+        "trace_id": "7cfaa742214a4841b990ad2604b051e0",
+        "capability_trace_id": "ab9f4b0db2234bb59c9333967749bb2d",
+        "metric_id": "order_count",
+        "kind": "metric",
+        "status": "ok",
+        "sources": [
+          "dws.order_day"
+        ],
+        "elapsed_ms": 7
+      }
+    ]
+  },
+  "replayed": false,
+  "visualization": {
+    "version": "1",
+    "metric": {
+      "metric_id": "order_count",
+      "name": "订单量",
+      "unit": "笔",
+      "unit_type": "count",
+      "sources": [
+        "dws.order_day"
+      ]
+    },
+    "dimension": {
+      "field": "bucket",
+      "type": "category",
+      "semantic": "channel",
+      "order": "category_code_asc"
+    },
+    "window": {
+      "start_date": "2025-01-01",
+      "end_date": "2025-02-01",
+      "end_exclusive": true
+    },
+    "value_path": [
+      "value"
+    ],
+    "row_order": [
+      0,
+      1,
+      2,
+      3
+    ]
+  }
+}
