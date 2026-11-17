@@ -19,7 +19,7 @@ def trace_view(data):
 def tool_event(item):
     fields = (*BINDING_FIELDS, "capability_trace_id", "request", "metric_id", "strategy",
               "kind", "tool", "elapsed_ms", "sources", "agent", "scope", "includes_reviewed_pdf",
-              "depends_on", "failed_dependencies", "schedule_position")
+              "depends_on", "failed_dependencies", "schedule_position", "cache")
     agent_call = item.get("agent_call", {})
     event = {key: item[key] for key in fields if key in item}
     for key in ("agent", "tool", "elapsed_ms"):

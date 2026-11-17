@@ -2,6 +2,7 @@
 from time import monotonic
 
 from .agent_prompts import PROMPT_VERSIONS
+from .performance import count, slot
 
 RETRYABLE_HTTP = {408, 429, 500, 502, 503, 504}
 
@@ -22,7 +23,9 @@ class AgentRuntime:
             started = monotonic()
             event = {"stage": stage, "attempt": attempt, "prompt_version": PROMPT_VERSIONS[stage]}
             try:
-                raw = self.generate(prompt)
+                with slot("model"):
+                    count("model_calls")
+                    raw = self.generate(prompt)
                 text = raw.get("text") if isinstance(raw, dict) else raw
                 usage = raw.get("usage", {}) if isinstance(raw, dict) else {}
                 if isinstance(raw, dict) and isinstance(raw.get("model"), str):
@@ -30,6 +33,7 @@ class AgentRuntime:
                 if isinstance(usage, dict):
                     event["usage"] = {key: usage[key] for key in ("prompt", "output", "total")
                                       if type(usage.get(key)) is int}
+                    count("model_tokens", event["usage"].get("total", 0))
                 event["status"] = "received"
                 return text
             except Exception as error:

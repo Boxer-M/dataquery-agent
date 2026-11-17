@@ -66,6 +66,7 @@ class MetricDefinition(BaseModel):
 
 
 class TraceStep(BaseModel):
+    cache: str | None = None
     trace_id: str | None = None
     plan_id: str | None = None
     task_id: str | None = None

@@ -131,7 +131,10 @@ export function localApi(tokenFile) {
             if (response.headers['content-type']?.split(';')[0] !== 'application/json') {
               return error(res, 502, 'invalid_upstream_response', '后端返回了无效响应。')
             }
+            const retryAfter = response.headers['retry-after']
             res.writeHead(response.statusCode ?? 502, {
+              ...(response.statusCode === 429 && typeof retryAfter === 'string' && /^\d+$/.test(retryAfter)
+                ? { 'Retry-After': retryAfter } : {}),
               'Content-Type': 'application/json',
               'Cache-Control': 'no-store',
             })
