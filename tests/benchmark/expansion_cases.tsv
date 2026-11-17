@@ -1,0 +1,56 @@
+# split|category|family|label|question
+V|intent|gross|item_gross_sales_amount|item_gross_sales_amount 与扣掉商品行折扣后的金额是同一个口径吗？请给出这个 ID 的正式定义。
+V|intent|discount|item_discount_amount|请依据正式定义回答：指标手册里的 item_discount_amount 正式加总的是什么？
+V|intent|account-count|ordering_customer_count|ordering_customer_count 的正式定义按账户还是按自然人去重？
+V|intent|repeat-count|repeat_ordering_customer_count|请依据正式定义回答：请给出 repeat_ordering_customer_count 的正式口径以及最少下单次数。
+V|intent|first-observed|first_observed_ordering_customer_count|2025年1月 first_observed_ordering_customer_count 现在有可用的标准数值吗？
+V|intent|lifetime|customer_lifetime_value|请直接查2025年3月 customer_lifetime_value。
+V|intent|unknown-chargeback|chargeback_response_hours|正式指标 chargeback_response_hours 怎么定义？
+P|intent|ambiguous-credit|业务别名尚未批准且没有唯一正式映射|今年三季度店铺的冲销金额是多少？
+V|planning|gross-discount|item_gross_sales_amount,item_discount_amount;category;2025-04-01;2025-07-01|从2025-04-01至2025-06-30按品类同时列折扣前商品记录金额、商品行折扣金额；分别保留两列。
+V|planning|items-products|order_item_count,ordered_product_count;category;2025-07-01;2025-08-01|2025年7月按品类同时列订单商品明细数和有下单明细的商品数，重复商品只在后一列去重。
+V|planning|account-pair|ordering_customer_count,repeat_ordering_customer_count;country;2025-05-01;2025-06-01|2025年5月按国家并列下单账户数和窗口内多次下单账户数，同一账户只计一次。
+V|planning|return-anomaly-pair|return_before_order_count,return_above_item_net_count;category;2025-09-01;2025-10-01|以2025年9月为退货事件窗口，按品类并列早于下单的退货记录数和退款记录超明细净额数。
+V|planning|payment-pair|payment_attempt_count,payment_failed_attempt_count;method;2025-02-01;2025-03-01|2025年2月按支付方式并列支付尝试次数和失败支付尝试次数，使用支付事件时间。
+P|planning|different-axes|两个指标没有共同的指定粒度，需确认用户是否接受独立报表|分别按支付方式和品类对比2025年5月成功支付金额和折扣后商品销售金额，再一行一行解释差别。
+P|planning|customer-overlap|未定义用户级集合交集计划|2025年春季既用电话又用网站下单的账户有多少？同一个账户只数一次。
+P|planning|rates-delta|需要审核比较操作及 N/A 边界|按国家比较账户复购率与取消占比的差，写出两者相差多少个百分点。
+P|planning|path-funnel|缺少浏览事件和可验证漏斗定义|我想从商品浏览到支付再到退货看一个漏斗，按品类拆。
+P|planning|department-cost|缺少部门和历史成本事实|把2025年各事业部毛利按退款责任人分摊，并列出影响最大的项目。
+P|planning|cohort-drift|用户指定的观察截止未获正式支持|对比同一批商品明细在下单后7天和30天的退货率。
+V|sql|gross|item_gross_sales_amount;category;2025-04-01;2025-07-01|给出从2025-04-01至2025-06-30按品类的折扣前商品记录金额，包括取消状态原始记录。
+V|sql|discount|item_discount_amount;product;2025-04-01;2025-05-01;category=12|2025年4月品类ID 12内按商品统计的商品行折扣金额是多少？
+V|sql|account-count|ordering_customer_count;country;2025-05-01;2025-06-01|2025年5月按国家查看下单账户数？
+V|sql|repeat-count|repeat_ordering_customer_count;;2025-05-01;2025-06-01;channel=partner|2025年5月partner渠道的窗口内多次下单账户数是多少？
+V|sql|returns-before|return_before_order_count;category;2025-09-01;2025-10-01|2025年9月记录的退货中，早于下单的退货记录数按品类拆分是多少？
+V|sql|returns-above|return_above_item_net_count;channel;2025-09-01;2025-10-01|以退货事件为时间口径，2025年9月退款记录超明细净额数按渠道怎么分布？
+V|sql|products|ordered_product_count;category;2025-07-01;2025-08-01|2025年7月按品类统计有下单明细的商品数，同一商品只计一次。
+V|sql|payment-attempts|payment_attempt_count;status;2025-02-01;2025-03-01|2025年2月按支付状态查看支付尝试次数，用支付发生时间归属月份。
+P|conversation|keep-filter|待确认会话是否继承渠道和时间|前问：2025年4月web渠道的商品行折扣金额。后问：那只看品类12呢？
+P|conversation|negate|待确认否定操作与已保存筛选的覆盖规则|前问：2025年5月按渠道查看下单账户数。后问：不用分渠道了。
+P|conversation|replace-axis|需约定同轮替换轴和参数回执|前问：2025年5月按国家显示下单账户数。后问：换成按会员等级。
+P|conversation|replace-clock|事件时间改为下单时间影响能力，需核验拒绝路径|前问：2025年9月按退货发生时间统计退货记录金额。后问：我说的是那个月购买的。
+P|conversation|mixed-add|需确认继承现有窗口的联合指标计划|前问：2025年10月按商品统计下单商品件数。后问：再加一列订单商品明细数。
+P|conversation|follow-ref|多文档指代需要当前来源范围证据|前问：查询资产的发布流程是什么？后问：把刚才引用里说的旧版本处理办法再解释一下。
+P|conversation|branch-time|需确认两窗口的会话改写保真|前问：比较2025年4月与5月的取消状态订单占比。后问：把前者改成3月。
+P|conversation|clarify-scope|需约定澄清回答是否给足来源范围|前问：用已发布PDF解释复购率。后问：我只想看测试报表里的解释。
+P|conversation|confirm-share|需约定澄清后份额查询的分母范围|前问：2025年7月品类贡献占比。后问：我指当前品类商品金额占比，分母用全渠道金额。
+P|conversation|invalid-carry|需核验不兼容维度的清除或显式拒绝|前问：2025年2月按支付方式查支付尝试次数。后问：改看退货记录数。
+V|rag|table-design|table;事件T=TIMESTAMP WITHOUT TIME ZONE|请查阅技术文档《表清单与字段级设计》：《表清单与字段级设计》如何约定业务事件的时间类型？
+V|rag|table-design|table;根 NULL 合法|请查阅技术文档《表清单与字段级设计》：品类维度的父类为空是否合规？请引用字段级设计。
+V|rag|table-design|table;不复制到通用查询维度|请查阅技术文档《表清单与字段级设计》：设计里客户的姓名与邮箱会放进通用客户维度吗？
+V|rag|table-design|table;按 email 去重|请查阅技术文档《表清单与字段级设计》：账户维度是否按 email 合并？请引用设计要求。
+V|rag|table-design|table;ISO 周年与日历年分列|请查阅技术文档《表清单与字段级设计》：日期维度把 ISO 周年和日历年怎么保存？
+V|rag|table-design|table;无来源的节假日/交易日不生成|请查阅技术文档《表清单与字段级设计》：日期维度能直接拿来标记节假日和交易日吗？
+V|rag|table-design|table;不跨商品分摊|请查阅技术文档《表清单与字段级设计》：字段级设计允许把支付事实按商品分摊吗？
+V|rag|table-design|table;不能声明 order_item_id UNIQUE|请查阅技术文档《表清单与字段级设计》：退货记录表能否给 order_item_id 强制添加唯一约束？给出设计依据。
+P|pdf|pdf-metadata|需页码、发布回执和受控索引版本夹具|扫描PDF里的 OCR 置信度会成为答案的权威证据吗？
+P|pdf|pdf-negative|现有样例第3页为空，但需要补充已发布版本索引的负例证据|本地样例PDF第3页有可引用的审核文字吗？
+P|pdf|pdf-old-ocr|需要保存两版本并验证替换后的检索过滤|昨天的扫描页数字更正后，请引用旧数字确认历史记录。
+P|pdf|pdf-missing-table|现有样例没有表格，需独立来源及列定位真值|请引用扫描PDF里的第二行、第三列并解释这两个字段的关系。
+P|pdf|pdf-original-bbox|需已审核修订的坐标清空证据|扫描页某行已人工修订，能给我修订文字在原件上的准确坐标吗？
+P|pdf|pdf-shared-filename|需两份同名PDF和不同Owner受控真值|我上传的是 report.pdf；请确认你引用的是同名文件里我的版本。
+P|hybrid|pdf-gross|需要归档一份已审核且分别支持两个知识要求的PDF|给出2025年4月折扣前商品记录金额，并引用已发布PDF中关于折扣披露格式的规定。
+P|hybrid|pdf-attribution|需要来源证明及故障夹具|计算2025年5月下单账户数，同时引用PDF说明账户与自然人不能混算。
+P|hybrid|pdf-cohort|需要合适样例及查询上下文的独立证据|算2025年8月窗口内账户复购率，并引用已审核PDF里的重复下单定义做对照。
+P|hybrid|pdf-distinct|需独立页码与版本证据|查询2025年7月有下单明细的商品数，并引用已审核PDF解释商品ID与SKU的差异。

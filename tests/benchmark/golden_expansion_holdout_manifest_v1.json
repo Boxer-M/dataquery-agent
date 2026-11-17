@@ -1,0 +1,181 @@
+{
+  "dataset_version": "benchmark-golden-expansion-v1",
+  "sha256": "caa37d18db595b3b04a807a046691a48ee86e12cd97dc3cf4c6066368f47c910",
+  "cases": [
+    {
+      "case_id": "exp1:h:ba62276acdad9b5e091f",
+      "semantic_group_id": "9bd0a02ab30e2586e9e7",
+      "template_id": "7d1e1fb431778c6f295a",
+      "normalized_text_id": "2509f58f0c49eb23827e",
+      "task_category": "intent"
+    },
+    {
+      "case_id": "exp1:h:65a9dedfb2594df3fa0d",
+      "semantic_group_id": "32746519b811bbdf74a9",
+      "template_id": "86fa46d679b403b51251",
+      "normalized_text_id": "72aad7010283fc1e2f7d",
+      "task_category": "intent"
+    },
+    {
+      "case_id": "exp1:h:0aaec4d9208eff3dcf36",
+      "semantic_group_id": "51859885b67e68f3dba9",
+      "template_id": "a3c11cb7141e347b2e2d",
+      "normalized_text_id": "8e3c10acc4a5c4f9a3ae",
+      "task_category": "intent"
+    },
+    {
+      "case_id": "exp1:h:bcace94535ffa61548a4",
+      "semantic_group_id": "6dc3689ff1ab6830dc91",
+      "template_id": "18731103e7f2edf3dc6c",
+      "normalized_text_id": "fdddebee5a3fbf3ee56c",
+      "task_category": "intent"
+    },
+    {
+      "case_id": "exp1:h:084575587c76c81f4ee4",
+      "semantic_group_id": "71d3615328415ea91b5d",
+      "template_id": "9fefb75d451f6040fb79",
+      "normalized_text_id": "cfd288953048b66d8966",
+      "task_category": "intent"
+    },
+    {
+      "case_id": "exp1:h:9c64da83498366144ebf",
+      "semantic_group_id": "0793f151c1073c4a4ed1",
+      "template_id": "6d6070a536d101bbbea3",
+      "normalized_text_id": "97dde0c60c103602d0b1",
+      "task_category": "intent"
+    },
+    {
+      "case_id": "exp1:h:d8af2ad0ec2bd72cea57",
+      "semantic_group_id": "25e8bb0f2e08c36fe876",
+      "template_id": "235fa9462fbff7d98bfa",
+      "normalized_text_id": "97f4447713ca12ade41c",
+      "task_category": "intent"
+    },
+    {
+      "case_id": "exp1:h:8e44aade75a584c9993e",
+      "semantic_group_id": "78a3a71e7a283d67a3a4",
+      "template_id": "45f9ec7d0504a3381466",
+      "normalized_text_id": "936e01413650a598b1f6",
+      "task_category": "planning"
+    },
+    {
+      "case_id": "exp1:h:d2e0f18504018defbdbd",
+      "semantic_group_id": "0035a5ee9dafda197181",
+      "template_id": "6b857c4fd0089780c3f3",
+      "normalized_text_id": "57dc0193114777fdeddc",
+      "task_category": "planning"
+    },
+    {
+      "case_id": "exp1:h:2c9e6cc07546c29c7408",
+      "semantic_group_id": "e3eecca7734a476d313a",
+      "template_id": "c6979bc8b9e87bf8613f",
+      "normalized_text_id": "3f749a83de2e0dea097d",
+      "task_category": "planning"
+    },
+    {
+      "case_id": "exp1:h:d4252309d656a57b0ef8",
+      "semantic_group_id": "9fd63a4e00b46f67d79c",
+      "template_id": "b576ead6b1ed4fcad624",
+      "normalized_text_id": "129f2c4b7ca63974d85b",
+      "task_category": "planning"
+    },
+    {
+      "case_id": "exp1:h:1d194ba59e0ecba6e3d3",
+      "semantic_group_id": "9bd0a02ab30e2586e9e7",
+      "template_id": "7d1e1fb431778c6f295a",
+      "normalized_text_id": "db5950d57fc360f3ef67",
+      "task_category": "sql"
+    },
+    {
+      "case_id": "exp1:h:691e35133e7fff457d29",
+      "semantic_group_id": "32746519b811bbdf74a9",
+      "template_id": "86fa46d679b403b51251",
+      "normalized_text_id": "a8792c5306f3920f79e2",
+      "task_category": "sql"
+    },
+    {
+      "case_id": "exp1:h:f00d2bea2e49f78d4750",
+      "semantic_group_id": "51859885b67e68f3dba9",
+      "template_id": "a3c11cb7141e347b2e2d",
+      "normalized_text_id": "32e345daa5ffec0a2a2e",
+      "task_category": "sql"
+    },
+    {
+      "case_id": "exp1:h:520085eb3b75c2aba152",
+      "semantic_group_id": "6dc3689ff1ab6830dc91",
+      "template_id": "18731103e7f2edf3dc6c",
+      "normalized_text_id": "f8c7ece41b560d852513",
+      "task_category": "sql"
+    },
+    {
+      "case_id": "exp1:h:2883a550dfa6ed44d63f",
+      "semantic_group_id": "b9b3a5398f6e1892e0f2",
+      "template_id": "6c37e134be4155a8790d",
+      "normalized_text_id": "8a2353fd3c6d429b47d9",
+      "task_category": "sql"
+    },
+    {
+      "case_id": "exp1:h:2b8d594fd79c7d756d85",
+      "semantic_group_id": "414705ad1d9d14a45ffd",
+      "template_id": "a9d0e13ba150329f053d",
+      "normalized_text_id": "a244d9d28308c9475c6f",
+      "task_category": "sql"
+    },
+    {
+      "case_id": "exp1:h:3ea4ec48fed77ea596a4",
+      "semantic_group_id": "ee75d836f8b43ffb46ac",
+      "template_id": "c8a85b7cbc6d03956859",
+      "normalized_text_id": "fc253f6256b1877ad449",
+      "task_category": "sql"
+    },
+    {
+      "case_id": "exp1:h:aa1f49c7f043f911744c",
+      "semantic_group_id": "023173d8fd8c51db7115",
+      "template_id": "a9ec49fea35011157a16",
+      "normalized_text_id": "d1d51b3d21efe809bcc8",
+      "task_category": "rag"
+    },
+    {
+      "case_id": "exp1:h:014c2d08ef8711e831df",
+      "semantic_group_id": "023173d8fd8c51db7115",
+      "template_id": "a9ec49fea35011157a16",
+      "normalized_text_id": "5842aa78c1f566ef37df",
+      "task_category": "rag"
+    },
+    {
+      "case_id": "exp1:h:edb0bb2198e44f8295b6",
+      "semantic_group_id": "023173d8fd8c51db7115",
+      "template_id": "a9ec49fea35011157a16",
+      "normalized_text_id": "44bf12a42e9edbd8edd3",
+      "task_category": "rag"
+    },
+    {
+      "case_id": "exp1:h:9123622c0059403d3003",
+      "semantic_group_id": "023173d8fd8c51db7115",
+      "template_id": "a9ec49fea35011157a16",
+      "normalized_text_id": "637d3503fca0b95b8844",
+      "task_category": "rag"
+    },
+    {
+      "case_id": "exp1:h:d87690fc782f5fe901ce",
+      "semantic_group_id": "023173d8fd8c51db7115",
+      "template_id": "a9ec49fea35011157a16",
+      "normalized_text_id": "9472ca077f316efbd698",
+      "task_category": "rag"
+    },
+    {
+      "case_id": "exp1:h:41cc237849d9d11ae1b4",
+      "semantic_group_id": "023173d8fd8c51db7115",
+      "template_id": "a9ec49fea35011157a16",
+      "normalized_text_id": "c1df524f21ed9a6e6bb5",
+      "task_category": "rag"
+    },
+    {
+      "case_id": "exp1:h:e0a177b97b7dca8cceb1",
+      "semantic_group_id": "023173d8fd8c51db7115",
+      "template_id": "a9ec49fea35011157a16",
+      "normalized_text_id": "ebd218ce1a0c30668e77",
+      "task_category": "rag"
+    }
+  ]
+}
