@@ -217,16 +217,29 @@ class UnifiedAgent:
         return self.run_metric_request(resolved["request"], frame, trace)
 
     def run_metric_request(self, request, frame, trace):
-        route = self.check_route(request, frame)
+        plan_id, attempt_id = uuid4().hex, uuid4().hex
+        task = {"plan_id": plan_id, "task_id": f"{plan_id}/1", "attempt_id": attempt_id,
+                "kind": "metric", "metric_id": request["metric_id"], "depends_on": [],
+                "schedule_position": 1}
+        binding = {key: task[key] for key in ("plan_id", "task_id", "attempt_id")}
+        binding.update(authorization_subject=dict(request), capability_phase="preflight")
+        route = self.check_route(request, frame, binding=binding)
+        trace.setdefault("capability_records", []).append(route)
+        identity = {"plan_id": plan_id, "attempt_id": attempt_id, "subtasks": [task]}
         if route["status"] != "STANDARD_METRIC":
-            return self.route_outcome(route)
-        result = self.query(request, route, trace)
+            task.update(status="skipped", code=route.get("reason_code"))
+            return {**self.route_outcome(route), **identity}
+        result = self.query(request, route, trace, binding=binding)
+        task.update(status=result["status"], trace_id=result.get("trace_id"),
+                    capability_trace_id=route.get("trace_id"), sources=result.get("sources", []))
         if result["status"] != "ok":
-            return outcome("error", result["error"]["code"], "指标工具查询失败。")
+            code = result["error"]["code"]
+            task["code"] = code
+            return {**outcome("error", code, "指标工具查询失败。"), **identity}
         values = "、".join(f"{row['bucket']}={row['value'] if row['value'] is not None else '无结果'}" for row in result["results"][:8])
         name = self.service.metrics[request["metric_id"]]["name_zh"]
         return {
-            "status": "ok", "query_result": result,
+            **identity, "status": "ok", "query_result": result,
             "answer_zh": (f"{request['start_date']} 至 {request['end_date']}（不含结束日），"
                           f"{name}：{values or '无分组结果'}。{self.service.metrics[request['metric_id']]['definition']}"),
         }

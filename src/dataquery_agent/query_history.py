@@ -1,11 +1,11 @@
 """Bounded and redacted audit records, distinct from model and tool traces."""
 from uuid import uuid4
 
-from .capability_trace import BINDING_FIELDS
 from .conversation_context import CONTEXT_VERSION, redact
+from .runtime_trace import trace_view
 
 
-def build_record(claim, message, answer, operation, elapsed_ms):
+def build_record(claim, message, answer, operation, elapsed_ms, *, query_id=None):
     result = answer.get("result", {})
     trace = answer.get("trace", {})
     routes = answer.get("routes", [])
@@ -49,16 +49,17 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         "metric_results": result.get("metric_results", []),
     }
     agent_calls = trace.get("agent_calls", [])
+    evidence = trace_view(answer)
+    evidence.pop("run_id")  # Persist the canonical query_id only.
     return {
-        **({"capability_records": trace["capability_records"]} if trace.get("capability_records") else {}),
+        **{key: value for key, value in evidence.items()
+           if value or key in {"trace_id", "tool_traces"}},
         **({"agent_calls": agent_calls} if agent_calls else {}),
-        **({key: result[key] for key in ("plan_id", "attempt_id") if key in result}),
         **({"recovery": result["recovery"]} if "recovery" in result else {}),
-        **({"subtasks": result["subtasks"]} if "subtasks" in result else {}),
         **({"knowledge": knowledge_audit} if knowledge_audit is not None else {}),
         **({"query_asset": result["query_asset"]} if strategy == "published_asset" else {}),
-        "query_id": str(uuid4()), "conversation_id": str(claim["conversation_id"]),
-        "message_id": str(claim["message_id"]), "trace_id": trace.get("trace_id"),
+        "query_id": str(query_id or uuid4()), "conversation_id": str(claim["conversation_id"]),
+        "message_id": str(claim["message_id"]),
         "original_question": redact(message)[:500], "context_version": CONTEXT_VERSION,
         "context_operation": operation, "route_type": answer.get("task", "conversation"),
         "execution_strategy": strategy, "execution_status": answer["status"],
@@ -78,12 +79,6 @@ def build_record(claim, message, answer, operation, elapsed_ms):
         "source_models": sorted(sources),
         "result_summary": {"row_count": len(rows), "truncated": bool(payload.get("truncated")), "scalar": scalar},
         "latency_ms": elapsed_ms, "error_code": answer.get("code"),
-        "tool_traces": [{**{key: tool[key] for key in (*BINDING_FIELDS, "capability_trace_id", "request")
-                           if key in tool},
-                         **{key: tool[key] for key in ("strategy", "kind", "tool", "elapsed_ms", "sources", "agent", "scope", "includes_reviewed_pdf") if key in tool},
-                         "trace_id": tool.get("trace_id"), "status": tool.get("status"),
-                         "code": tool.get("code") or tool.get("error_code")}
-                        for tool in trace.get("tools", [])],
     }
 
 

@@ -61,6 +61,10 @@ class CatalogRecoveryTests(unittest.TestCase):
             self.assertEqual(live_trace, saved_trace)
             self.assertEqual(str(saved_trace.previous_query_id), missing["query_id"])
             self.assertEqual(len({task.attempt_id for task in saved_trace.tasks}), 2)
+            self.assertEqual(str(saved_trace.run_id), recovered["query_id"])
+            tool, = saved_trace.tools
+            self.assertEqual((tool.plan_id, tool.attempt_id), (saved_trace.plan_id, saved_trace.attempt_id))
+            self.assertIsNone(tool.task_id)  # One lookup actually served both restored nodes.
             self.assertIsNone(saved_trace.tasks[2].schedule_position)
             self.assertEqual(query.call_count, 2)
             replay = manager.process_message(owner, cid, command, uuid4(), today=TODAY)
