@@ -1,5 +1,6 @@
 """Loopback-only development HTTP API over the existing Conversation Manager."""
 from asyncio import timeout
+from hashlib import sha256
 from hmac import compare_digest
 import json
 import re
@@ -20,6 +21,7 @@ from .conversation_store import ConversationError
 from .document_api import DOCUMENTS, body_limit, document_router
 from .document_staging import DocumentStaging
 from .metrics import ROOT
+from .performance import Performance, WorkBusy
 
 MAX_REQUEST_BYTES = 8192
 MAX_RESPONSE_BYTES = 256 * 1024
@@ -89,13 +91,14 @@ def bounded(model):
     return Response(payload, media_type="application/json", headers={"Cache-Control": "no-store"})
 
 
-def create_app(*, token, manager_factory=local_manager, document_staging=None):
+def create_app(*, token, manager_factory=local_manager, document_staging=None, performance=None):
     if not isinstance(token, str) or not re.fullmatch(r"[a-fA-F0-9]{64}", token):
         raise ValueError("Configure DATAQUERY_HTTP_TOKEN as 64 hexadecimal characters.")
     app = FastAPI(title="DataQuery Agent API", version="1.0", docs_url=None, redoc_url=None)
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost"])
     app.add_middleware(LocalRequestLimits)
     bearer = HTTPBearer(auto_error=False)
+    workload = performance if performance is not None else Performance.local()
 
     def authorize(auth: HTTPAuthorizationCredentials | None = Depends(bearer)):
         if auth is None or not compare_digest(auth.credentials.encode("utf-8"), token.encode("utf-8")):
@@ -133,26 +136,50 @@ def create_app(*, token, manager_factory=local_manager, document_staging=None):
         manager, owner = context
         return ConversationResponse(conversation_id=manager.create_conversation(owner)["conversation_id"])
 
+    def throttled(retry_after, code="rate_limited"):
+        result = failure(429, code, "请求过多，请稍后重试。")
+        result.headers["Retry-After"] = str(retry_after)
+        return result
+
+    def run_work(action):
+        try:
+            with workload.slot("http"):
+                manager, owner = manager_factory()
+                identity_key = sha256(owner.encode()).hexdigest()
+                if retry_after := workload.admit(identity_key):
+                    return throttled(retry_after)
+                with workload.scope(identity_key) as work:
+                    result = action(manager, owner)
+                if workload.report:
+                    result.headers.update(work.headers())
+                return result
+        except WorkBusy:
+            return throttled(1, "request_busy")
+
     @app.post("/api/chat", response_model=QueryResponse)
-    def chat(body: ChatRequest, context=Depends(identity)):
-        manager, owner = context
-        data = manager.process_message(owner, body.conversation_id, body.question, body.message_id)
-        if data.get("code") == "conversation_not_found":
-            raise HTTPException(404)
-        return bounded(public_response(data))
+    def chat(body: ChatRequest, _=Depends(authorize)):
+        def action(manager, owner):
+            data = manager.process_message(owner, body.conversation_id, body.question, body.message_id)
+            if data.get("code") == "conversation_not_found":
+                raise HTTPException(404)
+            return bounded(public_response(data))
+
+        return run_work(action)
 
     @app.post("/api/queries/{query_id}/resume", response_model=QueryResponse)
-    def resume_query(query_id: UUID, body: ResumeRequest, context=Depends(identity)):
+    def resume_query(query_id: UUID, body: ResumeRequest, _=Depends(authorize)):
         from .hitl import update_resume
 
-        manager, owner = context
-        try:
-            data = update_resume(manager, owner, query_id, body.metric_id)
-        except ConversationError as error:
-            if error.code == "query_not_found":
-                raise HTTPException(404) from None
-            return failure(409, error.code, "该澄清已过期、正在处理，或所选口径无效。")
-        return bounded(public_response(data))
+        def action(manager, owner):
+            try:
+                data = update_resume(manager, owner, query_id, body.metric_id)
+            except ConversationError as error:
+                if error.code == "query_not_found":
+                    raise HTTPException(404) from None
+                return failure(409, error.code, "该澄清已过期、正在处理，或所选口径无效。")
+            return bounded(public_response(data))
+
+        return run_work(action)
 
     @app.get("/api/queries/{query_id}", response_model=QueryResponse)
     def history(query_id: UUID, context=Depends(identity)):

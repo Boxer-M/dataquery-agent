@@ -27,6 +27,7 @@ from .metric_candidates import MetricCandidates
 from .metric_query_service import MetricQueryService
 from .metric_tool import execute_metric, metric_failure
 from .metrics import ROOT
+from .performance import CURRENT
 from .runtime_trace import record_agent_calls
 
 INJECTION = re.compile(
@@ -539,11 +540,17 @@ class UnifiedAgent:
         link = {"request": request, "capability_trace_id": route.get("trace_id"), **(binding or {})}
         if capability_link(link, trace.get("capability_records", [])) is not route:
             return metric_failure("invalid_capability_trace_link")
-        execution = execute_metric(self.service.query, request, required_sources=route["required_fields"].keys())
+        def execute(query=self.service.query):
+            return execute_metric(query, request, required_sources=route["required_fields"].keys())
+
+        work = CURRENT.get()
+        hits_before = work.hits if work else 0
+        execution = work.control.metric(work, self.service, request, route, execute) if work else execute()
         trace["tools"].append({
             **link, "status": execution.result["status"], "code": execution.code,
             "trace_id": execution.result.get("trace_id"), "sources": execution.result.get("sources", []),
             "elapsed_ms": execution.elapsed_ms,
+            **({"cache": "hit"} if work and work.hits > hits_before else {}),
         })
         return execution
 

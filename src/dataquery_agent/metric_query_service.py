@@ -16,6 +16,7 @@ from psycopg.rows import dict_row
 
 from .dws import REGISTRY, metric_query, models
 from .metrics import ROOT, read_queries
+from .performance import WorkBusy, count, slot
 
 ROLE = "sqlshed_metric_service"
 TIMEOUT_MS = 5000
@@ -134,8 +135,11 @@ class MetricQueryService:
                 observation_cutoff=request.get("observation_cutoff"), sources=sources)
             LOG.info("metric_query trace=%s metric=%s start=%s end=%s sources=%s",
                      response["trace_id"], mid, start, end, ",".join(sources))
-            rows = self.execute(template, start, end, monthly, axis, filters)
+            with slot("sql"):
+                rows = self.execute(template, start, end, monthly, axis, filters)
             return dict(response, status="ok", results=rows, error=None)
+        except WorkBusy:
+            code, message = "metric_busy", "Metric query concurrency limit reached."
         except RequestError as error:
             code, message = error.code, str(error)
         except psycopg.errors.QueryCanceled:
@@ -146,6 +150,40 @@ class MetricQueryService:
             code, message = "query_failed", "The database could not execute this metric."
         LOG.info("metric_query_rejected trace=%s code=%s", response["trace_id"], code)
         return dict(response, status="error", results=[], error={"code": code, "message": message})
+
+    def cache_database_identity(self):
+        settings = conninfo_to_dict(self.dsn or "")
+        return {key: settings.get(key) for key in ("host", "hostaddr", "port", "dbname", "user")}
+
+    def cache_read_allowed(self, sources):
+        identity = self.cache_database_identity()
+        if identity["user"] != ROLE or identity["dbname"] != "sqlshed":
+            return False
+        fields = [(name, column) for name, columns in sorted(sources.items()) for column in columns]
+        if not fields:
+            return False
+        names, columns = map(list, zip(*fields))
+        try:
+            with slot("sql"), psycopg.connect(self.dsn, connect_timeout=5) as pg:
+                pg.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY")
+                pg.execute("SET LOCAL search_path = pg_catalog")
+                pg.execute("SET LOCAL statement_timeout = '2s'")
+                count("acl")
+                allowed, physical = pg.execute("""
+                    SELECT current_user = %s AND session_user = %s AND current_database() = 'sqlshed'
+                           AND COALESCE(bool_and(COALESCE(
+                               has_schema_privilege(c.relnamespace, 'USAGE')
+                               AND has_column_privilege(c.oid, f.column_name, 'SELECT'), false)), false),
+                           COALESCE(bool_and(c.oid IS NOT NULL AND c.relkind = 'r'
+                               AND NOT c.relrowsecurity AND NOT c.relhassubclass), false)
+                    FROM unnest(%s::text[], %s::text[]) AS f(relation, column_name)
+                    LEFT JOIN pg_class c ON c.oid = to_regclass(f.relation)
+                """, (ROLE, ROLE, names, columns)).fetchone()
+                if not allowed:
+                    return False
+                return True if physical else None
+        except (psycopg.Error, WorkBusy):
+            return False
 
     def execute(self, template, start, end, monthly, axis, filters):
         if not self.dsn:
@@ -172,6 +210,7 @@ class MetricQueryService:
                 params = dict(start=lower, end=upper, as_of=self.cutoff,
                               channel=filters.get("channel"), category=filters.get("category"),
                               limit=ROW_LIMIT + 1 - len(rows))
+                count("sql")
                 for row in pg.execute(query, params):
                     result = {key: json_value(value) for key, value in row.items()}
                     if monthly:
