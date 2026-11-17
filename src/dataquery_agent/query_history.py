@@ -55,6 +55,7 @@ def build_record(claim, message, answer, operation, elapsed_ms, *, query_id=None
         **{key: value for key, value in evidence.items()
            if value or key in {"trace_id", "tool_traces"}},
         **({"agent_calls": agent_calls} if agent_calls else {}),
+        **({"hitl": answer["hitl"]} if "hitl" in answer else {}),
         **({key: trace[key] for key in ("orchestration", "interrupt_required") if key in trace}),
         **({"recovery": result["recovery"]} if "recovery" in result else {}),
         **({"knowledge": knowledge_audit} if knowledge_audit is not None else {}),
@@ -85,6 +86,7 @@ def build_record(claim, message, answer, operation, elapsed_ms, *, query_id=None
 
 def replay_summary(record, answer):
     return {
+        **({"hitl": record["hitl"]} if "hitl" in record else {}),
         "status": answer["status"], "code": answer.get("code"), "query_id": record["query_id"],
         "trace_id": record["trace_id"], "result_summary": record["result_summary"],
         "answer_zh": "该消息已处理，请按查询 ID 查看历史摘要。",

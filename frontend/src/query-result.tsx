@@ -96,7 +96,14 @@ export function QueryResult({ result, busy, onClarify }: {
               : task.kind === 'summary' ? '联合汇总未完成' : '任务未完成'
         }{task.code && `（${task.code}）`}</li>
       })}</ul>} />}
-    {result.status === 'clarification_required' && <div className="choices">
+    {result.hitl && <p role="status">{{
+      paused: busy ? '正在恢复原运行' : '等待人工澄清',
+      resuming: '正在恢复原运行',
+      completed: '原运行已完成',
+      failed: '恢复失败',
+      expired: '澄清已过期',
+    }[result.hitl.status]}</p>}
+    {result.status === 'clarification_required' && result.clarification_choices.length > 0 && <div className="choices">
       {result.clarification_choices.map((choice, index) => {
         const text = choice.metric_id || choice.name
         return text && <div key={index}>
@@ -104,7 +111,7 @@ export function QueryResult({ result, busy, onClarify }: {
           {choice.definition && <span>{choice.definition}</span>}
         </div>
       })}
-      <small>也可以在输入框中补充完整问题。</small>
+      {!result.hitl && <small>也可以在输入框中补充完整问题。</small>}
     </div>}
     {chart && <div className="chart-view-switch" aria-label="结果视图">
       <Button size="small" aria-label="图表" aria-pressed={!tableSelected} onClick={() => setTableSelected(false)}>图表</Button>

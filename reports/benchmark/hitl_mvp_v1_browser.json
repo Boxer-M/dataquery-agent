@@ -1,0 +1,44 @@
+{
+  "browser": "Chrome",
+  "restarted_backend": true,
+  "reloaded_browser": true,
+  "run_id": "4c3be7e8-9824-4fe0-a3b7-df454157d5e9",
+  "trace_id": "34117baf5ffc49f19f425a871e78bb67",
+  "pause": [
+    {
+      "status": "paused",
+      "at": "2026-11-17T06:47:15.501468Z"
+    }
+  ],
+  "resume": [
+    {
+      "status": "paused",
+      "at": "2026-11-17T06:47:15.501468Z"
+    },
+    {
+      "status": "resuming",
+      "at": "2026-11-17T06:47:17.900762Z",
+      "metric_id": "item_net_sales_amount"
+    },
+    {
+      "status": "completed",
+      "at": "2026-11-17T06:47:18.142593Z"
+    }
+  ],
+  "supervisor": [
+    {
+      "node": "supervisor",
+      "status": "accepted",
+      "decision": "clarify"
+    }
+  ],
+  "result": [
+    {
+      "bucket": "all",
+      "value": "231920.18"
+    }
+  ],
+  "tools_before_pause": 0,
+  "tools_after_resume": 1,
+  "history_matches": true
+}

@@ -111,6 +111,14 @@ export function QueryHistory({ queryId, current, onClose, onOpen }: {
       : <div className="history-summary">
         <h3>后端已保存的查询摘要</h3>
         <QueryResult result={saved} busy onClarify={() => {}} />
+        {saved.hitl && <>
+          <h3>人工澄清</h3>
+          <ol>{saved.hitl.events.map((event, index) => <li key={index}>
+            {({ paused: '等待澄清', resuming: '收到答复，继续原运行', completed: '恢复完成',
+               failed: '恢复失败', rejected: '请求被拒绝' } as Record<string, string>)[event.status] ?? event.status}
+            {event.metric_id && ` · ${event.metric_id}`}{event.code && ` · ${event.code}`}
+          </li>)}</ol>
+        </>}
         <h3>Agent 执行 Trace</h3>
         <p>{compareTrace(current?.trace, trace)}</p>
         <dl className="trace-details">
