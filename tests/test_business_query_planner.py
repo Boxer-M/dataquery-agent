@@ -122,7 +122,7 @@ class BusinessPlannerTests(unittest.TestCase):
     def test_plan_budget_preserves_completed_step(self):
         case = CASES["multi"]
         self.service.query.side_effect = stub_result
-        with patch("dataquery_agent.business_query_planner.monotonic", side_effect=[0, 0, 0, 0, 1, 31, 31]):
+        with patch("dataquery_agent.business_query_planner.monotonic", side_effect=[0, 0, 0, 31, 31]):
             result = self.planner.answer(case["question"], lambda _: proposal_output(case), today=TODAY)
         self.assertEqual(result["status"], "partial")
         self.assertEqual(result["tools"][1]["error_code"], "plan_timeout")

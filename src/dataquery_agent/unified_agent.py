@@ -3,7 +3,6 @@ import argparse
 import json
 import re
 from datetime import datetime
-from decimal import InvalidOperation
 from time import monotonic
 from uuid import uuid4
 from zoneinfo import ZoneInfo
@@ -15,7 +14,6 @@ from .agent_prompts import PROMPT_VERSIONS, intent_prompt, resolution_prompt, sc
 from .agent_runtime import AgentRuntime, ModelUnavailable
 from .business_plan import DETAIL
 from .business_query_planner import BusinessQueryPlanner
-from .business_results import RATIO_COMPONENT_METRICS, normalize_rows, with_precision
 from .capability_registry import CapabilityRegistry
 from .capability_resolver import CapabilityResolver
 from .capability_trace import BINDING_FIELDS, capability_link
@@ -27,7 +25,9 @@ from .intent_time import TIME, date_window
 from .metadata_service import MetadataService
 from .metric_candidates import MetricCandidates
 from .metric_query_service import MetricQueryService
+from .metric_tool import execute_metric, metric_failure
 from .metrics import ROOT
+from .runtime_trace import record_agent_calls
 
 INJECTION = re.compile(
     r"忽略.{0,12}(?:指令|规则|提示)|系统提示|开发者消息|泄露.{0,8}(?:密钥|提示)|"
@@ -223,8 +223,7 @@ class UnifiedAgent:
                 "schedule_position": 1}
         binding = {key: task[key] for key in ("plan_id", "task_id", "attempt_id")}
         binding.update(authorization_subject=dict(request), capability_phase="preflight")
-        route = self.check_route(request, frame, binding=binding)
-        trace.setdefault("capability_records", []).append(route)
+        route = self.bind_metric(request, frame, trace, binding)
         identity = {"plan_id": plan_id, "attempt_id": attempt_id, "subtasks": [task]}
         if route["status"] != "STANDARD_METRIC":
             task.update(status="skipped", code=route.get("reason_code"))
@@ -400,8 +399,7 @@ class UnifiedAgent:
         if "tools" not in result:
             return result
         subtasks = result["subtasks"]
-        trace["agent_calls"] = [{"task_id": task["task_id"], **task["agent_call"]}
-                                for task in subtasks if "agent_call" in task]
+        record_agent_calls(trace, subtasks, plan_id=result["plan_id"])
         catalogs = [task for task in subtasks if task["kind"] == "catalog"]
         citations = [task["citation"] for task in catalogs if task["status"] == "ok"]
         evidence_status = ("supported" if len(citations) == len(catalogs)
@@ -442,15 +440,11 @@ class UnifiedAgent:
     def run_business_plan(self, plan, frame, trace, *, recovery_proof=None, catalog=None, metric_results=None, document=None):
         plan_id, attempt_id = uuid4().hex, uuid4().hex
         routes = {}
-        records = trace.setdefault("capability_records", [])
-
         def resolve(request, step, phase):
-            route = self.check_route(request, frame, binding={
+            return self.bind_metric(request, frame, trace, {
                 "plan_id": plan_id, "task_id": f"{plan_id}/{step}", "attempt_id": attempt_id,
                 "authorization_subject": dict(request), "capability_phase": phase,
             })
-            records.append(route)
-            return route
 
         for call in plan["required_tool_calls"]:
             route = resolve(call["request"], call["step"], "preflight")
@@ -461,11 +455,15 @@ class UnifiedAgent:
             from .catalog_recovery import sql_checkpoint
             before = sql_checkpoint(self.service, plan, list(routes.values()), capture_snapshot=True)
 
-        def query(step, request):
+        def run_metric(call):
+            step, request = call["step"], call["request"]
+            approved = routes[step]
+            agent_call = None
+
             def execute(request, route):
                 phase = "execution_recheck" if catalog is not None or document is not None else "preflight"
-                binding = {key: routes[step][key] for key in BINDING_FIELDS} | {"capability_phase": phase}
-                return self.query(request, route, trace, binding=binding)
+                binding = {key: approved[key] for key in BINDING_FIELDS} | {"capability_phase": phase}
+                return self.execute_bound_metric(request, route, trace, binding=binding)
 
             if catalog is not None or document is not None:
                 from .specialists import DataAnalysisAgent
@@ -473,14 +471,17 @@ class UnifiedAgent:
                     resolve=lambda request: resolve(request, step, "execution_recheck"),
                     query_metric=execute,
                 )
-                result = specialist.execute(request, routes[step])
+                execution, agent_call = specialist.dispatch(request, approved)
+                if not agent_call["executed"]:
+                    execution = metric_failure("data_tool_not_authorized")
             else:
-                result = execute(request, routes[step])
-            if metric_results is not None and result["status"] == "ok":
-                metric_results.append(result)
-            return result
+                execution = execute(request, approved)
+            if metric_results is not None and execution.result["status"] == "ok":
+                metric_results.append(execution.result if agent_call is None else
+                                      dict(execution.result, agent_call=agent_call))
+            return execution.task_result(call, agent_call=agent_call)
 
-        result = self.planner.execute_plan(plan, task_query=query, catalog=catalog, document=document,
+        result = self.planner.execute_plan(plan, metric_handler=run_metric, catalog=catalog, document=document,
                                            execution_ids=(plan_id, attempt_id))
         if recovery_proof is not None and before and result["status"] == "ok":
             if sql_checkpoint(self.service, plan, list(routes.values()), capture_snapshot=True) == before:
@@ -510,44 +511,25 @@ class UnifiedAgent:
         return outcome(status, route.get("reason_code"), route.get("reason", "无法执行此业务路径。"),
                        capability=route)
 
+    def bind_metric(self, request, frame, trace, binding):
+        route = self.check_route(request, frame, binding=binding)
+        trace.setdefault("capability_records", []).append(route)
+        return route
+
     def query(self, request, route, trace, *, binding=None):
+        return self.execute_bound_metric(request, route, trace, binding=binding).result
+
+    def execute_bound_metric(self, request, route, trace, *, binding=None):
         link = {"request": request, "capability_trace_id": route.get("trace_id"), **(binding or {})}
-        if binding is not None and capability_link(link, trace["capability_records"]) is not route:
-            return {"status": "error", "error": {"code": "invalid_capability_trace_link"}}
-        started = monotonic()
-        result = None
-        error = None
-        try:
-            result = self.service.query(request)
-            if not isinstance(result, dict):
-                error = "invalid_tool_response"
-            elif result.get("status") != "ok":
-                detail = result.get("error")
-                error = (detail.get("code") if isinstance(detail, dict) else None) or "tool_error"
-            elif (not isinstance(result.get("sources"), list)
-                  or any(not isinstance(source, str) for source in result["sources"])
-                  or set(result["sources"]) != route["required_fields"].keys()
-                  or not result.get("trace_id")
-                  or not isinstance(result.get("results"), list)
-                  or any(not isinstance(row, dict) or not {"bucket", "value"} <= row.keys()
-                         for row in result["results"])
-                  or any(result.get(key) != request[key] for key in ("metric_id", "start_date", "end_date"))):
-                error = "tool_provenance_mismatch"
-            else:
-                with_precision(normalize_rows, result["results"],
-                               monthly="month" in request.get("group_by", []),
-                               has_ratio=request["metric_id"] in RATIO_COMPONENT_METRICS)
-        except (KeyError, TypeError, ValueError, InvalidOperation):
-            error = "invalid_tool_response"
-        except Exception:
-            error = "tool_exception"
-        result = result if isinstance(result, dict) else {}
+        if capability_link(link, trace.get("capability_records", [])) is not route:
+            return metric_failure("invalid_capability_trace_link")
+        execution = execute_metric(self.service.query, request, required_sources=route["required_fields"].keys())
         trace["tools"].append({
-            **link, "status": "error" if error else "ok", "code": error,
-            "trace_id": result.get("trace_id"), "sources": result.get("sources", []),
-            "elapsed_ms": round((monotonic() - started) * 1000),
+            **link, "status": execution.result["status"], "code": execution.code,
+            "trace_id": execution.result.get("trace_id"), "sources": execution.result.get("sources", []),
+            "elapsed_ms": execution.elapsed_ms,
         })
-        return dict(result, status="error", error={"code": error}, results=[]) if error else result
+        return execution
 
 
 def main():

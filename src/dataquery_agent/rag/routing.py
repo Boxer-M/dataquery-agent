@@ -7,6 +7,7 @@ from uuid import uuid4
 from ..intent_time import TIME, date_window
 from ..intent_semantic_resolver import ALIASES, outcome
 from ..metric_entity import DEFINITION_ALIASES, MetricEntityResolver, normalize
+from ..runtime_trace import record_agent_calls
 from .documents import CATALOG_PATH, KnowledgeError
 
 EXPLANATION = re.compile(r"怎么定义|如何定义|定义是什么|业务定义|口径|有什么区别|有何区别|字段含义|文档|政策|规则|指标定义|正式定义|怎么算")
@@ -136,12 +137,12 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
     result = specialist.execute(kind, question, known_metrics=agent.service.metrics, runtime=runtime)
     plan_id, attempt_id = uuid4().hex, uuid4().hex
     binding = {"plan_id": plan_id, "task_id": f"{plan_id}/1", "attempt_id": attempt_id}
-    trace["agent_calls"] = [{**binding, **result["agent_call"]}]
     retrieval = result.get("retrieval_trace")
     if retrieval:
         retrieval.update(binding, agent="knowledge", tool="rag_retrieval", kind="knowledge", status=result["status"])
         trace["tools"].append(retrieval)
     task = {**binding, "kind": "knowledge", "status": result["status"], "agent_call": result["agent_call"]}
+    record_agent_calls(trace, [task], plan_id=plan_id)
     if retrieval:
         task["trace_id"] = retrieval["trace_id"]
     return dict(result, path="knowledge", knowledge_topic="document", plan_id=plan_id, attempt_id=attempt_id,
@@ -187,8 +188,7 @@ def run_document_plan(agent, plan, runtime, frame, trace, today, owner):
     assembled = result.pop("pdf_summary")
     for task in result["subtasks"]:
         task["plan_id"] = result["plan_id"]
-    trace["agent_calls"] = [{key: task[key] for key in ("plan_id", "task_id", "attempt_id")} | task["agent_call"]
-                            for task in (metric, pdf) if "agent_call" in task]
+    record_agent_calls(trace, (metric, pdf), plan_id=result["plan_id"])
     if retrieval := knowledge.get("retrieval_trace"):
         trace["tools"].append({**retrieval, **{key: pdf[key] for key in
                                ("plan_id", "task_id", "attempt_id", "kind", "status", "error_code", "sources")},

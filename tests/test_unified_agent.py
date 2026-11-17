@@ -1,11 +1,12 @@
 import json
 import unittest
 from datetime import date
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from dataquery_agent.agent_prompts import PROMPT_VERSIONS
 from dataquery_agent.capability_registry import CapabilityRegistry
 from dataquery_agent.capability_resolver import CapabilityResolver
+from dataquery_agent.business_results import normalize_rows
 from dataquery_agent.metric_query_service import MetricQueryService
 from dataquery_agent.metrics import ROOT
 from dataquery_agent.unified_agent import UnifiedAgent
@@ -66,6 +67,19 @@ class UnifiedAgentTests(unittest.TestCase):
             result = {**request, "status": "ok", "results": [row], "trace_id": "fixture-query"}
         return dict(result, sources=self.registry.standard[request["metric_id"]]["sources"],
                     definition=self.service.metrics[request["metric_id"]]["definition"])
+
+    def test_dag_validates_each_metric_result_once(self):
+        case = CASES["multi"]
+        self.service.query.side_effect = lambda request: self.fake_query(case, request)
+        with patch("dataquery_agent.metric_tool.normalize_rows", wraps=normalize_rows) as normalize:
+            answer = self.agent.answer(question(case), lambda prompt: fixed_generate(case, prompt), today=TODAY)
+        self.assertEqual(answer["status"], "ok")
+        self.assertEqual(normalize.call_count, self.service.query.call_count)
+        self.assertEqual(normalize.call_count, 2)
+        self.assertEqual(len(answer["trace"]["tools"]), 2)
+        for event, task in zip(answer["trace"]["tools"], answer["result"]["subtasks"], strict=True):
+            self.assertEqual((event["task_id"], event["attempt_id"], event["trace_id"]),
+                             (task["task_id"], task["attempt_id"], task["trace_id"]))
 
     def test_versioned_business_cases(self):
         for case in CASES.values():
