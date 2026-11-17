@@ -27,3 +27,11 @@ def tool_event(item):
             event.setdefault("agent_call", {})[key] = agent_call[key]
     return dict(event, trace_id=item.get("trace_id"), status=item.get("status"),
                 code=item.get("code") or item.get("error_code") or item.get("reason_code"))
+
+
+def record_agent_calls(trace, tasks, *, plan_id):
+    trace["agent_calls"] = [
+        {**task["agent_call"], "plan_id": plan_id,
+         "task_id": task["task_id"], "attempt_id": task["attempt_id"]}
+        for task in tasks if "agent_call" in task
+    ]

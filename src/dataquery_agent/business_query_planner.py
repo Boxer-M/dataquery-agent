@@ -2,7 +2,6 @@
 import argparse
 import json
 from datetime import datetime
-from decimal import InvalidOperation
 from time import monotonic
 from uuid import uuid4
 from zoneinfo import ZoneInfo
@@ -10,9 +9,10 @@ from zoneinfo import ZoneInfo
 from dotenv import dotenv_values
 
 from .business_plan import PlanError, PlanValidator, parse_proposal
-from .business_results import RATIO_COMPONENT_METRICS, combine, normalize_rows, render, with_precision
+from .business_results import combine, render, with_precision
 from .intent_semantic_resolver import gemini_generator, outcome
 from .metric_query_service import MetricQueryService
+from .metric_tool import execute_metric
 from .metrics import ROOT
 from .task_dag import Task, TaskGraphError, execute_tasks
 
@@ -66,7 +66,7 @@ class BusinessQueryPlanner:
             plan["pdf_question"] = pdf_question
         return {"status": "ready", "plan": plan}
 
-    def execute_plan(self, plan, *, query=None, catalog=None, execution_ids=None, task_query=None, document=None):
+    def execute_plan(self, plan, *, query=None, catalog=None, execution_ids=None, task_query=None, document=None, metric_handler=None):
         """Schedule the validated metric calls and optional evidence tasks."""
         plan_id, attempt_id = execution_ids or (uuid4().hex, uuid4().hex)
         tasks = [Task(f"{plan_id}/{call['step']}", "metric", call) for call in plan["required_tool_calls"]]
@@ -84,11 +84,11 @@ class BusinessQueryPlanner:
             tasks.append(Task(f"{plan_id}/2", "pdf", {"question": plan["pdf_question"]}))
             tasks.append(Task(f"{plan_id}/3", "summary", {}, tuple(task.task_id for task in tasks)))
 
-        def metric_handler(call):
+        def default_metric_handler(call):
             execute = (lambda request: task_query(call["step"], request)) if task_query is not None else query
             return self.call_tool(call, plan, query=execute)
 
-        handlers = {"metric": metric_handler}
+        handlers = {"metric": metric_handler or default_metric_handler}
         if catalog is not None:
             handlers["catalog"] = catalog
         if document is not None:
@@ -133,34 +133,8 @@ class BusinessQueryPlanner:
         return result
 
     def call_tool(self, call, plan, *, query=None):
-        request = call["request"]
-        started = monotonic()
-        trace = dict(call)
-        try:
-            result = (query or self.service.query)(request)
-        except Exception:
-            result = {"status": "error", "error": {"code": "tool_exception"}}
-        trace.update(status="error", elapsed_ms=round((monotonic() - started) * 1000))
-        if not isinstance(result, dict):
-            return dict(trace, error_code="invalid_tool_response"), None
-        if "agent_call" in result:
-            trace["agent_call"] = result["agent_call"]
-        trace["trace_id"] = result.get("trace_id")
-        trace["sources"] = result.get("sources", [])
-        if result.get("status") != "ok":
-            error = result.get("error")
-            code = error.get("code") if isinstance(error, dict) else None
-            return dict(trace, error_code=code or "tool_error"), None
-        mid = request["metric_id"]
-        try:
-            if any(result.get(key) != request[key] for key in ("metric_id", "start_date", "end_date")):
-                raise ValueError("Unexpected metric result.")
-            rows = with_precision(normalize_rows, result["results"],
-                                  monthly="month" in plan["group_by"], has_ratio=mid in RATIO_COMPONENT_METRICS)
-        except (TypeError, KeyError, ValueError, InvalidOperation):
-            return dict(trace, error_code="invalid_tool_response"), None
-        return dict(trace, status="ok", row_count=len(rows), definition=result.get("definition"),
-                    event_time=result.get("event_time")), rows
+        execution = execute_metric(query or self.service.query, call["request"])
+        return execution.task_result(call, agent_call=execution.result.get("agent_call"))
 
 
 def main():

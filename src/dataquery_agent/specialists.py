@@ -33,6 +33,13 @@ class DataAnalysisAgent:
         return ToolChoice("none", request["metric_id"], route.get("reason_code", "unsupported_capability"))
 
     def execute(self, request, approved_route):
+        result, agent_call = self.dispatch(request, approved_route)
+        if not agent_call["executed"]:
+            result = {"status": "error", "error": {"code": "data_tool_not_authorized"}}
+        return dict(result, agent_call=agent_call)
+
+    def dispatch(self, request, approved_route):
+        """Authorize a configured metric callback and return its result and role trace."""
         started = monotonic()
         route = self.resolve(request)
         candidate = self.choose(request, route)
@@ -40,9 +47,8 @@ class DataAnalysisAgent:
                      and all(route.get(key) == approved_route.get(key) for key in (
                          "required_fields", "metadata_version", "metric_request", "time_constraints", "selected_source"))
                      and allowed(candidate, "metric_query_service", request["metric_id"]))
-        result = (self.query_metric(request, route) if permitted else
-                  {"status": "error", "error": {"code": "data_tool_not_authorized"}})
-        return dict(result, agent_call=invocation("data_analysis", candidate, started, executed=permitted))
+        result = self.query_metric(request, route) if permitted else None
+        return result, invocation("data_analysis", candidate, started, executed=permitted)
 
 
 class KnowledgeAgent:
