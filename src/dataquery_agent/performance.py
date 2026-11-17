@@ -1,12 +1,12 @@
 """Bound request work and cache authorized, versioned metric results."""
 from contextlib import contextmanager
 from contextvars import ContextVar
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from hashlib import sha256
 import json
 import os
 from threading import BoundedSemaphore, Lock
-from time import monotonic, sleep
+from time import monotonic, perf_counter_ns, sleep
 from uuid import uuid4
 
 
@@ -36,10 +36,14 @@ class RequestWork:
     acl: int = 0
     model_calls: int = 0
     model_tokens: int = 0
+    durations: dict = field(default_factory=dict)
 
     def headers(self):
-        return {f"X-DataQuery-{name.replace('_', '-')}": str(getattr(self, name))
-                for name in ("hits", "misses", "sql", "acl", "model_calls", "model_tokens")}
+        headers = {f"X-DataQuery-{name.replace('_', '-')}": str(getattr(self, name))
+                   for name in ("hits", "misses", "sql", "acl", "model_calls", "model_tokens")}
+        headers.update({f"X-DataQuery-{stage}-ms": f"{elapsed / 1_000_000:.3f}"
+                        for stage, elapsed in self.durations.items()})
+        return headers
 
 
 class Performance:
@@ -71,12 +75,16 @@ class Performance:
                    limit=int(os.getenv("DATAQUERY_RATE_LIMIT", "60" if url else "0")),
                    report=os.getenv("DATAQUERY_PERF_HEADERS") == "1")
 
+    def redis_command(self, method, *args, **kwargs):
+        with timed('redis'):
+            return getattr(self.redis, method)(*args, **kwargs)
+
     def admit(self, owner):
         if not self.limit:
             return 0
         if self.redis is not None:
             try:
-                count, remaining = self.redis.eval(RATE_SCRIPT, 1, f"dq:rate:v1:{owner}:{self.window}", self.window)
+                count, remaining = self.redis_command("eval", RATE_SCRIPT, 1, f"dq:rate:v1:{owner}:{self.window}", self.window)
                 return max(1, remaining) if count > self.limit else 0
             except self.redis_errors:
                 pass
@@ -124,8 +132,8 @@ class Performance:
         key = "dq:metric:v1:" + sha256(json.dumps(material, sort_keys=True).encode()).hexdigest()
         lock, token = key + ":load", uuid4().hex
         try:
-            cached = self.redis.get(key)
-            if not cached and self.redis.set(lock, token, nx=True, ex=20):
+            cached = self.redis_command("get", key)
+            if not cached and self.redis_command("set", lock, token, nx=True, ex=20):
                 try:
                     work.misses += 1
                     result = execute()
@@ -133,19 +141,19 @@ class Performance:
                         payload = json.dumps(result.result, ensure_ascii=False)
                         if len(payload.encode()) <= 256 * 1024:
                             try:
-                                self.redis.set(key, payload, ex=self.ttl)
+                                self.redis_command("set", key, payload, ex=self.ttl)
                             except self.redis_errors:
                                 pass
                     return result
                 finally:
                     try:
-                        self.redis.eval(UNLOCK_SCRIPT, 1, lock, token)
+                        self.redis_command("eval", UNLOCK_SCRIPT, 1, lock, token)
                     except self.redis_errors:
                         pass
             if not cached:
                 for _ in range(5):
                     sleep(.02)
-                    cached = self.redis.get(key)
+                    cached = self.redis_command("get", key)
                     if cached:
                         break
                 if not cached:
@@ -185,3 +193,16 @@ def slot(kind):
 def count(field, value=1):
     if (work := CURRENT.get()) is not None:
         setattr(work, field, getattr(work, field) + value)
+
+
+@contextmanager
+def timed(stage):
+    work = CURRENT.get()
+    if work is None or not work.control.report:
+        yield
+        return
+    started = perf_counter_ns()
+    try:
+        yield
+    finally:
+        work.durations[stage] = work.durations.get(stage, 0) + perf_counter_ns() - started

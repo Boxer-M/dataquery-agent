@@ -4,6 +4,7 @@ from hashlib import sha256
 from hmac import compare_digest
 import json
 import re
+from time import perf_counter_ns
 from uuid import UUID
 
 from dotenv import dotenv_values
@@ -21,7 +22,7 @@ from .conversation_store import ConversationError
 from .document_api import DOCUMENTS, body_limit, document_router
 from .document_staging import DocumentStaging
 from .metrics import ROOT
-from .performance import Performance, WorkBusy
+from .performance import Performance, WorkBusy, timed
 
 MAX_REQUEST_BYTES = 8192
 MAX_RESPONSE_BYTES = 256 * 1024
@@ -144,12 +145,16 @@ def create_app(*, token, manager_factory=local_manager, document_staging=None, p
     def run_work(action):
         try:
             with workload.slot("http"):
+                started = perf_counter_ns() if workload.report else 0
                 manager, owner = manager_factory()
                 identity_key = sha256(owner.encode()).hexdigest()
-                if retry_after := workload.admit(identity_key):
-                    return throttled(retry_after)
                 with workload.scope(identity_key) as work:
-                    result = action(manager, owner)
+                    if workload.report:
+                        work.durations["setup"] = perf_counter_ns() - started
+                    if retry_after := workload.admit(identity_key):
+                        result = throttled(retry_after)
+                    else:
+                        result = action(manager, owner)
                 if workload.report:
                     result.headers.update(work.headers())
                 return result
@@ -159,10 +164,12 @@ def create_app(*, token, manager_factory=local_manager, document_staging=None, p
     @app.post("/api/chat", response_model=QueryResponse)
     def chat(body: ChatRequest, _=Depends(authorize)):
         def action(manager, owner):
-            data = manager.process_message(owner, body.conversation_id, body.question, body.message_id)
+            with timed("route"):
+                data = manager.process_message(owner, body.conversation_id, body.question, body.message_id)
             if data.get("code") == "conversation_not_found":
                 raise HTTPException(404)
-            return bounded(public_response(data))
+            with timed("assembly"):
+                return bounded(public_response(data))
 
         return run_work(action)
 

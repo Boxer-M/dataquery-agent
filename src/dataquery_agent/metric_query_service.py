@@ -16,7 +16,7 @@ from psycopg.rows import dict_row
 
 from .dws import REGISTRY, metric_query, models
 from .metrics import ROOT, read_queries
-from .performance import WorkBusy, count, slot
+from .performance import WorkBusy, count, slot, timed
 
 ROLE = "sqlshed_metric_service"
 TIMEOUT_MS = 5000
@@ -135,7 +135,7 @@ class MetricQueryService:
                 observation_cutoff=request.get("observation_cutoff"), sources=sources)
             LOG.info("metric_query trace=%s metric=%s start=%s end=%s sources=%s",
                      response["trace_id"], mid, start, end, ",".join(sources))
-            with slot("sql"):
+            with timed("sql-tool"), slot("sql"):
                 rows = self.execute(template, start, end, monthly, axis, filters)
             return dict(response, status="ok", results=rows, error=None)
         except WorkBusy:
@@ -164,7 +164,7 @@ class MetricQueryService:
             return False
         names, columns = map(list, zip(*fields))
         try:
-            with slot("sql"), psycopg.connect(self.dsn, connect_timeout=5) as pg:
+            with timed("acl"), slot("sql"), psycopg.connect(self.dsn, connect_timeout=5) as pg:
                 pg.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY")
                 pg.execute("SET LOCAL search_path = pg_catalog")
                 pg.execute("SET LOCAL statement_timeout = '2s'")
@@ -211,7 +211,9 @@ class MetricQueryService:
                               channel=filters.get("channel"), category=filters.get("category"),
                               limit=ROW_LIMIT + 1 - len(rows))
                 count("sql")
-                for row in pg.execute(query, params):
+                with timed("sql-statements"):
+                    cursor = pg.execute(query, params)
+                for row in cursor:
                     result = {key: json_value(value) for key, value in row.items()}
                     if monthly:
                         result.update(month=lower.strftime("%Y-%m"), start_date=lower.isoformat(),
