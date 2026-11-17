@@ -56,6 +56,7 @@ class ConversationManager:
         if "replay" in claim:
             return {**claim["replay"], **ids, "replayed": True}
 
+        query_id = uuid4()
         began = monotonic()
         today = today or datetime.now(ZoneInfo("Asia/Shanghai")).date()
         try:
@@ -63,7 +64,8 @@ class ConversationManager:
                 answer, context, pending, operation = self.resume_catalog(owner, claim["state"], target, today)
             else:
                 answer, context, pending, operation = self.dispatch(message, claim["state"], today, owner=owner)
-            record = build_record(claim, message, answer, operation, round((monotonic() - began) * 1000))
+            record = build_record(claim, message, answer, operation, round((monotonic() - began) * 1000),
+                                  query_id=query_id)
             if recovery := record.get("recovery"):
                 context = {"kind": "catalog_recovery", "root_query_id": target or record["query_id"],
                            "latest_query_id": record["query_id"], "message_id": str(message_id),
@@ -72,7 +74,8 @@ class ConversationManager:
             answer = response("error", "agent_failed", "查询处理失败，请稍后重试。")
             context = claim["state"]["active_query_context"]
             pending = claim["state"]["pending_clarification"]
-            record = build_record(claim, message, answer, "failed", round((monotonic() - began) * 1000))
+            record = build_record(claim, message, answer, "failed", round((monotonic() - began) * 1000),
+                                  query_id=query_id)
         try:
             self.store.finish(claim, context, pending, record, replay_summary(record, answer))
         except (psycopg.Error, ConversationError) as error:

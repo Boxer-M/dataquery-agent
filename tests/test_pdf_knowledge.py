@@ -124,6 +124,11 @@ class PdfKnowledgePostgresTests(unittest.TestCase):
             self.assertEqual(live.rows[0]["metrics"]["order_count"]["value"], "2312")
             self.assertEqual([task.status for task in live.trace.tasks], ["ok", "ok", "ok"])
             self.assertEqual(live.trace.tasks[2].depends_on, [task.task_id for task in live.trace.tasks[:2]])
+            self.assertEqual(live.trace.run_id, live.query_id)
+            self.assertEqual({task.plan_id for task in live.trace.tasks}, {live.trace.plan_id})
+            self.assertEqual({task.attempt_id for task in live.trace.tasks}, {live.trace.attempt_id})
+            self.assertEqual([tool.task_id for tool in live.trace.tools],
+                             [task.task_id for task in live.trace.tasks[:2]])
 
             from unittest.mock import patch
             partial = joint(other, other_cid)

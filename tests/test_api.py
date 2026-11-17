@@ -157,6 +157,17 @@ class ApiPostgresTests(unittest.IsolatedAsyncioTestCase):
             saved_single = await http.get(f"/api/queries/{single['query_id']}", headers=AUTH)
             self.assertEqual(saved_single.status_code, 200)
             self.assertEqual(saved_single.json()["trace"], single["trace"])
+            trace = single["trace"]
+            self.assertEqual(trace["run_id"], single["query_id"])
+            task, = trace["tasks"]
+            tool, = trace["tools"]
+            capability, = trace["capability"]
+            for field in ("plan_id", "attempt_id", "task_id"):
+                self.assertEqual(task[field], tool[field])
+                self.assertEqual(task[field], capability[field])
+                self.assertIsNotNone(task[field])
+            self.assertEqual(task["trace_id"], tool["trace_id"])
+            self.assertEqual(tool["capability_trace_id"], capability["trace_id"])
             body, hybrid = await ask(QUESTION)
             self.assertEqual(hybrid["status"], "completed", hybrid)
             self.assertEqual(hybrid["rows"][0]["metrics"]["order_item_count"]["value"], "5538")
@@ -177,6 +188,7 @@ class ApiPostgresTests(unittest.IsolatedAsyncioTestCase):
             replay = (await http.post("/api/chat", json=body, headers=AUTH)).json()
             self.assertTrue(replay["replayed"])
             self.assertEqual(replay["query_id"], hybrid["query_id"])
+            self.assertEqual(replay["trace"]["run_id"], hybrid["trace"]["run_id"])
             _, clarify = await ask("2025年1月销售额")
             self.assertEqual(clarify["status"], "clarification_required")
             self.assertTrue(clarify["clarification_choices"])

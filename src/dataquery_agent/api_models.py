@@ -6,6 +6,7 @@ from pydantic import BaseModel, ConfigDict, Field, JsonValue, StringConstraints
 from typing_extensions import Annotated
 
 from .conversation_context import redact
+from .runtime_trace import trace_view
 from .visualization import Visualization, chart_metadata
 
 Status = Literal["completed", "partial", "clarification_required", "failed"]
@@ -82,6 +83,7 @@ class TraceStep(BaseModel):
 
 
 class PublicTrace(BaseModel):
+    run_id: UUID | None = None
     previous_query_id: UUID | None = None
     trace_id: str | None = None
     plan_id: str | None = None
@@ -185,7 +187,8 @@ def metric_row(row):
 
 
 def public_response(data, *, history=False):
-    result, trace = data.get("result", {}), data.get("trace", {})
+    result = data.get("result", {})
+    evidence = trace_view(data)
     knowledge = (data.get("knowledge", {}) if history else result.get("knowledge_result", result))
     primary = result.get("query_result") or result
     rows = primary.get("results", []) if not history and ("query_result" in result or "plan" in result) else []
@@ -193,9 +196,7 @@ def public_response(data, *, history=False):
     stored_rows = data.get("recovery", {}).get("results", []) if history else []
     if history or data.get("replayed"):
         rows = stored_rows or ([summary["scalar"]] if summary.get("scalar") else [])
-    tasks = result.get("subtasks", data.get("subtasks", []))
-    capabilities = trace.get("capability_records", data.get("capability_records", []))
-    tools = trace.get("tools", data.get("tool_traces", []))
+    tasks = evidence["subtasks"]
     status = STATUS.get(data.get("execution_status" if history else "status"), "failed")
     code = identifier(data.get("error_code") if history else data.get("code"))
     error = ApiError(code=code or "request_failed", message="请求未能完成。") if status == "failed" else None
@@ -220,10 +221,12 @@ def public_response(data, *, history=False):
         definitions=[projection(MetricDefinition, item) for item in
                      ([primary] if "query_result" in result else tasks)[:12] if item.get("definition")],
         clarification_choices=[projection(MetricDefinition, item) for item in data.get("choices", [])[:8]],
-        trace=PublicTrace(previous_query_id=(result.get("recovery") or data.get("recovery") or {}).get("previous_query_id"),
-                          trace_id=identifier(trace.get("trace_id") or data.get("trace_id")),
-                          plan_id=identifier(result.get("plan_id") or data.get("plan_id")),
-                          attempt_id=identifier(result.get("attempt_id") or data.get("attempt_id")),
-                          tasks=steps(tasks), capability=steps(capabilities), tools=steps(tools)),
+        trace=PublicTrace(run_id=evidence["run_id"],
+                          previous_query_id=(result.get("recovery") or data.get("recovery") or {}).get("previous_query_id"),
+                          trace_id=identifier(evidence["trace_id"]),
+                          plan_id=identifier(evidence["plan_id"]),
+                          attempt_id=identifier(evidence["attempt_id"]),
+                          tasks=steps(tasks), capability=steps(evidence["capability_records"]),
+                          tools=steps(evidence["tool_traces"])),
         replayed=bool(data.get("replayed")),
     )

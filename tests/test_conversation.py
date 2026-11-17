@@ -206,8 +206,8 @@ class ConversationPostgresTests(unittest.TestCase):
         before = self.manager.get_conversation(self.owner, self.cid)
         mid = uuid4()
 
-        def duplicate_id(*args):
-            return dict(build_record(*args), query_id=first["query_id"])
+        def duplicate_id(*args, **kwargs):
+            return dict(build_record(*args, **kwargs), query_id=first["query_id"])
 
         with patch("dataquery_agent.conversation_manager.build_record", side_effect=duplicate_id):
             failed = self.send("那2月份呢？", mid)

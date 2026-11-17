@@ -30,6 +30,7 @@ export type TraceStep = {
 }
 
 export type PublicTrace = {
+  run_id?: string
   plan_id?: string; attempt_id?: string; trace_id?: string; previous_query_id?: string
   tasks?: TraceStep[]; capability?: TraceStep[]; tools?: TraceStep[]
 }

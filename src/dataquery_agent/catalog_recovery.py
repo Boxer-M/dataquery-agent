@@ -99,9 +99,11 @@ def recover_catalog(agent, prior, owner, today, answer):
             return None
     resolution = {"method": "catalog_recovery", "metric_ids": missing}
     knowledge = agent.knowledge.exact(agent.service, resolution, today=today, owner=owner)
-    answer["trace"]["tools"].append(knowledge["retrieval_trace"])
     replacements = {task["metric_id"]: task for task in catalog_tasks(knowledge, missing)}
     attempt_id = uuid4().hex
+    answer["trace"]["tools"].append(dict(
+        knowledge["retrieval_trace"], plan_id=saved["plan_id"], attempt_id=attempt_id,
+    ))
     updated = [
         dict({key: value for key, value in task.items() if key not in {"agent_call", "elapsed_ms", "schedule_position", "failed_dependencies"}}
              | replacements[task["metric_id"]], attempt_id=attempt_id)
