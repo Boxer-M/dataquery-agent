@@ -6,6 +6,10 @@ from .expansion import compare_rows
 from .scoring import ratio, scores, telemetry
 
 
+def normalized_request(request):
+    return {"filters": {}, "group_by": []} | request
+
+
 def retrieval(answer, relevant):
     if not relevant:
         return None
@@ -33,7 +37,9 @@ def expansion_checks(case, answer, calls, history, pg, reader, owner):
     proof = label["sql"]
     if proof:
         expected = proof["calls"]
-        matches_request = [item["parameters"] for item in expected] == [request for request, _ in calls]
+        matches_request = [normalized_request(item["parameters"]) for item in expected] == [
+            normalized_request(request) for request, _ in calls
+        ]
         checks["sql_result_accuracy"] = matches_request and answer["status"] == "ok" and all(
             compare_rows(item["expected_result"], actual.get("results")) is True
             for item, (_, actual) in zip(expected, calls))
