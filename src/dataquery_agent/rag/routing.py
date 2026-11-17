@@ -14,6 +14,10 @@ RETURN_METRICS = ("return_record_count", "return_record_amount", "item_return_ra
 DEFINITION = re.compile(r"怎么定义|如何定义|定义是什么|业务定义|指标定义|口径|怎么算|有什么区别|有何区别")
 PDF = re.compile(r"(?<![a-z0-9])pdf(?![a-z0-9])", re.I)
 FORMAL_DEFINITION = re.compile(r"正式(?:指标|业务)?(?:定义|口径)|指标定义")
+NUMERIC = re.compile(r"多少|排行|同比|环比|统计|汇总|怎么分布|如何分布|按.{1,8}(?:拆分|分组)")
+NO_VALUE = re.compile(r"(?:不必|不用|无需|不要|不需要)\s*(?:查询|统计|计算|给出)?\s*(?:数值|结果|实际数据)")
+NO_DEFINITION = re.compile(r"(?:不必|不用|无需|不要|不需要)\s*(?:解释|给出|说明|引用)?\s*(?:正式)?(?:定义|口径)")
+DOCUMENT_PAGE = re.compile(r"扫描页|扫描件|原图坐标|原件上的.{0,6}坐标")
 ORDER_RATE = re.compile(r"订单(?:退款|退货)率")
 GENERIC_RETURNS = re.compile(r"^退货相关指标是多少[？?，,。\s]*(?:对应的)?业务定义是什么[？?。]?$")
 
@@ -39,8 +43,10 @@ def catalog_tasks(knowledge, metric_ids):
 
 def route_knowledge(agent, question, runtime, frame, trace, today, owner):
     bare_id = normalize(question.strip().rstrip("？?。")) in agent.service.metrics
-    suffix = CATALOG_SUFFIX.search(question)
-    mentions_pdf = bool(PDF.search(question))
+    negates_definition = bool(NO_DEFINITION.search(question))
+    suffix = None if negates_definition else CATALOG_SUFFIX.search(question)
+    mentions_pdf = bool(PDF.search(question) or DOCUMENT_PAGE.search(question))
+    formal_definition = bool(FORMAL_DEFINITION.search(question) and not negates_definition)
     if not bare_id and not suffix and not EXPLANATION.search(question) and not mentions_pdf:
         return None
     service = agent.knowledge
@@ -84,18 +90,18 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
         resolution = agent.planner.validator.entities.resolve(numeric)
         frame["task"] = "hybrid"
         return agent.business(numeric, runtime, frame, trace, today, catalog=resolution, owner=owner)
-    if periods and re.search(r"多少|排行|同比|环比", question):
+    if periods and NUMERIC.search(question) and not formal_definition and not mentions_pdf and not NO_VALUE.search(question):
         return None
     frame["task"] = "knowledge"
-    definition_question = DEFINITION.search(question)
+    definition_question = not negates_definition and (formal_definition or DEFINITION.search(question))
     document_context = mentions_pdf or re.search(r"字段含义|政策|文档", question)
     resolution = None
-    if bare_id or definition_question or (mentions_pdf and FORMAL_DEFINITION.search(question)):
+    if bare_id or definition_question:
         resolution = MetricEntityResolver(agent.service.metrics, ALIASES | DEFINITION_ALIASES).resolve(
             ORDER_RATE.sub(" ", question))
     formal_reference = resolution and (resolution["metric_ids"] or resolution["unknown_ids"] or ORDER_RATE.search(question))
     if resolution is not None and (bare_id or formal_reference or not document_context
-                                   or (mentions_pdf and FORMAL_DEFINITION.search(question))):
+                                   or (mentions_pdf and formal_definition)):
         ids = resolution["metric_ids"]
         methods = {match["method"] for match in resolution["matches"]}
         resolution["method"] = next(iter(methods)) if len(methods) == 1 else "mixed" if methods else "not_found"
