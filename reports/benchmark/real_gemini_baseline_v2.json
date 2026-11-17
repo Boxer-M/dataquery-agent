@@ -1,0 +1,5115 @@
+{
+  "version": "real-gemini-baseline-v2",
+  "mode": "real_gemini",
+  "git_commit": "48fd94681c2edaff4344116d866df86de0e4ba9c",
+  "started_at": "2026-11-17T00:42:10.733168+00:00",
+  "dataset_hash": "2c22bb95b38611fdfc0faa3b3d3d6ace79f160c45eab3b39d733d473bbc1660e",
+  "model_environment": {
+    "configured_model": "models/gemini-3.5-flash-lite",
+    "prompt_versions": {
+      "intent": "intent-v3",
+      "resolution": "metric-resolution-v2",
+      "planning": "business-plan-v1",
+      "dynamic_sql": "dynamic-sql-v1",
+      "knowledge": "knowledge-extractive-v1"
+    },
+    "response_schema_hash": "7e9da4e96b1fb53d6a3fbb7702df5ff913f94359aae6dc25962b3765d01dc0c2",
+    "response_format": "application/json",
+    "embedding_model": "gemini-embedding-001",
+    "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1"
+  },
+  "budgets": {
+    "generation_calls": 110,
+    "embedding_calls": 30,
+    "reserved_tokens": 10500000,
+    "reserved_usd": 20.0
+  },
+  "excluded": [
+    {
+      "case_id": "business_planning_v1:multi",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:channel_top",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:periods",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:mom",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:failure_rate",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:cross",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:ambiguous",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:income",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:invalid_group",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:empty",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:zero",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:partial",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:invalid_json",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:detail",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:unavailable",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:omitted_filter",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:zero_ratio",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:step_limit",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "business_planning_v1:grain",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "controlled_detail_v1:payment_total",
+      "reason": "legacy_pending"
+    },
+    {
+      "case_id": "controlled_detail_v1:payment_channel",
+      "reason": "legacy_pending"
+    },
+    {
+      "case_id": "controlled_detail_v1:sales_order",
+      "reason": "legacy_pending"
+    },
+    {
+      "case_id": "dynamic_sql_v1:having",
+      "reason": "legacy_pending"
+    },
+    {
+      "case_id": "dynamic_sql_v1:top",
+      "reason": "legacy_pending"
+    },
+    {
+      "case_id": "dynamic_sql_v1:returns",
+      "reason": "legacy_pending"
+    },
+    {
+      "case_id": "intent_business_v1:catalog_name",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:synonym",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:explicit_range",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:multiple_periods",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:ambiguous_sales",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:ambiguous_refund",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:missing_time",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:channel",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:category",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:unsupported",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:unverified",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:invalid_axis",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:complex",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:multiple_metrics_omitted",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:cutoff",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:out_of_coverage",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:model_invalid",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:model_invented",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "intent_business_v1:tool_error",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "rag_v1:definition",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "rag_v1:policy",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "rag_v1:policy_gap",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "rag_v1:hybrid",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "query_assets_v1:history_to_publish",
+      "reason": "legacy_pending"
+    },
+    {
+      "case_id": "unified_agent_v1:order",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:synonym",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:sales",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:payment",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:channel",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:cohort",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:longtail",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:longtail_order",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:inferred_only",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:negated_capture",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:invented",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:ungrounded",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:ambiguous_sales",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:ambiguous_refund",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:income",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:profit",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:refund_arrival",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:browse",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:unverified",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:clock_conflict",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:no_time",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:bad_group",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:sequence",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:order_detail",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:unsupported_order_status",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:unknown_detail",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:injection",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:broken_json",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "unified_agent_v1:tool_down",
+      "reason": "no_independently_reviewed_live_label_mapping"
+    },
+    {
+      "case_id": "exp1:intent:ambiguous-credit",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:planning:different-axes",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:planning:customer-overlap",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:planning:rates-delta",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:conversation:keep-filter",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:conversation:negate",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:conversation:replace-axis",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:conversation:replace-clock",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:conversation:mixed-add",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:conversation:follow-ref",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:conversation:branch-time",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:conversation:clarify-scope",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:conversation:confirm-share",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:conversation:invalid-carry",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:pdf:pdf-missing-table",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:pdf:pdf-shared-filename",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:hybrid:pdf-gross",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:hybrid:pdf-attribution",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:hybrid:pdf-cohort",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "exp1:hybrid:pdf-distinct",
+      "reason": "needs_review"
+    },
+    {
+      "case_id": "agent_e2e_v1:policy",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "agent_e2e_v1:policy_gap",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "integrated_e2e_v1:native_pdf",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "integrated_e2e_v1:ocr_pdf",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "integrated_e2e_v1:sql_and_pdf",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "integrated_e2e_v1:foreign_pdf",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "exp1:rag:25d2dc6118ec6632d497",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "exp1:rag:2e54ca78a505cd96ec60",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "exp1:rag:170703e20f96b50d1094",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "exp1:rag:ad12f29a052a8b033aa0",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "exp1:rag:a197dc9add7d83cc030c",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "exp1:rag:caf17293ba69d706ac6c",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "exp1:rag:65bb92063dc947e39bcc",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "exp1:rag:f25e0bcbe698c4a98493",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "exp1:pdf:pdf-metadata",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "exp1:pdf:pdf-negative",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "exp1:pdf:pdf-old-ocr",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "exp1:pdf:pdf-original-bbox",
+      "reason": "embedding_setup_unavailable"
+    },
+    {
+      "case_id": "integrated_e2e_v1:withdrawn_pdf",
+      "reason": "embedding_setup_unavailable"
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "agent_e2e_v1:metric_id",
+      "split": "development",
+      "semantic_group_id": "8c6389b48b98822ba680",
+      "template_id": "8c6389b48b98822ba680",
+      "task_category": "rag",
+      "intent_accuracy": true,
+      "entities": [
+        [
+          "item_return_rate"
+        ],
+        [
+          "item_return_rate"
+        ]
+      ],
+      "plan_validity": null,
+      "tool_route_accuracy": true,
+      "sql_result_accuracy": null,
+      "ods_consistency": null,
+      "citation_validity": true,
+      "guardrail": null,
+      "task_success": true,
+      "checks": {
+        "intent": true,
+        "entity": true,
+        "route": true,
+        "sql_provenance": null,
+        "status": true,
+        "legal_plan": null,
+        "sql_numeric": null,
+        "catalog_citation": true,
+        "guardrail": null,
+        "rag_answer": null,
+        "history": true,
+        "model_stage": true
+      },
+      "latency_ms": 42,
+      "tool_calls": 1,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "rag",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": null,
+      "trace_id": "61c358766fac4c7b9b50ab7c6885df53",
+      "status": "ok",
+      "code": null,
+      "query_id": "eb95a5b1-c319-4879-bf9d-e5b68c0ac419",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [
+        {
+          "trace_id": "cce9688e98864196b79adf823e14cbe3",
+          "strategy": "catalog_exact"
+        }
+      ],
+      "citation_locations": [
+        {
+          "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+          "document_version": "1.1.1-ads",
+          "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+          "source_location": "#/metrics[metric_id=item_return_rate]"
+        }
+      ],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "agent_e2e_v1:metric_name",
+      "split": "development",
+      "semantic_group_id": "8c6389b48b98822ba680",
+      "template_id": "8c6389b48b98822ba680",
+      "task_category": "rag",
+      "intent_accuracy": true,
+      "entities": [
+        [
+          "item_return_rate"
+        ],
+        [
+          "item_return_rate"
+        ]
+      ],
+      "plan_validity": null,
+      "tool_route_accuracy": true,
+      "sql_result_accuracy": null,
+      "ods_consistency": null,
+      "citation_validity": true,
+      "guardrail": null,
+      "task_success": true,
+      "checks": {
+        "intent": true,
+        "entity": true,
+        "route": true,
+        "sql_provenance": null,
+        "status": true,
+        "legal_plan": null,
+        "sql_numeric": null,
+        "catalog_citation": true,
+        "guardrail": null,
+        "rag_answer": null,
+        "history": true,
+        "model_stage": true
+      },
+      "latency_ms": 23,
+      "tool_calls": 1,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "rag",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": null,
+      "trace_id": "363894458e724f8aa6f1d6d2f03a0b6a",
+      "status": "ok",
+      "code": null,
+      "query_id": "3e93634a-abd6-4c0b-aa48-9cc8aace7a30",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [
+        {
+          "trace_id": "b4de8817132140b68550f87b7ff8f73a",
+          "strategy": "catalog_exact"
+        }
+      ],
+      "citation_locations": [
+        {
+          "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_return_rate]",
+          "document_version": "1.1.1-ads",
+          "chunk_id": "51043dfd33925d4190e0bca0716571be9a7c44ac68566547da76fde09ed40715",
+          "source_location": "#/metrics[metric_id=item_return_rate]"
+        }
+      ],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "agent_e2e_v1:single",
+      "split": "development",
+      "semantic_group_id": "f15c7e5fbe55ed97aee5",
+      "template_id": "aea3827790ba7cb1874a",
+      "task_category": "intent",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 962,
+      "tool_calls": 0,
+      "model_calls": 1,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "intent",
+      "embedding_calls": 0,
+      "api_events": [
+        {
+          "kind": "generation",
+          "stage": "intent-v3",
+          "status": "error",
+          "error_type": "ClientError",
+          "http_status": 400,
+          "reason": "provider_region_unavailable",
+          "elapsed_ms": 941.942
+        }
+      ],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 1,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "df43e8c2474740dd98f92a1b6455a49b",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "aa19fad4-23de-4fd7-b8d4-3cfd933d40fc",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "ClientError",
+          "http_status": 400,
+          "elapsed_ms": 942
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "agent_e2e_v1:alias",
+      "split": "development",
+      "semantic_group_id": "f15c7e5fbe55ed97aee5",
+      "template_id": "aea3827790ba7cb1874a",
+      "task_category": "intent",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 15,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "intent",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "8b797d00b97b4ee6b1aa616eae94dfd8",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "e46bb2e4-c0ca-4a51-9b03-ff9148e6ac2e",
+      "blocked_attempts": [
+        {
+          "stage": "intent-v3",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "agent_e2e_v1:multi",
+      "split": "development",
+      "semantic_group_id": "1699b708d2b9ae738ff9",
+      "template_id": "44b54c85c0005c13aaf3",
+      "task_category": "planning",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 16,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "business-plan-v1"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "planning",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "bb8e067a7dd744a3b7411146222525ca",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "dafd1c24-63c9-446a-8115-7f89dac7b7a2",
+      "blocked_attempts": [
+        {
+          "stage": "business-plan-v1",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": 0,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "agent_e2e_v1:hybrid",
+      "split": "development",
+      "semantic_group_id": "ca9d697b9ce6c4a774d8",
+      "template_id": "e05d40a4d962c324d499",
+      "task_category": "hybrid",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 15,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "business-plan-v1"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "hybrid",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "bedf2329261149a9922255918c6ddac8",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "2ad05dda-985a-425b-91c9-f4cff06fc83d",
+      "blocked_attempts": [
+        {
+          "stage": "business-plan-v1",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": 0,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "agent_e2e_v1:ambiguous",
+      "split": "development",
+      "semantic_group_id": "6115fd1cae5a57190880",
+      "template_id": "59a18b622f69f9b9b7eb",
+      "task_category": "intent",
+      "intent_accuracy": true,
+      "entities": [
+        [
+          "item_gross_sales_amount",
+          "item_net_sales_amount",
+          "captured_payment_amount"
+        ],
+        [
+          "item_gross_sales_amount",
+          "item_net_sales_amount",
+          "captured_payment_amount"
+        ]
+      ],
+      "plan_validity": null,
+      "tool_route_accuracy": true,
+      "sql_result_accuracy": null,
+      "ods_consistency": null,
+      "citation_validity": null,
+      "guardrail": true,
+      "task_success": true,
+      "checks": {
+        "intent": true,
+        "entity": true,
+        "route": true,
+        "sql_provenance": null,
+        "status": true,
+        "legal_plan": null,
+        "sql_numeric": null,
+        "catalog_citation": null,
+        "guardrail": true,
+        "rag_answer": null,
+        "history": true,
+        "model_stage": true
+      },
+      "latency_ms": 17,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "intent",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": null,
+      "trace_id": "8ddc340ec0ad4795909c40d8dac7232b",
+      "status": "clarify",
+      "code": "ambiguous_metric",
+      "query_id": "9b02c861-46fb-48a0-af6f-4b702a4f6a23",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "agent_e2e_v1:unknown",
+      "split": "development",
+      "semantic_group_id": "738975217ca815b8fa68",
+      "template_id": "738975217ca815b8fa68",
+      "task_category": "rag",
+      "intent_accuracy": true,
+      "entities": [
+        [],
+        []
+      ],
+      "plan_validity": null,
+      "tool_route_accuracy": true,
+      "sql_result_accuracy": null,
+      "ods_consistency": null,
+      "citation_validity": null,
+      "guardrail": true,
+      "task_success": true,
+      "checks": {
+        "intent": true,
+        "entity": true,
+        "route": true,
+        "sql_provenance": null,
+        "status": true,
+        "legal_plan": null,
+        "sql_numeric": null,
+        "catalog_citation": null,
+        "guardrail": true,
+        "rag_answer": null,
+        "history": true,
+        "model_stage": true
+      },
+      "latency_ms": 14,
+      "tool_calls": 1,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "rag",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": null,
+      "trace_id": "290508067647416c951949388c1e8aec",
+      "status": "ok",
+      "code": null,
+      "query_id": "0e56aa05-bb3a-4276-9723-3bf2a2879549",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [
+        {
+          "trace_id": "8a059afb628e46b9bd92a6f4bd07b022",
+          "strategy": "catalog_exact"
+        }
+      ],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "agent_e2e_v1:bad_dimension",
+      "split": "development",
+      "semantic_group_id": "92f3bc80de4f3319b038",
+      "template_id": "a17d3a3cefef913b0596",
+      "task_category": "planning",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 14,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "business-plan-v1"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "planning",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "d1be4c5e912b41db9326c57a6e1ef563",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "1bca0040-2177-483f-b962-d08d4790bf17",
+      "blocked_attempts": [
+        {
+          "stage": "business-plan-v1",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": 0,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "agent_e2e_v1:followup",
+      "split": "development",
+      "semantic_group_id": "08b34cdb376b7bd2639a",
+      "template_id": "26c7a6ecf1a0f4466a39",
+      "task_category": "intent",
+      "intent_accuracy": false,
+      "entities": [
+        [
+          "order_count"
+        ],
+        []
+      ],
+      "plan_validity": null,
+      "tool_route_accuracy": false,
+      "sql_result_accuracy": null,
+      "ods_consistency": null,
+      "citation_validity": null,
+      "guardrail": null,
+      "task_success": null,
+      "checks": null,
+      "latency_ms": 12,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "multi_turn",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service_dependency",
+      "trace_id": "2e042ce6251c49ebaada6f1478cb9a46",
+      "status": "clarify",
+      "code": "no_compatible_context",
+      "query_id": "26a521b9-5b15-4bc2-b7d2-9dbb5fc75d16",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "scoring_disposition": "upstream_provider_region_unavailable"
+    },
+    {
+      "case_id": "agent_e2e_v1:no_time",
+      "split": "development",
+      "semantic_group_id": "0811f5f5d7d9e0f171fd",
+      "template_id": "0811f5f5d7d9e0f171fd",
+      "task_category": "intent",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 12,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "intent",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "1be08ca258d24a00b1dca54a48922667",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "c2d67d62-d26b-46f7-a7cb-6e11998cc9e3",
+      "blocked_attempts": [
+        {
+          "stage": "intent-v3",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "integrated_e2e_v1:clarification_reply",
+      "split": "development",
+      "semantic_group_id": "8e2202625fa2afde2574",
+      "template_id": "8e2202625fa2afde2574",
+      "task_category": "intent",
+      "sql_result_accuracy": true,
+      "ods_consistency": true,
+      "citation_validity": null,
+      "guardrail": null,
+      "plan_validity": null,
+      "task_success": true,
+      "checks": {
+        "history": true,
+        "sql_numeric": true,
+        "sql_provenance": true
+      },
+      "latency_ms": 31,
+      "tool_calls": 1,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "multi_turn",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": null,
+      "trace_id": "8c73ba59195c4322a8cced2f96d750df",
+      "status": "ok",
+      "code": null,
+      "query_id": "f30000e8-5154-4625-849d-2dd7df83034c",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": 17,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [
+        {
+          "status": "ok",
+          "trace_id": "d1017579e5d44faaa10d7e92791e906c",
+          "capability_trace_id": "0a197ba44ae446d88dd515f80bd89718",
+          "request": {
+            "metric_id": "item_net_sales_amount",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01"
+          }
+        }
+      ],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "5615bf061c99fa4c0ad2aa27d3207e0f9caf87f17432e0ecbd04780737671f52"
+    },
+    {
+      "case_id": "integrated_e2e_v1:annual_order_count",
+      "split": "development",
+      "semantic_group_id": "243ba1d47baafa77e8f9",
+      "template_id": "60beffc389eb6b6053dd",
+      "task_category": "intent",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 12,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "intent",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "053ed5c98a8d4976a83985223ac33c22",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "34396603-3ed3-4dd0-bfaa-f5917b5d01b5",
+      "blocked_attempts": [
+        {
+          "stage": "intent-v3",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "integrated_e2e_v1:monthly_visualization",
+      "split": "development",
+      "semantic_group_id": "35928419db552eb3131e",
+      "template_id": "35928419db552eb3131e",
+      "task_category": "intent",
+      "sql_result_accuracy": null,
+      "ods_consistency": null,
+      "citation_validity": null,
+      "guardrail": null,
+      "plan_validity": null,
+      "task_success": null,
+      "checks": null,
+      "latency_ms": 12,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "multi_turn",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service_dependency",
+      "trace_id": "5bcabc64d730458cb9fa7942d74551a8",
+      "status": "clarify",
+      "code": "no_compatible_context",
+      "query_id": "924e4258-152a-4ffb-aed0-5b280a69d2c7",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "scoring_disposition": "upstream_provider_region_unavailable"
+    },
+    {
+      "case_id": "integrated_e2e_v1:channel_visualization",
+      "split": "development",
+      "semantic_group_id": "a46e82d45de638e921ea",
+      "template_id": "8e9a80c01615407d499e",
+      "task_category": "intent",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 12,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "intent",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "e2f55a34317c485eb94cd39f928c0536",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "aaa427c1-7080-42d4-90e4-2fdad4982db0",
+      "blocked_attempts": [
+        {
+          "stage": "intent-v3",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "integrated_e2e_v1:catalog_over_pdf",
+      "split": "development",
+      "semantic_group_id": "1b87959bafe0c5d712ee",
+      "template_id": "1b87959bafe0c5d712ee",
+      "task_category": "rag",
+      "sql_result_accuracy": null,
+      "ods_consistency": null,
+      "citation_validity": true,
+      "guardrail": null,
+      "plan_validity": null,
+      "task_success": true,
+      "checks": {
+        "history": true,
+        "catalog_citation": true,
+        "guardrail": true
+      },
+      "latency_ms": 18,
+      "tool_calls": 1,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "rag",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": null,
+      "trace_id": "24fc80e1bc51474e8d1298f6b7da072e",
+      "status": "ok",
+      "code": null,
+      "query_id": "3c3f7e84-479e-4069-816d-e544f3cdc386",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [
+        {
+          "trace_id": "d96cf92be1a34faf9e84c0c3808f96b1",
+          "strategy": "catalog_exact"
+        }
+      ],
+      "citation_locations": [
+        {
+          "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=order_count]",
+          "document_version": "1.1.1-ads",
+          "chunk_id": "4f6056568a5d2c15bfca065885e37f2ba06d494cfcba02648f9a3653705090ea",
+          "source_location": "#/metrics[metric_id=order_count]"
+        }
+      ],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:intent:gross",
+      "split": "validation",
+      "semantic_group_id": "cd68dc65ff8f62f3e864",
+      "template_id": "2e5c0d273dce3f619f3e",
+      "task_category": "intent",
+      "intent_accuracy": true,
+      "tool_route_accuracy": true,
+      "entities": [
+        [
+          "item_gross_sales_amount"
+        ],
+        [
+          "item_gross_sales_amount"
+        ]
+      ],
+      "citation_validity": true,
+      "status_correct": true,
+      "task_success": true,
+      "latency_ms": 19,
+      "tool_calls": 1,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "intent",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": null,
+      "trace_id": "3d82ccd859d24914a0937c17ecffcd13",
+      "status": "ok",
+      "code": null,
+      "query_id": "2f5a24a8-ffed-4310-9854-d3a18e45b295",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [
+        {
+          "trace_id": "aecb01132e33433e939259c932e1b52c",
+          "strategy": "catalog_exact"
+        }
+      ],
+      "citation_locations": [
+        {
+          "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=item_gross_sales_amount]",
+          "document_version": "1.1.1-ads",
+          "chunk_id": "a6cb37bff569f11f45d86a7687ed0be728df9881cdd5cccab3bf2f16a8507d35",
+          "source_location": "#/metrics[metric_id=item_gross_sales_amount]"
+        }
+      ],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:intent:discount",
+      "split": "validation",
+      "semantic_group_id": "a5a6355bb3682d657f2b",
+      "template_id": "397268eb79f32a4c6830",
+      "task_category": "intent",
+      "intent_accuracy": true,
+      "tool_route_accuracy": false,
+      "entities": [
+        [
+          "item_discount_amount"
+        ],
+        []
+      ],
+      "citation_validity": false,
+      "status_correct": false,
+      "task_success": false,
+      "latency_ms": 13,
+      "tool_calls": 1,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "intent",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "citation_invalid",
+      "trace_id": "b4b637e08e6b4a8c9f4fb25610c0b75f",
+      "status": "error",
+      "code": "knowledge_unavailable",
+      "query_id": "2e53f9a2-efcc-4ba2-931f-68f6eca0b9c0",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [
+        {
+          "kind": "knowledge",
+          "tool": "rag_retrieval",
+          "status": "error",
+          "trace_id": "0b320ceac344413cb578af3245a554f7",
+          "plan_id": "69857abf8cb946f080b8644d67d65439",
+          "task_id": "69857abf8cb946f080b8644d67d65439/1",
+          "attempt_id": "f10e2fff847a4fe5847fba8685916322"
+        }
+      ],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:intent:account-count",
+      "split": "validation",
+      "semantic_group_id": "312ba6f43f3df64d6318",
+      "template_id": "ff2478eaf6861cd117f4",
+      "task_category": "intent",
+      "intent_accuracy": true,
+      "tool_route_accuracy": false,
+      "entities": [
+        [
+          "ordering_customer_count"
+        ],
+        []
+      ],
+      "citation_validity": false,
+      "status_correct": false,
+      "task_success": false,
+      "latency_ms": 12,
+      "tool_calls": 1,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "intent",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "citation_invalid",
+      "trace_id": "6258c3b93b2e4e1f95a07ba1262bc970",
+      "status": "error",
+      "code": "knowledge_unavailable",
+      "query_id": "b2834e50-838f-4ccb-b412-afb181f9ced2",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [
+        {
+          "kind": "knowledge",
+          "tool": "rag_retrieval",
+          "status": "error",
+          "trace_id": "27df5138004c42b38f7b57cdf656bffe",
+          "plan_id": "0c8e40ec3312440696ecbeee0ad10bf7",
+          "task_id": "0c8e40ec3312440696ecbeee0ad10bf7/1",
+          "attempt_id": "7b33cf88b7284d3382e112e3d158788c"
+        }
+      ],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:intent:repeat-count",
+      "split": "validation",
+      "semantic_group_id": "47d5c6cb1af4e4c51906",
+      "template_id": "0ef99825df4747027729",
+      "task_category": "intent",
+      "intent_accuracy": true,
+      "tool_route_accuracy": true,
+      "entities": [
+        [
+          "repeat_ordering_customer_count"
+        ],
+        [
+          "repeat_ordering_customer_count"
+        ]
+      ],
+      "citation_validity": true,
+      "status_correct": true,
+      "task_success": true,
+      "latency_ms": 19,
+      "tool_calls": 1,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "intent",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": null,
+      "trace_id": "3b2f7d50d04f42b8872126a66d39e402",
+      "status": "ok",
+      "code": null,
+      "query_id": "b05ee8fd-23a3-4126-8b6c-6fcf2b49ae0e",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [
+        {
+          "trace_id": "85dab381699f45988aeea1acd3769248",
+          "strategy": "catalog_exact"
+        }
+      ],
+      "citation_locations": [
+        {
+          "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=repeat_ordering_customer_count]",
+          "document_version": "1.1.1-ads",
+          "chunk_id": "5fd373c6a49b0c458d8ff7d20480aca18118e122e4e84b2c438f95da12078ab8",
+          "source_location": "#/metrics[metric_id=repeat_ordering_customer_count]"
+        }
+      ],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:intent:first-observed",
+      "split": "validation",
+      "semantic_group_id": "b7ebda2f9b3e939bd681",
+      "template_id": "67125948ab0f66998dc4",
+      "task_category": "intent",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 12,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "intent",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "be206ef594784c0da81839c909aadf0b",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "cc21da53-8c6f-4826-86fd-0323fe104f7d",
+      "blocked_attempts": [
+        {
+          "stage": "intent-v3",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:intent:lifetime",
+      "split": "validation",
+      "semantic_group_id": "f6c055b6fc51f01655e2",
+      "template_id": "c2cfd962e3d6afe08266",
+      "task_category": "intent",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 13,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "intent",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "df077279caa34a569a323345f30299ca",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "4c3011bf-b48e-4d74-b97a-99ed3df51f46",
+      "blocked_attempts": [
+        {
+          "stage": "intent-v3",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:intent:unknown-chargeback",
+      "split": "validation",
+      "semantic_group_id": "9b009ba612d5ad87e693",
+      "template_id": "2e042fb1b3a23abcd148",
+      "task_category": "intent",
+      "intent_accuracy": true,
+      "tool_route_accuracy": true,
+      "entities": [
+        [],
+        []
+      ],
+      "guardrail": true,
+      "status_correct": true,
+      "task_success": true,
+      "latency_ms": 13,
+      "tool_calls": 1,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "intent",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": null,
+      "trace_id": "b42c8c7915c842d1af3ad0fd6e917a47",
+      "status": "ok",
+      "code": null,
+      "query_id": "d0fb72a2-5e61-4b38-850f-cd14404685bd",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [
+        {
+          "trace_id": "3b6b6ad8fdd046098a759d54f5e5ab03",
+          "strategy": "catalog_exact"
+        }
+      ],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:planning:gross-discount",
+      "split": "validation",
+      "semantic_group_id": "dae9e8d79f9e453bb321",
+      "template_id": "5e2399205d4c7dabfecf",
+      "task_category": "planning",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 12,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "business-plan-v1"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "planning",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "57068afb4c6041c6baf178d22966c8df",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "60c88978-5904-4a32-9287-adcb2891d35c",
+      "blocked_attempts": [
+        {
+          "stage": "business-plan-v1",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": 0,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:planning:items-products",
+      "split": "validation",
+      "semantic_group_id": "ecab9317147cd991a1ba",
+      "template_id": "0cbdfe3741bb68d7cb2b",
+      "task_category": "planning",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 12,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "business-plan-v1"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "planning",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "922b106b852c4358975687f160534425",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "639924bb-ab2b-41bf-be96-d50618abb7c3",
+      "blocked_attempts": [
+        {
+          "stage": "business-plan-v1",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": 0,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:planning:account-pair",
+      "split": "validation",
+      "semantic_group_id": "866d3427ecf7aca01be8",
+      "template_id": "f14d87a58108f473f536",
+      "task_category": "planning",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 14,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "business-plan-v1"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "planning",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "4466fbe4dfae4ceaa8781414a6c53274",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "25e4212d-655d-4b90-89e9-a60ed80d2749",
+      "blocked_attempts": [
+        {
+          "stage": "business-plan-v1",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": 0,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:planning:return-anomaly-pair",
+      "split": "validation",
+      "semantic_group_id": "851c2494e4f4b5bcd495",
+      "template_id": "8e73942def9722842a16",
+      "task_category": "planning",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 15,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "business-plan-v1"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "planning",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "8569be7e63224225a598ba2e755fc1f2",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "b7ad2fe8-76f8-41e3-8444-d5da76c365da",
+      "blocked_attempts": [
+        {
+          "stage": "business-plan-v1",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": 0,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:planning:payment-pair",
+      "split": "validation",
+      "semantic_group_id": "37a44b89bdf2b8725bfd",
+      "template_id": "f45ef939cf57ee8d4b3f",
+      "task_category": "planning",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 15,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "business-plan-v1"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "planning",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "a8dbaa21717d485c9f63294b3fbd0d9d",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "d8e04e1e-0192-40ac-9613-acd8a2124871",
+      "blocked_attempts": [
+        {
+          "stage": "business-plan-v1",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": 0,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:planning:path-funnel",
+      "split": "development",
+      "semantic_group_id": "22c3835cdea7b4f2db59",
+      "template_id": "ccb5cb67a13c1af85036",
+      "task_category": "planning",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 12,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "planning",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "90173f91400341b3aea32b7eae0c1320",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "cbffa0cc-1485-49ac-8342-0eb1a671ded4",
+      "blocked_attempts": [
+        {
+          "stage": "intent-v3",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:planning:department-cost",
+      "split": "development",
+      "semantic_group_id": "ccaae494a5fd1400a550",
+      "template_id": "13f342509fca49c08a05",
+      "task_category": "planning",
+      "intent_accuracy": null,
+      "tool_route_accuracy": null,
+      "entities": [
+        [],
+        []
+      ],
+      "guardrail": true,
+      "status_correct": null,
+      "task_success": true,
+      "latency_ms": 15,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "planning",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": null,
+      "trace_id": "34b38568b26647f0b023c91c643f5ce3",
+      "status": "unsupported",
+      "code": "missing_financial_definition",
+      "query_id": "989db1e4-024b-4cd9-a40e-360fafbd204f",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:planning:cohort-drift",
+      "split": "development",
+      "semantic_group_id": "b9cd816e7ac82ceaf06c",
+      "template_id": "20a66fd484306c1f7c5e",
+      "task_category": "planning",
+      "intent_accuracy": null,
+      "tool_route_accuracy": null,
+      "entities": [
+        [
+          "item_return_rate"
+        ],
+        []
+      ],
+      "guardrail": true,
+      "status_correct": null,
+      "task_success": false,
+      "latency_ms": 12,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "planning",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "intent_or_entity",
+      "trace_id": "2200811a04b44a35bb445420396e20fc",
+      "status": "clarify",
+      "code": "ambiguous_metric",
+      "query_id": "54a4421b-6879-428c-9d83-0cdc0bf0096e",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:sql:gross",
+      "split": "validation",
+      "semantic_group_id": "cd68dc65ff8f62f3e864",
+      "template_id": "2e5c0d273dce3f619f3e",
+      "task_category": "sql",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 12,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "sql",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "a3198d6384bf4bbf9e6e130ae12cb1c0",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "aa0f6215-47fb-4a4b-b67a-13701986fc60",
+      "blocked_attempts": [
+        {
+          "stage": "intent-v3",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:sql:discount",
+      "split": "validation",
+      "semantic_group_id": "a5a6355bb3682d657f2b",
+      "template_id": "397268eb79f32a4c6830",
+      "task_category": "sql",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 15,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "sql",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "1772826e98374c348fd751018310124f",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "d84b57e2-b9fd-4556-a3f5-8c479fac4225",
+      "blocked_attempts": [
+        {
+          "stage": "intent-v3",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:sql:account-count",
+      "split": "validation",
+      "semantic_group_id": "312ba6f43f3df64d6318",
+      "template_id": "ff2478eaf6861cd117f4",
+      "task_category": "sql",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 12,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "sql",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "3ce9f92ea8e743d8a1f83f9234e58a48",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "c0fc67ed-7f10-457c-a2a9-d42a027f036c",
+      "blocked_attempts": [
+        {
+          "stage": "intent-v3",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:sql:repeat-count",
+      "split": "validation",
+      "semantic_group_id": "47d5c6cb1af4e4c51906",
+      "template_id": "0ef99825df4747027729",
+      "task_category": "sql",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 11,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "sql",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "ff28194fd301468983662b47b3a96d3c",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "5e93ae2d-05b2-447c-9aa2-bdc66c03fc6a",
+      "blocked_attempts": [
+        {
+          "stage": "intent-v3",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:sql:returns-before",
+      "split": "validation",
+      "semantic_group_id": "8011d831a943ca653c6e",
+      "template_id": "606edc09a56c9dbb2dbc",
+      "task_category": "sql",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 13,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "sql",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "c464f79321af49f387a106b954e1642e",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "a38f71a1-5790-4bb2-9f77-f72563cfc910",
+      "blocked_attempts": [
+        {
+          "stage": "intent-v3",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:sql:returns-above",
+      "split": "validation",
+      "semantic_group_id": "3df4d367fcb4005b7707",
+      "template_id": "753ad73129219fc2c6b6",
+      "task_category": "sql",
+      "intent_accuracy": false,
+      "tool_route_accuracy": false,
+      "entities": [
+        [
+          "return_above_item_net_count"
+        ],
+        [
+          "return_above_item_net_count"
+        ]
+      ],
+      "sql_result_accuracy": false,
+      "ods_consistency": null,
+      "status_correct": true,
+      "task_success": false,
+      "latency_ms": 21,
+      "tool_calls": 1,
+      "model_calls": 0,
+      "recorded_model_attempts": 0,
+      "prompt_versions": [],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "sql",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "sql_result",
+      "trace_id": "02ab0507f5774b0d82560c00e4a37cb2",
+      "status": "ok",
+      "code": null,
+      "query_id": "a514c14a-fdaf-4df2-8432-c5fc1ea80ab1",
+      "blocked_attempts": [],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [],
+      "tool_trace": [
+        {
+          "trace_id": "5695ea2920424b2ea70d646170aa9bf2",
+          "strategy": "catalog_exact"
+        }
+      ],
+      "citation_locations": [
+        {
+          "source_uri": "metrics/warehouse_catalog_v1.json#/metrics[metric_id=return_above_item_net_count]",
+          "document_version": "1.1.1-ads",
+          "chunk_id": "e46162e87e7b9b52a71b285cb1e2f6099353fd402f39ccf431efe7b2b707495b",
+          "source_location": "#/metrics[metric_id=return_above_item_net_count]"
+        }
+      ],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:sql:products",
+      "split": "validation",
+      "semantic_group_id": "b6ee4b022e4969897b33",
+      "template_id": "4909bcdbdf306482812d",
+      "task_category": "sql",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 12,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "sql",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "012b7d1056bd4287a9ed5f94e76ed00d",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "41d00be4-4328-44f6-b034-9c3460a51b94",
+      "blocked_attempts": [
+        {
+          "stage": "intent-v3",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "case_id": "exp1:sql:payment-attempts",
+      "split": "validation",
+      "semantic_group_id": "73e400e8b918ebf8b47f",
+      "template_id": "e3225e834e9acddfefc9",
+      "task_category": "sql",
+      "task_success": null,
+      "scoring_disposition": "provider_region_unavailable",
+      "latency_ms": 13,
+      "tool_calls": 0,
+      "model_calls": 0,
+      "recorded_model_attempts": 1,
+      "prompt_versions": [
+        "intent-v3"
+      ],
+      "observed_models": [],
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "task_type": "sql",
+      "embedding_calls": 0,
+      "api_events": [],
+      "api_cost": {
+        "estimated_standard_paid_usd": null,
+        "priced_calls": 0,
+        "unpriced_calls": 0,
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      },
+      "retries": 0,
+      "error_category": "external_model_service",
+      "trace_id": "238be0cc26854d148932516afa2c53f8",
+      "status": "error",
+      "code": "model_unavailable",
+      "query_id": "7451ed7c-dd73-44e8-8472-73cd289c3dc6",
+      "blocked_attempts": [
+        {
+          "stage": "intent-v3",
+          "reason": "provider_region_unavailable"
+        }
+      ],
+      "phase_ms": {
+        "planner_model": null,
+        "answer_model": null,
+        "sql_tools": null,
+        "rag_retrieval": null
+      },
+      "model_attempts": [
+        {
+          "stage": "intent",
+          "attempt": 1,
+          "prompt_version": "intent-v3",
+          "status": "error",
+          "error_type": "BaselineGuard",
+          "http_status": null,
+          "elapsed_ms": 0
+        }
+      ],
+      "tool_trace": [],
+      "citation_locations": [],
+      "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  ],
+  "fixed_proposal_cases": 0,
+  "replay_cases": 0,
+  "ods_snapshot": {
+    "id": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+    "scope": "SQL Shed ODS content",
+    "tables": {
+      "categories": {
+        "rows": 24,
+        "content_md5": "5cac5091dbbe88826c58998f31570921"
+      },
+      "customers": {
+        "rows": 12000,
+        "content_md5": "75bf913bc65867ac3a41b59d66eacef5"
+      },
+      "products": {
+        "rows": 2000,
+        "content_md5": "fdcbbacc00836de01307ccf720f4c651"
+      },
+      "orders": {
+        "rows": 90000,
+        "content_md5": "0a4bd95a352845982d324af546d6f696"
+      },
+      "order_items": {
+        "rows": 215000,
+        "content_md5": "c58761707e304e4d016f560a9d7bb195"
+      },
+      "payments": {
+        "rows": 95000,
+        "content_md5": "2543325831bac99012e472c90eb12070"
+      },
+      "returns": {
+        "rows": 12000,
+        "content_md5": "d3743924071d9b0e61061cd9f1c6029a"
+      }
+    }
+  },
+  "setup_api_events": [
+    {
+      "kind": "embedding",
+      "stage": "index",
+      "status": "error",
+      "error_type": "ClientError",
+      "http_status": 400,
+      "reason": "provider_region_unavailable",
+      "elapsed_ms": 945.7
+    }
+  ],
+  "authorized_technical_ranges": [
+    [
+      3,
+      6
+    ],
+    [
+      23,
+      28
+    ],
+    [
+      71,
+      72
+    ],
+    [
+      88,
+      89
+    ]
+  ],
+  "summary": {
+    "accuracy": {
+      "intent_accuracy": {
+        "numerator": 9,
+        "denominator": 11,
+        "not_applicable": 28,
+        "value": 0.8181818181818182
+      },
+      "plan_validity": {
+        "numerator": 0,
+        "denominator": 0,
+        "not_applicable": 39,
+        "value": null
+      },
+      "tool_route_accuracy": {
+        "numerator": 7,
+        "denominator": 11,
+        "not_applicable": 28,
+        "value": 0.6363636363636364
+      },
+      "sql_result_accuracy": {
+        "numerator": 1,
+        "denominator": 2,
+        "not_applicable": 37,
+        "value": 0.5
+      },
+      "citation_validity": {
+        "numerator": 5,
+        "denominator": 7,
+        "not_applicable": 32,
+        "value": 0.7142857142857143
+      },
+      "task_success": {
+        "numerator": 10,
+        "denominator": 14,
+        "not_applicable": 25,
+        "value": 0.7142857142857143
+      },
+      "entity_precision": {
+        "numerator": 8,
+        "denominator": 8,
+        "not_applicable": 26,
+        "value": 1.0
+      },
+      "entity_recall": {
+        "numerator": 8,
+        "denominator": 12,
+        "not_applicable": 26,
+        "value": 0.6666666666666666
+      },
+      "entity_f1": {
+        "numerator": 16,
+        "denominator": 20,
+        "not_applicable": 26,
+        "value": 0.8
+      },
+      "retrieval_recall_at_6": {
+        "numerator": 0,
+        "denominator": 0,
+        "not_applicable": 39,
+        "value": null
+      },
+      "retrieval_mrr_at_6": {
+        "numerator": 0,
+        "denominator": 0,
+        "not_applicable": 39,
+        "value": null
+      },
+      "citation_semantic_support": {
+        "numerator": 0,
+        "denominator": 0,
+        "not_applicable": 39,
+        "value": null,
+        "evaluation": "manual"
+      },
+      "ods_consistency": {
+        "numerator": 1,
+        "denominator": 1,
+        "not_applicable": 38,
+        "value": 1.0
+      },
+      "guardrail": {
+        "numerator": 5,
+        "denominator": 5,
+        "not_applicable": 34,
+        "value": 1.0
+      }
+    },
+    "telemetry": {
+      "model_calls": {
+        "value": 1,
+        "numerator": 1,
+        "denominator": 39,
+        "not_applicable": 0
+      },
+      "tool_calls": {
+        "value": 11,
+        "numerator": 11,
+        "denominator": 39,
+        "not_applicable": 0
+      },
+      "prompt_tokens": {
+        "value": null,
+        "numerator": 0,
+        "denominator": 0,
+        "not_applicable": 39
+      },
+      "output_tokens": {
+        "value": null,
+        "numerator": 0,
+        "denominator": 0,
+        "not_applicable": 39
+      },
+      "total_tokens": {
+        "value": null,
+        "numerator": 0,
+        "denominator": 0,
+        "not_applicable": 39
+      },
+      "latency_ms": {
+        "p50": 13,
+        "p95": 42,
+        "denominator": 39,
+        "not_applicable": 0
+      },
+      "error_categories": {
+        "external_model_service": 23,
+        "external_model_service_dependency": 2,
+        "citation_invalid": 2,
+        "intent_or_entity": 1,
+        "sql_result": 1
+      }
+    },
+    "latency_ms_by_task": {
+      "hybrid": {
+        "p50": 15,
+        "p95": 15,
+        "denominator": 1,
+        "not_applicable": 0
+      },
+      "intent": {
+        "p50": 13,
+        "p95": 962,
+        "denominator": 13,
+        "not_applicable": 0
+      },
+      "multi_turn": {
+        "p50": 12,
+        "p95": 31,
+        "denominator": 3,
+        "not_applicable": 0
+      },
+      "planning": {
+        "p50": 14,
+        "p95": 16,
+        "denominator": 10,
+        "not_applicable": 0
+      },
+      "rag": {
+        "p50": 18,
+        "p95": 42,
+        "denominator": 4,
+        "not_applicable": 0
+      },
+      "sql": {
+        "p50": 12,
+        "p95": 21,
+        "denominator": 8,
+        "not_applicable": 0
+      }
+    },
+    "excluded": 117,
+    "executed": 39
+  },
+  "api_cost": {
+    "estimated_standard_paid_usd": null,
+    "priced_calls": 0,
+    "unpriced_calls": 2,
+    "source": "https://ai.google.dev/gemini-api/docs/pricing"
+  },
+  "excluded_reasons": {
+    "no_independently_reviewed_live_label_mapping": 71,
+    "legacy_pending": 7,
+    "needs_review": 20,
+    "embedding_setup_unavailable": 19
+  },
+  "api_calls": {
+    "embedding": 1,
+    "generation": 1
+  },
+  "provider_failures": {
+    "400": 2
+  },
+  "reservation": {
+    "tokens": 124496,
+    "usd": 0.175384
+  },
+  "completed_at": "2026-11-17T00:42:17.902600+00:00",
+  "offline_sql_validation": {
+    "snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+    "cases": [
+      {
+        "case_id": "exp1:planning:gross-discount",
+        "calls": [
+          {
+            "parameters": {
+              "metric_id": "item_gross_sales_amount",
+              "start_date": "2025-04-01",
+              "end_date": "2025-07-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "orders.ordered_at",
+            "expected_result": [
+              {
+                "bucket": "1",
+                "value": "48698.90"
+              },
+              {
+                "bucket": "10",
+                "value": "15967.37"
+              },
+              {
+                "bucket": "11",
+                "value": "10365.63"
+              },
+              {
+                "bucket": "12",
+                "value": "58761.63"
+              },
+              {
+                "bucket": "13",
+                "value": "7477.80"
+              },
+              {
+                "bucket": "14",
+                "value": "6888.95"
+              },
+              {
+                "bucket": "15",
+                "value": "90718.01"
+              },
+              {
+                "bucket": "16",
+                "value": "56847.71"
+              },
+              {
+                "bucket": "17",
+                "value": "16419.48"
+              },
+              {
+                "bucket": "18",
+                "value": "11067.09"
+              },
+              {
+                "bucket": "19",
+                "value": "53948.51"
+              },
+              {
+                "bucket": "2",
+                "value": "26051.35"
+              },
+              {
+                "bucket": "20",
+                "value": "115026.10"
+              },
+              {
+                "bucket": "21",
+                "value": "19908.02"
+              },
+              {
+                "bucket": "22",
+                "value": "15512.49"
+              },
+              {
+                "bucket": "23",
+                "value": "13179.01"
+              },
+              {
+                "bucket": "24",
+                "value": "19159.49"
+              },
+              {
+                "bucket": "3",
+                "value": "11739.23"
+              },
+              {
+                "bucket": "4",
+                "value": "18029.54"
+              },
+              {
+                "bucket": "5",
+                "value": "13914.97"
+              },
+              {
+                "bucket": "6",
+                "value": "14652.58"
+              },
+              {
+                "bucket": "7",
+                "value": "23267.31"
+              },
+              {
+                "bucket": "8",
+                "value": "8517.16"
+              },
+              {
+                "bucket": "9",
+                "value": "14184.80"
+              }
+            ]
+          },
+          {
+            "parameters": {
+              "metric_id": "item_discount_amount",
+              "start_date": "2025-04-01",
+              "end_date": "2025-07-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "orders.ordered_at",
+            "expected_result": [
+              {
+                "bucket": "1",
+                "value": "486.30"
+              },
+              {
+                "bucket": "10",
+                "value": "124.20"
+              },
+              {
+                "bucket": "11",
+                "value": "83.82"
+              },
+              {
+                "bucket": "12",
+                "value": "537.15"
+              },
+              {
+                "bucket": "13",
+                "value": "87.36"
+              },
+              {
+                "bucket": "14",
+                "value": "60.89"
+              },
+              {
+                "bucket": "15",
+                "value": "919.28"
+              },
+              {
+                "bucket": "16",
+                "value": "554.68"
+              },
+              {
+                "bucket": "17",
+                "value": "103.55"
+              },
+              {
+                "bucket": "18",
+                "value": "90.42"
+              },
+              {
+                "bucket": "19",
+                "value": "592.38"
+              },
+              {
+                "bucket": "2",
+                "value": "272.09"
+              },
+              {
+                "bucket": "20",
+                "value": "1065.52"
+              },
+              {
+                "bucket": "21",
+                "value": "200.10"
+              },
+              {
+                "bucket": "22",
+                "value": "109.13"
+              },
+              {
+                "bucket": "23",
+                "value": "129.60"
+              },
+              {
+                "bucket": "24",
+                "value": "192.37"
+              },
+              {
+                "bucket": "3",
+                "value": "131.41"
+              },
+              {
+                "bucket": "4",
+                "value": "187.26"
+              },
+              {
+                "bucket": "5",
+                "value": "182.80"
+              },
+              {
+                "bucket": "6",
+                "value": "132.76"
+              },
+              {
+                "bucket": "7",
+                "value": "248.13"
+              },
+              {
+                "bucket": "8",
+                "value": "63.40"
+              },
+              {
+                "bucket": "9",
+                "value": "132.71"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "exp1:planning:items-products",
+        "calls": [
+          {
+            "parameters": {
+              "metric_id": "order_item_count",
+              "start_date": "2025-07-01",
+              "end_date": "2025-08-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "orders.ordered_at",
+            "expected_result": [
+              {
+                "bucket": "1",
+                "value": 567
+              },
+              {
+                "bucket": "10",
+                "value": 123
+              },
+              {
+                "bucket": "11",
+                "value": 85
+              },
+              {
+                "bucket": "12",
+                "value": 322
+              },
+              {
+                "bucket": "13",
+                "value": 46
+              },
+              {
+                "bucket": "14",
+                "value": 117
+              },
+              {
+                "bucket": "15",
+                "value": 697
+              },
+              {
+                "bucket": "16",
+                "value": 285
+              },
+              {
+                "bucket": "17",
+                "value": 99
+              },
+              {
+                "bucket": "18",
+                "value": 86
+              },
+              {
+                "bucket": "19",
+                "value": 374
+              },
+              {
+                "bucket": "2",
+                "value": 181
+              },
+              {
+                "bucket": "20",
+                "value": 1389
+              },
+              {
+                "bucket": "21",
+                "value": 188
+              },
+              {
+                "bucket": "22",
+                "value": 80
+              },
+              {
+                "bucket": "23",
+                "value": 134
+              },
+              {
+                "bucket": "24",
+                "value": 108
+              },
+              {
+                "bucket": "3",
+                "value": 138
+              },
+              {
+                "bucket": "4",
+                "value": 163
+              },
+              {
+                "bucket": "5",
+                "value": 93
+              },
+              {
+                "bucket": "6",
+                "value": 99
+              },
+              {
+                "bucket": "7",
+                "value": 190
+              },
+              {
+                "bucket": "8",
+                "value": 80
+              },
+              {
+                "bucket": "9",
+                "value": 119
+              }
+            ]
+          },
+          {
+            "parameters": {
+              "metric_id": "ordered_product_count",
+              "start_date": "2025-07-01",
+              "end_date": "2025-08-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "orders.ordered_at",
+            "expected_result": [
+              {
+                "bucket": "1",
+                "value": 44
+              },
+              {
+                "bucket": "10",
+                "value": 45
+              },
+              {
+                "bucket": "11",
+                "value": 32
+              },
+              {
+                "bucket": "12",
+                "value": 40
+              },
+              {
+                "bucket": "13",
+                "value": 29
+              },
+              {
+                "bucket": "14",
+                "value": 34
+              },
+              {
+                "bucket": "15",
+                "value": 40
+              },
+              {
+                "bucket": "16",
+                "value": 35
+              },
+              {
+                "bucket": "17",
+                "value": 43
+              },
+              {
+                "bucket": "18",
+                "value": 34
+              },
+              {
+                "bucket": "19",
+                "value": 41
+              },
+              {
+                "bucket": "2",
+                "value": 38
+              },
+              {
+                "bucket": "20",
+                "value": 37
+              },
+              {
+                "bucket": "21",
+                "value": 32
+              },
+              {
+                "bucket": "22",
+                "value": 37
+              },
+              {
+                "bucket": "23",
+                "value": 34
+              },
+              {
+                "bucket": "24",
+                "value": 30
+              },
+              {
+                "bucket": "3",
+                "value": 34
+              },
+              {
+                "bucket": "4",
+                "value": 31
+              },
+              {
+                "bucket": "5",
+                "value": 34
+              },
+              {
+                "bucket": "6",
+                "value": 43
+              },
+              {
+                "bucket": "7",
+                "value": 41
+              },
+              {
+                "bucket": "8",
+                "value": 42
+              },
+              {
+                "bucket": "9",
+                "value": 34
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "exp1:planning:account-pair",
+        "calls": [
+          {
+            "parameters": {
+              "metric_id": "ordering_customer_count",
+              "start_date": "2025-05-01",
+              "end_date": "2025-06-01",
+              "group_by": [
+                "country"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "orders.ordered_at",
+            "expected_result": [
+              {
+                "bucket": "AU",
+                "value": 92
+              },
+              {
+                "bucket": "CA",
+                "value": 61
+              },
+              {
+                "bucket": "DE",
+                "value": 54
+              },
+              {
+                "bucket": "DK",
+                "value": 16
+              },
+              {
+                "bucket": "ES",
+                "value": 30
+              },
+              {
+                "bucket": "FI",
+                "value": 30
+              },
+              {
+                "bucket": "FR",
+                "value": 53
+              },
+              {
+                "bucket": "GB",
+                "value": 113
+              },
+              {
+                "bucket": "IE",
+                "value": 48
+              },
+              {
+                "bucket": "IT",
+                "value": 26
+              },
+              {
+                "bucket": "NL",
+                "value": 47
+              },
+              {
+                "bucket": "NO",
+                "value": 19
+              },
+              {
+                "bucket": "NZ",
+                "value": 52
+              },
+              {
+                "bucket": "PT",
+                "value": 25
+              },
+              {
+                "bucket": "SE",
+                "value": 31
+              },
+              {
+                "bucket": "SI",
+                "value": 25
+              },
+              {
+                "bucket": "US",
+                "value": 160
+              }
+            ]
+          },
+          {
+            "parameters": {
+              "metric_id": "repeat_ordering_customer_count",
+              "start_date": "2025-05-01",
+              "end_date": "2025-06-01",
+              "group_by": [
+                "country"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "orders.ordered_at",
+            "expected_result": [
+              {
+                "bucket": "AU",
+                "value": 29
+              },
+              {
+                "bucket": "CA",
+                "value": 15
+              },
+              {
+                "bucket": "DE",
+                "value": 13
+              },
+              {
+                "bucket": "DK",
+                "value": 2
+              },
+              {
+                "bucket": "ES",
+                "value": 5
+              },
+              {
+                "bucket": "FI",
+                "value": 5
+              },
+              {
+                "bucket": "FR",
+                "value": 12
+              },
+              {
+                "bucket": "GB",
+                "value": 24
+              },
+              {
+                "bucket": "IE",
+                "value": 10
+              },
+              {
+                "bucket": "IT",
+                "value": 3
+              },
+              {
+                "bucket": "NL",
+                "value": 12
+              },
+              {
+                "bucket": "NO",
+                "value": 5
+              },
+              {
+                "bucket": "NZ",
+                "value": 9
+              },
+              {
+                "bucket": "PT",
+                "value": 4
+              },
+              {
+                "bucket": "SE",
+                "value": 11
+              },
+              {
+                "bucket": "SI",
+                "value": 7
+              },
+              {
+                "bucket": "US",
+                "value": 33
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "exp1:planning:return-anomaly-pair",
+        "calls": [
+          {
+            "parameters": {
+              "metric_id": "return_before_order_count",
+              "start_date": "2025-09-01",
+              "end_date": "2025-10-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "returns.returned_at",
+            "expected_result": [
+              {
+                "bucket": "1",
+                "value": 7
+              },
+              {
+                "bucket": "10",
+                "value": 0
+              },
+              {
+                "bucket": "11",
+                "value": 1
+              },
+              {
+                "bucket": "12",
+                "value": 0
+              },
+              {
+                "bucket": "13",
+                "value": 0
+              },
+              {
+                "bucket": "14",
+                "value": 0
+              },
+              {
+                "bucket": "15",
+                "value": 4
+              },
+              {
+                "bucket": "16",
+                "value": 0
+              },
+              {
+                "bucket": "17",
+                "value": 0
+              },
+              {
+                "bucket": "18",
+                "value": 1
+              },
+              {
+                "bucket": "19",
+                "value": 4
+              },
+              {
+                "bucket": "2",
+                "value": 1
+              },
+              {
+                "bucket": "20",
+                "value": 8
+              },
+              {
+                "bucket": "21",
+                "value": 0
+              },
+              {
+                "bucket": "22",
+                "value": 0
+              },
+              {
+                "bucket": "23",
+                "value": 1
+              },
+              {
+                "bucket": "24",
+                "value": 0
+              },
+              {
+                "bucket": "3",
+                "value": 2
+              },
+              {
+                "bucket": "4",
+                "value": 2
+              },
+              {
+                "bucket": "5",
+                "value": 0
+              },
+              {
+                "bucket": "6",
+                "value": 0
+              },
+              {
+                "bucket": "7",
+                "value": 3
+              },
+              {
+                "bucket": "8",
+                "value": 0
+              },
+              {
+                "bucket": "9",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "parameters": {
+              "metric_id": "return_above_item_net_count",
+              "start_date": "2025-09-01",
+              "end_date": "2025-10-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "returns.returned_at",
+            "expected_result": [
+              {
+                "bucket": "1",
+                "value": 6
+              },
+              {
+                "bucket": "10",
+                "value": 0
+              },
+              {
+                "bucket": "11",
+                "value": 1
+              },
+              {
+                "bucket": "12",
+                "value": 1
+              },
+              {
+                "bucket": "13",
+                "value": 1
+              },
+              {
+                "bucket": "14",
+                "value": 0
+              },
+              {
+                "bucket": "15",
+                "value": 4
+              },
+              {
+                "bucket": "16",
+                "value": 4
+              },
+              {
+                "bucket": "17",
+                "value": 0
+              },
+              {
+                "bucket": "18",
+                "value": 0
+              },
+              {
+                "bucket": "19",
+                "value": 4
+              },
+              {
+                "bucket": "2",
+                "value": 0
+              },
+              {
+                "bucket": "20",
+                "value": 9
+              },
+              {
+                "bucket": "21",
+                "value": 2
+              },
+              {
+                "bucket": "22",
+                "value": 0
+              },
+              {
+                "bucket": "23",
+                "value": 1
+              },
+              {
+                "bucket": "24",
+                "value": 0
+              },
+              {
+                "bucket": "3",
+                "value": 1
+              },
+              {
+                "bucket": "4",
+                "value": 0
+              },
+              {
+                "bucket": "5",
+                "value": 2
+              },
+              {
+                "bucket": "6",
+                "value": 0
+              },
+              {
+                "bucket": "7",
+                "value": 2
+              },
+              {
+                "bucket": "8",
+                "value": 0
+              },
+              {
+                "bucket": "9",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "exp1:planning:payment-pair",
+        "calls": [
+          {
+            "parameters": {
+              "metric_id": "payment_attempt_count",
+              "start_date": "2025-02-01",
+              "end_date": "2025-03-01",
+              "group_by": [
+                "method"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "payments.paid_at（失败记录也使用该源时间）",
+            "expected_result": [
+              {
+                "bucket": "bank_transfer",
+                "value": 193
+              },
+              {
+                "bucket": "card",
+                "value": 1452
+              },
+              {
+                "bucket": "gift_card",
+                "value": 118
+              },
+              {
+                "bucket": "paypal",
+                "value": 393
+              }
+            ]
+          },
+          {
+            "parameters": {
+              "metric_id": "payment_failed_attempt_count",
+              "start_date": "2025-02-01",
+              "end_date": "2025-03-01",
+              "group_by": [
+                "method"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "payments.paid_at",
+            "expected_result": [
+              {
+                "bucket": "bank_transfer",
+                "value": 11
+              },
+              {
+                "bucket": "card",
+                "value": 80
+              },
+              {
+                "bucket": "gift_card",
+                "value": 5
+              },
+              {
+                "bucket": "paypal",
+                "value": 21
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "exp1:sql:gross",
+        "calls": [
+          {
+            "parameters": {
+              "metric_id": "item_gross_sales_amount",
+              "start_date": "2025-04-01",
+              "end_date": "2025-07-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "orders.ordered_at",
+            "expected_result": [
+              {
+                "bucket": "1",
+                "value": "48698.90"
+              },
+              {
+                "bucket": "10",
+                "value": "15967.37"
+              },
+              {
+                "bucket": "11",
+                "value": "10365.63"
+              },
+              {
+                "bucket": "12",
+                "value": "58761.63"
+              },
+              {
+                "bucket": "13",
+                "value": "7477.80"
+              },
+              {
+                "bucket": "14",
+                "value": "6888.95"
+              },
+              {
+                "bucket": "15",
+                "value": "90718.01"
+              },
+              {
+                "bucket": "16",
+                "value": "56847.71"
+              },
+              {
+                "bucket": "17",
+                "value": "16419.48"
+              },
+              {
+                "bucket": "18",
+                "value": "11067.09"
+              },
+              {
+                "bucket": "19",
+                "value": "53948.51"
+              },
+              {
+                "bucket": "2",
+                "value": "26051.35"
+              },
+              {
+                "bucket": "20",
+                "value": "115026.10"
+              },
+              {
+                "bucket": "21",
+                "value": "19908.02"
+              },
+              {
+                "bucket": "22",
+                "value": "15512.49"
+              },
+              {
+                "bucket": "23",
+                "value": "13179.01"
+              },
+              {
+                "bucket": "24",
+                "value": "19159.49"
+              },
+              {
+                "bucket": "3",
+                "value": "11739.23"
+              },
+              {
+                "bucket": "4",
+                "value": "18029.54"
+              },
+              {
+                "bucket": "5",
+                "value": "13914.97"
+              },
+              {
+                "bucket": "6",
+                "value": "14652.58"
+              },
+              {
+                "bucket": "7",
+                "value": "23267.31"
+              },
+              {
+                "bucket": "8",
+                "value": "8517.16"
+              },
+              {
+                "bucket": "9",
+                "value": "14184.80"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "exp1:sql:discount",
+        "calls": [
+          {
+            "parameters": {
+              "metric_id": "item_discount_amount",
+              "start_date": "2025-04-01",
+              "end_date": "2025-05-01",
+              "group_by": [
+                "product"
+              ],
+              "filters": {
+                "category": 12
+              }
+            },
+            "time_attribution": "orders.ordered_at",
+            "expected_result": [
+              {
+                "bucket": "108",
+                "value": "1.41"
+              },
+              {
+                "bucket": "1119",
+                "value": "5.86"
+              },
+              {
+                "bucket": "1187",
+                "value": "0.00"
+              },
+              {
+                "bucket": "1201",
+                "value": "0.00"
+              },
+              {
+                "bucket": "1350",
+                "value": "0.00"
+              },
+              {
+                "bucket": "148",
+                "value": "0.23"
+              },
+              {
+                "bucket": "1580",
+                "value": "0.00"
+              },
+              {
+                "bucket": "1708",
+                "value": "0.00"
+              },
+              {
+                "bucket": "176",
+                "value": "0.00"
+              },
+              {
+                "bucket": "1826",
+                "value": "0.00"
+              },
+              {
+                "bucket": "22",
+                "value": "17.38"
+              },
+              {
+                "bucket": "234",
+                "value": "0.00"
+              },
+              {
+                "bucket": "236",
+                "value": "0.00"
+              },
+              {
+                "bucket": "24",
+                "value": "42.98"
+              },
+              {
+                "bucket": "341",
+                "value": "0.00"
+              },
+              {
+                "bucket": "345",
+                "value": "0.00"
+              },
+              {
+                "bucket": "353",
+                "value": "0.00"
+              },
+              {
+                "bucket": "360",
+                "value": "3.83"
+              },
+              {
+                "bucket": "39",
+                "value": "62.08"
+              },
+              {
+                "bucket": "40",
+                "value": "5.64"
+              },
+              {
+                "bucket": "402",
+                "value": "0.00"
+              },
+              {
+                "bucket": "415",
+                "value": "0.00"
+              },
+              {
+                "bucket": "456",
+                "value": "2.41"
+              },
+              {
+                "bucket": "47",
+                "value": "10.40"
+              },
+              {
+                "bucket": "49",
+                "value": "1.11"
+              },
+              {
+                "bucket": "56",
+                "value": "4.78"
+              },
+              {
+                "bucket": "58",
+                "value": "2.25"
+              },
+              {
+                "bucket": "582",
+                "value": "0.00"
+              },
+              {
+                "bucket": "61",
+                "value": "0.00"
+              },
+              {
+                "bucket": "78",
+                "value": "0.00"
+              },
+              {
+                "bucket": "8",
+                "value": "37.57"
+              },
+              {
+                "bucket": "810",
+                "value": "0.00"
+              },
+              {
+                "bucket": "85",
+                "value": "2.04"
+              },
+              {
+                "bucket": "865",
+                "value": "0.75"
+              },
+              {
+                "bucket": "93",
+                "value": "2.98"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "exp1:sql:account-count",
+        "calls": [
+          {
+            "parameters": {
+              "metric_id": "ordering_customer_count",
+              "start_date": "2025-05-01",
+              "end_date": "2025-06-01",
+              "group_by": [
+                "country"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "orders.ordered_at",
+            "expected_result": [
+              {
+                "bucket": "AU",
+                "value": 92
+              },
+              {
+                "bucket": "CA",
+                "value": 61
+              },
+              {
+                "bucket": "DE",
+                "value": 54
+              },
+              {
+                "bucket": "DK",
+                "value": 16
+              },
+              {
+                "bucket": "ES",
+                "value": 30
+              },
+              {
+                "bucket": "FI",
+                "value": 30
+              },
+              {
+                "bucket": "FR",
+                "value": 53
+              },
+              {
+                "bucket": "GB",
+                "value": 113
+              },
+              {
+                "bucket": "IE",
+                "value": 48
+              },
+              {
+                "bucket": "IT",
+                "value": 26
+              },
+              {
+                "bucket": "NL",
+                "value": 47
+              },
+              {
+                "bucket": "NO",
+                "value": 19
+              },
+              {
+                "bucket": "NZ",
+                "value": 52
+              },
+              {
+                "bucket": "PT",
+                "value": 25
+              },
+              {
+                "bucket": "SE",
+                "value": 31
+              },
+              {
+                "bucket": "SI",
+                "value": 25
+              },
+              {
+                "bucket": "US",
+                "value": 160
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "exp1:sql:repeat-count",
+        "calls": [
+          {
+            "parameters": {
+              "metric_id": "repeat_ordering_customer_count",
+              "start_date": "2025-05-01",
+              "end_date": "2025-06-01",
+              "group_by": [],
+              "filters": {
+                "channel": "partner"
+              }
+            },
+            "time_attribution": "orders.ordered_at",
+            "expected_result": [
+              {
+                "bucket": "all",
+                "value": 20
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "exp1:sql:returns-before",
+        "calls": [
+          {
+            "parameters": {
+              "metric_id": "return_before_order_count",
+              "start_date": "2025-09-01",
+              "end_date": "2025-10-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "returns.returned_at",
+            "expected_result": [
+              {
+                "bucket": "1",
+                "value": 7
+              },
+              {
+                "bucket": "10",
+                "value": 0
+              },
+              {
+                "bucket": "11",
+                "value": 1
+              },
+              {
+                "bucket": "12",
+                "value": 0
+              },
+              {
+                "bucket": "13",
+                "value": 0
+              },
+              {
+                "bucket": "14",
+                "value": 0
+              },
+              {
+                "bucket": "15",
+                "value": 4
+              },
+              {
+                "bucket": "16",
+                "value": 0
+              },
+              {
+                "bucket": "17",
+                "value": 0
+              },
+              {
+                "bucket": "18",
+                "value": 1
+              },
+              {
+                "bucket": "19",
+                "value": 4
+              },
+              {
+                "bucket": "2",
+                "value": 1
+              },
+              {
+                "bucket": "20",
+                "value": 8
+              },
+              {
+                "bucket": "21",
+                "value": 0
+              },
+              {
+                "bucket": "22",
+                "value": 0
+              },
+              {
+                "bucket": "23",
+                "value": 1
+              },
+              {
+                "bucket": "24",
+                "value": 0
+              },
+              {
+                "bucket": "3",
+                "value": 2
+              },
+              {
+                "bucket": "4",
+                "value": 2
+              },
+              {
+                "bucket": "5",
+                "value": 0
+              },
+              {
+                "bucket": "6",
+                "value": 0
+              },
+              {
+                "bucket": "7",
+                "value": 3
+              },
+              {
+                "bucket": "8",
+                "value": 0
+              },
+              {
+                "bucket": "9",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "exp1:sql:returns-above",
+        "calls": [
+          {
+            "parameters": {
+              "metric_id": "return_above_item_net_count",
+              "start_date": "2025-09-01",
+              "end_date": "2025-10-01",
+              "group_by": [
+                "channel"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "returns.returned_at",
+            "expected_result": [
+              {
+                "bucket": "mobile",
+                "value": 11
+              },
+              {
+                "bucket": "partner",
+                "value": 0
+              },
+              {
+                "bucket": "phone",
+                "value": 1
+              },
+              {
+                "bucket": "web",
+                "value": 26
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "exp1:sql:products",
+        "calls": [
+          {
+            "parameters": {
+              "metric_id": "ordered_product_count",
+              "start_date": "2025-07-01",
+              "end_date": "2025-08-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "orders.ordered_at",
+            "expected_result": [
+              {
+                "bucket": "1",
+                "value": 44
+              },
+              {
+                "bucket": "10",
+                "value": 45
+              },
+              {
+                "bucket": "11",
+                "value": 32
+              },
+              {
+                "bucket": "12",
+                "value": 40
+              },
+              {
+                "bucket": "13",
+                "value": 29
+              },
+              {
+                "bucket": "14",
+                "value": 34
+              },
+              {
+                "bucket": "15",
+                "value": 40
+              },
+              {
+                "bucket": "16",
+                "value": 35
+              },
+              {
+                "bucket": "17",
+                "value": 43
+              },
+              {
+                "bucket": "18",
+                "value": 34
+              },
+              {
+                "bucket": "19",
+                "value": 41
+              },
+              {
+                "bucket": "2",
+                "value": 38
+              },
+              {
+                "bucket": "20",
+                "value": 37
+              },
+              {
+                "bucket": "21",
+                "value": 32
+              },
+              {
+                "bucket": "22",
+                "value": 37
+              },
+              {
+                "bucket": "23",
+                "value": 34
+              },
+              {
+                "bucket": "24",
+                "value": 30
+              },
+              {
+                "bucket": "3",
+                "value": 34
+              },
+              {
+                "bucket": "4",
+                "value": 31
+              },
+              {
+                "bucket": "5",
+                "value": 34
+              },
+              {
+                "bucket": "6",
+                "value": 43
+              },
+              {
+                "bucket": "7",
+                "value": 41
+              },
+              {
+                "bucket": "8",
+                "value": 42
+              },
+              {
+                "bucket": "9",
+                "value": 34
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "exp1:sql:payment-attempts",
+        "calls": [
+          {
+            "parameters": {
+              "metric_id": "payment_attempt_count",
+              "start_date": "2025-02-01",
+              "end_date": "2025-03-01",
+              "group_by": [
+                "status"
+              ],
+              "filters": {}
+            },
+            "time_attribution": "payments.paid_at（失败记录也使用该源时间）",
+            "expected_result": [
+              {
+                "bucket": "captured",
+                "value": 2039
+              },
+              {
+                "bucket": "failed",
+                "value": 117
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "case_count": 13,
+    "call_count": 18
+  },
+  "cohorts": {
+    "deterministic_scored": {
+      "accuracy": {
+        "intent_accuracy": {
+          "numerator": 9,
+          "denominator": 10,
+          "not_applicable": 4,
+          "value": 0.9
+        },
+        "plan_validity": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 14,
+          "value": null
+        },
+        "tool_route_accuracy": {
+          "numerator": 7,
+          "denominator": 10,
+          "not_applicable": 4,
+          "value": 0.7
+        },
+        "sql_result_accuracy": {
+          "numerator": 1,
+          "denominator": 2,
+          "not_applicable": 12,
+          "value": 0.5
+        },
+        "citation_validity": {
+          "numerator": 5,
+          "denominator": 7,
+          "not_applicable": 7,
+          "value": 0.7142857142857143
+        },
+        "task_success": {
+          "numerator": 10,
+          "denominator": 14,
+          "not_applicable": 0,
+          "value": 0.7142857142857143
+        },
+        "entity_precision": {
+          "numerator": 8,
+          "denominator": 8,
+          "not_applicable": 2,
+          "value": 1.0
+        },
+        "entity_recall": {
+          "numerator": 8,
+          "denominator": 11,
+          "not_applicable": 2,
+          "value": 0.7272727272727273
+        },
+        "entity_f1": {
+          "numerator": 16,
+          "denominator": 19,
+          "not_applicable": 2,
+          "value": 0.8421052631578947
+        },
+        "retrieval_recall_at_6": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 14,
+          "value": null
+        },
+        "retrieval_mrr_at_6": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 14,
+          "value": null
+        },
+        "citation_semantic_support": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 14,
+          "value": null,
+          "evaluation": "manual"
+        },
+        "ods_consistency": {
+          "numerator": 1,
+          "denominator": 1,
+          "not_applicable": 13,
+          "value": 1.0
+        },
+        "guardrail": {
+          "numerator": 5,
+          "denominator": 5,
+          "not_applicable": 9,
+          "value": 1.0
+        }
+      },
+      "telemetry": {
+        "model_calls": {
+          "value": 0,
+          "numerator": 0,
+          "denominator": 14,
+          "not_applicable": 0
+        },
+        "tool_calls": {
+          "value": 11,
+          "numerator": 11,
+          "denominator": 14,
+          "not_applicable": 0
+        },
+        "prompt_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 14
+        },
+        "output_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 14
+        },
+        "total_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 14
+        },
+        "latency_ms": {
+          "p50": 17,
+          "p95": 42,
+          "denominator": 14,
+          "not_applicable": 0
+        },
+        "error_categories": {
+          "citation_invalid": 2,
+          "intent_or_entity": 1,
+          "sql_result": 1
+        }
+      },
+      "latency_ms_by_task": {
+        "intent": {
+          "p50": 13,
+          "p95": 19,
+          "denominator": 6,
+          "not_applicable": 0
+        },
+        "multi_turn": {
+          "p50": 31,
+          "p95": 31,
+          "denominator": 1,
+          "not_applicable": 0
+        },
+        "planning": {
+          "p50": 12,
+          "p95": 15,
+          "denominator": 2,
+          "not_applicable": 0
+        },
+        "rag": {
+          "p50": 18,
+          "p95": 42,
+          "denominator": 4,
+          "not_applicable": 0
+        },
+        "sql": {
+          "p50": 21,
+          "p95": 21,
+          "denominator": 1,
+          "not_applicable": 0
+        }
+      },
+      "excluded": 0,
+      "executed": 14
+    },
+    "gemini_response_received": {
+      "accuracy": {
+        "intent_accuracy": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0,
+          "value": null
+        },
+        "plan_validity": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0,
+          "value": null
+        },
+        "tool_route_accuracy": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0,
+          "value": null
+        },
+        "sql_result_accuracy": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0,
+          "value": null
+        },
+        "citation_validity": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0,
+          "value": null
+        },
+        "task_success": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0,
+          "value": null
+        },
+        "entity_precision": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0,
+          "value": null
+        },
+        "entity_recall": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0,
+          "value": null
+        },
+        "entity_f1": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0,
+          "value": null
+        },
+        "retrieval_recall_at_6": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0,
+          "value": null
+        },
+        "retrieval_mrr_at_6": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0,
+          "value": null
+        },
+        "citation_semantic_support": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0,
+          "value": null,
+          "evaluation": "manual"
+        },
+        "ods_consistency": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0,
+          "value": null
+        },
+        "guardrail": {
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0,
+          "value": null
+        }
+      },
+      "telemetry": {
+        "model_calls": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0
+        },
+        "tool_calls": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0
+        },
+        "prompt_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0
+        },
+        "output_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0
+        },
+        "total_tokens": {
+          "value": null,
+          "numerator": 0,
+          "denominator": 0,
+          "not_applicable": 0
+        },
+        "latency_ms": {
+          "p50": null,
+          "p95": null,
+          "denominator": 0,
+          "not_applicable": 0
+        },
+        "error_categories": {}
+      },
+      "latency_ms_by_task": {},
+      "excluded": 0,
+      "executed": 0
+    }
+  },
+  "dataset_version": "benchmark-golden-evidence-review-v1",
+  "status": "partial_provider_region_unavailable",
+  "preflight_probe_excluded_from_baseline": [
+    {
+      "kind": "embedding",
+      "stage": "index",
+      "http_status": 400,
+      "reason": "provider_region_unavailable"
+    }
+  ]
+}
