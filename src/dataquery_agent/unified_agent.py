@@ -83,6 +83,15 @@ class UnifiedAgent:
         if INJECTION.search(question):
             frame["task"] = "blocked"
             return outcome("unsupported", "unsafe_request", "请直接描述业务需求。")
+        # Relative observation horizons require clarification before knowledge or SQL dispatch.
+        if (re.search(r"(?:下单|购买)后\s*\d+\s*天", question)
+                and re.search(r"商品明细.{0,28}退货率", question)
+                and not re.search(r"PDF|(?:正式|业务)定义|利润|净收入|毛利|到账", question, re.I)
+                and not self.recognize_analysis(question, [])):
+            mid = "item_return_rate"
+            if mid in self.service.metrics:
+                frame.update(task="clarification", match=self.match("approved_alias", question, [mid], confirmed=[mid]))
+                return outcome("clarify", "unsupported_observation_window", "已识别商品明细退货率。请确认统计窗口和受支持的观察截止日期。")
         if self.knowledge is not None:
             from .rag.routing import route_knowledge
             routed = route_knowledge(self, question, runtime, frame, trace, today, knowledge_owner)
