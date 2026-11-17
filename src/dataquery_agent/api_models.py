@@ -1,4 +1,5 @@
 """Public API schemas and explicit projections of Agent output."""
+from datetime import datetime, timezone
 from typing import Literal
 from uuid import UUID
 
@@ -20,6 +21,11 @@ class ChatRequest(BaseModel):
     conversation_id: UUID
     message_id: UUID
     question: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=500, strict=True)]
+
+
+class ResumeRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    metric_id: Annotated[str, StringConstraints(pattern=r"^[a-z][a-z0-9_]{0,79}$")]
 
 
 class ConversationResponse(BaseModel):
@@ -102,7 +108,22 @@ class PublicTrace(BaseModel):
     tools: list[TraceStep] = Field(default_factory=list)
 
 
+class HitlEvent(BaseModel):
+    status: str
+    at: datetime | None = None
+    metric_id: str | None = None
+    code: str | None = None
+
+
+class HitlResponse(BaseModel):
+    status: Literal["paused", "resuming", "completed", "failed", "expired"]
+    prompt: str
+    expires_at: datetime
+    events: list[HitlEvent]
+
+
 class QueryResponse(BaseModel):
+    hitl: HitlResponse | None = None
     status: Status
     conversation_id: UUID | None = None
     message_id: UUID | None = None
@@ -196,6 +217,9 @@ def metric_row(row):
 
 
 def public_response(data, *, history=False):
+    hitl = data.get("hitl")
+    if hitl and hitl["status"] == "paused" and datetime.fromisoformat(hitl["expires_at"]) <= datetime.now(timezone.utc):
+        hitl = dict(hitl, status="expired")
     result = data.get("result", {})
     evidence = trace_view(data)
     graph = data if history else data.get("trace", {})
@@ -222,15 +246,16 @@ def public_response(data, *, history=False):
         summary_only=history or bool(data.get("replayed")),
     )
     return QueryResponse(
+        hitl=HitlResponse.model_validate(hitl) if hitl else None,
         visualization=visualization, visualization_unavailable_reason=visualization_reason,
         status=status, query_id=data.get("query_id"), conversation_id=data.get("conversation_id"),
-        message_id=data.get("message_id"), answer=text(data.get("answer_zh")) if status != "failed" else None,
+        message_id=data.get("message_id"), answer=text(data.get("answer_zh") or (hitl or {}).get("answer")) if status != "failed" else None,
         error=error, rows=public_rows, rows_truncated=truncated,
         row_count=summary.get("row_count", len(rows)), citations=citations,
         evidence_status=text(knowledge.get("evidence_status"), 40),
         definitions=[projection(MetricDefinition, item) for item in
                      ([primary] if "query_result" in result else tasks)[:12] if item.get("definition")],
-        clarification_choices=[projection(MetricDefinition, item) for item in data.get("choices", [])[:8]],
+        clarification_choices=[projection(MetricDefinition, item) for item in (hitl["choices"] if hitl and hitl["status"] == "paused" else data.get("choices", []))[:8]],
         trace=PublicTrace(run_id=evidence["run_id"],
                           orchestration=[projection(OrchestrationStep, item)
                                          for item in graph.get("orchestration", [])[:8]],

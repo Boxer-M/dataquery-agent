@@ -13,7 +13,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from .api_models import (
-    ApiError, ChatRequest, ConversationResponse, HealthResponse, QueryResponse, public_response,
+    ApiError, ChatRequest, ConversationResponse, HealthResponse, QueryResponse, ResumeRequest, public_response,
 )
 from .conversation_manager import local_manager
 from .conversation_store import ConversationError
@@ -139,6 +139,19 @@ def create_app(*, token, manager_factory=local_manager, document_staging=None):
         data = manager.process_message(owner, body.conversation_id, body.question, body.message_id)
         if data.get("code") == "conversation_not_found":
             raise HTTPException(404)
+        return bounded(public_response(data))
+
+    @app.post("/api/queries/{query_id}/resume", response_model=QueryResponse)
+    def resume_query(query_id: UUID, body: ResumeRequest, context=Depends(identity)):
+        from .hitl import update_resume
+
+        manager, owner = context
+        try:
+            data = update_resume(manager, owner, query_id, body.metric_id)
+        except ConversationError as error:
+            if error.code == "query_not_found":
+                raise HTTPException(404) from None
+            return failure(409, error.code, "该澄清已过期、正在处理，或所选口径无效。")
         return bounded(public_response(data))
 
     @app.get("/api/queries/{query_id}", response_model=QueryResponse)

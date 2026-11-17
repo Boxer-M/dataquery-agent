@@ -4,13 +4,15 @@ import {
   ApartmentOutlined, ArrowUpOutlined, BarChartOutlined, CalendarOutlined,
   FileTextOutlined, MessageOutlined, PlusOutlined, ReloadOutlined,
 } from '@ant-design/icons'
-import { createConversation, health, RequestError, sendQuestion } from './api'
+import { createConversation, health, readQuery, RequestError, resumeQuery, sendQuestion } from './api'
 import type { ChatRequest, ChatResponse } from './api'
 
 const QueryResult = lazy(() => import('./query-result').then(module => ({ default: module.QueryResult })))
 const QueryHistory = lazy(() => import('./query-history').then(module => ({ default: module.QueryHistory })))
 
 const DocumentWorkbench = lazy(() => import('./document-workbench'))
+
+const HITL_RUN = "dataquery.pendingClarification"
 
 type Message = { request: ChatRequest; response?: ChatResponse; error?: string; retryable?: boolean }
 
@@ -25,6 +27,7 @@ export function App() {
   const [conversation, setConversation] = useState<string>()
   const [messages, setMessages] = useState<Message[]>([])
   const [historyId, setHistoryId] = useState<string>()
+  const [restored, setRestored] = useState<ChatResponse>()
   const [draft, setDraft] = useState('')
   const [documents, setDocuments] = useState<'open' | 'closed'>()
   const questionInput = useRef<React.ComponentRef<typeof Input.TextArea>>(null)
@@ -39,7 +42,21 @@ export function App() {
     catch { setConnection('offline') }
   }
 
-  useEffect(() => { void refreshHealth() }, [])
+  useEffect(() => {
+    void refreshHealth()
+    const runId = sessionStorage.getItem(HITL_RUN)
+    if (!runId) return
+    let mounted = true
+    void readQuery(runId).then(result => {
+      if (mounted) {
+        setRestored(result)
+        setConversation(current => current ?? result.conversation_id)
+      }
+    }).catch(error => {
+      if (mounted) setNotice(error.message)
+    })
+    return () => { mounted = false }
+  }, [])
   useEffect(() => { end.current?.scrollIntoView({ block: 'nearest' }) }, [messages, busy])
 
   async function run(operation: () => Promise<void>) {
@@ -63,6 +80,9 @@ export function App() {
     update(request.message_id, { error: undefined, retryable: false, response: undefined })
     try {
       const response = await sendQuestion(request)
+      if (response.hitl?.status === 'paused' && response.query_id) {
+        sessionStorage.setItem(HITL_RUN, response.query_id)
+      }
       update(request.message_id, { response, retryable: response.error?.code === 'conversation_busy' })
       setConnection('online')
     } catch (error) {
@@ -71,6 +91,20 @@ export function App() {
         retryable: error instanceof RequestError && error.retryable,
       })
     }
+  }
+
+  function clarify(result: ChatResponse, metricId: string, messageId?: string) {
+    if (result.hitl?.status !== 'paused' || !result.query_id) {
+      submit(metricId)
+      return
+    }
+    const runId = result.query_id
+    void run(async () => {
+      const next = await resumeQuery(runId, metricId)
+      if (messageId) update(messageId, { response: next, retryable: false })
+      else setRestored(next)
+      if (sessionStorage.getItem(HITL_RUN) === runId) sessionStorage.removeItem(HITL_RUN)
+    })
   }
 
   function submit(input = draft) {
@@ -91,6 +125,8 @@ export function App() {
       const active = await createConversation()
       setConversation(active)
       setMessages([])
+      setRestored(undefined)
+      sessionStorage.removeItem(HITL_RUN)
       setHistoryId(undefined)
       setDraft('')
       setConnection('online')
@@ -120,7 +156,7 @@ export function App() {
     <main className="main">
       <header className="topbar"><span>工作台</span><span className="topbar-divider">/</span><strong>数据问答</strong></header>
       <div className={`thread ${messages.length ? 'has-messages' : ''}`} aria-live="polite">
-        {!messages.length && <div className="empty-state">
+        {!messages.length && !restored && <div className="empty-state">
           <div className="empty-icon"><BarChartOutlined /></div>
           <h1>数据问答</h1>
           <p>查询电商指标、对比业务数据，或了解指标口径。</p>
@@ -129,13 +165,19 @@ export function App() {
             <span className="starter-icon">{item.icon}</span><span>{item.label}</span><ArrowUpOutlined className="starter-arrow" />
           </button>)}</div>
         </div>}
+        {restored && <div className="messages"><article className="message"><div className="agent-message">
+          <Suspense fallback={<Spin size="small" />}>
+            <QueryResult result={restored} busy={busy} onClarify={choice => clarify(restored, choice)} />
+          </Suspense>
+          {restored.query_id && <Button size="small" onClick={() => setHistoryId(restored.query_id)}>查看查询历史</Button>}
+        </div></article></div>}
         <div className="messages">{messages.map((message, index) => <article className="message" key={message.request.message_id}>
           <div className="user-message"><span>你</span><p>{message.request.question}</p></div>
           <div className="agent-message">
             {message.response ? <Suspense fallback={<div className="loading"><Spin size="small" /> 正在加载查询结果</div>}>
               <QueryResult result={message.response}
                 busy={busy || messages.slice(index + 1).some(item => item.response && item.response.status !== 'failed')}
-                onClarify={submit} />
+                onClarify={choice => clarify(message.response!, choice, message.request.message_id)} />
             </Suspense>
               : message.error ? <Alert type="error" showIcon title={message.error} />
               : <div className="loading"><Spin size="small" /> 正在查询</div>}

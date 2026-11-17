@@ -46,6 +46,8 @@ export type Visualization = {
 }
 
 export type ChatResponse = {
+  hitl?: { status: 'paused' | 'resuming' | 'completed' | 'failed' | 'expired'; prompt: string;
+    expires_at: string; events: { status: string; at?: string; metric_id?: string; code?: string }[] }
   status: Status
   conversation_id?: string
   message_id?: string
@@ -142,4 +144,8 @@ export async function readQuery(queryId: string) {
     citations: value.citations ?? [],
     clarification_choices: value.clarification_choices ?? [],
   }
+}
+
+export function resumeQuery(runId: string, metricId: string) {
+  return jsonRequest<ChatResponse>(`/api/queries/${encodeURIComponent(runId)}/resume`, 'POST', { metric_id: metricId })
 }

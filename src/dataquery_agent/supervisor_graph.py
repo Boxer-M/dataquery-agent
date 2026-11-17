@@ -12,14 +12,18 @@ class GraphState(TypedDict, total=False):
     approved: list[str]
     result: dict
     interrupt_required: bool
+    clarification: dict
 
 
-def run_supervisor(runtime, trace, *, contexts, execute):
+def run_supervisor(runtime, trace, *, contexts, execute, saver=None, thread_id=None,
+                   clarification=None, resume=None, continuation=None):
     from langgraph.graph import END, START, StateGraph
+    from langgraph.types import Command, interrupt as graph_interrupt
     from langsmith import tracing_context
 
     events = trace["orchestration"] = []
     roles = list(contexts)
+    resumed = []
 
     def decision(stage, instruction, context, allowed):
         prompt = (
@@ -43,7 +47,13 @@ def run_supervisor(runtime, trace, *, contexts, execute):
         events.append({"node": stage, "status": "accepted", "decision": choice})
         return choice
 
-    def supervisor(_):
+    def supervisor(state):
+        if pending := state.get("clarification"):
+            choice = decision("supervisor", "已发现正式指标口径歧义，必须请用户选口径。",
+                              {"request": pending["original_question"], "choices": pending["choices"]},
+                              ["clarify"])
+            return {"delegates": [], "interrupt_required": choice == "clarify"}
+
         options = ["clarify", *roles]
         if len(roles) > 1:
             options.append("both")
@@ -62,7 +72,13 @@ def run_supervisor(runtime, trace, *, contexts, execute):
             return {"approved": [*state["approved"], role]} if choice == "execute" else {}
         return node
 
-    def interrupt(_):
+    def interrupt(state):
+        if pending := state.get("clarification"):
+            chosen = graph_interrupt({"slot": "metric_id"})
+            if resumed:
+                raise RuntimeError("Repeated continuation in the same Graph invocation")
+            resumed.append(continuation(pending, chosen))
+            return {"interrupt_required": False, "clarification": {}}
         return {"result": {"status": "clarify", "code": "supervisor_clarification_required",
                            "answer_zh": "请补充要分析的指标、时间范围或要引用的具体 PDF 主题。"}}
 
@@ -103,9 +119,21 @@ def run_supervisor(runtime, trace, *, contexts, execute):
     graph.add_edge("tools", "insight")
     graph.add_edge("insight", END)
     with tracing_context(enabled=False):
-        final = graph.compile().invoke({"approved": []}, {"recursion_limit": 9})
+        compiled = graph.compile(checkpointer=saver)
+        config = {"recursion_limit": 9}
+        if thread_id is not None:
+            config["configurable"] = {"thread_id": thread_id}
+        initial = {"approved": [], **({"clarification": clarification} if clarification else {})}
+        final = compiled.invoke(Command(resume=resume) if resume is not None else initial, config)
+    if resume is not None:
+        if len(resumed) != 1:
+            raise RuntimeError("Resume did not execute the pending continuation")
+        return resumed[0]
+    if final.get("__interrupt__"):
+        trace["interrupt_required"] = True
+        return {"paused": True}
     trace["interrupt_required"] = final["interrupt_required"]
-    return final["result"]
+    return final.get("result", {})
 
 
 def role_context(request, **scope):

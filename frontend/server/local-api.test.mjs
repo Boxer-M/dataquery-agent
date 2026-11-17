@@ -15,6 +15,9 @@ test('allows only the same-origin routes and intended methods', () => {
   const url = '/api/queries/2f074dc9-2d98-4824-a765-09fc65ead286'
   assert.equal(checkAccess({ ...request, method: 'GET', url }), undefined)
   assert.equal(checkAccess({ ...request, url })[0], 405)
+  assert.equal(checkAccess({ ...request, url: url + '/resume' }), undefined)
+  assert.equal(checkAccess({ ...request, method: 'GET', url: url + '/resume' })[0], 405)
+  assert.equal(checkAccess({ ...request, url: url + '/resume?metric=order_count' })[0], 404)
   for (const path of ['/api/queries/123', url + '?test=1', url + '/extra', '/api/queries/']) {
     assert.equal(checkAccess({ ...request, method: 'GET', url: path })[0], 404)
   }

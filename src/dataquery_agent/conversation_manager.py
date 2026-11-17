@@ -65,6 +65,13 @@ class ConversationManager:
                 answer, context, pending, operation = self.resume_catalog(owner, claim["state"], target, today)
             else:
                 answer, context, pending, operation = self.dispatch(message, claim["state"], today, owner=owner)
+            if (pending and answer.get("code") == "ambiguous_metric"
+                    and not answer.get("trace", {}).get("tools")
+                    and getattr(self.agent, "supervisor", False) and os.getenv("DATAQUERY_HITL") == "1"):
+                from .hitl import catalog_hash, pause
+
+                if pause(self, answer, dict(pending, catalog_hash=catalog_hash(self)), query_id):
+                    pending = None
             record = build_record(claim, message, answer, operation, round((monotonic() - began) * 1000),
                                   query_id=query_id)
             if recovery := record.get("recovery"):
