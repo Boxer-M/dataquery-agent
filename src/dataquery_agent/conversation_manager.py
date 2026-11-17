@@ -1,6 +1,7 @@
 """Coordinate context, Unified Agent execution and owner-scoped query history."""
 import argparse
 import json
+import os
 from datetime import datetime
 from time import monotonic
 from uuid import uuid4
@@ -210,7 +211,8 @@ def local_manager():
     service = MetricQueryService(dotenv_values(ROOT / ".env.metric-query").get("METRIC_QUERY_DSN"))
     engine = DynamicSqlEngine.local()
     agent = UnifiedAgent(service, capability, DetailQueryExecutor.local(), engine,
-                         QueryAssetRuntime.local(engine), KnowledgeService.local(service.metrics))
+                         QueryAssetRuntime.local(engine), KnowledgeService.local(service.metrics),
+                         supervisor=os.getenv("DATAQUERY_SUPERVISOR") == "1")
     model = gemini_generator(dotenv_values(ROOT / ".env"), include_usage=True, schema_for_prompt=schema_for_prompt)
     return ConversationManager(store, agent, model), cfg.get("AGENT_OWNER_TOKEN")
 

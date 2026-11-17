@@ -82,7 +82,16 @@ class TraceStep(BaseModel):
     includes_reviewed_pdf: bool | None = None
 
 
+class OrchestrationStep(BaseModel):
+    node: str | None = None
+    status: str | None = None
+    decision: str | None = None
+    next_action: str | None = None
+
+
 class PublicTrace(BaseModel):
+    orchestration: list[OrchestrationStep] = Field(default_factory=list)
+    interrupt_required: bool = False
     run_id: UUID | None = None
     previous_query_id: UUID | None = None
     trace_id: str | None = None
@@ -189,6 +198,7 @@ def metric_row(row):
 def public_response(data, *, history=False):
     result = data.get("result", {})
     evidence = trace_view(data)
+    graph = data if history else data.get("trace", {})
     knowledge = (data.get("knowledge", {}) if history else result.get("knowledge_result", result))
     primary = result.get("query_result") or result
     rows = primary.get("results", []) if not history and ("query_result" in result or "plan" in result) else []
@@ -222,6 +232,9 @@ def public_response(data, *, history=False):
                      ([primary] if "query_result" in result else tasks)[:12] if item.get("definition")],
         clarification_choices=[projection(MetricDefinition, item) for item in data.get("choices", [])[:8]],
         trace=PublicTrace(run_id=evidence["run_id"],
+                          orchestration=[projection(OrchestrationStep, item)
+                                         for item in graph.get("orchestration", [])[:8]],
+                          interrupt_required=graph.get("interrupt_required") is True,
                           previous_query_id=(result.get("recovery") or data.get("recovery") or {}).get("previous_query_id"),
                           trace_id=identifier(evidence["trace_id"]),
                           plan_id=identifier(evidence["plan_id"]),

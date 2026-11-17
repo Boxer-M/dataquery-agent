@@ -7,7 +7,9 @@ TEXT_ARRAY = {"type": "array", "items": {"type": "string"}}
 
 PROMPT_VERSIONS = {"intent": "intent-v3", "resolution": "metric-resolution-v2",
                    "planning": "business-plan-v1", "dynamic_sql": DYNAMIC_VERSION,
-                   "knowledge": "knowledge-extractive-v1"}
+                   "knowledge": "knowledge-extractive-v1", "supervisor": "supervisor-v1",
+                   "data": "data-delegation-v1", "knowledge_agent": "knowledge-delegation-v1",
+                   "investigation": "investigation-v1"}
 OUTPUT_SCHEMAS = {
     DYNAMIC_VERSION: {
         "type": "object",
@@ -44,6 +46,18 @@ OUTPUT_SCHEMAS = {
         "additionalProperties": False,
     },
 }
+
+
+for stage, choices in {
+    "supervisor": ["data", "knowledge_agent", "both", "clarify"],
+    "data": ["execute", "defer"],
+    "knowledge_agent": ["execute", "defer"],
+    "investigation": ["finish", "clarify"],
+}.items():
+    OUTPUT_SCHEMAS[PROMPT_VERSIONS[stage]] = {
+        "type": "object", "properties": {"decision": {"type": "string", "enum": choices}},
+        "required": ["decision"], "additionalProperties": False,
+    }
 
 
 def schema_for_prompt(prompt):

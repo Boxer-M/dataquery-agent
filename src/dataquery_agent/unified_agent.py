@@ -46,13 +46,14 @@ TIME_TAIL = re.compile(r"季度|半年|截至|以来|之前|之后|以前|以后
 
 
 class UnifiedAgent:
-    def __init__(self, service, capability, detail_executor=None, dynamic_engine=None, asset_runtime=None, knowledge=None):
+    def __init__(self, service, capability, detail_executor=None, dynamic_engine=None, asset_runtime=None, knowledge=None, *, supervisor=False):
         self.service = service
         self.capability = capability
         self.detail_executor = detail_executor
         self.dynamic_engine = dynamic_engine
         self.asset_runtime = asset_runtime
         self.knowledge = knowledge
+        self.supervisor = supervisor
         self.semantic = SemanticResolver(service)
         self.candidates = MetricCandidates(self.semantic)
         self.planner = BusinessQueryPlanner(service)
@@ -361,6 +362,19 @@ class UnifiedAgent:
                 return outcome("clarify", prepared["code"], f"请在原问题中明确指标口径（{names}），并保留 PDF 查询需求。")
             return prepared
         plan = prepared["plan"]
+        if self.supervisor and catalog is None:
+            from .supervisor_graph import role_context, run_supervisor
+
+            contexts = {"data": role_context(question, metric_ids=plan["metric_ids"],
+                                             analysis_type=plan["analysis_type"])}
+            if pdf_question is not None:
+                from .rag.routing import run_document_plan
+
+                contexts["knowledge_agent"] = role_context(pdf_question, source="reviewed_pdf")
+                return run_supervisor(runtime, trace, contexts=contexts, execute=lambda roles:
+                    run_document_plan(self, plan, runtime, frame, trace, today, owner, roles=roles))
+            return run_supervisor(runtime, trace, contexts=contexts, execute=lambda roles:
+                self.run_business_plan(plan, frame, trace, roles=roles))
         if pdf_question is not None:
             from .rag.routing import run_document_plan
             return run_document_plan(self, plan, runtime, frame, trace, today, owner)
@@ -437,7 +451,7 @@ class UnifiedAgent:
                     metric_resolution=resolution, metric_results=metric_results,
                     answer_zh=result["answer_zh"] + "\n正式定义\n" + knowledge["answer_zh"])
 
-    def run_business_plan(self, plan, frame, trace, *, recovery_proof=None, catalog=None, metric_results=None, document=None):
+    def run_business_plan(self, plan, frame, trace, *, recovery_proof=None, catalog=None, metric_results=None, document=None, roles=None):
         plan_id, attempt_id = uuid4().hex, uuid4().hex
         routes = {}
         def resolve(request, step, phase):
@@ -461,11 +475,13 @@ class UnifiedAgent:
             agent_call = None
 
             def execute(request, route):
-                phase = "execution_recheck" if catalog is not None or document is not None else "preflight"
+                phase = "execution_recheck" if catalog is not None or document is not None or roles is not None else "preflight"
                 binding = {key: approved[key] for key in BINDING_FIELDS} | {"capability_phase": phase}
                 return self.execute_bound_metric(request, route, trace, binding=binding)
 
-            if catalog is not None or document is not None:
+            if roles is not None and "data" not in roles:
+                return metric_failure("data_delegation_declined").task_result(call)
+            if catalog is not None or document is not None or roles is not None:
                 from .specialists import DataAnalysisAgent
                 specialist = DataAnalysisAgent(
                     resolve=lambda request: resolve(request, step, "execution_recheck"),

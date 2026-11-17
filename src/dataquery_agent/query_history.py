@@ -55,6 +55,7 @@ def build_record(claim, message, answer, operation, elapsed_ms, *, query_id=None
         **{key: value for key, value in evidence.items()
            if value or key in {"trace_id", "tool_traces"}},
         **({"agent_calls": agent_calls} if agent_calls else {}),
+        **({key: trace[key] for key in ("orchestration", "interrupt_required") if key in trace}),
         **({"recovery": result["recovery"]} if "recovery" in result else {}),
         **({"knowledge": knowledge_audit} if knowledge_audit is not None else {}),
         **({"query_asset": result["query_asset"]} if strategy == "published_asset" else {}),

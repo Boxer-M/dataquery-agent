@@ -1,0 +1,610 @@
+{
+  "mode": "real Gemini generation, local PostgreSQL and fixed synthetic PDF vectors",
+  "latest_per_scenario": {
+    "successes": 4,
+    "samples": 4,
+    "tool_calls": 6,
+    "model_attempts": 13,
+    "tokens_reported": {
+      "prompt": 3233,
+      "output": 580,
+      "total": 3813
+    },
+    "p95_ms_nearest_rank": 26163
+  },
+  "runs": {
+    "initial_unstructured_decisions": {
+      "summary": {
+        "successes": 1,
+        "samples": 4,
+        "tool_calls": 1,
+        "model_attempts": 7,
+        "tokens_reported": {
+          "prompt": 2144,
+          "output": 323,
+          "total": 2467
+        },
+        "p95_ms_nearest_rank": 32602
+      },
+      "trace": [
+        {
+          "scenario": "fast",
+          "status": "ok",
+          "code": null,
+          "trace_id": "a7146330dfe24555bdcf3c2975e49a1b",
+          "run_id": "165bd0fc-5e8e-4b53-957d-da28d340e9d2",
+          "plan_id": "78c9d9c6f306444b862478192dbe5322",
+          "attempt_id": "6207d38344904c6fa2b2ba9b2badfa70",
+          "elapsed_ms": 3607,
+          "model_attempts": [
+            {
+              "stage": "intent",
+              "attempt": 1,
+              "prompt_version": "intent-v3",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 214,
+                "output": 58,
+                "total": 272
+              },
+              "status": "received",
+              "elapsed_ms": 3586
+            }
+          ],
+          "tool_calls": 1,
+          "orchestration": []
+        },
+        {
+          "scenario": "data",
+          "status": "error",
+          "code": "invalid_supervisor_decision",
+          "trace_id": "b4ef45f0dff945c0baaabfe48f845868",
+          "run_id": "3e82e551-0f1d-4c05-9f3d-efcb6b7c2a67",
+          "plan_id": null,
+          "attempt_id": null,
+          "elapsed_ms": 12479,
+          "model_attempts": [
+            {
+              "stage": "planning",
+              "attempt": 1,
+              "prompt_version": "business-plan-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 793,
+                "output": 118,
+                "total": 911
+              },
+              "status": "received",
+              "elapsed_ms": 4776
+            },
+            {
+              "stage": "supervisor",
+              "attempt": 1,
+              "prompt_version": "supervisor-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 95,
+                "output": 8,
+                "total": 103
+              },
+              "status": "invalid_output",
+              "elapsed_ms": 7461
+            }
+          ],
+          "tool_calls": 0,
+          "orchestration": [
+            {
+              "node": "supervisor",
+              "status": "rejected"
+            }
+          ]
+        },
+        {
+          "scenario": "pdf",
+          "status": "error",
+          "code": "invalid_supervisor_decision",
+          "trace_id": "5dee1e680a99466fa914151540a32710",
+          "run_id": "a922d95d-6127-4fe3-b2b1-34bc19eb13ef",
+          "plan_id": null,
+          "attempt_id": null,
+          "elapsed_ms": 2714,
+          "model_attempts": [
+            {
+              "stage": "supervisor",
+              "attempt": 1,
+              "prompt_version": "supervisor-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 95,
+                "output": 10,
+                "total": 105
+              },
+              "status": "invalid_output",
+              "elapsed_ms": 2710
+            }
+          ],
+          "tool_calls": 0,
+          "orchestration": [
+            {
+              "node": "supervisor",
+              "status": "rejected"
+            }
+          ]
+        },
+        {
+          "scenario": "hybrid",
+          "status": "error",
+          "code": "invalid_supervisor_decision",
+          "trace_id": "04378231821b4c94bbf15c1e557c3680",
+          "run_id": "be367f78-7ccc-404c-9ddf-44afff4b544a",
+          "plan_id": null,
+          "attempt_id": null,
+          "elapsed_ms": 32602,
+          "model_attempts": [
+            {
+              "stage": "planning",
+              "attempt": 1,
+              "prompt_version": "business-plan-v1",
+              "status": "error",
+              "error_type": "ReadTimeout",
+              "http_status": null,
+              "elapsed_ms": 23685
+            },
+            {
+              "stage": "planning",
+              "attempt": 2,
+              "prompt_version": "business-plan-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 834,
+                "output": 126,
+                "total": 960
+              },
+              "status": "received",
+              "elapsed_ms": 7584
+            },
+            {
+              "stage": "supervisor",
+              "attempt": 1,
+              "prompt_version": "supervisor-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 113,
+                "output": 3,
+                "total": 116
+              },
+              "status": "invalid_output",
+              "elapsed_ms": 1325
+            }
+          ],
+          "tool_calls": 0,
+          "orchestration": [
+            {
+              "node": "supervisor",
+              "status": "rejected"
+            }
+          ]
+        }
+      ]
+    },
+    "structured_decisions": {
+      "summary": {
+        "successes": 3,
+        "samples": 4,
+        "tool_calls": 6,
+        "model_attempts": 14,
+        "tokens_reported": {
+          "prompt": 3201,
+          "output": 652,
+          "total": 3853
+        },
+        "p95_ms_nearest_rank": 51388
+      },
+      "trace": [
+        {
+          "scenario": "fast",
+          "status": "ok",
+          "code": null,
+          "trace_id": "df5fae2647054d73b4fe46c32db8793a",
+          "run_id": "f3acb0d8-229e-4033-a124-1458231ac8df",
+          "plan_id": "983acf4a9d024e6d8e41bf8390d19c6b",
+          "attempt_id": "88aed4a186624471be3064cefd54c790",
+          "elapsed_ms": 4731,
+          "model_attempts": [
+            {
+              "stage": "intent",
+              "attempt": 1,
+              "prompt_version": "intent-v3",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 214,
+                "output": 58,
+                "total": 272
+              },
+              "status": "received",
+              "elapsed_ms": 4711
+            }
+          ],
+          "tool_calls": 1,
+          "orchestration": []
+        },
+        {
+          "scenario": "data",
+          "status": "ok",
+          "code": null,
+          "trace_id": "6066e6d68d12437c94481c6b339094a3",
+          "run_id": "adf92fed-7498-49f9-ad6c-c3ec34164b6a",
+          "plan_id": "063f7d3c9e2e4dc8bc5ddfa24bc92f42",
+          "attempt_id": "7db4c2db65784742a86fcc80afd1d207",
+          "elapsed_ms": 17527,
+          "model_attempts": [
+            {
+              "stage": "planning",
+              "attempt": 1,
+              "prompt_version": "business-plan-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 793,
+                "output": 118,
+                "total": 911
+              },
+              "status": "received",
+              "elapsed_ms": 9309
+            },
+            {
+              "stage": "supervisor",
+              "attempt": 1,
+              "prompt_version": "supervisor-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 101,
+                "output": 6,
+                "total": 107
+              },
+              "status": "received",
+              "elapsed_ms": 2063
+            },
+            {
+              "stage": "data",
+              "attempt": 1,
+              "prompt_version": "data-delegation-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 121,
+                "output": 11,
+                "total": 132
+              },
+              "status": "received",
+              "elapsed_ms": 5865
+            }
+          ],
+          "tool_calls": 2,
+          "orchestration": [
+            {
+              "node": "supervisor",
+              "status": "accepted",
+              "decision": "data"
+            },
+            {
+              "node": "data",
+              "status": "accepted",
+              "decision": "execute"
+            },
+            {
+              "node": "insight",
+              "status": "ok",
+              "next_action": "finish"
+            }
+          ]
+        },
+        {
+          "scenario": "pdf",
+          "status": "ok",
+          "code": null,
+          "trace_id": "ce7d3208a30146cba6e3764af1659d94",
+          "run_id": "5f456132-c4e6-4a58-a62e-9290edc86a47",
+          "plan_id": "9c40c79adc78478ea5c03f0d93098aee",
+          "attempt_id": "50ca3c2c90f644469740783f21558a5c",
+          "elapsed_ms": 26163,
+          "model_attempts": [
+            {
+              "stage": "supervisor",
+              "attempt": 1,
+              "prompt_version": "supervisor-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 101,
+                "output": 8,
+                "total": 109
+              },
+              "status": "received",
+              "elapsed_ms": 5668
+            },
+            {
+              "stage": "knowledge_agent",
+              "attempt": 1,
+              "prompt_version": "knowledge-delegation-v1",
+              "status": "error",
+              "error_type": "ServerError",
+              "http_status": 503,
+              "elapsed_ms": 14709
+            },
+            {
+              "stage": "knowledge_agent",
+              "attempt": 2,
+              "prompt_version": "knowledge-delegation-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 103,
+                "output": 11,
+                "total": 114
+              },
+              "status": "received",
+              "elapsed_ms": 3663
+            },
+            {
+              "stage": "knowledge",
+              "attempt": 1,
+              "prompt_version": "knowledge-extractive-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 306,
+                "output": 102,
+                "total": 408
+              },
+              "status": "received",
+              "elapsed_ms": 2042
+            }
+          ],
+          "tool_calls": 1,
+          "orchestration": [
+            {
+              "node": "supervisor",
+              "status": "accepted",
+              "decision": "knowledge_agent"
+            },
+            {
+              "node": "knowledge_agent",
+              "status": "accepted",
+              "decision": "execute"
+            },
+            {
+              "node": "insight",
+              "status": "ok",
+              "next_action": "finish"
+            }
+          ]
+        },
+        {
+          "scenario": "hybrid",
+          "status": "partial",
+          "code": "pdf_evidence_partial",
+          "trace_id": "88d370db910b40e9ae8e7fe8a0ab0cc6",
+          "run_id": "3551c4de-6818-44ec-8df5-222ae36fd591",
+          "plan_id": "bc74dd637c3d496e8b3239672451a7d8",
+          "attempt_id": "5cb525bb4bd64f5180a2c1888269cba5",
+          "elapsed_ms": 51388,
+          "model_attempts": [
+            {
+              "stage": "planning",
+              "attempt": 1,
+              "prompt_version": "business-plan-v1",
+              "status": "error",
+              "error_type": "ServerError",
+              "http_status": 503,
+              "elapsed_ms": 8743
+            },
+            {
+              "stage": "planning",
+              "attempt": 2,
+              "prompt_version": "business-plan-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 834,
+                "output": 126,
+                "total": 960
+              },
+              "status": "received",
+              "elapsed_ms": 12980
+            },
+            {
+              "stage": "supervisor",
+              "attempt": 1,
+              "prompt_version": "supervisor-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 119,
+                "output": 11,
+                "total": 130
+              },
+              "status": "received",
+              "elapsed_ms": 6224
+            },
+            {
+              "stage": "data",
+              "attempt": 1,
+              "prompt_version": "data-delegation-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 108,
+                "output": 11,
+                "total": 119
+              },
+              "status": "received",
+              "elapsed_ms": 9169
+            },
+            {
+              "stage": "knowledge_agent",
+              "attempt": 1,
+              "prompt_version": "knowledge-delegation-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 99,
+                "output": 6,
+                "total": 105
+              },
+              "status": "received",
+              "elapsed_ms": 10533
+            },
+            {
+              "stage": "knowledge",
+              "attempt": 1,
+              "prompt_version": "knowledge-extractive-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 302,
+                "output": 184,
+                "total": 486
+              },
+              "status": "received",
+              "elapsed_ms": 3691
+            }
+          ],
+          "tool_calls": 2,
+          "orchestration": [
+            {
+              "node": "supervisor",
+              "status": "accepted",
+              "decision": "both"
+            },
+            {
+              "node": "data",
+              "status": "accepted",
+              "decision": "execute"
+            },
+            {
+              "node": "knowledge_agent",
+              "status": "accepted",
+              "decision": "execute"
+            },
+            {
+              "node": "investigation",
+              "status": "unavailable"
+            },
+            {
+              "node": "insight",
+              "status": "partial",
+              "next_action": "finish"
+            }
+          ]
+        }
+      ]
+    },
+    "hybrid_only_explicit_page_scope": {
+      "summary": {
+        "successes": 1,
+        "samples": 1,
+        "tool_calls": 2,
+        "model_attempts": 5,
+        "tokens_reported": {
+          "prompt": 1494,
+          "output": 266,
+          "total": 1760
+        },
+        "p95_ms_nearest_rank": 17156
+      },
+      "trace": [
+        {
+          "scenario": "hybrid",
+          "status": "ok",
+          "code": null,
+          "trace_id": "6713e7dcecbd4ca3b91a0dfdb469ca83",
+          "run_id": "6cbbead4-7be3-4e18-aee7-cf948cce936e",
+          "plan_id": "883e58869bde4e6cacb13f8eb8e2b68d",
+          "attempt_id": "d363ce85b67d4cea8e04aaf0440dd4b6",
+          "elapsed_ms": 17156,
+          "model_attempts": [
+            {
+              "stage": "planning",
+              "attempt": 1,
+              "prompt_version": "business-plan-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 841,
+                "output": 133,
+                "total": 974
+              },
+              "status": "received",
+              "elapsed_ms": 6457
+            },
+            {
+              "stage": "supervisor",
+              "attempt": 1,
+              "prompt_version": "supervisor-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 126,
+                "output": 11,
+                "total": 137
+              },
+              "status": "received",
+              "elapsed_ms": 2124
+            },
+            {
+              "stage": "data",
+              "attempt": 1,
+              "prompt_version": "data-delegation-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 108,
+                "output": 11,
+                "total": 119
+              },
+              "status": "received",
+              "elapsed_ms": 3170
+            },
+            {
+              "stage": "knowledge_agent",
+              "attempt": 1,
+              "prompt_version": "knowledge-delegation-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 106,
+                "output": 11,
+                "total": 117
+              },
+              "status": "received",
+              "elapsed_ms": 1536
+            },
+            {
+              "stage": "knowledge",
+              "attempt": 1,
+              "prompt_version": "knowledge-extractive-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 313,
+                "output": 100,
+                "total": 413
+              },
+              "status": "received",
+              "elapsed_ms": 3538
+            }
+          ],
+          "tool_calls": 2,
+          "orchestration": [
+            {
+              "node": "supervisor",
+              "status": "accepted",
+              "decision": "both"
+            },
+            {
+              "node": "data",
+              "status": "accepted",
+              "decision": "execute"
+            },
+            {
+              "node": "knowledge_agent",
+              "status": "accepted",
+              "decision": "execute"
+            },
+            {
+              "node": "insight",
+              "status": "ok",
+              "next_action": "finish"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

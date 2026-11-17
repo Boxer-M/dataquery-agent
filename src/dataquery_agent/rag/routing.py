@@ -127,7 +127,26 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
         result = service.exact(agent.service, resolution, today=today, owner=owner, missing=missing)
         trace["tools"].append(result["retrieval_trace"])
         return dict(result, path="knowledge", knowledge_topic="metric_definition", metric_resolution=resolution)
+    if agent.supervisor and mentions_pdf:
+        if not owner:
+            return outcome("unsupported", "pdf_owner_required", "请在已授权的会话中查询 PDF。")
+        from ..supervisor_graph import role_context, run_supervisor
+
+        def execute(roles):
+            if "knowledge_agent" not in roles:
+                return outcome("error", "knowledge_delegation_declined", "PDF 检索未获专业角色批准。")
+            return run_knowledge(agent, question, runtime, trace, today, owner, mentions_pdf)
+
+        return run_supervisor(runtime, trace, contexts={
+            "knowledge_agent": role_context(question, source="reviewed_pdf"),
+        }, execute=execute)
+    return run_knowledge(agent, question, runtime, trace, today, owner, mentions_pdf)
+
+
+def run_knowledge(agent, question, runtime, trace, today, owner, mentions_pdf):
     from ..specialists import KnowledgeAgent
+
+    service = agent.knowledge
     kind = "business_rule" if re.search(r"政策|规则", question) else "technical_document"
     specialist = KnowledgeAgent(
         lookup_catalog=None,
@@ -150,7 +169,7 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
 
 
 
-def run_document_plan(agent, plan, runtime, frame, trace, today, owner):
+def run_document_plan(agent, plan, runtime, frame, trace, today, owner, *, roles=None):
     """Run the validated metric and scoped PDF through the existing DAG."""
     from ..specialists import KnowledgeAgent
 
@@ -161,6 +180,8 @@ def run_document_plan(agent, plan, runtime, frame, trace, today, owner):
     )
 
     def document(params):
+        if roles is not None and "knowledge_agent" not in roles:
+            return {"status": "unavailable", "error_code": "knowledge_delegation_declined"}, None
         evidence = specialist.execute("technical_document", params["question"],
                                       known_metrics=agent.service.metrics, runtime=runtime)
         citations = evidence["citations"]
@@ -180,7 +201,7 @@ def run_document_plan(agent, plan, runtime, frame, trace, today, owner):
                 "trace_id": retrieval.get("trace_id"), "elapsed_ms": retrieval.get("elapsed_ms"),
                 "sources": list(dict.fromkeys(item["source_uri"] for item in evidence["citations"]))}, evidence
 
-    result = agent.run_business_plan(plan, frame, trace, document=document)
+    result = agent.run_business_plan(plan, frame, trace, document=document, roles=roles)
     if "pdf_result" not in result:
         return result
     metric, pdf, summary = result["subtasks"]
