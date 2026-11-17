@@ -2,11 +2,29 @@
 import unittest
 from unittest.mock import Mock, patch
 
-from benchmark.live_baseline import finalize, inventory, technical_fixture
+from benchmark.dataset import digest
+from benchmark.live_baseline import finalize, inventory, reconcile_captured_defaults, technical_fixture
 from benchmark.live_baseline_budget import BaselineGuard, Budget, generator
 
 
 class RealGeminiBaselineTests(unittest.TestCase):
+    def test_reconciles_only_equivalent_requests_with_matching_captured_rows(self):
+        request = {"metric_id": "order_count", "filters": {}, "group_by": []}
+        results = [{"bucket": "all", "value": 2}]
+        proof = {"calls": [{"parameters": request, "expected_result": results}]}
+        service = Mock()
+        service.query.return_value = {"status": "ok", "results": results}
+        base = {"status": "ok", "sql_result_accuracy": False, "task_success": False,
+                "tool_trace": [{"request": {"metric_id": "order_count"}}]}
+        for observed, expected in (("wrong", False), (digest([results]), True)):
+            row = base | {"observed_metric_rows_sha256": observed}
+            reconcile_captured_defaults(row, proof, service)
+            self.assertIs(row["task_success"], expected)
+        row["tool_trace"] = [{"request": request | {"filters": {"channel": "web"}}}]
+        row["sql_result_accuracy"] = False
+        reconcile_captured_defaults(row, proof, service)
+        self.assertFalse(row["sql_result_accuracy"])
+
     def test_technical_scope_requires_opt_in_and_matches_four_spans(self):
         scoped, excluded, _, public = inventory()
         broader, _, _, _ = inventory(authorized_technical=True)

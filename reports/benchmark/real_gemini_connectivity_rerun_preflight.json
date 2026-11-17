@@ -1,0 +1,41 @@
+{
+  "checked_at": "2026-11-17T00:59:09.396002+00:00",
+  "model_environment": {
+    "configured_model": "models/gemini-3.5-flash-lite",
+    "prompt_versions": {
+      "intent": "intent-v3",
+      "resolution": "metric-resolution-v2",
+      "planning": "business-plan-v1",
+      "dynamic_sql": "dynamic-sql-v1",
+      "knowledge": "knowledge-extractive-v1"
+    },
+    "response_schema_hash": "7e9da4e96b1fb53d6a3fbb7702df5ff913f94359aae6dc25962b3765d01dc0c2",
+    "response_format": "application/json",
+    "embedding_model": "gemini-embedding-001",
+    "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1"
+  },
+  "dataset_version": "benchmark-golden-evidence-review-v1",
+  "case_count": 58,
+  "ods_snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+  "matches_previous_snapshot": true,
+  "events": [
+    {
+      "kind": "generation",
+      "stage": "connectivity",
+      "status": "ok",
+      "usage": {
+        "prompt": 11,
+        "output": 9,
+        "total": 20
+      },
+      "model": "gemini-3.5-flash-lite",
+      "elapsed_ms": 5715.823
+    },
+    {
+      "kind": "embedding",
+      "stage": "connectivity",
+      "status": "ok",
+      "elapsed_ms": 3017.107
+    }
+  ]
+}

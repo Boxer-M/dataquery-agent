@@ -26,7 +26,7 @@ from .dataset import DATASET, ROOT, digest
 from .evidence_review import REPORT as REVIEW, assemble
 from .expansion import compare_rows, read, sql_label, write
 from .live_baseline_budget import Budget, BaselineEmbedding, LIMITS, estimate, generator
-from .live_baseline_scores import expansion_checks, retrieval, summarize
+from .live_baseline_scores import expansion_checks, normalized_request, retrieval, summarize
 from .runner import git
 
 VERSION = "real-gemini-baseline-v2"
@@ -86,7 +86,7 @@ def technical_fixture(reviewed):
                     content_hash, content_hash[:12] + "-baseline-v2", tuple(passages))
 
 
-def publish_fixtures(stack, writer, embedding, approved, owner, technical):
+def publish_fixtures(stack, writer, embedding, approved, owner, other, technical, provenance):
     policy = parse_file(FIXTURES / "knowledge/refund_fixture.md", title="测试星店退款规则", source_type="synthetic_fixture",
                         source_uri="fixture:refund_fixture.md", topic="refund_fixture", version="1")
     extraction = extract_pdf(PDF, owner=owner)
@@ -110,6 +110,20 @@ def publish_fixtures(stack, writer, embedding, approved, owner, technical):
         else:
             ids.append(result["document_id"])
             stack.callback(writer.delete, result["document_id"], owner=owner)
+            versions = [row for row in writer.list_versions(owner=owner)
+                        if row["document_id"] == result["document_id"] and row["document_version"] == doc.version]
+            chunks = writer.chunks(result["document_id"], owner=owner)
+            if (len(versions) != 1 or versions[0]["active_version"] != doc.version
+                    or versions[0]["deleted_at"] is not None or versions[0]["content_hash"] != doc.content_hash
+                    or len(chunks) != len(doc.passages) or writer.chunks(result["document_id"], owner=other)
+                    or any(row["embedding_version"] != embedding.version or row["document_version"] != doc.version
+                           or row["chunk_text"] != passage.text or row["source_location"] != passage.location
+                           for row, passage in zip(chunks, doc.passages))):
+                raise ValueError("fixture publication provenance mismatch")
+            provenance.append({"source_uri": doc.source_uri, "document_id": result["document_id"],
+                               "document_version": doc.version, "source_sha256": doc.content_hash,
+                               "embedding_version": embedding.version, "active_at_setup": True,
+                               "isolated_owner_verified": True, "chunk_count": len(chunks)})
     return ids
 
 
@@ -144,6 +158,11 @@ def failure_category(answer, row, events, blocked):
         return None
     if blocked:
         return blocked[-1]["reason"]
+    if events and events[-1]["status"] == "error" and (
+        events[-1].get("http_status") in {429, 503}
+        or events[-1].get("error_type") in {"ReadTimeout", "ConnectTimeout", "TimeoutError"}
+    ):
+        return "external_model_service"
     if any(event["status"] == "error" for event in events) and answer.get("code") in {
         "model_unavailable", "retrieval_unavailable", "embedding_unavailable", "invalid_model_output",
     }:
@@ -259,7 +278,9 @@ def run(path, *, authorized_technical):
     with ExitStack() as stack, reference_connection() as pg:
         report["ods_snapshot"] = snapshot(pg)
         tech = technical_fixture(public) if authorized_technical else None
-        policy_id, pdf_id, tech_id = publish_fixtures(stack, writer, embedding, approved, owner, tech)
+        report["index_provenance"] = []
+        policy_id, pdf_id, tech_id = publish_fixtures(stack, writer, embedding, approved, owner, other, tech,
+                                                     report["index_provenance"])
         report["setup_api_events"] = list(budget.events)
         report["authorized_technical_ranges"] = sorted(TECH_RANGES) if tech else []
         write(path, report)
@@ -340,7 +361,33 @@ def finalize(report, cases):
     }
 
 
-def verify_sql_file(path):
+def reconcile_captured_defaults(row, proof, service):
+    if row.get("sql_result_accuracy") is not False or row.get("status") != "ok":
+        return
+    expected = [item["parameters"] for item in proof["calls"]]
+    observed = [tool["request"] for tool in row.get("tool_trace", []) if tool.get("request")]
+    if observed == expected or [normalized_request(req) for req in observed] != [
+        normalized_request(req) for req in expected
+    ]:
+        return
+    verified = [service.query(req) for req in expected]
+    if not all(result["status"] == "ok" and compare_rows(call["expected_result"], result["results"])
+               for call, result in zip(proof["calls"], verified, strict=True)):
+        return
+    if digest([result["results"] for result in verified]) != row.get("observed_metric_rows_sha256"):
+        return
+    row["pre_default_normalization"] = {key: row.get(key) for key in
+                                         ("sql_result_accuracy", "ods_consistency", "task_success", "error_category")}
+    row.update(sql_result_accuracy=True, ods_consistency=True)
+    required = ("intent_accuracy", "tool_route_accuracy", "status_correct", "plan_validity",
+                "guardrail", "citation_validity")
+    entities = row.get("entities")
+    row["task_success"] = (all(row.get(key) is not False for key in required)
+                           and (not entities or set(entities[0]) == set(entities[1])))
+    row["error_category"] = None if row["task_success"] else "other_execution"
+
+
+def verify_sql_file(path, *, reconcile_defaults=False):
     """Independently verify the frozen SQL labels even if natural language is blocked."""
     from dataquery_agent.metric_query_service import MetricQueryService
 
@@ -351,6 +398,7 @@ def verify_sql_file(path):
     report["dataset_version"] = public["dataset_version"]
     service = MetricQueryService(dotenv_values(ROOT / ".env.metric-query").get("METRIC_QUERY_DSN"))
     verified = []
+    rows = {row["case_id"]: row for row in report["cases"]}
     with reference_connection() as pg:
         mark = snapshot(pg)
         if mark != report["ods_snapshot"]:
@@ -364,6 +412,8 @@ def verify_sql_file(path):
                     proof["calls"], actual["calls"], strict=True)):
                 raise ValueError("frozen SQL truth mismatch")
             verified.append({"case_id": case["case_id"], "calls": actual["calls"]})
+            if reconcile_defaults and case["case_id"] in rows:
+                reconcile_captured_defaults(rows[case["case_id"]], actual, service)
     report["offline_sql_validation"] = {"snapshot": mark["id"], "cases": verified,
                                         "case_count": len(verified), "call_count": sum(len(r["calls"]) for r in verified)}
     finalize(report, cases)
@@ -376,9 +426,11 @@ def main():
     parser.add_argument("--allow-four-reviewed-technical-spans", action="store_true")
     parser.add_argument("--out", type=Path, default=REPORT)
     parser.add_argument("--verify-sql", action="store_true", help="Append local read-only SQL reconciliation")
+    parser.add_argument("--reconcile-captured-defaults", action="store_true",
+                        help="Verify captured metric hashes when only default request fields differ")
     args = parser.parse_args()
     if args.verify_sql:
-        verify_sql_file(args.out)
+        verify_sql_file(args.out, reconcile_defaults=args.reconcile_captured_defaults)
         return
     if not args.allow_live_model:
         parser.error("explicit --allow-live-model required")
