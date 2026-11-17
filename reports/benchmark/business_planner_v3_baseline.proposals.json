@@ -1,0 +1,570 @@
+{
+  "exp1:planning:gross-discount": {
+    "question": "从2025-04-01至2025-06-30按品类同时列折扣前商品记录金额、商品行折扣金额；分别保留两列。",
+    "expected": {
+      "analysis_type": "summary",
+      "operation": "align_by_bucket",
+      "requests": [
+        {
+          "metric_id": "item_gross_sales_amount",
+          "start_date": "2025-04-01",
+          "end_date": "2025-07-01",
+          "group_by": [
+            "category"
+          ],
+          "filters": {}
+        },
+        {
+          "metric_id": "item_discount_amount",
+          "start_date": "2025-04-01",
+          "end_date": "2025-07-01",
+          "group_by": [
+            "category"
+          ],
+          "filters": {}
+        }
+      ],
+      "no_cross_fact_join": true,
+      "retain_per_metric_event_time": true
+    },
+    "attempts": [
+      {
+        "prompt_version": "business-plan-v1",
+        "prompt_sha256": "dbadf921ea5ad0d8aaa0fdf722405b62734968e6435cf3a2586e7a992de86d2f",
+        "catalog_metric_count": 38,
+        "context_lines": [],
+        "schema_fields": [],
+        "model": "gemini-3.5-flash-lite",
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "item_gross_sales_amount",
+            "item_discount_amount"
+          ],
+          "time_windows": [
+            "2025-04-01至2025-06-30"
+          ],
+          "group_by": [
+            "按品类"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": []
+        },
+        "extra_fields_count": 0
+      }
+    ],
+    "status": "clarify",
+    "code": "window_mismatch",
+    "plan_validity": false
+  },
+  "exp1:planning:items-products": {
+    "question": "2025年7月按品类同时列订单商品明细数和有下单明细的商品数，重复商品只在后一列去重。",
+    "expected": {
+      "analysis_type": "summary",
+      "operation": "align_by_bucket",
+      "requests": [
+        {
+          "metric_id": "order_item_count",
+          "start_date": "2025-07-01",
+          "end_date": "2025-08-01",
+          "group_by": [
+            "category"
+          ],
+          "filters": {}
+        },
+        {
+          "metric_id": "ordered_product_count",
+          "start_date": "2025-07-01",
+          "end_date": "2025-08-01",
+          "group_by": [
+            "category"
+          ],
+          "filters": {}
+        }
+      ],
+      "no_cross_fact_join": true,
+      "retain_per_metric_event_time": true
+    },
+    "attempts": [
+      {
+        "prompt_version": "business-plan-v1",
+        "prompt_sha256": "6c1c81aca6b92487ee37154bab86e188771cfe6d9d1e2f4e89aa60703ef5f323",
+        "catalog_metric_count": 38,
+        "context_lines": [],
+        "schema_fields": [],
+        "model": "gemini-3.5-flash-lite",
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "order_item_count",
+            "ordered_product_count"
+          ],
+          "time_windows": [
+            "2025年7月"
+          ],
+          "group_by": [
+            "按品类"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": [
+            "重复商品只在后一列去重"
+          ]
+        },
+        "extra_fields_count": 0
+      }
+    ],
+    "status": "clarify",
+    "code": "unresolved_business_rules",
+    "plan_validity": false
+  },
+  "exp1:planning:account-pair": {
+    "question": "2025年5月按国家并列下单账户数和窗口内多次下单账户数，同一账户只计一次。",
+    "expected": {
+      "analysis_type": "summary",
+      "operation": "align_by_bucket",
+      "requests": [
+        {
+          "metric_id": "ordering_customer_count",
+          "start_date": "2025-05-01",
+          "end_date": "2025-06-01",
+          "group_by": [
+            "country"
+          ],
+          "filters": {}
+        },
+        {
+          "metric_id": "repeat_ordering_customer_count",
+          "start_date": "2025-05-01",
+          "end_date": "2025-06-01",
+          "group_by": [
+            "country"
+          ],
+          "filters": {}
+        }
+      ],
+      "no_cross_fact_join": true,
+      "retain_per_metric_event_time": true
+    },
+    "attempts": [
+      {
+        "prompt_version": "business-plan-v1",
+        "prompt_sha256": "780f666e622ceed849cb8ba886e4b490cf7887264203b672b7a2ae8b010b62e9",
+        "catalog_metric_count": 38,
+        "context_lines": [],
+        "schema_fields": [],
+        "model": "gemini-3.5-flash-lite",
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "ordering_customer_count",
+            "repeat_ordering_customer_count"
+          ],
+          "time_windows": [
+            "2025年5月"
+          ],
+          "group_by": [
+            "按国家"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": [
+            "同一账户只计一次"
+          ]
+        },
+        "extra_fields_count": 0
+      }
+    ],
+    "status": "clarify",
+    "code": "unresolved_business_rules",
+    "plan_validity": false
+  },
+  "exp1:planning:payment-pair": {
+    "question": "2025年2月按支付方式并列支付尝试次数和失败支付尝试次数，使用支付事件时间。",
+    "expected": {
+      "analysis_type": "summary",
+      "operation": "align_by_bucket",
+      "requests": [
+        {
+          "metric_id": "payment_attempt_count",
+          "start_date": "2025-02-01",
+          "end_date": "2025-03-01",
+          "group_by": [
+            "method"
+          ],
+          "filters": {}
+        },
+        {
+          "metric_id": "payment_failed_attempt_count",
+          "start_date": "2025-02-01",
+          "end_date": "2025-03-01",
+          "group_by": [
+            "method"
+          ],
+          "filters": {}
+        }
+      ],
+      "no_cross_fact_join": true,
+      "retain_per_metric_event_time": true
+    },
+    "attempts": [
+      {
+        "prompt_version": "business-plan-v1",
+        "prompt_sha256": "c4e8954e519a42434a9979417e834e0365ca2f01e58f6424d82e67b0c4e7e30f",
+        "catalog_metric_count": 38,
+        "context_lines": [],
+        "schema_fields": [],
+        "model": "gemini-3.5-flash-lite",
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "payment_attempt_count",
+            "payment_failed_attempt_count"
+          ],
+          "time_windows": [
+            "2025年2月"
+          ],
+          "group_by": [
+            "按支付方式"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": [
+            "使用支付事件时间"
+          ]
+        },
+        "extra_fields_count": 0
+      }
+    ],
+    "status": "clarify",
+    "code": "unresolved_business_rules",
+    "plan_validity": false
+  },
+  "agent_e2e_v1:multi": {
+    "question": "2025年1月的订单量和成功支付金额是多少",
+    "expected": null,
+    "attempts": [
+      {
+        "prompt_version": "business-plan-v1",
+        "prompt_sha256": "062350d8f498cd9f4b052ac99856d3b3becf749edad579cca0c4be01358ffdef",
+        "catalog_metric_count": 38,
+        "context_lines": [],
+        "schema_fields": [],
+        "model": "gemini-3.5-flash-lite",
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "order_count",
+            "captured_payment_amount"
+          ],
+          "time_windows": [
+            "2025年1月"
+          ],
+          "group_by": [],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": []
+        },
+        "extra_fields_count": 0
+      }
+    ],
+    "status": "ok",
+    "code": null,
+    "plan_validity": true
+  },
+  "agent_e2e_v1:hybrid": {
+    "question": "查询2025年1月订单量和订单商品明细数，并给出正式定义",
+    "expected": null,
+    "attempts": [
+      {
+        "prompt_version": "business-plan-v1",
+        "prompt_sha256": "61366a50c16fa8de1f9c5fc7ec83096ef773e227cfa9311512cb813493f75b5c",
+        "catalog_metric_count": 38,
+        "context_lines": [],
+        "schema_fields": [],
+        "model": "gemini-3.5-flash-lite",
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "order_count",
+            "order_item_count"
+          ],
+          "time_windows": [
+            "2025年1月"
+          ],
+          "group_by": [],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": []
+        },
+        "extra_fields_count": 0
+      }
+    ],
+    "status": "ok",
+    "code": null,
+    "plan_validity": true
+  },
+  "agent_e2e_v1:bad_dimension": {
+    "question": "2025年1月订单量和成功支付金额按商品统计",
+    "expected": null,
+    "attempts": [
+      {
+        "prompt_version": "business-plan-v1",
+        "prompt_sha256": "fbe80c6e34e4d3f868205d79ec579099d0d882ff6a51807047031909f1baa713",
+        "catalog_metric_count": 38,
+        "context_lines": [],
+        "schema_fields": [],
+        "model": "gemini-3.5-flash-lite",
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "order_count",
+            "captured_payment_amount"
+          ],
+          "time_windows": [
+            "2025年1月"
+          ],
+          "group_by": [
+            "按商品"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": []
+        },
+        "extra_fields_count": 0
+      }
+    ],
+    "status": "unsupported",
+    "code": "unsupported_grouping",
+    "plan_validity": null
+  },
+  "integrated_e2e_v1:sql_and_pdf": {
+    "question": "2025年1月订单量是多少，并引用PDF扫描页的 Order count 原文。",
+    "expected": null,
+    "attempts": [
+      {
+        "prompt_version": "business-plan-v1",
+        "prompt_sha256": "bfdb6814484462ec7734e56f50fcc9fc9fca85721c63c78e308b10f3797b677e",
+        "catalog_metric_count": 38,
+        "context_lines": [],
+        "schema_fields": [],
+        "model": "gemini-3.5-flash-lite",
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "order_count"
+          ],
+          "time_windows": [
+            "2025年1月"
+          ],
+          "group_by": [],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": [],
+          "pdf_question": "PDF扫描页的 Order count 原文。"
+        },
+        "extra_fields_count": 0
+      }
+    ],
+    "status": "ok",
+    "code": null,
+    "plan_validity": true
+  },
+  "exp1:planning:return-anomaly-pair": {
+    "question": "以2025年9月为退货事件窗口，按品类并列早于下单的退货记录数和退款记录超明细净额数。",
+    "expected": {
+      "analysis_type": "summary",
+      "operation": "align_by_bucket",
+      "requests": [
+        {
+          "metric_id": "return_before_order_count",
+          "start_date": "2025-09-01",
+          "end_date": "2025-10-01",
+          "group_by": [
+            "category"
+          ],
+          "filters": {}
+        },
+        {
+          "metric_id": "return_above_item_net_count",
+          "start_date": "2025-09-01",
+          "end_date": "2025-10-01",
+          "group_by": [
+            "category"
+          ],
+          "filters": {}
+        }
+      ],
+      "no_cross_fact_join": true,
+      "retain_per_metric_event_time": true
+    },
+    "attempts": [
+      {
+        "prompt_version": "business-plan-v1",
+        "prompt_sha256": "2357d63e3f72cf6aede22e2b7c44f26a4d788ffc1425ca9cea66b2ee1943d446",
+        "catalog_metric_count": 38,
+        "context_lines": [],
+        "schema_fields": [],
+        "model": "gemini-3.5-flash-lite",
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "return_before_order_count",
+            "return_above_item_net_count"
+          ],
+          "time_windows": [
+            "2025年9月"
+          ],
+          "group_by": [
+            "按品类"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": []
+        },
+        "extra_fields_count": 0
+      }
+    ],
+    "status": "ok",
+    "code": null,
+    "plan_validity": true
+  },
+  "exp1:planning:path-funnel": {
+    "question": "我想从商品浏览到支付再到退货看一个漏斗，按品类拆。",
+    "expected": null,
+    "attempts": [
+      {
+        "prompt_version": "business-plan-v1",
+        "prompt_sha256": "e44cc8448797bdebf536104219e1710b1ee134c8b25d3efc9dc04135db055c67",
+        "catalog_metric_count": 38,
+        "context_lines": [],
+        "schema_fields": [],
+        "model": "gemini-3.5-flash-lite",
+        "proposal": {
+          "analysis_type": "cross_filter",
+          "metric_ids": [],
+          "time_windows": [],
+          "group_by": [
+            "按品类拆"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": [
+            "从商品浏览到支付再到退货看一个漏斗"
+          ]
+        },
+        "extra_fields_count": 0
+      }
+    ],
+    "status": "clarify",
+    "code": "missing_metric",
+    "plan_validity": null
+  },
+  "exp1:sql:gross": {
+    "question": "给出从2025-04-01至2025-06-30按品类的折扣前商品记录金额，包括取消状态原始记录。",
+    "expected": null,
+    "attempts": [
+      {
+        "prompt_version": "business-plan-v1",
+        "prompt_sha256": "beee036cd2b9fae94480853e2349a5cc2c888e4f228ffbcda53a2de74e025b1b",
+        "catalog_metric_count": 38,
+        "context_lines": [],
+        "schema_fields": [],
+        "model": "gemini-3.5-flash-lite",
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "item_gross_sales_amount"
+          ],
+          "time_windows": [
+            "从2025-04-01至2025-06-30"
+          ],
+          "group_by": [
+            "按品类"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": [
+            "取消状态原始记录"
+          ]
+        },
+        "extra_fields_count": 0
+      }
+    ],
+    "status": "clarify",
+    "code": "unresolved_business_rules",
+    "plan_validity": null
+  },
+  "exp1:sql:returns-above": {
+    "question": "以退货事件为时间口径，2025年9月退款记录超明细净额数按渠道怎么分布？",
+    "expected": null,
+    "attempts": [
+      {
+        "prompt_version": "business-plan-v1",
+        "prompt_sha256": "ee2b7a48bb108191af5fe3e949b83852f6cadc5db5ec2f5e87452ea966cf7ea5",
+        "catalog_metric_count": 38,
+        "context_lines": [],
+        "schema_fields": [],
+        "model": "gemini-3.5-flash-lite",
+        "proposal": {
+          "analysis_type": "cross_filter",
+          "metric_ids": [
+            "return_above_item_net_count"
+          ],
+          "time_windows": [
+            "2025年9月"
+          ],
+          "group_by": [
+            "按渠道"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": [
+            "以退货事件为时间口径"
+          ]
+        },
+        "extra_fields_count": 0
+      }
+    ],
+    "status": "clarify",
+    "code": "unresolved_business_rules",
+    "plan_validity": null
+  }
+}

@@ -43,6 +43,7 @@ def trace_fields(trace, *, mode, elapsed):
 
 def fixed_or_postgres(mode):
     from dotenv import dotenv_values
+    from dataquery_agent.agent_prompts import PROMPT_VERSIONS
     from dataquery_agent.capability_registry import CapabilityRegistry
     from dataquery_agent.metadata_service import MetadataService
     from dataquery_agent.metric_query_service import MetricQueryService
@@ -86,7 +87,7 @@ def fixed_or_postgres(mode):
                    "sql_result_accuracy": result["numeric_correct"] if live else None,
                    "task_success": result["passed"], "tool_calls": result["tool_call_count"],
                    "model_calls": 0, "latency_ms": result["elapsed_ms"],
-                   "prompt_versions": ["business-plan-v1"],
+                   "prompt_versions": [PROMPT_VERSIONS["planning"]],
                    "error_category": "+".join(result["failures"]) or None}
 
     if live:

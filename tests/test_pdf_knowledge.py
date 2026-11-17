@@ -7,6 +7,7 @@ from secrets import token_hex
 from uuid import uuid4
 import unittest
 
+from dataquery_agent.agent_prompts import PROMPT_VERSIONS
 from dataquery_agent.api_models import public_response
 from dataquery_agent.conversation_manager import local_manager
 from dataquery_agent.conversation_store import ConversationError
@@ -97,7 +98,7 @@ class PdfKnowledgePostgresTests(unittest.TestCase):
             joint_question = "2025年1月订单量是多少，并引用PDF扫描页的 Order count 原文。"
 
             def plan_then_quote(prompt):
-                if prompt.startswith("[business-plan-v1]"):
+                if prompt.startswith(f"[{PROMPT_VERSIONS['planning']}]"):
                     from test_business_planner_v2 import PROPOSE
                     return json.dumps(dict(PROPOSE, metric_ids=["order_count"], pdf_question="PDF扫描页的 Order count 原文。"))
                 return proposal("Order count: 48")(prompt)

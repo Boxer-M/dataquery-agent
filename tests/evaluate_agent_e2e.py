@@ -11,6 +11,7 @@ import os
 from time import monotonic
 from uuid import uuid4
 
+from dataquery_agent.agent_prompts import PROMPT_VERSIONS
 from dataquery_agent.conversation_context import redact
 from dataquery_agent.conversation_manager import local_manager
 from dataquery_agent.business_plan import parse_proposal
@@ -59,7 +60,7 @@ def safe_generate(backend, records, fixture, question, *, joint=None):
             if payload["question"] != (joint[1] if joint else question) or not all(item["text"] in texts for item in payload["evidence"]):
                 record["error"] = "external_scope_rejected"
                 raise ValueError("external_scope_rejected")
-        elif (stage not in {"intent-v3", "business-plan-v1"} or
+        elif (stage not in {"intent-v3", PROMPT_VERSIONS["planning"]} or
               not all(fragment in prompt for fragment in (joint or (question.split("，并给出正式定义")[0],)))):
             record["error"] = "external_scope_rejected"
             raise ValueError("external_scope_rejected")

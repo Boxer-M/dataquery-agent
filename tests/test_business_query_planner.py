@@ -4,6 +4,8 @@ from datetime import date
 from decimal import Decimal
 from unittest.mock import Mock, patch
 
+from dataquery_agent.agent_prompts import PROMPT_VERSIONS, schema_for_prompt
+from dataquery_agent.business_plan import PROPOSAL_FIELDS
 from dataquery_agent.business_query_planner import BusinessQueryPlanner
 from dataquery_agent.metric_query_service import MetricQueryService
 from dataquery_agent.metrics import ROOT
@@ -76,6 +78,31 @@ class BusinessPlannerTests(unittest.TestCase):
         self.service = MetricQueryService(None)
         self.service.query = Mock()
         self.planner = BusinessQueryPlanner(self.service)
+
+    def test_prompt_rows_have_date_grounding_and_catalog_rules(self):
+        question = "从2025-06-01至2025-06-30按品类并列订单商品明细数和有下单明细的商品数"
+        prompt = self.planner.validator.prompt(question)
+        lines = prompt.splitlines()
+        time_spans = json.loads(next(line.split("：", 1)[1] for line in lines if line.startswith("原文时间片段")))
+        rules = json.loads(next(line.split("：", 1)[1] for line in lines if line.startswith("已匹配正式指标")))
+        self.assertEqual(time_spans, ["从2025-06-01至2025-06-30"])
+        self.assertEqual(set(rules), {"order_item_count", "ordered_product_count"})
+        self.assertEqual(rules["ordered_product_count"]["deduplication"],
+                         self.service.metrics["ordered_product_count"]["deduplication"])
+        prefix = f"[{PROMPT_VERSIONS['planning']}] "
+        self.assertEqual(set(schema_for_prompt(prefix + prompt)["required"]), PROPOSAL_FIELDS)
+        joint = prefix + prompt + '\nPDF 检索需求 JSON："退款政策"'
+        self.assertEqual(set(schema_for_prompt(joint)["required"]), PROPOSAL_FIELDS | {"pdf_question"})
+
+    def test_explicit_detail_and_unresolved_rules_remain_refused(self):
+        question = "2025年5月按品类并列订单商品明细数和有下单明细的商品数"
+        proposal = PROPOSAL | {"metric_ids": ["order_item_count", "ordered_product_count"],
+                               "time_windows": ["2025年5月"], "group_by": ["按品类"]}
+        for changes, code in (({"analysis_type": "detail"}, "detail_required"),
+                              ({"unresolved_business_rules": ["活动商品筛选条件"]}, "unresolved_business_rules")):
+            result = self.planner.prepare(question, lambda _: json.dumps(proposal | changes), TODAY)
+            self.assertEqual(result["code"], code)
+        self.service.query.assert_not_called()
 
     def test_versioned_business_suite(self):
         for case in CASES.values():

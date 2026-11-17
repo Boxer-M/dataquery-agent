@@ -1,0 +1,3224 @@
+{
+  "baseline_code": "089c376",
+  "historical_routing_report": "intent_tool_routing_v2_candidate.json",
+  "golden_version": "benchmark-golden-evidence-review-v1",
+  "dataset_hash": "2c22bb95b38611fdfc0faa3b3d3d6ace79f160c45eab3b39d733d473bbc1660e",
+  "ods_snapshot": "ad9b92a87ac1b8068cfbef544d4795896d775c70adddc6620043f6e5a5ee8914",
+  "baseline_model_environment": {
+    "configured_model": "models/gemini-3.5-flash-lite",
+    "prompt_versions": {
+      "intent": "intent-v3",
+      "resolution": "metric-resolution-v2",
+      "planning": "business-plan-v1",
+      "dynamic_sql": "dynamic-sql-v1",
+      "knowledge": "knowledge-extractive-v1"
+    },
+    "response_schema_hash": "7e9da4e96b1fb53d6a3fbb7702df5ff913f94359aae6dc25962b3765d01dc0c2",
+    "response_format": "application/json",
+    "embedding_model": "gemini-embedding-001",
+    "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1"
+  },
+  "candidate_model_environment": {
+    "configured_model": "models/gemini-3.5-flash-lite",
+    "prompt_versions": {
+      "intent": "intent-v3",
+      "resolution": "metric-resolution-v2",
+      "planning": "business-plan-v3",
+      "dynamic_sql": "dynamic-sql-v1",
+      "knowledge": "knowledge-extractive-v1"
+    },
+    "response_schema_hash": "db93babb9828eef06a052be01b33718b6abcb5776046e6e57ec20cfd5a8a10dd",
+    "response_format": "application/json",
+    "embedding_model": "gemini-embedding-001",
+    "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1"
+  },
+  "scorer_code": {
+    "tests/benchmark/scoring.py": "ee64aa3b7ea5f47426d5546f31c00583cd36608b",
+    "tests/benchmark/live_baseline_scores.py": "f485be86280c5406fab594ef03ebbd56f6023202"
+  },
+  "validation_exposed": [
+    "exp1:intent:account-count",
+    "exp1:intent:discount",
+    "exp1:planning:account-pair",
+    "exp1:planning:gross-discount",
+    "exp1:planning:items-products",
+    "exp1:planning:payment-pair",
+    "exp1:rag:65bb92063dc947e39bcc",
+    "exp1:sql:gross",
+    "exp1:sql:returns-above"
+  ],
+  "validation_not_debugged": [
+    "exp1:intent:first-observed",
+    "exp1:intent:gross",
+    "exp1:intent:lifetime",
+    "exp1:intent:repeat-count",
+    "exp1:intent:unknown-chargeback",
+    "exp1:planning:return-anomaly-pair",
+    "exp1:rag:170703e20f96b50d1094",
+    "exp1:rag:25d2dc6118ec6632d497",
+    "exp1:rag:2e54ca78a505cd96ec60",
+    "exp1:rag:a197dc9add7d83cc030c",
+    "exp1:rag:ad12f29a052a8b033aa0",
+    "exp1:rag:caf17293ba69d706ac6c",
+    "exp1:rag:f25e0bcbe698c4a98493",
+    "exp1:sql:account-count",
+    "exp1:sql:discount",
+    "exp1:sql:payment-attempts",
+    "exp1:sql:products",
+    "exp1:sql:repeat-count",
+    "exp1:sql:returns-before"
+  ],
+  "summary": {
+    "baseline": {
+      "plan_validity": {
+        "numerator": 4,
+        "denominator": 8,
+        "not_applicable": 50,
+        "value": 0.5
+      },
+      "tool_route_accuracy": {
+        "numerator": 37,
+        "denominator": 43,
+        "not_applicable": 15,
+        "value": 0.8604651162790697
+      },
+      "sql_result_accuracy": {
+        "numerator": 17,
+        "denominator": 23,
+        "not_applicable": 35,
+        "value": 0.7391304347826086
+      },
+      "task_success": {
+        "numerator": 51,
+        "denominator": 58,
+        "not_applicable": 0,
+        "value": 0.8793103448275862
+      }
+    },
+    "candidate": {
+      "plan_validity": {
+        "numerator": 6,
+        "denominator": 8,
+        "not_applicable": 50,
+        "value": 0.75
+      },
+      "tool_route_accuracy": {
+        "numerator": 39,
+        "denominator": 43,
+        "not_applicable": 15,
+        "value": 0.9069767441860465
+      },
+      "sql_result_accuracy": {
+        "numerator": 19,
+        "denominator": 23,
+        "not_applicable": 35,
+        "value": 0.8260869565217391
+      },
+      "task_success": {
+        "numerator": 53,
+        "denominator": 58,
+        "not_applicable": 0,
+        "value": 0.9137931034482759
+      }
+    }
+  },
+  "validation_not_debugged_summary": {
+    "baseline": {
+      "plan_validity": {
+        "numerator": 1,
+        "denominator": 1,
+        "not_applicable": 18,
+        "value": 1.0
+      },
+      "tool_route_accuracy": {
+        "numerator": 17,
+        "denominator": 17,
+        "not_applicable": 2,
+        "value": 1.0
+      },
+      "sql_result_accuracy": {
+        "numerator": 7,
+        "denominator": 7,
+        "not_applicable": 12,
+        "value": 1.0
+      },
+      "task_success": {
+        "numerator": 19,
+        "denominator": 19,
+        "not_applicable": 0,
+        "value": 1.0
+      }
+    },
+    "candidate": {
+      "plan_validity": {
+        "numerator": 0,
+        "denominator": 1,
+        "not_applicable": 18,
+        "value": 0.0
+      },
+      "tool_route_accuracy": {
+        "numerator": 15,
+        "denominator": 17,
+        "not_applicable": 2,
+        "value": 0.8823529411764706
+      },
+      "sql_result_accuracy": {
+        "numerator": 5,
+        "denominator": 7,
+        "not_applicable": 12,
+        "value": 0.7142857142857143
+      },
+      "task_success": {
+        "numerator": 16,
+        "denominator": 19,
+        "not_applicable": 0,
+        "value": 0.8421052631578947
+      }
+    }
+  },
+  "task_transitions": {
+    "False_to_True": 5,
+    "False_to_False": 2,
+    "True_to_True": 48,
+    "True_to_False": 3
+  },
+  "fixed_proposal_replays": {
+    "exp1:planning:account-pair": {
+      "observed_baseline": {
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "ordering_customer_count",
+            "repeat_ordering_customer_count"
+          ],
+          "time_windows": [
+            "2025年5月"
+          ],
+          "group_by": [
+            "按国家"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": [
+            "同一账户只计一次"
+          ]
+        },
+        "baseline": {
+          "status": "clarify",
+          "code": "unresolved_business_rules"
+        },
+        "candidate": {
+          "status": "clarify",
+          "code": "unresolved_business_rules"
+        }
+      },
+      "observed_candidate": {
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "ordering_customer_count",
+            "repeat_ordering_customer_count"
+          ],
+          "time_windows": [
+            "2025年5月"
+          ],
+          "group_by": [
+            "按国家"
+          ],
+          "filters": [],
+          "conditions": [],
+          "unresolved_business_rules": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null
+        },
+        "baseline": {
+          "status": "ready",
+          "requests": [
+            {
+              "metric_id": "ordering_customer_count",
+              "start_date": "2025-05-01",
+              "end_date": "2025-06-01",
+              "group_by": [
+                "country"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "repeat_ordering_customer_count",
+              "start_date": "2025-05-01",
+              "end_date": "2025-06-01",
+              "group_by": [
+                "country"
+              ],
+              "filters": {}
+            }
+          ]
+        },
+        "candidate": {
+          "status": "ready",
+          "requests": [
+            {
+              "metric_id": "ordering_customer_count",
+              "start_date": "2025-05-01",
+              "end_date": "2025-06-01",
+              "group_by": [
+                "country"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "repeat_ordering_customer_count",
+              "start_date": "2025-05-01",
+              "end_date": "2025-06-01",
+              "group_by": [
+                "country"
+              ],
+              "filters": {}
+            }
+          ]
+        }
+      },
+      "reference_aggregate": {
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "ordering_customer_count",
+            "repeat_ordering_customer_count"
+          ],
+          "time_windows": [
+            "2025年5月"
+          ],
+          "group_by": [
+            "按国家"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": []
+        },
+        "baseline": {
+          "status": "ready",
+          "requests": [
+            {
+              "metric_id": "ordering_customer_count",
+              "start_date": "2025-05-01",
+              "end_date": "2025-06-01",
+              "group_by": [
+                "country"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "repeat_ordering_customer_count",
+              "start_date": "2025-05-01",
+              "end_date": "2025-06-01",
+              "group_by": [
+                "country"
+              ],
+              "filters": {}
+            }
+          ]
+        },
+        "candidate": {
+          "status": "ready",
+          "requests": [
+            {
+              "metric_id": "ordering_customer_count",
+              "start_date": "2025-05-01",
+              "end_date": "2025-06-01",
+              "group_by": [
+                "country"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "repeat_ordering_customer_count",
+              "start_date": "2025-05-01",
+              "end_date": "2025-06-01",
+              "group_by": [
+                "country"
+              ],
+              "filters": {}
+            }
+          ]
+        }
+      }
+    },
+    "exp1:planning:gross-discount": {
+      "observed_baseline": {
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "item_gross_sales_amount",
+            "item_discount_amount"
+          ],
+          "time_windows": [
+            "2025-04-01至2025-06-30"
+          ],
+          "group_by": [
+            "按品类"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": []
+        },
+        "baseline": {
+          "status": "clarify",
+          "code": "window_mismatch"
+        },
+        "candidate": {
+          "status": "clarify",
+          "code": "window_mismatch"
+        }
+      },
+      "observed_candidate": {
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "item_gross_sales_amount",
+            "item_discount_amount"
+          ],
+          "time_windows": [
+            "从2025-04-01至2025-06-30"
+          ],
+          "group_by": [
+            "按品类"
+          ],
+          "filters": [],
+          "conditions": [],
+          "unresolved_business_rules": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null
+        },
+        "baseline": {
+          "status": "ready",
+          "requests": [
+            {
+              "metric_id": "item_gross_sales_amount",
+              "start_date": "2025-04-01",
+              "end_date": "2025-07-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "item_discount_amount",
+              "start_date": "2025-04-01",
+              "end_date": "2025-07-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            }
+          ]
+        },
+        "candidate": {
+          "status": "ready",
+          "requests": [
+            {
+              "metric_id": "item_gross_sales_amount",
+              "start_date": "2025-04-01",
+              "end_date": "2025-07-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "item_discount_amount",
+              "start_date": "2025-04-01",
+              "end_date": "2025-07-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            }
+          ]
+        }
+      },
+      "reference_aggregate": {
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "item_gross_sales_amount",
+            "item_discount_amount"
+          ],
+          "time_windows": [
+            "从2025-04-01至2025-06-30"
+          ],
+          "group_by": [
+            "按品类"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": []
+        },
+        "baseline": {
+          "status": "ready",
+          "requests": [
+            {
+              "metric_id": "item_gross_sales_amount",
+              "start_date": "2025-04-01",
+              "end_date": "2025-07-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "item_discount_amount",
+              "start_date": "2025-04-01",
+              "end_date": "2025-07-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            }
+          ]
+        },
+        "candidate": {
+          "status": "ready",
+          "requests": [
+            {
+              "metric_id": "item_gross_sales_amount",
+              "start_date": "2025-04-01",
+              "end_date": "2025-07-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "item_discount_amount",
+              "start_date": "2025-04-01",
+              "end_date": "2025-07-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            }
+          ]
+        }
+      }
+    },
+    "exp1:planning:items-products": {
+      "observed_baseline": {
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "order_item_count",
+            "ordered_product_count"
+          ],
+          "time_windows": [
+            "2025年7月"
+          ],
+          "group_by": [
+            "按品类"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": [
+            "重复商品只在后一列去重"
+          ]
+        },
+        "baseline": {
+          "status": "clarify",
+          "code": "unresolved_business_rules"
+        },
+        "candidate": {
+          "status": "clarify",
+          "code": "unresolved_business_rules"
+        }
+      },
+      "observed_candidate": {
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "order_item_count",
+            "ordered_product_count"
+          ],
+          "time_windows": [
+            "2025年7月"
+          ],
+          "group_by": [
+            "按品类"
+          ],
+          "filters": [],
+          "conditions": [],
+          "unresolved_business_rules": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null
+        },
+        "baseline": {
+          "status": "ready",
+          "requests": [
+            {
+              "metric_id": "order_item_count",
+              "start_date": "2025-07-01",
+              "end_date": "2025-08-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "ordered_product_count",
+              "start_date": "2025-07-01",
+              "end_date": "2025-08-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            }
+          ]
+        },
+        "candidate": {
+          "status": "ready",
+          "requests": [
+            {
+              "metric_id": "order_item_count",
+              "start_date": "2025-07-01",
+              "end_date": "2025-08-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "ordered_product_count",
+              "start_date": "2025-07-01",
+              "end_date": "2025-08-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            }
+          ]
+        }
+      },
+      "reference_aggregate": {
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "order_item_count",
+            "ordered_product_count"
+          ],
+          "time_windows": [
+            "2025年7月"
+          ],
+          "group_by": [
+            "按品类"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": []
+        },
+        "baseline": {
+          "status": "ready",
+          "requests": [
+            {
+              "metric_id": "order_item_count",
+              "start_date": "2025-07-01",
+              "end_date": "2025-08-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "ordered_product_count",
+              "start_date": "2025-07-01",
+              "end_date": "2025-08-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            }
+          ]
+        },
+        "candidate": {
+          "status": "ready",
+          "requests": [
+            {
+              "metric_id": "order_item_count",
+              "start_date": "2025-07-01",
+              "end_date": "2025-08-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "ordered_product_count",
+              "start_date": "2025-07-01",
+              "end_date": "2025-08-01",
+              "group_by": [
+                "category"
+              ],
+              "filters": {}
+            }
+          ]
+        }
+      },
+      "historical_detail_rejection_fixture": {
+        "proposal": {
+          "analysis_type": "detail",
+          "metric_ids": [
+            "order_item_count",
+            "ordered_product_count"
+          ],
+          "time_windows": [
+            "2025年7月"
+          ],
+          "group_by": [
+            "按品类"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": []
+        },
+        "baseline": {
+          "status": "unsupported",
+          "code": "detail_required"
+        },
+        "candidate": {
+          "status": "unsupported",
+          "code": "detail_required"
+        }
+      }
+    },
+    "exp1:planning:payment-pair": {
+      "observed_baseline": {
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "payment_attempt_count",
+            "payment_failed_attempt_count"
+          ],
+          "time_windows": [
+            "2025年2月"
+          ],
+          "group_by": [
+            "按支付方式"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": [
+            "使用支付事件时间"
+          ]
+        },
+        "baseline": {
+          "status": "clarify",
+          "code": "unresolved_business_rules"
+        },
+        "candidate": {
+          "status": "clarify",
+          "code": "unresolved_business_rules"
+        }
+      },
+      "observed_candidate": {
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "payment_attempt_count",
+            "payment_failed_attempt_count"
+          ],
+          "time_windows": [
+            "2025年2月"
+          ],
+          "group_by": [
+            "支付方式"
+          ],
+          "filters": [],
+          "conditions": [],
+          "unresolved_business_rules": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null
+        },
+        "baseline": {
+          "status": "unsupported",
+          "code": "unsupported_grouping"
+        },
+        "candidate": {
+          "status": "unsupported",
+          "code": "unsupported_grouping"
+        }
+      },
+      "reference_aggregate": {
+        "proposal": {
+          "analysis_type": "summary",
+          "metric_ids": [
+            "payment_attempt_count",
+            "payment_failed_attempt_count"
+          ],
+          "time_windows": [
+            "2025年2月"
+          ],
+          "group_by": [
+            "按支付方式"
+          ],
+          "filters": [],
+          "comparison_type": null,
+          "sort_rule": null,
+          "limit": null,
+          "conditions": [],
+          "unresolved_business_rules": []
+        },
+        "baseline": {
+          "status": "ready",
+          "requests": [
+            {
+              "metric_id": "payment_attempt_count",
+              "start_date": "2025-02-01",
+              "end_date": "2025-03-01",
+              "group_by": [
+                "method"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "payment_failed_attempt_count",
+              "start_date": "2025-02-01",
+              "end_date": "2025-03-01",
+              "group_by": [
+                "method"
+              ],
+              "filters": {}
+            }
+          ]
+        },
+        "candidate": {
+          "status": "ready",
+          "requests": [
+            {
+              "metric_id": "payment_attempt_count",
+              "start_date": "2025-02-01",
+              "end_date": "2025-03-01",
+              "group_by": [
+                "method"
+              ],
+              "filters": {}
+            },
+            {
+              "metric_id": "payment_failed_attempt_count",
+              "start_date": "2025-02-01",
+              "end_date": "2025-03-01",
+              "group_by": [
+                "method"
+              ],
+              "filters": {}
+            }
+          ]
+        }
+      }
+    }
+  },
+  "pairs": [
+    {
+      "case_id": "exp1:planning:gross-discount",
+      "split": "validation",
+      "cohort": "diagnostic",
+      "question": "从2025-04-01至2025-06-30按品类同时列折扣前商品记录金额、商品行折扣金额；分别保留两列。",
+      "baseline": {
+        "status": "clarify",
+        "code": "window_mismatch",
+        "plan_validity": false,
+        "tool_route_accuracy": false,
+        "sql_result_accuracy": false,
+        "ods_consistency": null,
+        "task_success": false,
+        "error_category": "plan_generation",
+        "trace_id": "ed6e6d24dce24906b4ecec06b65ddbc1",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 819,
+        "output_tokens": 146,
+        "latency_ms": 3969,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": true,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "046049b9dcfb457280116173c1e3ef63",
+        "model_calls": 1,
+        "tool_calls": 2,
+        "prompt_tokens": 1089,
+        "output_tokens": 146,
+        "latency_ms": 2444,
+        "observed_metric_rows_sha256": "29e1257510f7b10036207e5e02edfd6803795a4d98c5a51fc357d7a112403b57"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:planning:items-products",
+      "split": "validation",
+      "cohort": "diagnostic",
+      "question": "2025年7月按品类同时列订单商品明细数和有下单明细的商品数，重复商品只在后一列去重。",
+      "baseline": {
+        "status": "clarify",
+        "code": "unresolved_business_rules",
+        "plan_validity": false,
+        "tool_route_accuracy": false,
+        "sql_result_accuracy": false,
+        "ods_consistency": null,
+        "task_success": false,
+        "error_category": "plan_generation",
+        "trace_id": "17d3b7d6f25b4f5ead6026cc4bf76834",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 812,
+        "output_tokens": 146,
+        "latency_ms": 2620,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": true,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "4b2dbd3e2d114143bab25c0a988be0f4",
+        "model_calls": 1,
+        "tool_calls": 2,
+        "prompt_tokens": 1064,
+        "output_tokens": 129,
+        "latency_ms": 3116,
+        "observed_metric_rows_sha256": "5c8e166ab942167825609116a4610fab2ecdfd3dd3ef3ac2a8401687475227bf"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:planning:account-pair",
+      "split": "validation",
+      "cohort": "diagnostic",
+      "question": "2025年5月按国家并列下单账户数和窗口内多次下单账户数，同一账户只计一次。",
+      "baseline": {
+        "status": "clarify",
+        "code": "unresolved_business_rules",
+        "plan_validity": false,
+        "tool_route_accuracy": false,
+        "sql_result_accuracy": false,
+        "ods_consistency": null,
+        "task_success": false,
+        "error_category": "plan_generation",
+        "trace_id": "53f5ba056b274f9fb918262382bc7365",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 804,
+        "output_tokens": 143,
+        "latency_ms": 6863,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": true,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "70fa48e3e07a4014a37e06b9b7e7fd3a",
+        "model_calls": 1,
+        "tool_calls": 2,
+        "prompt_tokens": 1067,
+        "output_tokens": 130,
+        "latency_ms": 8868,
+        "observed_metric_rows_sha256": "588b8c8b72c7f0e7621ee3a9c1a1b966e2053f98dc32cfa278a25d1751fdc6e0"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:planning:payment-pair",
+      "split": "validation",
+      "cohort": "diagnostic",
+      "question": "2025年2月按支付方式并列支付尝试次数和失败支付尝试次数，使用支付事件时间。",
+      "baseline": {
+        "status": "clarify",
+        "code": "unresolved_business_rules",
+        "plan_validity": false,
+        "tool_route_accuracy": false,
+        "sql_result_accuracy": false,
+        "ods_consistency": null,
+        "task_success": false,
+        "error_category": "plan_generation",
+        "trace_id": "6f695dc4f3ab4b15b1ef0cc90772b606",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 802,
+        "output_tokens": 143,
+        "latency_ms": 9666,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "unsupported",
+        "code": "unsupported_grouping",
+        "plan_validity": false,
+        "tool_route_accuracy": false,
+        "sql_result_accuracy": false,
+        "ods_consistency": null,
+        "task_success": false,
+        "error_category": "capability_rejection",
+        "trace_id": "d8511c474540436184490f3f470f5db0",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 1064,
+        "output_tokens": 130,
+        "latency_ms": 2251,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "agent_e2e_v1:metric_id",
+      "split": "development",
+      "cohort": "development",
+      "question": "item_return_rate",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "2efe4e2ee21b4b17871ba670a551c0a7",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 51,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "16013425116049ac82ae4ba6fb9c873d",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 51,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "agent_e2e_v1:metric_name",
+      "split": "development",
+      "cohort": "development",
+      "question": "商品明细退货率怎么定义？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "d899e763afa34cdf94a10b56178f74dd",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 29,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "c5c19f72f28e4172a860a0bd7e3b9557",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 32,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "agent_e2e_v1:single",
+      "split": "development",
+      "cohort": "development",
+      "question": "2025年1月的订单量",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "d38e7bb6841c4ddd8703d3ec6cd948c0",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 212,
+        "output_tokens": 52,
+        "latency_ms": 2627,
+        "observed_metric_rows_sha256": "90f44723d3b6aa5b28e499c30f41dbe062f555365a1854b20885b765b0dfe92c"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "034aaf86d2884354a3cda975662ef676",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 212,
+        "output_tokens": 52,
+        "latency_ms": 1748,
+        "observed_metric_rows_sha256": "90f44723d3b6aa5b28e499c30f41dbe062f555365a1854b20885b765b0dfe92c"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "agent_e2e_v1:alias",
+      "split": "development",
+      "cohort": "development",
+      "question": "2025年1月下单笔数",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "982c405258dc49248d25114c01ddb9ec",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 214,
+        "output_tokens": 59,
+        "latency_ms": 2680,
+        "observed_metric_rows_sha256": "90f44723d3b6aa5b28e499c30f41dbe062f555365a1854b20885b765b0dfe92c"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "a76b34ebbd104f8b89db58a0405de95e",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 214,
+        "output_tokens": 38,
+        "latency_ms": 4649,
+        "observed_metric_rows_sha256": "90f44723d3b6aa5b28e499c30f41dbe062f555365a1854b20885b765b0dfe92c"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "agent_e2e_v1:multi",
+      "split": "development",
+      "cohort": "development",
+      "question": "2025年1月的订单量和成功支付金额是多少",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": true,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "47efa41278e7480bb822290b9380ea9b",
+        "model_calls": 1,
+        "tool_calls": 2,
+        "prompt_tokens": 791,
+        "output_tokens": 118,
+        "latency_ms": 2370,
+        "observed_metric_rows_sha256": "593ca46824a2c2b8d3fd444b155a1f53a25c8ac0025ffca9518cd374e3eb5771"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": true,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "101200b9cf1c438bb5713f86b74a4b47",
+        "model_calls": 1,
+        "tool_calls": 2,
+        "prompt_tokens": 1057,
+        "output_tokens": 117,
+        "latency_ms": 7643,
+        "observed_metric_rows_sha256": "593ca46824a2c2b8d3fd444b155a1f53a25c8ac0025ffca9518cd374e3eb5771"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "agent_e2e_v1:hybrid",
+      "split": "development",
+      "cohort": "development",
+      "question": "查询2025年1月订单量和订单商品明细数，并给出正式定义",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": true,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "0c234bbe676a4dea9c96f43e9f417402",
+        "model_calls": 1,
+        "tool_calls": 5,
+        "prompt_tokens": 793,
+        "output_tokens": 118,
+        "latency_ms": 3863,
+        "observed_metric_rows_sha256": "8f8ba954ab6665c1092d0939c76a1bed5b472e0dd867b70ba967ce444ac033e3"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": true,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "37129bf5fecb41d08602a8dd45e6c2a2",
+        "model_calls": 2,
+        "tool_calls": 5,
+        "prompt_tokens": 1046,
+        "output_tokens": 117,
+        "latency_ms": 7506,
+        "observed_metric_rows_sha256": "8f8ba954ab6665c1092d0939c76a1bed5b472e0dd867b70ba967ce444ac033e3"
+      },
+      "provider_error_in_pair": true
+    },
+    {
+      "case_id": "agent_e2e_v1:ambiguous",
+      "split": "development",
+      "cohort": "development",
+      "question": "2025年1月销售额",
+      "baseline": {
+        "status": "clarify",
+        "code": "ambiguous_metric",
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "b2c782fa692b45b1957404be9af13dee",
+        "model_calls": 0,
+        "tool_calls": 0,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 19,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "clarify",
+        "code": "ambiguous_metric",
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "05de41ae74be4047bb85afc431feae37",
+        "model_calls": 0,
+        "tool_calls": 0,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 18,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "agent_e2e_v1:unknown",
+      "split": "development",
+      "cohort": "development",
+      "question": "item_return_rate_v99 怎么定义？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "a782c08d9c5245f8bd0c5b7f564b4de1",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 15,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "03e176fff79046a8907d7a0cb3498f38",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 22,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "agent_e2e_v1:bad_dimension",
+      "split": "development",
+      "cohort": "development",
+      "question": "2025年1月订单量和成功支付金额按商品统计",
+      "baseline": {
+        "status": "unsupported",
+        "code": "unsupported_grouping",
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "7533921c1c3e4837828e4a9cd40b8aa7",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 793,
+        "output_tokens": 127,
+        "latency_ms": 2825,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "unsupported",
+        "code": "unsupported_grouping",
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "644a7b774c7949c3a7867edf061562e3",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 1059,
+        "output_tokens": 126,
+        "latency_ms": 2674,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "agent_e2e_v1:followup",
+      "split": "development",
+      "cohort": "development",
+      "question": "那2月份呢？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "84eb5857eefd458c9a29777354c758fa",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 36,
+        "observed_metric_rows_sha256": "3e75634f3afbdd0cb33da0e8694c768fa36f5b6bc94c7c710ad7a6177b8d7163"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "241de68cf43641ed849673eeef7472da",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 32,
+        "observed_metric_rows_sha256": "3e75634f3afbdd0cb33da0e8694c768fa36f5b6bc94c7c710ad7a6177b8d7163"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "agent_e2e_v1:policy",
+      "split": "development",
+      "cohort": "development",
+      "question": "测试星店退款规则：未拆封商品签收后几天内可以申请退款？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "9ed83968b63e4b0bb5612b70e261d121",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1146,
+        "output_tokens": 120,
+        "latency_ms": 5507,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "e5eea5e58eb549088fff0dd567cd08c8",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1153,
+        "output_tokens": 97,
+        "latency_ms": 3118,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "agent_e2e_v1:policy_gap",
+      "split": "development",
+      "cohort": "development",
+      "question": "测试星店退款规则：款项退到银行卡需要几天？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "a2838a4755e64e7f80907462ac578b0d",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1141,
+        "output_tokens": 18,
+        "latency_ms": 6733,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "a415d6bee6d74925afb43a8637c080bb",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1148,
+        "output_tokens": 12,
+        "latency_ms": 5345,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "agent_e2e_v1:no_time",
+      "split": "development",
+      "cohort": "development",
+      "question": "订单量多少",
+      "baseline": {
+        "status": "clarify",
+        "code": "missing_time",
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "5a3bd02e2fc64050a6ec02a090b13f4c",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 206,
+        "output_tokens": 51,
+        "latency_ms": 3964,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "clarify",
+        "code": "missing_time",
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "a6f6ab1545cd4a9aadb41b23907f0bfb",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 206,
+        "output_tokens": 30,
+        "latency_ms": 2344,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "integrated_e2e_v1:clarification_reply",
+      "split": "development",
+      "cohort": "development",
+      "question": "item_net_sales_amount",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "49cb780d230d47deb72b25f26d996128",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 47,
+        "observed_metric_rows_sha256": "5615bf061c99fa4c0ad2aa27d3207e0f9caf87f17432e0ecbd04780737671f52"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "a7d88fc8144a4ef8aea1ab01da412ffe",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 38,
+        "observed_metric_rows_sha256": "5615bf061c99fa4c0ad2aa27d3207e0f9caf87f17432e0ecbd04780737671f52"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "integrated_e2e_v1:annual_order_count",
+      "split": "development",
+      "cohort": "development",
+      "question": "2025年订单量是多少？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "5ff4e86c8088402ca2a88a848957d507",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 212,
+        "output_tokens": 56,
+        "latency_ms": 1985,
+        "observed_metric_rows_sha256": "2d584301e5c7a8a2af261ec48b46ea912b437a7840763561dcea4ae6b936cebd"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "96378b14fd284a9e9b2a78019bc42205",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 212,
+        "output_tokens": 56,
+        "latency_ms": 2172,
+        "observed_metric_rows_sha256": "2d584301e5c7a8a2af261ec48b46ea912b437a7840763561dcea4ae6b936cebd"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "integrated_e2e_v1:monthly_visualization",
+      "split": "development",
+      "cohort": "development",
+      "question": "按月拆分",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "4adb98430004430395c229e1e73429f9",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 50,
+        "observed_metric_rows_sha256": "d4439f3dc2f85ad1def2f7b95e11373f55b575188234fea3ae69f4c1001518a0"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "4036028c8d2d4304b8719db52e9188bd",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 51,
+        "observed_metric_rows_sha256": "d4439f3dc2f85ad1def2f7b95e11373f55b575188234fea3ae69f4c1001518a0"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "integrated_e2e_v1:channel_visualization",
+      "split": "development",
+      "cohort": "development",
+      "question": "查询2025年1月按渠道统计订单量",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "d734a2cdfcea489085f5541138f62ffa",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 216,
+        "output_tokens": 30,
+        "latency_ms": 3272,
+        "observed_metric_rows_sha256": "48c3ee74079a95cc397eef777610e679ebaa037d5188b3e34a0d8400305a8128"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "5184e54ab6134e68840e81e98ae00698",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 216,
+        "output_tokens": 39,
+        "latency_ms": 1508,
+        "observed_metric_rows_sha256": "48c3ee74079a95cc397eef777610e679ebaa037d5188b3e34a0d8400305a8128"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "integrated_e2e_v1:native_pdf",
+      "split": "development",
+      "cohort": "development",
+      "question": "PDF 中带有 Native verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "9a509daf496541bfbee67ab20e8242e4",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 323,
+        "output_tokens": 110,
+        "latency_ms": 5766,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "8a5de2e5a782467785c630f3b6400eff",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 324,
+        "output_tokens": 106,
+        "latency_ms": 3399,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "integrated_e2e_v1:ocr_pdf",
+      "split": "development",
+      "cohort": "development",
+      "question": "PDF 中带有 Scanned verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": false,
+        "error_category": "external_model_service",
+        "trace_id": "673bc17c172d4b3c9a9e522bda78ee68",
+        "model_calls": 2,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 23783,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "49f8d7cdedf245fe8a1635573e57d030",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 325,
+        "output_tokens": 106,
+        "latency_ms": 4316,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": true
+    },
+    {
+      "case_id": "integrated_e2e_v1:catalog_over_pdf",
+      "split": "development",
+      "cohort": "development",
+      "question": "PDF 里订单量的正式定义是什么？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "0cda8acae7b74d6daf04d4a97ba651ff",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 42,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "021af8f9883d4b17b9384729bb97c67c",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 39,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "integrated_e2e_v1:sql_and_pdf",
+      "split": "development",
+      "cohort": "development",
+      "question": "2025年1月订单量是多少，并引用PDF扫描页的 Order count 原文。",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": true,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "1c5cec8b1fdb4e1385323ca08f1ac921",
+        "model_calls": 2,
+        "tool_calls": 2,
+        "prompt_tokens": 1140,
+        "output_tokens": 206,
+        "latency_ms": 17119,
+        "observed_metric_rows_sha256": "90f44723d3b6aa5b28e499c30f41dbe062f555365a1854b20885b765b0dfe92c"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": true,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "bb8c9aa6a4f242a3915d93142b65fb2a",
+        "model_calls": 2,
+        "tool_calls": 2,
+        "prompt_tokens": 1321,
+        "output_tokens": 232,
+        "latency_ms": 15412,
+        "observed_metric_rows_sha256": "90f44723d3b6aa5b28e499c30f41dbe062f555365a1854b20885b765b0dfe92c"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "integrated_e2e_v1:foreign_pdf",
+      "split": "development",
+      "cohort": "development",
+      "question": "PDF 中带有 Scanned verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "b43fdd6019814ee891fc62870cec0012",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 1056,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "a17d046c7ea046449d3d85f71d9bdd98",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 1035,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:intent:gross",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "item_gross_sales_amount 与扣掉商品行折扣后的金额是同一个口径吗？请给出这个 ID 的正式定义。",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "73f257d6c6804f2485f42126baae1c0c",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 27,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "3dca963d7da1449facc50c5eda2a55de",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 25,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:intent:discount",
+      "split": "validation",
+      "cohort": "previously_viewed_validation",
+      "question": "请依据正式定义回答：指标手册里的 item_discount_amount 正式加总的是什么？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "692a2db449634c76884017f661d8e5ab",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 24,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "7d7e3b26890f4f3cad6f940382c304ea",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 24,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:intent:account-count",
+      "split": "validation",
+      "cohort": "previously_viewed_validation",
+      "question": "ordering_customer_count 的正式定义按账户还是按自然人去重？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "2449099ee99741fda1d2c936525ccee7",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 22,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "fe8d40baa523470eafe0c9811c0d0e72",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 27,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:intent:repeat-count",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "请依据正式定义回答：请给出 repeat_ordering_customer_count 的正式口径以及最少下单次数。",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "9a0e8cde25444dd18f56cc61a778eb1d",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 22,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "d0106c6af6044317ac9275e60a3dce96",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 22,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:intent:first-observed",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "2025年1月 first_observed_ordering_customer_count 现在有可用的标准数值吗？",
+      "baseline": {
+        "status": "unsupported",
+        "code": "metric_unverified",
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "307827ee0b264314b92e47fccec0f6d1",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 234,
+        "output_tokens": 59,
+        "latency_ms": 1823,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "unsupported",
+        "code": "metric_unverified",
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "739d63acf1c0462fbe609e2f71004ed3",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 234,
+        "output_tokens": 36,
+        "latency_ms": 8277,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:intent:lifetime",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "请直接查2025年3月 customer_lifetime_value。",
+      "baseline": {
+        "status": "unsupported",
+        "code": "unsupported",
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "5177a84de8f140a982507d2f7b7fea16",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 221,
+        "output_tokens": 61,
+        "latency_ms": 8905,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "unsupported",
+        "code": "unsupported",
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "28ad133a629c4f9a9d536c1eb931d10b",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 221,
+        "output_tokens": 61,
+        "latency_ms": 6449,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:intent:unknown-chargeback",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "正式指标 chargeback_response_hours 怎么定义？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "010ed5ab0cd64052a635ccbd9737979a",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 27,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "cf9a8dc0c2794c9687846eaeabf71e3f",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 28,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:planning:return-anomaly-pair",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "以2025年9月为退货事件窗口，按品类并列早于下单的退货记录数和退款记录超明细净额数。",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": true,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "4a4e1917e82c49bb9609fac61ac539e2",
+        "model_calls": 1,
+        "tool_calls": 2,
+        "prompt_tokens": 814,
+        "output_tokens": 136,
+        "latency_ms": 8971,
+        "observed_metric_rows_sha256": "3a37255a2a5ea1300156a3f9e109fc2966419ff4033cc5b9d2de3239af7f1273"
+      },
+      "candidate": {
+        "status": "clarify",
+        "code": "analysis_mismatch",
+        "plan_validity": false,
+        "tool_route_accuracy": false,
+        "sql_result_accuracy": false,
+        "ods_consistency": null,
+        "task_success": false,
+        "error_category": "plan_generation",
+        "trace_id": "a489f6a0f965431eb484bb0b6664891a",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 1072,
+        "output_tokens": 137,
+        "latency_ms": 2033,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:planning:path-funnel",
+      "split": "development",
+      "cohort": "development",
+      "question": "我想从商品浏览到支付再到退货看一个漏斗，按品类拆。",
+      "baseline": {
+        "status": "clarify",
+        "code": "missing_metric",
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "353cf7eb2de84c66983cad62b856b734",
+        "model_calls": 2,
+        "tool_calls": 0,
+        "prompt_tokens": 1015,
+        "output_tokens": 189,
+        "latency_ms": 8073,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "clarify",
+        "code": "missing_metric",
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "8b93dcc84b5e4672a3f19bb3f8c0f3bd",
+        "model_calls": 2,
+        "tool_calls": 0,
+        "prompt_tokens": 1115,
+        "output_tokens": 194,
+        "latency_ms": 4774,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:planning:department-cost",
+      "split": "development",
+      "cohort": "development",
+      "question": "把2025年各事业部毛利按退款责任人分摊，并列出影响最大的项目。",
+      "baseline": {
+        "status": "unsupported",
+        "code": "missing_financial_definition",
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "a0e06f03db874aae95b77ebcc52cfa86",
+        "model_calls": 0,
+        "tool_calls": 0,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 27,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "unsupported",
+        "code": "missing_financial_definition",
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "c74fc24eec4e4387ace879407dfe3ac9",
+        "model_calls": 0,
+        "tool_calls": 0,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 33,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:planning:cohort-drift",
+      "split": "development",
+      "cohort": "development",
+      "question": "对比同一批商品明细在下单后7天和30天的退货率。",
+      "baseline": {
+        "status": "clarify",
+        "code": "unsupported_observation_window",
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "1a6355ad4f134c6b97cdddede8b6eb3c",
+        "model_calls": 0,
+        "tool_calls": 0,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 25,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "clarify",
+        "code": "unsupported_observation_window",
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "7183a8e335834ef7931238c7d05cc479",
+        "model_calls": 0,
+        "tool_calls": 0,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 25,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:sql:gross",
+      "split": "validation",
+      "cohort": "previously_viewed_validation",
+      "question": "给出从2025-04-01至2025-06-30按品类的折扣前商品记录金额，包括取消状态原始记录。",
+      "baseline": {
+        "status": "clarify",
+        "code": "unresolved_business_rules",
+        "plan_validity": null,
+        "tool_route_accuracy": false,
+        "sql_result_accuracy": false,
+        "ods_consistency": null,
+        "task_success": false,
+        "error_category": "sql_result",
+        "trace_id": "a5728a2c8fa5488bbe8fdc8a6c3d02b4",
+        "model_calls": 2,
+        "tool_calls": 0,
+        "prompt_tokens": 1057,
+        "output_tokens": 246,
+        "latency_ms": 5773,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "clarify",
+        "code": "missing_time",
+        "plan_validity": null,
+        "tool_route_accuracy": false,
+        "sql_result_accuracy": false,
+        "ods_consistency": null,
+        "task_success": false,
+        "error_category": "sql_result",
+        "trace_id": "1c05c5fd514048b08b32c03a15d4cabd",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 243,
+        "output_tokens": 95,
+        "latency_ms": 4208,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:sql:discount",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "2025年4月品类ID 12内按商品统计的商品行折扣金额是多少？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "945922790439456280a95384ff95f9b8",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 229,
+        "output_tokens": 48,
+        "latency_ms": 1911,
+        "observed_metric_rows_sha256": "19f444af834f75e6283fa7a5facbe27265a7e66ae0c7696ad79537e590b5005d"
+      },
+      "candidate": {
+        "status": "unsupported",
+        "code": "unsupported_filter",
+        "plan_validity": null,
+        "tool_route_accuracy": false,
+        "sql_result_accuracy": false,
+        "ods_consistency": null,
+        "task_success": false,
+        "error_category": "capability_rejection",
+        "trace_id": "669362df64c94d6798aad1ce721dbe61",
+        "model_calls": 1,
+        "tool_calls": 0,
+        "prompt_tokens": 229,
+        "output_tokens": 49,
+        "latency_ms": 2180,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:sql:account-count",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "2025年5月按国家查看下单账户数？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "a1d283d49c44403aa23533984327522b",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 218,
+        "output_tokens": 67,
+        "latency_ms": 1369,
+        "observed_metric_rows_sha256": "e8f088b356e522c0b9047a131645b4a47f58ffea05685c899f9763248f90eff0"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "843dc0f2e8984151be11c44ae3c7d0c3",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 218,
+        "output_tokens": 67,
+        "latency_ms": 2652,
+        "observed_metric_rows_sha256": "e8f088b356e522c0b9047a131645b4a47f58ffea05685c899f9763248f90eff0"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:sql:repeat-count",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "2025年5月partner渠道的窗口内多次下单账户数是多少？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "5fc3df5c41c04e038e61515a7fd15a9f",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 225,
+        "output_tokens": 44,
+        "latency_ms": 1939,
+        "observed_metric_rows_sha256": "0bd30eddfba265280c8bb24201053694d1ffd2057b22e39cb23c88c5d4727e35"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "b7135d5445f345f19655535cac879c74",
+        "model_calls": 2,
+        "tool_calls": 1,
+        "prompt_tokens": 225,
+        "output_tokens": 71,
+        "latency_ms": 9827,
+        "observed_metric_rows_sha256": "0bd30eddfba265280c8bb24201053694d1ffd2057b22e39cb23c88c5d4727e35"
+      },
+      "provider_error_in_pair": true
+    },
+    {
+      "case_id": "exp1:sql:returns-before",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "2025年9月记录的退货中，早于下单的退货记录数按品类拆分是多少？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "871c0dc5e1de4770965dabea97e5bcc0",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 237,
+        "output_tokens": 73,
+        "latency_ms": 6924,
+        "observed_metric_rows_sha256": "f3e9f275d1a4d79ceaaff3986b94b4bdcaa41ab3890a6b188a193f79424b9c0e"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "b90d5126ea324028835a8d6bae66cdf8",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 237,
+        "output_tokens": 73,
+        "latency_ms": 5413,
+        "observed_metric_rows_sha256": "f3e9f275d1a4d79ceaaff3986b94b4bdcaa41ab3890a6b188a193f79424b9c0e"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:sql:returns-above",
+      "split": "validation",
+      "cohort": "previously_viewed_validation",
+      "question": "以退货事件为时间口径，2025年9月退款记录超明细净额数按渠道怎么分布？",
+      "baseline": {
+        "status": "clarify",
+        "code": "unresolved_business_rules",
+        "plan_validity": null,
+        "tool_route_accuracy": false,
+        "sql_result_accuracy": false,
+        "ods_consistency": null,
+        "task_success": false,
+        "error_category": "sql_result",
+        "trace_id": "8e60917be65b4fe2a66c345e9c4c546a",
+        "model_calls": 2,
+        "tool_calls": 0,
+        "prompt_tokens": 1047,
+        "output_tokens": 214,
+        "latency_ms": 4075,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "8522672998e04685a32c6460e810cf80",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 240,
+        "output_tokens": 73,
+        "latency_ms": 2755,
+        "observed_metric_rows_sha256": "cb61800d3f662de52d7b28ee6eafef43fc698db0a20c26ff2c6f16f6deb57358"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:sql:products",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "2025年7月按品类统计有下单明细的商品数，同一商品只计一次。",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "439e93680527440493f28c5bac1070ee",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 232,
+        "output_tokens": 72,
+        "latency_ms": 1976,
+        "observed_metric_rows_sha256": "d5778c3972f078489ff830892f10cfe6e0be0378038958a7f67de078411012cb"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "83fd1fe5bf6047a1ba2fd8f68a33fc34",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 232,
+        "output_tokens": 36,
+        "latency_ms": 5282,
+        "observed_metric_rows_sha256": "d5778c3972f078489ff830892f10cfe6e0be0378038958a7f67de078411012cb"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:sql:payment-attempts",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "2025年2月按支付状态查看支付尝试次数，用支付发生时间归属月份。",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "816bf99cfbf9414aa7f249abdb2860ec",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 226,
+        "output_tokens": 32,
+        "latency_ms": 3462,
+        "observed_metric_rows_sha256": "2180091a7c47fe752226d38e81a12a0d10ff42a46acdc19f6937a1ccdf1e78d1"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": true,
+        "ods_consistency": true,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "acdd46724ff14e6d9c003aa3c91cd09d",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 226,
+        "output_tokens": 32,
+        "latency_ms": 6595,
+        "observed_metric_rows_sha256": "2180091a7c47fe752226d38e81a12a0d10ff42a46acdc19f6937a1ccdf1e78d1"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:rag:25d2dc6118ec6632d497",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "请查阅技术文档《表清单与字段级设计》：《表清单与字段级设计》如何约定业务事件的时间类型？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "c887368eb9fa4ae8b1604169a44c18db",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1697,
+        "output_tokens": 102,
+        "latency_ms": 7572,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "25ad58305e5c4db791abb48e0efe28cf",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1715,
+        "output_tokens": 106,
+        "latency_ms": 3070,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:rag:2e54ca78a505cd96ec60",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "请查阅技术文档《表清单与字段级设计》：品类维度的父类为空是否合规？请引用字段级设计。",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "d46a040f11ba49e5952e4e419d23b5f3",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1593,
+        "output_tokens": 99,
+        "latency_ms": 2759,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "70e628c78bcb4be8add477e35532774c",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1611,
+        "output_tokens": 103,
+        "latency_ms": 3220,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:rag:170703e20f96b50d1094",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "请查阅技术文档《表清单与字段级设计》：设计里客户的姓名与邮箱会放进通用客户维度吗？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "c82b5f0fb9064b618bd0c23bea69fcc6",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1368,
+        "output_tokens": 115,
+        "latency_ms": 2644,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "a4b4bba2965f4f828321d2333f02abc8",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1386,
+        "output_tokens": 119,
+        "latency_ms": 3457,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:rag:ad12f29a052a8b033aa0",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "请查阅技术文档《表清单与字段级设计》：账户维度是否按 email 合并？请引用设计要求。",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "f6fc6bd3bff74024a0dec36a33776ec6",
+        "model_calls": 2,
+        "tool_calls": 1,
+        "prompt_tokens": 1376,
+        "output_tokens": 80,
+        "latency_ms": 3943,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": false,
+        "error_category": "citation_invalid",
+        "trace_id": "eb282f17f28b4d5380f554b3d01fa05c",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1394,
+        "output_tokens": 186,
+        "latency_ms": 3383,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": true
+    },
+    {
+      "case_id": "exp1:rag:a197dc9add7d83cc030c",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "请查阅技术文档《表清单与字段级设计》：日期维度把 ISO 周年和日历年怎么保存？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "5f095c13cee84169abede8bc18fd3830",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1597,
+        "output_tokens": 104,
+        "latency_ms": 5851,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "1bb0b21b20a34e2d81f30adbe0c38214",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1615,
+        "output_tokens": 88,
+        "latency_ms": 4646,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:rag:caf17293ba69d706ac6c",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "请查阅技术文档《表清单与字段级设计》：日期维度能直接拿来标记节假日和交易日吗？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "2f9ad6d109a5475099cea7585184a137",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1598,
+        "output_tokens": 106,
+        "latency_ms": 4452,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "cd02713dc57a42fe8cffb8957c4d9d26",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1616,
+        "output_tokens": 109,
+        "latency_ms": 3717,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:rag:65bb92063dc947e39bcc",
+      "split": "validation",
+      "cohort": "previously_viewed_validation",
+      "question": "请查阅技术文档《表清单与字段级设计》：字段级设计允许把支付事实按商品分摊吗？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "848e506c94094cd7822b5457855dfe9a",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1528,
+        "output_tokens": 106,
+        "latency_ms": 4642,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "f0e6ca02b17942c3b8b6530eee127c70",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1546,
+        "output_tokens": 106,
+        "latency_ms": 12844,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:rag:f25e0bcbe698c4a98493",
+      "split": "validation",
+      "cohort": "validation_not_debugged",
+      "question": "请查阅技术文档《表清单与字段级设计》：退货记录表能否给 order_item_id 强制添加唯一约束？给出设计依据。",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "965cd08c79564f6386205bc6f07e62bd",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1565,
+        "output_tokens": 116,
+        "latency_ms": 2731,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "564ad2fecd9c4fdfaea7681da46d62f6",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 1583,
+        "output_tokens": 124,
+        "latency_ms": 8953,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:pdf:pdf-metadata",
+      "split": "development",
+      "cohort": "development",
+      "question": "扫描PDF里的 OCR 置信度会成为答案的权威证据吗？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "2a246272d14a42efb2ab179ac056ccb1",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 313,
+        "output_tokens": 18,
+        "latency_ms": 4868,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "f6769c2152484b6daf7e359598134446",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 314,
+        "output_tokens": 18,
+        "latency_ms": 7476,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:pdf:pdf-negative",
+      "split": "development",
+      "cohort": "development",
+      "question": "本地样例PDF第3页有可引用的审核文字吗？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "233bb4110db5431180854826d808fb7e",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 312,
+        "output_tokens": 18,
+        "latency_ms": 8266,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "1a4ce6cd8a0f41b7a1c0b07dd51b8257",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 313,
+        "output_tokens": 12,
+        "latency_ms": 3214,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:pdf:pdf-old-ocr",
+      "split": "development",
+      "cohort": "development",
+      "question": "昨天的扫描页数字更正后，请引用旧数字确认历史记录。",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "7633a67e279f446d98e41944e59c013a",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 314,
+        "output_tokens": 18,
+        "latency_ms": 3167,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "2a55fcfa3f28453495d2feebeabfa7ff",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 315,
+        "output_tokens": 18,
+        "latency_ms": 3952,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "exp1:pdf:pdf-original-bbox",
+      "split": "development",
+      "cohort": "development",
+      "question": "扫描页某行已人工修订，能给我修订文字在原件上的准确坐标吗？",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "27e21adf766443d2937b4457cbf2ef73",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 318,
+        "output_tokens": 18,
+        "latency_ms": 2710,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": true,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "a8a4a0bf2d184bfeba46ae10d38c023f",
+        "model_calls": 1,
+        "tool_calls": 1,
+        "prompt_tokens": 319,
+        "output_tokens": 12,
+        "latency_ms": 5466,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    },
+    {
+      "case_id": "integrated_e2e_v1:withdrawn_pdf",
+      "split": "development",
+      "cohort": "development",
+      "question": "PDF 中带有 Scanned verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。",
+      "baseline": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "ad23a4fe9fb04330b336a9c1d3681e35",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 1045,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "candidate": {
+        "status": "ok",
+        "code": null,
+        "plan_validity": null,
+        "tool_route_accuracy": null,
+        "sql_result_accuracy": null,
+        "ods_consistency": null,
+        "task_success": true,
+        "error_category": null,
+        "trace_id": "926108adfeed49238c3a3080b540dc99",
+        "model_calls": 0,
+        "tool_calls": 1,
+        "prompt_tokens": null,
+        "output_tokens": null,
+        "latency_ms": 1049,
+        "observed_metric_rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "provider_error_in_pair": false
+    }
+  ]
+}

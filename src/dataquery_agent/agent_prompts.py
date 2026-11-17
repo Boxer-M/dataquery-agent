@@ -6,7 +6,7 @@ from .dynamic_context import PROMPT_VERSION as DYNAMIC_VERSION
 TEXT_ARRAY = {"type": "array", "items": {"type": "string"}}
 
 PROMPT_VERSIONS = {"intent": "intent-v3", "resolution": "metric-resolution-v2",
-                   "planning": "business-plan-v1", "dynamic_sql": DYNAMIC_VERSION,
+                   "planning": "business-plan-v3", "dynamic_sql": DYNAMIC_VERSION,
                    "knowledge": "knowledge-extractive-v1"}
 OUTPUT_SCHEMAS = {
     DYNAMIC_VERSION: {
@@ -45,8 +45,27 @@ OUTPUT_SCHEMAS = {
     },
 }
 
+PLAN_PROPERTIES = {
+    "analysis_type": {"type": "string", "enum": ["summary", "comparison", "ranking", "cross_filter", "detail", "unknown"]},
+    **{field: TEXT_ARRAY for field in ("metric_ids", "time_windows", "group_by", "filters",
+                                        "conditions", "unresolved_business_rules")},
+    "comparison_type": {"anyOf": [{"type": "string", "enum": ["mom", "period"]}, {"type": "null"}]},
+    "sort_rule": {"anyOf": [{"type": "null"}, {"type": "object", "properties": {
+        "metric_id": {"type": "string"}, "direction": {"type": "string", "enum": ["asc", "desc"]}},
+        "required": ["metric_id", "direction"], "additionalProperties": False}]},
+    "limit": {"anyOf": [{"type": "integer"}, {"type": "null"}]},
+}
+OUTPUT_SCHEMAS[PROMPT_VERSIONS["planning"]] = {
+    "type": "object", "properties": PLAN_PROPERTIES, "required": list(PLAN_PROPERTIES),
+    "additionalProperties": False,
+}
+
 
 def schema_for_prompt(prompt):
+    if prompt.startswith(f"[{PROMPT_VERSIONS['planning']}]") and "\nPDF 检索需求 JSON：" in prompt:
+        properties = PLAN_PROPERTIES | {"pdf_question": {"type": "string"}}
+        return {"type": "object", "properties": properties, "required": list(properties),
+                "additionalProperties": False}
     if prompt.startswith("[knowledge-extractive-v1]"):
         from .rag.answer import ANSWER_SCHEMA
         return ANSWER_SCHEMA

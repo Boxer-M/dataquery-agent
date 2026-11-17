@@ -7,6 +7,7 @@ from uuid import uuid4
 
 import httpx2
 
+from dataquery_agent.agent_prompts import PROMPT_VERSIONS
 from dataquery_agent.api import MAX_REQUEST_BYTES, create_app
 from dataquery_agent.conversation_manager import local_manager
 from dataquery_agent.conversation_store import ConversationError
@@ -135,7 +136,7 @@ class ApiPostgresTests(unittest.IsolatedAsyncioTestCase):
         owner = token_hex(32)
 
         def generate(prompt):
-            return json.dumps(PROPOSE if prompt.startswith("[business-plan-v1]") else INTENT)
+            return json.dumps(PROPOSE if prompt.startswith(f"[{PROMPT_VERSIONS['planning']}]") else INTENT)
 
         manager.generate = generate
         app = create_app(token=TOKEN, manager_factory=lambda: (manager, owner))
