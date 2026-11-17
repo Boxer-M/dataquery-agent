@@ -37,6 +37,11 @@ class RedisTests(IsolatedAsyncioTestCase):
             hot = await ask(http, cid)
             self.assertEqual(cold.json()["status"], "completed", cold.text)
             self.assertEqual(cold.headers["x-dataquery-sql"], "1")
+            for stage in ("setup", "route", "capability", "sql-statements", "assembly"):
+                self.assertGreater(float(cold.headers[f"x-dataquery-{stage}-ms"]), 0)
+            for stage in ("redis", "acl"):
+                self.assertGreater(float(hot.headers[f"x-dataquery-{stage}-ms"]), 0)
+            self.assertNotIn("x-dataquery-sql-statements-ms", hot.headers)
             self.assertEqual(hot.json()["rows"], cold.json()["rows"])
             self.assertEqual(hot.headers["x-dataquery-hits"], "1")
             self.assertEqual(hot.headers["x-dataquery-sql"], "0")

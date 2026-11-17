@@ -27,7 +27,7 @@ from .metric_candidates import MetricCandidates
 from .metric_query_service import MetricQueryService
 from .metric_tool import execute_metric, metric_failure
 from .metrics import ROOT
-from .performance import CURRENT
+from .performance import CURRENT, timed
 from .runtime_trace import record_agent_calls
 
 INJECTION = re.compile(
@@ -512,7 +512,8 @@ class UnifiedAgent:
             demand = dict(request)
             if frame["event_time_hint"]:
                 demand["event_time"] = frame["event_time_hint"]
-            route = self.capability.resolve(demand)
+            with timed("capability"):
+                route = self.capability.resolve(demand)
         except (ValueError, KeyError, psycopg.Error):
             route = {"trace_id": uuid4().hex, "status": "UNSUPPORTED", "reason_code": "capability_unavailable",
                      "reason": "能力验证暂时不可用。"}

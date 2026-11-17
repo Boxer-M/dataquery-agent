@@ -9,6 +9,8 @@ import psycopg
 
 from dataquery_agent.api_models import public_response
 from dataquery_agent.conversation_manager import local_manager
+from dataquery_agent.conversation_store import owner_hash
+from dataquery_agent.performance import Performance
 from dataquery_agent.rag.documents import catalog_document
 from test_business_planner_v2 import PROPOSE, QUESTION, TODAY
 
@@ -21,29 +23,35 @@ class CatalogRecoveryTests(unittest.TestCase):
         service = manager.agent.service
         cid = manager.create_conversation(owner)["conversation_id"]
         store = manager.agent.knowledge.retriever.store
+        performance = Performance.local()
+
+        def process_message(current_owner, *args, **kwargs):
+            with performance.scope(owner_hash(current_owner)):
+                return manager.process_message(current_owner, *args, **kwargs)
+
         with patch.object(service, "query", wraps=service.query) as query:
             # Simulate an index outage without mutating the shared Catalog registry.
             with patch.object(store, "catalog_chunks", return_value=[]) as lookup:
-                original = manager.process_message(owner, cid, QUESTION, uuid4(), today=TODAY)
+                original = process_message(owner, cid, QUESTION, uuid4(), today=TODAY)
                 self.assertEqual(original["status"], "partial", original)
                 initial = manager.get_query(owner, original["query_id"])
                 self.assertIn("recovery", initial)
                 command = f"recover-catalog {original['query_id']}"
                 message_id = uuid4()
-                missing = manager.process_message(owner, cid, command, message_id, today=TODAY)
+                missing = process_message(owner, cid, command, message_id, today=TODAY)
                 self.assertEqual(missing["status"], "partial", missing)
-                duplicate = manager.process_message(owner, cid, command, message_id, today=TODAY)
+                duplicate = process_message(owner, cid, command, message_id, today=TODAY)
                 self.assertTrue(duplicate["replayed"])
                 self.assertEqual(lookup.call_count, 3)  # Two initial nodes and one batched recovery.
-            denied = manager.process_message(token_hex(32), cid, command, uuid4(), today=TODAY)
+            denied = process_message(token_hex(32), cid, command, uuid4(), today=TODAY)
             self.assertEqual(denied["code"], "conversation_not_found")
             with patch.dict(service.metrics["order_count"], definition="changed for test"):
-                stale = manager.process_message(owner, cid, command, uuid4(), today=TODAY)
+                stale = process_message(owner, cid, command, uuid4(), today=TODAY)
             self.assertEqual(stale["code"], "recovery_checkpoint_invalid", stale)
             with patch.object(service, "dsn", None):
-                unavailable = manager.process_message(owner, cid, command, uuid4(), today=TODAY)
+                unavailable = process_message(owner, cid, command, uuid4(), today=TODAY)
             self.assertEqual(unavailable["code"], "recovery_checkpoint_invalid")
-            recovered = manager.process_message(owner, cid, command, uuid4(), today=TODAY)
+            recovered = process_message(owner, cid, command, uuid4(), today=TODAY)
             self.assertEqual(recovered["status"], "ok", recovered)
             final = manager.get_query(owner, recovered["query_id"])
             self.assertEqual(final["recovery"]["status"], "completed")
@@ -67,7 +75,7 @@ class CatalogRecoveryTests(unittest.TestCase):
             self.assertIsNone(tool.task_id)  # One lookup actually served both restored nodes.
             self.assertIsNone(saved_trace.tasks[2].schedule_position)
             self.assertEqual(query.call_count, 2)
-            replay = manager.process_message(owner, cid, command, uuid4(), today=TODAY)
+            replay = process_message(owner, cid, command, uuid4(), today=TODAY)
             self.assertTrue(replay["replayed"])
             self.assertEqual(replay["query_id"], recovered["query_id"])
             self.assertEqual(query.call_count, 2)
