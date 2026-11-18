@@ -49,3 +49,12 @@ docker compose down --volumes --remove-orphans
 本地同源隔离环境复现了导入后缺少统计信息导致的 ODS 明细退货率核对超时。bootstrap 在 COPY 后执行 ANALYZE，保留原有 60 秒建模核对超时；复测已通过 DWD/DIM、DWS、ADS 和角色初始化，继续执行原有集成用例。
 
 隔离 Linux 同源镜像复测结果为 **120/120** 现有集成测试通过（25.35 秒），真实 Uvicorn HTTP 冒烟确认订单量 **2312**、历史 Trace 一致、实际外部模型调用 **0**。同时修正冒烟脚本创建会话时的 POST 方法。该次使用已冷构建的依赖镜像和只读源码挂载，最终无挂载镜像及远端结果单独记录。
+
+
+### 最终验收
+
+- 当前完整 Dockerfile 的无源码挂载隔离运行通过 **120/120** 集成测试（24.35 秒），真实 HTTP 冒烟返回订单量 **2312**，History 与响应 Trace 一致。镜像以非 root 用户执行，两个本轮临时 Compose 项目及其数据卷均已清理。
+- 修正提交 \`bd3fb37\` 的真实 [GitHub Actions 复跑 44235342712](https://github.com/Boxer-M/dataquery-agent/actions/runs/44235342712)中，Python、前端、integration-smoke 三个任务均为 **success**。保留首次失败与修正后成功两条运行记录。
+- 真实自动触发已验证为 push。pull_request 事件经过 Workflow 契约检查，本轮未创建 PR，因此实际 PR 事件留待用户建 PR 后确认。
+- 手动 Gemini Workflow 及预算、Artifact 路径已配置；本轮没有配置仓库 Secret、触发收费评测或声称生产部署。该流程需合入 main、配置 Environment Secret 并由维护者显式触发后才能完成真实模型验收。
+- 本地 pytest 的总分母和隔离集成分母有重叠，应分别引用。原有图表 chunk 大于 500 kB 的构建警告仍存在。
