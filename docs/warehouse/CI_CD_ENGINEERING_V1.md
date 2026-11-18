@@ -43,3 +43,9 @@ docker compose down --volumes --remove-orphans
 公开文件检查拒绝被跟踪的 .env、个人文档、原始数据、备份、大文件和可识别密钥。专项测试向检查器注入私有路径与私钥标记，确认抛出错误；还核对默认 PR Workflow 无 Secret、无 continue-on-error，手动模型流程受到授权和分支约束。规则式扫描不能证明不存在所有类型的秘密。[GitHub Secret 使用边界](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets)
 
 本地及远端实际验证结果在本节追加。真实模型 Workflow 本轮不自动运行，也不读取或上传本机 Gemini 密钥。
+
+本地无密钥 pytest 为 153 通过、78 跳过；前端 5 项通过、TypeScript 与生产构建通过；pip check、Compose 合并及公开文件检查通过。受控失败样例确认 pytest 返回退出码 1。首次实际推送运行 [44233887977](https://github.com/Boxer-M/dataquery-agent/actions/runs/44233887977) 的 Python 与前端任务通过，集成任务失败，保留为初始化诊断记录。
+
+本地同源隔离环境复现了导入后缺少统计信息导致的 ODS 明细退货率核对超时。bootstrap 在 COPY 后执行 ANALYZE，保留原有 60 秒建模核对超时；复测已通过 DWD/DIM、DWS、ADS 和角色初始化，继续执行原有集成用例。
+
+隔离 Linux 同源镜像复测结果为 **120/120** 现有集成测试通过（25.35 秒），真实 Uvicorn HTTP 冒烟确认订单量 **2312**、历史 Trace 一致、实际外部模型调用 **0**。同时修正冒烟脚本创建会话时的 POST 方法。该次使用已冷构建的依赖镜像和只读源码挂载，最终无挂载镜像及远端结果单独记录。

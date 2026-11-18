@@ -1,8 +1,9 @@
 FROM python:3.12-slim AS runtime
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONPATH=/app/src:/app/tests:/app
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONPATH=/app/src:/app/tests
 WORKDIR /app
 COPY requirements*.txt ./
 RUN pip install --no-cache-dir -r requirements.txt -r requirements-pdf.txt -r requirements-langgraph.txt -r requirements-redis.txt && pip check
+ENV PYTHONPATH=/app/src:/app/tests:/app
 RUN useradd --create-home app && chown app:app /app
 COPY --chown=app:app src src
 COPY --chown=app:app scripts scripts

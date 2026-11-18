@@ -50,7 +50,7 @@ def smoke():
                 return json.load(response)
 
         assert request("health") == {"status": "ok"}
-        cid = request("conversations")["conversation_id"]
+        cid = request("conversations", {})["conversation_id"]
         answer = request("chat", {"conversation_id": cid, "message_id": str(uuid4()),
                                   "question": "2025年1月订单量是多少？"})
         assert answer["status"] == "completed" and answer["rows"][0]["value"] == "2312"

@@ -41,7 +41,8 @@ def evaluate():
               'golden_sha256': digest(GOLDEN), 'model_config': environment, 'cases': rows,
               'catalog_index': 'fixed vectors for deterministic exact lookup only',
               'rag_index': 'real Gemini Embedding of the authorized synthetic refund fixture',
-              'budget': dict(LIMITS), 'api_events': budget.events}
+              'budget': dict(LIMITS), 'api_events': budget.events,
+              'fixed_proposal_cases': 0, 'replay_cases': 0}
     try:
         document_id = writer.index(doc, embedding, owner=owner, external_approved=True)['document_id']
         manager.agent.knowledge = KnowledgeService(Retriever(KnowledgeStore.local(), embedding),
@@ -62,6 +63,9 @@ def evaluate():
                              'answer': answer, 'history': history, 'model_outputs': outputs})
                 (destination / 'live-progress.json').write_text(json.dumps(report, ensure_ascii=False, default=str))
             rescore(report, pg)
+        with reference_connection() as pg:
+            if snapshot(pg) != report['database_snapshot']:
+                raise RuntimeError('ODS changed during evaluation')
         # Same case IDs, different code/model states: descriptive comparison, without causal claims.
         baseline = json.loads(Path('reports/warehouse/agent_e2e_evaluation_v1.json').read_text())['baseline']
         previous = {r['golden']['id']: r for r in baseline['cases']}
@@ -73,6 +77,8 @@ def evaluate():
     finally:
         if document_id:
             writer.delete(document_id, owner=owner)
+        report['actual_api_calls'] = {kind: sum(event['kind'] == kind for event in budget.events)
+                                      for kind in ('generation', 'embedding')}
         report['blocked_calls'] = blocked
         (destination / 'live-report.json').write_text(json.dumps(report, ensure_ascii=False, default=str, indent=2))
 

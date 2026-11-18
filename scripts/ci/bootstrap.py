@@ -39,6 +39,8 @@ def bootstrap():
     with psycopg.connect(host="127.0.0.1", port=5433, dbname="sqlshed", user=user,
                          password=password, autocommit=True) as pg:
         load(pg, source)
+        # Fresh COPY has no planner statistics yet; preserve existing query timeouts.
+        pg.execute("ANALYZE")
     source.close()
     command("prepare_release_warehouse.py")
     reader_password = token_hex(32)
