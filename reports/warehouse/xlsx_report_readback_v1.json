@@ -1,0 +1,35 @@
+{
+  "mode": "fixed proposal + real PostgreSQL + in-memory XLSX readback",
+  "actual_source_values": {
+    "order_count": "2312",
+    "captured_payment_amount": "230864.57"
+  },
+  "ods_values": {
+    "order_count": "2312",
+    "captured_payment_amount": "230864.57"
+  },
+  "sheet": "经营指标",
+  "headers": [
+    "指标",
+    "数值"
+  ],
+  "rows": [
+    {
+      "metric_id": "order_count",
+      "name": "订单量",
+      "value": "2312",
+      "type": "n",
+      "number_format": "0"
+    },
+    {
+      "metric_id": "captured_payment_amount",
+      "name": "成功支付金额",
+      "value": "230864.57",
+      "type": "n",
+      "number_format": "0.00"
+    }
+  ],
+  "query_calls": 2,
+  "export_query_calls": 0,
+  "real_gemini_calls": 0
+}
