@@ -54,11 +54,11 @@ bash scripts/cd/validate.sh
 
 ## 稳定版本与回退
 
-稳定版本定义为通过临时部署验证的不可变镜像对及成功发布运行，不使用两个可独立漂移的 mutable stable/latest 标签。最终 release-manifest Artifact 的 release.json 包含来源提交、CI run、两项 digest、发布 run 和上一稳定清单。仅在验证及所有前置步骤成功后上传，保留 90 天。失败时可保留已通过 CI 的候选镜像，稳定清单保持上一成功版本。
+稳定版本定义为通过临时部署验证的不可变镜像对及已完整上传的稳定清单，不使用两个可独立漂移的 mutable stable/latest 标签。最终 release-manifest-<attempt> Artifact 的 release.json 包含来源提交、CI run、两项 digest、发布 run 和上一稳定清单。仅在验证及所有前置步骤成功后上传，保留 90 天。失败时可保留已通过 CI 的候选镜像，稳定清单保持上一成功版本。
 
-首次没有上一稳定版本。后续自动读取上一成功发布的清单并验证其仓库和 digest；清单过期或无效会阻止稳定发布，需恢复已下载清单。GitHub Artifact 签名下载地址不会接收转发的 GitHub Authorization。镜像 digest 保留在 GHCR，禁止手工删除仍用于回退的版本，清单也应在本地留存。
+清单按 attempt 独立保存，通过部署验证后才上传。之后的失败重跑不会隐藏先前清单，读取时按 Artifact 创建时间选择最近一份；查询范围为最近 100 次发布运行。首次没有上一稳定版本。后续自动读取上一份完整的已验证清单并验证其仓库和 digest；清单过期或无效会阻止稳定发布，需恢复已下载清单。GitHub Artifact 签名下载地址不会接收转发的 GitHub Authorization。镜像 digest 保留在 GHCR，禁止手工删除仍用于回退的版本，清单也应在本地留存。
 
-从成功运行下载并解压 release-manifest，先登录所需 GHCR 读取权限，然后演练上一版：
+从已验证发布下载并解压 release-manifest-<attempt>，先登录所需 GHCR 读取权限，然后演练上一版：
 
 ```sh
 docker login ghcr.io

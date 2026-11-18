@@ -76,7 +76,7 @@ jobs:
       - run: python scripts/cd/release.py finalize
       - uses: actions/upload-artifact@v4
         with:
-          name: release-manifest
+          name: release-manifest-${{ github.run_attempt }}
           path: artifacts/release.json
           retention-days: 90
           if-no-files-found: error

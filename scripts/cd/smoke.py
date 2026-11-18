@@ -10,6 +10,7 @@ from uuid import uuid4
 from dotenv import dotenv_values
 from config import bind_config
 from dataquery_agent.metric_query_service import MetricQueryService
+from dataquery_agent.conversation_manager import local_manager
 
 bind_config()
 BASE = 'http://127.0.0.1:5173'
@@ -43,8 +44,10 @@ cid = json.loads(request('/api/conversations', {})[0])['conversation_id']
 answer = json.loads(request('/api/chat', {'conversation_id': cid, 'message_id': str(uuid4()),
                                          'question': 'order_count怎么定义？'})[0])
 assert answer['status'] == 'completed' and answer['citations']
-assert not answer['trace']['model_attempts']
-assert not any(tool.get('query_embedding_called') for tool in answer['trace']['tools'])
+manager, owner = local_manager()
+stored = manager.get_query(owner, answer['query_id'])
+assert stored['prompt_versions'] == []
+assert stored['knowledge']['query_embedding_called'] is False
 history = json.loads(request('/api/queries/' + answer['query_id'])[0])
 assert history['trace'] == answer['trace']
 service = MetricQueryService(dotenv_values('/app/.env.metric-query')['METRIC_QUERY_DSN'])

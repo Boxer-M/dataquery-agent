@@ -71,14 +71,14 @@ def download_manifest(artifact):
 
 
 def previous():
-    runs = api('/actions/workflows/cd-release.yml/runs?status=success&per_page=100')['workflow_runs']
+    runs = api('/actions/workflows/cd-release.yml/runs?per_page=100')['workflow_runs']
+    candidates = []
     for run in runs:
-        if str(run['id']) == os.environ.get('GITHUB_RUN_ID'):
-            continue
-        artifacts = api(f"/actions/runs/{run['id']}/artifacts")['artifacts']
-        candidates = [item for item in artifacts if item['name'] == 'release-manifest']
-        if candidates:
-            return download_manifest(candidates[0])
+        artifacts = api(f"/actions/runs/{run['id']}/artifacts?per_page=100")['artifacts']
+        candidates.extend(item for item in artifacts if re.fullmatch(r'release-manifest-[0-9]+', item['name']))
+    if candidates:
+        # A failed later attempt must not hide an earlier completed, validated manifest.
+        return download_manifest(max(candidates, key=lambda item: item['created_at']))
     if len(runs) == 100:
         raise ValueError('Previous stable search exhausted; inspect older releases explicitly')
     return None
@@ -149,7 +149,8 @@ def finalize():
         raise ValueError('Deployment smoke did not pass')
     if api('/commits/main')['sha'] != pending['source_commit']:
         raise ValueError('Main advanced; stale release cannot become stable')
-    pending.update(validated=True, workflow_run_id=int(os.environ['GITHUB_RUN_ID']))
+    pending.update(validated=True, workflow_run_id=int(os.environ['GITHUB_RUN_ID']),
+                   workflow_attempt=int(os.environ['GITHUB_RUN_ATTEMPT']))
     # Retain one prior stable pair, without growing a chain of historical manifests.
     if pending['previous_stable']:
         pending['previous_stable'].pop('previous_stable', None)

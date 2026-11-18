@@ -13,7 +13,11 @@ mkdir -p artifacts
 rm -f artifacts/cd-smoke.json
 chmod 777 artifacts
 for image in "$BACKEND_IMAGE" "$FRONTEND_IMAGE"; do
-  [[ "$(docker image inspect "$image" --format '{{ index .Config.Labels "org.opencontainers.image.revision" }}')" == "$RELEASE_COMMIT" ]]
+  cd_image_revision=$(docker image inspect "$image" --format '{{ index .Config.Labels "org.opencontainers.image.revision" }}') || exit 1
+  if [[ "$cd_image_revision" != "$RELEASE_COMMIT" ]]; then
+    echo 'Image source revision mismatch' >&2
+    exit 1
+  fi
 done
 trap 'docker compose down --volumes --remove-orphans' EXIT
 docker compose up -d --wait db redis
