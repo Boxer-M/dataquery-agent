@@ -105,3 +105,18 @@ Redis 数据来自 Apple M4、16 GB、本机 PostgreSQL 16.15 / Redis 7.4.7 的�
 API 仅限环回本地单人环境，Vite 校验 Host、Origin 与路由白名单，Bearer 留在服务端。每次工具执行保留 Owner、Capability、只读 SQL、文档审核和引用校验。Redis 数据版本由运维显式切换。HITL 支持约定的指标澄清，恢复预占后崩溃需要人工排查。跨期维度贡献、经营因果归因、完整多指标图表、公网多用户部署仍待后续工作。Planner v3 未合并候选排除在此功能清单之外。
 
 OCR 为机器识别，需人工审核；完整流程依赖 macOS。文档列表和 Document ID 定向检索尚缺，刷新后凭已保存的导入 ID 重开；首次上传回执丢失需要人工核实。[文档与安全验收](docs/warehouse/RELEASE_ACCEPTANCE_V1.md)
+
+## CI 与交付验证
+
+[![CI](https://github.com/Boxer-M/dataquery-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/Boxer-M/dataquery-agent/actions/workflows/ci.yml)
+
+PR 检查包括 Python 3.12 依赖与 pytest、Agent 路由与安全回归、前端测试及构建，以及隔离 Docker Compose 中的 PostgreSQL/Redis 集成与真实 HTTP 冒烟。默认检查不注入 Gemini 密钥，并通过测试钩子禁止创建外部模型客户端。Linux 自动检查跳过 Apple Vision OCR，现有 macOS 验收单独保留。
+
+```sh
+.venv/bin/python -m pip install -r requirements-ci.txt
+CI_NO_EXTERNAL_MODELS=1 .venv/bin/python -m pytest
+npm --prefix frontend test
+npm --prefix frontend run build
+```
+
+手动 Gemini Golden 评测仅对 main 开放，需明确授权及独立环境密钥，报告保存为短期 Artifact，随机模型得分用于观察回归。[CI 范围、临时环境命令与验证结果](docs/warehouse/CI_CD_ENGINEERING_V1.md)。当前交付为镜像构建和临时环境验证，公开部署需要另行设计。

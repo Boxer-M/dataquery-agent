@@ -53,3 +53,6 @@ frontend/dist/
 
 # Local document review signer
 .document-review-key
+
+# Disposable CI reports
+/artifacts/
