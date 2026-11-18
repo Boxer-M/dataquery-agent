@@ -32,21 +32,34 @@
     {
       "skill_id": "xlsx",
       "name": "xlsx",
-      "version": "0.0.0-pending",
-      "description": "Excel经营报告候选；外部指令未下载、未固定版本、未审核，禁止加载及执行。",
+      "version": "0.1.0-c1",
+      "description": "已审核的 Anthropic XLSX 受限文本适配，仅支持指令和资源加载；不生成文件，不提供执行工具。",
       "source": {
         "kind": "external",
-        "location": "https://github.com/anthropics/skills/tree/main/skills/xlsx"
+        "location": "https://github.com/anthropics/skills/tree/e4bb5d960d87126ff3b3a8af1a104b7db67560ba/skills/xlsx"
       },
-      "license": "Pending verification at pinned upstream commit",
-      "upstream_commit": null,
+      "license": "Apache-2.0",
+      "upstream_commit": "e4bb5d960d87126ff3b3a8af1a104b7db67560ba",
       "instructions": {
         "path": "skills/xlsx/SKILL.md",
-        "sha256": null
+        "sha256": "d0b1e630ff2ce1ce86bd89308ee3839eccc554a18b6f3d5668f8f6213c44d78a"
       },
-      "enabled": false,
-      "review_status": "unreviewed",
-      "resources": {},
+      "enabled": true,
+      "review_status": "reviewed",
+      "resources": {
+        "format-guidance": {
+          "path": "skills/xlsx/references/format-guidance.md",
+          "sha256": "450afa4211ceb6b2af403196d9dac7640e152f3ea5dcd769ba160545228c61f9"
+        },
+        "provenance": {
+          "path": "skills/xlsx/NOTICE.md",
+          "sha256": "d6cdf717f4648901d6aeb85ea56804f450ff69928be4aa829df300e58ff6d32d"
+        },
+        "license": {
+          "path": "skills/xlsx/LICENSE.txt",
+          "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
+        }
+      },
       "allowed_tools": []
     }
   ]

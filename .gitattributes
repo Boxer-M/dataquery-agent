@@ -1,1 +1,4 @@
 output/pdf/*.pdf binary
+# Preserve pinned third-party bytes, including original notice whitespace.
+skills/xlsx/LICENSE.txt -text
+skills/xlsx/upstream/* -text whitespace=-blank-at-eol

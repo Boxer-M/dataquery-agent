@@ -42,7 +42,7 @@ def test_summaries_and_selection_never_open_instructions(workspace):
         summaries[0]['name'] = 'changed'
         assert registry.list_skill_summaries()[0]['name'] == 'business-metric-analysis'
         assert registry.select_candidates('生成Excel经营报告')[0] == {
-            'skill_id': 'xlsx', 'reason': 'explicit_excel_business_report', 'available': False}
+            'skill_id': 'xlsx', 'reason': 'explicit_excel_business_report', 'available': True}
         assert reads == ['skills/registry.json']
         assert registry.load_skill_instructions('business-metric-analysis') == (
             workspace / 'skills/business-metric-analysis/SKILL.md').read_text()
@@ -53,7 +53,8 @@ def test_approved_resource_and_unknown_requests(workspace):
     registry = SkillRegistry(workspace)
     assert 'metric_tool.py' in registry.load_skill_resource('business-metric-analysis', 'contracts')
     rejected('unknown_skill', lambda: registry.load_skill_instructions('../other'))
-    rejected('skill_unreviewed', lambda: registry.load_skill_instructions('xlsx'))
+    rewrite(workspace, lambda d: d['skills'][1].update(review_status='unreviewed', enabled=False))
+    rejected('skill_unreviewed', lambda: SkillRegistry(workspace).load_skill_instructions('xlsx'))
     rejected('unknown_skill_resource', lambda: registry.load_skill_resource('business-metric-analysis', '../SKILL.md'))
     rejected('unknown_skill', lambda: registry.load_skill_instructions([]))
 
@@ -108,8 +109,8 @@ def test_manifest_symlink_and_disabled_skill_rejected(workspace):
     lambda d: d['skills'].append(deepcopy(d['skills'][0])),
     lambda d: d['skills'][0].update(skill_id='Invalid_Name'),
     lambda d: d['skills'][0].update(allowed_tools=['shell']),
-    lambda d: d['skills'][1].update(enabled=True),
-    lambda d: d['skills'][1].update(review_status='reviewed'),
+    lambda d: d['skills'][1].update(enabled=True, review_status='unreviewed'),
+    lambda d: d['skills'][1].update(upstream_commit=None),
     lambda d: d['skills'][0]['resources']['contracts'].update(sha256=None),
 ])
 def test_invalid_or_unpinned_metadata_rejected(workspace, mutation):
