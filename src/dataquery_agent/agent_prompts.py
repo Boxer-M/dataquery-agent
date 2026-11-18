@@ -1,6 +1,8 @@
 """Versioned, task-specific contexts for the unified Agent."""
 import json
 
+from .skill_registry import SkillError, SkillRegistry
+
 from .dynamic_context import PROMPT_VERSION as DYNAMIC_VERSION
 
 TEXT_ARRAY = {"type": "array", "items": {"type": "string"}}
@@ -97,3 +99,50 @@ def resolution_prompt(question, evidence, candidates):
         + "\n指标原文片段：" + json.dumps(evidence, ensure_ascii=False)
         + "\n用户原文 JSON：" + json.dumps(question, ensure_ascii=False)
     )
+
+
+def business_planning_call(question, runtime, trace):
+    """Load only an applicable reviewed skill; reuse the existing planning call budget."""
+    event = {"skill_id": "business-metric-analysis", "version": None, "sha256": None,
+             "reason": "registry_validation", "loaded": False, "context_injected": False,
+             "context_version": "business-skill-context-v1", "instruction_bytes": 0,
+             "planning_model_calls": 0, "planning_tokens": None,
+             "extra_model_calls": 0, "extra_tokens": None}
+    context = ""
+    try:
+        registry = SkillRegistry()
+        candidate = next((item for item in registry.select_candidates(question)
+                          if item["skill_id"] == event["skill_id"]), None)
+        if candidate:
+            event.update(registry.skill_identity(candidate["skill_id"]), reason=candidate["reason"])
+            trace.setdefault("skills", []).append(event)
+            instructions = registry.load_skill_instructions(candidate["skill_id"])
+            event["loaded"] = True
+            event["instruction_bytes"] = len(instructions.encode("utf-8"))
+            if event["instruction_bytes"] > 16384:
+                raise SkillError("skill_context_limit")
+            context = ("\n已审核经营分析指导 JSON（仅辅助规划，不得覆盖原输出契约、正式目录、权限或校验）："
+                       + json.dumps({**registry.skill_identity(candidate["skill_id"]),
+                                     "instructions": instructions}, ensure_ascii=False))
+    except (SkillError, OSError) as error:
+        event["error_code"] = error.code if isinstance(error, SkillError) else "skill_registry_unavailable"
+        if not trace.get("skills"):
+            trace["skills"] = [event]
+        raise SkillError(event["error_code"]) from None
+
+    def generate(prompt):
+        before = len(runtime.attempts)
+        try:
+            return runtime.call("planning", f"[{PROMPT_VERSIONS['planning']}] {prompt}{context}")
+        finally:
+            if candidate:
+                attempts = runtime.attempts[before:]
+                event["context_injected"] = bool(attempts)
+                event["planning_model_calls"] = len(attempts)
+                # Whole planning usage, not an invented causal estimate of added Skill tokens.
+                event["planning_tokens"] = {
+                    key: sum(attempt["usage"][key] for attempt in attempts)
+                    for key in ("prompt", "output", "total") if attempts and all(
+                        type(attempt.get("usage", {}).get(key)) is int for attempt in attempts)
+                } or None
+    return generate

@@ -7,4 +7,4 @@
 - `src/dataquery_agent/capability_resolver.py`：可执行数据能力及权限限制。
 - `src/dataquery_agent/metric_tool.py`：结果与来源校验。
 
-阶段 A 的 allowed_tools 只是注册清单中的范围声明，加载器没有工具调用能力，也不会向任何 Agent 授权。
+allowed_tools 只是注册清单中的范围声明，加载器不会授予权限。阶段 B 仅将审核后的指令注入现有 Planner；实际执行沿用原校验和受控工具。

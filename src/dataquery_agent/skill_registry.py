@@ -124,6 +124,12 @@ class SkillRegistry:
         return [{key: item[key] for key in ("name", "description", "version")}
                 for item in self._skills.values()]
 
+    def skill_identity(self, skill_id):
+        """Trusted manifest identity for auditing, without reading or approving a body."""
+        require(isinstance(skill_id, str) and skill_id in self._skills, "unknown_skill")
+        item = self._skills[skill_id]
+        return {"skill_id": skill_id, "version": item["version"], "sha256": item["instructions"]["sha256"]}
+
     def _approved(self, skill_id):
         require(isinstance(skill_id, str) and skill_id in self._skills, "unknown_skill")
         item = self._skills[skill_id]
