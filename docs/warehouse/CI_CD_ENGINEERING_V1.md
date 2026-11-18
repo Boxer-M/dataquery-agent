@@ -51,10 +51,19 @@ docker compose down --volumes --remove-orphans
 隔离 Linux 同源镜像复测结果为 **120/120** 现有集成测试通过（25.35 秒），真实 Uvicorn HTTP 冒烟确认订单量 **2312**、历史 Trace 一致、实际外部模型调用 **0**。同时修正冒烟脚本创建会话时的 POST 方法。该次使用已冷构建的依赖镜像和只读源码挂载，最终无挂载镜像及远端结果单独记录。
 
 
-### 最终验收
+### 已通过的验收与当前限制
 
 - 当前完整 Dockerfile 的无源码挂载隔离运行通过 **120/120** 集成测试（24.35 秒），真实 HTTP 冒烟返回订单量 **2312**，History 与响应 Trace 一致。镜像以非 root 用户执行，两个本轮临时 Compose 项目及其数据卷均已清理。
-- 修正提交 \`bd3fb37\` 的真实 [GitHub Actions 复跑 44235342712](https://github.com/Boxer-M/dataquery-agent/actions/runs/44235342712)中，Python、前端、integration-smoke 三个任务均为 **success**。保留首次失败与修正后成功两条运行记录。
+- 修正提交 `bd3fb37` 的真实 [GitHub Actions 复跑 44235342712](https://github.com/Boxer-M/dataquery-agent/actions/runs/44235342712)中，Python、前端、integration-smoke 三个任务均为 **success**。保留首次失败与修正后成功两条运行记录。
 - 真实自动触发已验证为 push。pull_request 事件经过 Workflow 契约检查，本轮未创建 PR，因此实际 PR 事件留待用户建 PR 后确认。
 - 手动 Gemini Workflow 及预算、Artifact 路径已配置；本轮没有配置仓库 Secret、触发收费评测或声称生产部署。该流程需合入 main、配置 Environment Secret 并由维护者显式触发后才能完成真实模型验收。
 - 本地 pytest 的总分母和隔离集成分母有重叠，应分别引用。原有图表 chunk 大于 500 kB 的构建警告仍存在。
+
+
+### 尚未完成的远端验收
+
+文档提交 `8a8a42b` 触发的 [44235944726](https://github.com/Boxer-M/dataquery-agent/actions/runs/44235944726)中，Python 与前端通过，integration-smoke 再次失败，并生成了 integration-smoke-results Artifact。该提交只改说明文档，现有证据无法确认失败根因，不能把上一轮绿色运行当成最终稳定性结论。
+
+另一次数据库/测试容器各 1 CPU、2 GB 的本地全新隔离复验仍为 120/120 通过，HTTP 冒烟通过。资源对照没有证明远端失败与资源相关。上述临时环境均已清理。
+
+公开日志接口返回 403，浏览器读取被已保存的权限设置阻止；当前没有可用的本分支 PR 供专用检查诊断工具关联。已请求用户提供失败步骤末尾日志。需先定位并修复这一远端失败，再验收 PR 自动触发并建议合并。手动真实 Gemini 评测继续保持未触发状态。本报告保留失败，不通过重复重跑获得绿色结论。
