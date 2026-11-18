@@ -73,7 +73,7 @@ class ConversationManager:
                 if pause(self, answer, dict(pending, catalog_hash=catalog_hash(self)), query_id):
                     pending = None
             record = build_record(claim, message, answer, operation, round((monotonic() - began) * 1000),
-                                  query_id=query_id)
+                                  query_id=query_id, metrics=getattr(getattr(self.agent, "service", None), "metrics", {}))
             if recovery := record.get("recovery"):
                 context = {"kind": "catalog_recovery", "root_query_id": target or record["query_id"],
                            "latest_query_id": record["query_id"], "message_id": str(message_id),
