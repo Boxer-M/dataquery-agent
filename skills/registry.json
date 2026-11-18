@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "skills": [
+    {
+      "skill_id": "business-metric-analysis",
+      "name": "business-metric-analysis",
+      "version": "0.1.0",
+      "description": "为明确的复杂电商经营指标分析提供受控计划约束；阶段 A 仅支持离线加载。",
+      "source": {
+        "kind": "internal",
+        "location": "DataQuery Agent repository"
+      },
+      "license": "UNLICENSED; project-authored, no standalone redistribution license declared",
+      "upstream_commit": null,
+      "instructions": {
+        "path": "skills/business-metric-analysis/SKILL.md",
+        "sha256": "dd58f07b2c81fadbbd1068fc487ab381ff2d40554ec5eb3f7ed986c37a1d2572"
+      },
+      "enabled": true,
+      "review_status": "reviewed",
+      "resources": {
+        "contracts": {
+          "path": "skills/business-metric-analysis/references/contracts.md",
+          "sha256": "da281088f18d09c3532da64073099ba17e6b2671c8f571bd22a62d4a4ac47e15"
+        }
+      },
+      "allowed_tools": [
+        "metric_query_service",
+        "catalog_exact"
+      ]
+    },
+    {
+      "skill_id": "xlsx",
+      "name": "xlsx",
+      "version": "0.0.0-pending",
+      "description": "Excel经营报告候选；外部指令未下载、未固定版本、未审核，禁止加载及执行。",
+      "source": {
+        "kind": "external",
+        "location": "https://github.com/anthropics/skills/tree/main/skills/xlsx"
+      },
+      "license": "Pending verification at pinned upstream commit",
+      "upstream_commit": null,
+      "instructions": {
+        "path": "skills/xlsx/SKILL.md",
+        "sha256": null
+      },
+      "enabled": false,
+      "review_status": "unreviewed",
+      "resources": {},
+      "allowed_tools": []
+    }
+  ]
+}

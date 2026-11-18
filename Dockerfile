@@ -10,6 +10,7 @@ COPY --chown=app:app scripts scripts
 COPY --chown=app:app sql sql
 COPY --chown=app:app warehouse warehouse
 COPY --chown=app:app metrics metrics
+COPY --chown=app:app skills skills
 COPY --chown=app:app docs docs
 COPY --chown=app:app reports reports
 COPY --chown=app:app output/pdf/document-extraction-sample.pdf output/pdf/document-extraction-sample.pdf
