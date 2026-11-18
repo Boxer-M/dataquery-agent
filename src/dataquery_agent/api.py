@@ -19,6 +19,8 @@ from .api_models import (
 )
 from .conversation_manager import local_manager
 from .conversation_store import ConversationError
+from .artifact_api import artifact_router
+from .artifact_store import ArtifactStore
 from .document_api import DOCUMENTS, body_limit, document_router
 from .document_staging import DocumentStaging
 from .metrics import ROOT
@@ -92,7 +94,7 @@ def bounded(model):
     return Response(payload, media_type="application/json", headers={"Cache-Control": "no-store"})
 
 
-def create_app(*, token, manager_factory=local_manager, document_staging=None, performance=None):
+def create_app(*, token, manager_factory=local_manager, document_staging=None, performance=None, artifact_store=None):
     if not isinstance(token, str) or not re.fullmatch(r"[a-fA-F0-9]{64}", token):
         raise ValueError("Configure DATAQUERY_HTTP_TOKEN as 64 hexadecimal characters.")
     app = FastAPI(title="DataQuery Agent API", version="1.0", docs_url=None, redoc_url=None)
@@ -207,6 +209,7 @@ def create_app(*, token, manager_factory=local_manager, document_staging=None, p
 
     app.include_router(document_router(document_owner, staging=document_staging or DocumentStaging(),
                                        respond=document_response, failure=failure))
+    app.include_router(artifact_router(identity, store=artifact_store or ArtifactStore(), failure=failure))
     return app
 
 

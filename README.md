@@ -149,4 +149,6 @@ reference = registry.load_skill_resource("business-metric-analysis", "contracts"
 
 C1 的 XLSX 适配保留原始许可证、来源和指令存档，只允许加载适配正文及三个审核资源。未引入上游脚本或运行依赖，不向模型自动注入 XLSX 指令。[锁版与审核记录](docs/warehouse/XLSX_SKILL_REVIEW_C1.md)。
 
-C2.1 提供独立 Python 入口 `generate_metric_xlsx(result, metrics) -> bytes`，将已校验、单窗口无分组的经营汇总写入两列工作簿，并自动回读检查精度；不接入聊天、Artifact或下载。新增锁版依赖仅为 openpyxl 3.1.5 与 et_xmlfile 2.0.0。[输入契约与真实 PostgreSQL 回读验收](docs/warehouse/XLSX_REPORT_GENERATION_V1.md)。
+C2.1 提供独立 Python 入口 `generate_metric_xlsx(result, metrics) -> bytes`，将已校验、单窗口无分组的经营汇总写入两列工作簿，并自动回读检查精度；不接入聊天。新增锁版依赖仅为 openpyxl 3.1.5 与 et_xmlfile 2.0.0。[输入契约与真实 PostgreSQL 回读验收](docs/warehouse/XLSX_REPORT_GENERATION_V1.md)。
+
+C2.2 新增后端显式导出 `POST /api/queries/{query_id}/artifacts/xlsx` 和授权下载 `GET /api/artifacts/{artifact_id}/download`。新查询通过原History链路保存受限汇总快照，XLSX与元数据以私有SQLite事务持久化；导出、下载不重跑指标SQL或模型。旧历史无快照返回409，源查询无权限时不可下载。前端和代理尚未接入。[API、Owner校验、原子性与真实验收](docs/warehouse/XLSX_ARTIFACT_DOWNLOAD_V1.md)。

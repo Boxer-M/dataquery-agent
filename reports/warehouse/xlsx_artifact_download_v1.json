@@ -1,0 +1,26 @@
+{
+  "mode": "FastAPI ASGI HTTP + real PostgreSQL; fixed proposal; private SQLite BLOB",
+  "query_id": "82fd74f0-6a28-4342-a7d1-63fe7a08e199",
+  "artifact": {
+    "artifact_id": "a3fef0bc-7b41-4169-9f9c-036102aea3f1",
+    "query_id": "82fd74f0-6a28-4342-a7d1-63fe7a08e199",
+    "filename": "metrics-a3fef0bc-7b41-4169-9f9c-036102aea3f1.xlsx",
+    "created_at": "2026-11-18T14:09:23.060684Z",
+    "sha256": "aeaf487caa00b75954a8715d4371d9fc8dcf889ab26a9a4202b992339d9aee47",
+    "byte_size": 5084
+  },
+  "download_sha256": "aeaf487caa00b75954a8715d4371d9fc8dcf889ab26a9a4202b992339d9aee47",
+  "readback": {
+    "order_count": "2312",
+    "captured_payment_amount": "230864.57",
+    "amount_format": "0.00"
+  },
+  "same_bytes_after_reinitialization": true,
+  "cross_owner_export_and_download_denied": true,
+  "initial_business_metric_sql": 2,
+  "export_download_business_metric_sql": 0,
+  "artifact_metadata_reads": 5,
+  "artifact_metadata_writes": 1,
+  "query_history_access_checks": 4,
+  "real_gemini_calls": 0
+}

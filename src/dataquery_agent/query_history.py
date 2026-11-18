@@ -5,7 +5,46 @@ from .conversation_context import CONTEXT_VERSION, redact
 from .runtime_trace import trace_view
 
 
-def build_record(claim, message, answer, operation, elapsed_ms, *, query_id=None):
+def export_snapshot(answer, metrics):
+    """Bounded scalar summary only; retain original values/names, never re-query on export."""
+    result = answer.get("result", {})
+    plan, rows = result.get("plan"), result.get("results", [])
+    metric = result.get("query_result", {})
+    if metric.get("status") == "ok" and not metric.get("group_by") and not metric.get("truncated"):
+        mid = metric.get("metric_id")
+        plan = {"analysis_type": "summary", "metric_ids": [mid], "comparison_type": None, "group_by": [],
+                "time_windows": [{"start_date": metric.get("start_date"), "end_date": metric.get("end_date")}]}
+        rows = [{"bucket": row.get("bucket"), "month": None,
+                 "metrics": {mid: {"value": row.get("value")}}} for row in metric.get("results", [])]
+    if (answer.get("status") != "ok" or result.get("status") != "ok" or not isinstance(plan, dict)
+            or plan.get("analysis_type") != "summary" or plan.get("group_by") or plan.get("comparison_type")
+            or not isinstance(plan.get("time_windows"), list) or len(plan["time_windows"]) != 1
+            or not isinstance(rows, list) or len(rows) != 1 or not isinstance(rows[0], dict)
+            or rows[0].get("bucket") != "all" or rows[0].get("month") is not None
+            or result.get("truncated") or result.get("rows_truncated")):
+        return None
+    ids, cells = plan.get("metric_ids", []), rows[0].get("metrics", {})
+    if (not isinstance(metrics, dict) or not isinstance(ids, list) or not 1 <= len(ids) <= 6
+            or any(not isinstance(mid, str) for mid in ids) or len(set(ids)) != len(ids)
+            or not isinstance(cells, dict) or set(ids) != set(cells)):
+        return None
+    names, values = {}, {}
+    for mid in ids:
+        metadata, cell = metrics.get(mid), cells[mid]
+        name = metadata.get("name_zh") if isinstance(metadata, dict) else None
+        value = cell.get("value") if isinstance(cell, dict) else None
+        if not isinstance(name, str) or not 0 < len(name) <= 120 or type(value) not in (str, int) or len(str(value)) > 64:
+            return None
+        names[mid] = {"name_zh": name}
+        values[mid] = {"value": value}
+    return {"version": 1, "metrics": names, "result": {
+        "status": "ok", "plan": {"analysis_type": "summary", "metric_ids": ids,
+            "time_windows": plan["time_windows"], "comparison_type": None, "group_by": []},
+        "results": [{"month": None, "bucket": "all", "metrics": values}],
+    }}
+
+
+def build_record(claim, message, answer, operation, elapsed_ms, *, query_id=None, metrics=None):
     result = answer.get("result", {})
     trace = answer.get("trace", {})
     routes = answer.get("routes", [])
@@ -51,7 +90,9 @@ def build_record(claim, message, answer, operation, elapsed_ms, *, query_id=None
     agent_calls = trace.get("agent_calls", [])
     evidence = trace_view(answer)
     evidence.pop("run_id")  # Persist the canonical query_id only.
+    snapshot = export_snapshot(answer, metrics or {})
     return {
+        **({"export_snapshot": snapshot} if snapshot else {}),
         **{key: value for key, value in evidence.items()
            if value or key in {"trace_id", "tool_traces"}},
         **({"agent_calls": agent_calls} if agent_calls else {}),
