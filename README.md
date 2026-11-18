@@ -127,7 +127,7 @@ PR 执行前后端生产镜像构建与隔离部署冒烟。合并 main 后，�
 
 镜像使用完整 SHA 加运行号 Tag，部署及手动回退使用不可变 digest 对。运行配置在容器启动时注入，Bearer 留在前端服务端。临时验证默认 0 次 Gemini 调用，不发布宿主端口，保持现有环回安全边界。[CD 构建、配置、版本清单、验证状态与手动回退](docs/warehouse/CD_ENGINEERING_V1.md)
 
-## Skill 注册与经营分析接入（阶段 A / B / C1）
+## Skill 注册与经营分析接入（阶段 A / B / C1 / C2.1）
 
 `skills/registry.json` 是受代码审查保护的可信清单。`SkillRegistry` 只读取文本，不执行代码。阶段 B 在 Unified Agent 的适用经营分析路径中，按需把 `business-metric-analysis` 指令加入同一次 Planner 调用；`xlsx` 已固定上游 Commit并完成受限文本审核，可按需加载，工具范围为空；未接入生成或下载。Skill 只能提供业务指导，计划与执行仍由原 Validator、Capability 和受控工具校验。
 
@@ -143,8 +143,10 @@ reference = registry.load_skill_resource("business-metric-analysis", "contracts"
 
 指令与资源每次读取都校验 SHA-256，拒绝未知、未审核、禁用及篡改内容。路径限定仓库 `skills/`，逐级拒绝符号链接，单文件上限 64 KiB。Hash 用于核对受信清单的一致性，不能替代对清单本身的 Git 审查。工具范围仅为声明，不构成授权；构造器的 repo_root 仅供可信应用配置及离线测试使用。
 
-候选选择使用保守的确定性规则，不确定、否定和简单指标问题保持原有路径。仅匹配且审核通过的经营分析 Skill 按需进入 planning 上下文，加载失败在模型和工具调用前终止。Trace 与 History 保留版本、Hash、加载/注入状态和原 planning 调用用量；没有独立测量依据的额外 Token 不估算。不生成或下载 Excel。[阶段 B 链路与验收](docs/warehouse/SKILL_BUSINESS_INTEGRATION_V1.md)。
+候选选择使用保守的确定性规则，不确定、否定和简单指标问题保持原有路径。仅匹配且审核通过的经营分析 Skill 按需进入 planning 上下文，加载失败在模型和工具调用前终止。Trace 与 History 保留版本、Hash、加载/注入状态和原 planning 调用用量；没有独立测量依据的额外 Token 不估算。现有聊天 Skill 路径不生成或下载 Excel。[阶段 B 链路与验收](docs/warehouse/SKILL_BUSINESS_INTEGRATION_V1.md)。
 
 离线验收：`CI_NO_EXTERNAL_MODELS=1 .venv/bin/python -m pytest tests/test_skill_registry.py tests/test_skill_business.py -q`。PostgreSQL 测试需显式设置 `KNOWLEDGE_POSTGRES_TESTS=1`，使用固定提案，仍禁止 Gemini。
 
 C1 的 XLSX 适配保留原始许可证、来源和指令存档，只允许加载适配正文及三个审核资源。未引入上游脚本或运行依赖，不向模型自动注入 XLSX 指令。[锁版与审核记录](docs/warehouse/XLSX_SKILL_REVIEW_C1.md)。
+
+C2.1 提供独立 Python 入口 `generate_metric_xlsx(result, metrics) -> bytes`，将已校验、单窗口无分组的经营汇总写入两列工作簿，并自动回读检查精度；不接入聊天、Artifact或下载。新增锁版依赖仅为 openpyxl 3.1.5 与 et_xmlfile 2.0.0。[输入契约与真实 PostgreSQL 回读验收](docs/warehouse/XLSX_REPORT_GENERATION_V1.md)。

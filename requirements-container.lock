@@ -1,5 +1,7 @@
-# Python 3.12 runtime set captured from the verified CI image, without user-site test tools.
+# Python 3.12 verified CI baseline plus pinned C2.1 XLSX dependencies; no user-site test tools.
 annotated-doc==0.0.6
+openpyxl==3.1.5
+et_xmlfile==2.0.0
 annotated-types==0.8.0
 anyio==4.16.0
 certifi==2026.10.23
