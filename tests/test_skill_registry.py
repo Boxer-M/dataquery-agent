@@ -44,7 +44,8 @@ def test_summaries_and_selection_never_open_instructions(workspace):
         assert registry.select_candidates('生成Excel经营报告')[0] == {
             'skill_id': 'xlsx', 'reason': 'explicit_excel_business_report', 'available': False}
         assert reads == ['skills/registry.json']
-        assert '阶段 A' in registry.load_skill_instructions('business-metric-analysis')
+        assert registry.load_skill_instructions('business-metric-analysis') == (
+            workspace / 'skills/business-metric-analysis/SKILL.md').read_text()
         assert reads == ['skills/registry.json', 'skills/business-metric-analysis/SKILL.md']
 
 

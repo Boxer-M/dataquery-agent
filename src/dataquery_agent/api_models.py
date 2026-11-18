@@ -96,7 +96,44 @@ class OrchestrationStep(BaseModel):
     next_action: str | None = None
 
 
+class SkillTrace(BaseModel):
+    skill_id: str | None = None
+    version: str | None = None
+    sha256: str | None = None
+    reason: str | None = None
+    context_version: str | None = None
+    error_code: str | None = None
+    loaded: bool = False
+    context_injected: bool = False
+    instruction_bytes: int = 0
+    planning_model_calls: int = 0
+    planning_tokens: dict[str, int] | None = None
+    extra_model_calls: int = 0
+    extra_tokens: int | None = None
+
+
+def skill_steps(items):
+    result = []
+    for item in items[:4] if isinstance(items, list) else []:
+        if not isinstance(item, dict):
+            continue
+        fields = {key: text(item.get(key), 120) for key in (
+            "skill_id", "version", "sha256", "reason", "context_version", "error_code")}
+        fields.update({key: item.get(key) is True for key in ("loaded", "context_injected")})
+        for key in ("instruction_bytes", "planning_model_calls", "extra_model_calls", "extra_tokens"):
+            value = item.get(key)
+            if type(value) is int and value >= 0:
+                fields[key] = value
+        usage = item.get("planning_tokens")
+        if isinstance(usage, dict):
+            fields["planning_tokens"] = {key: usage[key] for key in ("prompt", "output", "total")
+                                         if type(usage.get(key)) is int and usage[key] >= 0} or None
+        result.append(SkillTrace(**fields))
+    return result
+
+
 class PublicTrace(BaseModel):
+    skills: list[SkillTrace] = Field(default_factory=list)
     orchestration: list[OrchestrationStep] = Field(default_factory=list)
     interrupt_required: bool = False
     run_id: UUID | None = None
@@ -258,6 +295,7 @@ def public_response(data, *, history=False):
                      ([primary] if "query_result" in result else tasks)[:12] if item.get("definition")],
         clarification_choices=[projection(MetricDefinition, item) for item in (hitl["choices"] if hitl and hitl["status"] == "paused" else data.get("choices", []))[:8]],
         trace=PublicTrace(run_id=evidence["run_id"],
+                          skills=skill_steps(evidence["skills"]),
                           orchestration=[projection(OrchestrationStep, item)
                                          for item in graph.get("orchestration", [])[:8]],
                           interrupt_required=graph.get("interrupt_required") is True,

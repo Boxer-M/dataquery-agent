@@ -4,8 +4,8 @@
     {
       "skill_id": "business-metric-analysis",
       "name": "business-metric-analysis",
-      "version": "0.1.0",
-      "description": "为明确的复杂电商经营指标分析提供受控计划约束；阶段 A 仅支持离线加载。",
+      "version": "0.2.0",
+      "description": "为明确的复杂电商经营指标分析提供受控计划指导，复用原 Planner、Validator 与 Metric Tool。",
       "source": {
         "kind": "internal",
         "location": "DataQuery Agent repository"
@@ -14,14 +14,14 @@
       "upstream_commit": null,
       "instructions": {
         "path": "skills/business-metric-analysis/SKILL.md",
-        "sha256": "dd58f07b2c81fadbbd1068fc487ab381ff2d40554ec5eb3f7ed986c37a1d2572"
+        "sha256": "0c6047caae34250c9dab6c158595733104d92cf1458e2681d1ebd21072355437"
       },
       "enabled": true,
       "review_status": "reviewed",
       "resources": {
         "contracts": {
           "path": "skills/business-metric-analysis/references/contracts.md",
-          "sha256": "da281088f18d09c3532da64073099ba17e6b2671c8f571bd22a62d4a4ac47e15"
+          "sha256": "f0033eb7ccfc366a87434d770a265651e26f700d35c42e2748c6efbac6730f63"
         }
       },
       "allowed_tools": [

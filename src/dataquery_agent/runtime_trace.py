@@ -12,6 +12,7 @@ def trace_view(data):
         "attempt_id": result.get("attempt_id") or data.get("attempt_id"),
         "subtasks": result.get("subtasks", data.get("subtasks", [])),
         "capability_records": trace.get("capability_records", data.get("capability_records", [])),
+        "skills": trace.get("skills", data.get("skills", [])),
         "tool_traces": [tool_event(item) for item in trace.get("tools", data.get("tool_traces", []))],
     }
 

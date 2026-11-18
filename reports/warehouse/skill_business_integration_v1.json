@@ -1,0 +1,35 @@
+{
+  "mode": "fixed model proposal + real PostgreSQL; no real Gemini",
+  "question": "分析2025年1月订单量和成功支付金额的多指标汇总",
+  "ods_values": {
+    "order_count": "2312",
+    "captured_payment_amount": "230864.57"
+  },
+  "actual_values": {
+    "order_count": "2312",
+    "captured_payment_amount": "230864.57"
+  },
+  "skill_trace": [
+    {
+      "loaded": true,
+      "reason": "explicit_complex_metric_analysis",
+      "sha256": "0c6047caae34250c9dab6c158595733104d92cf1458e2681d1ebd21072355437",
+      "version": "0.2.0",
+      "skill_id": "business-metric-analysis",
+      "extra_tokens": null,
+      "context_version": "business-skill-context-v1",
+      "planning_tokens": null,
+      "context_injected": true,
+      "extra_model_calls": 0,
+      "instruction_bytes": 2752,
+      "planning_model_calls": 1
+    }
+  ],
+  "public_trace_equal": true,
+  "cross_owner_denied": true,
+  "duplicate_replayed": true,
+  "proposal_callback_calls": 1,
+  "real_gemini_calls": 0,
+  "real_gemini_tokens": 0,
+  "query_embedding_calls": 0
+}

@@ -10,7 +10,7 @@ from zoneinfo import ZoneInfo
 import psycopg
 from dotenv import dotenv_values
 
-from .agent_prompts import PROMPT_VERSIONS, intent_prompt, resolution_prompt, schema_for_prompt
+from .agent_prompts import PROMPT_VERSIONS, business_planning_call, intent_prompt, resolution_prompt, schema_for_prompt
 from .agent_runtime import AgentRuntime, ModelUnavailable
 from .business_plan import DETAIL
 from .business_query_planner import BusinessQueryPlanner
@@ -29,6 +29,7 @@ from .metric_tool import execute_metric, metric_failure
 from .metrics import ROOT
 from .performance import CURRENT, timed
 from .runtime_trace import record_agent_calls
+from .skill_registry import SkillError
 
 INJECTION = re.compile(
     r"忽略.{0,12}(?:指令|规则|提示)|系统提示|开发者消息|泄露.{0,8}(?:密钥|提示)|"
@@ -352,8 +353,12 @@ class UnifiedAgent:
                 "answer_zh": f"{start} 至 {end}（不含结束日），{result['definition']}。{summary}"}
 
     def business(self, question, runtime, frame, trace, today, *, catalog=None, owner=None, pdf_question=None):
+        try:
+            generate = business_planning_call(question, runtime, trace)
+        except SkillError:
+            return outcome("error", "skill_unavailable", "经营分析指导暂不可用，本次未执行查询。")
         prepared = self.planner.prepare(
-            question, lambda prompt: runtime.call("planning", f"[{PROMPT_VERSIONS['planning']}] {prompt}"), today,
+            question, generate, today,
             pdf_question=pdf_question)
         if prepared["status"] != "ready":
             if prepared.get("code") == "invalid_model_output":
