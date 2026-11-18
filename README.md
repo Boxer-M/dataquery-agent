@@ -120,3 +120,9 @@ npm --prefix frontend run build
 ```
 
 手动 Gemini Golden 评测仅对 main 开放，需明确授权及独立环境密钥，报告保存为短期 Artifact，随机模型得分用于观察回归。[CI 范围、临时环境命令与验证结果](docs/warehouse/CI_CD_ENGINEERING_V1.md)。当前交付为镜像构建和临时环境验证，公开部署需要另行设计。
+
+## 容器构建与发布验证
+
+PR 执行前后端生产镜像构建与隔离部署冒烟。合并 main 后，原 CI 全部成功才允许推送 GHCR；发布任务拉取新镜像的 digest，重新启动临时 PostgreSQL/Redis、FastAPI 和前端生产静态服务，验证通过后保存稳定版本清单与上一版本引用。
+
+镜像使用完整 SHA 加运行号 Tag，部署及手动回退使用不可变 digest 对。运行配置在容器启动时注入，Bearer 留在前端服务端。临时验证默认 0 次 Gemini 调用，不发布宿主端口，保持现有环回安全边界。[CD 构建、配置、版本清单、验证状态与手动回退](docs/warehouse/CD_ENGINEERING_V1.md)
