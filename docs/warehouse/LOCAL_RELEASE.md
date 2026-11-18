@@ -72,3 +72,23 @@ COMMIT;
 ```
 
 Olist 原始数据仅用于历史审计及明确依赖它的测试。[Olist 与 SQL Shed 数据说明](../../data/README.md)
+
+## 可选编排、恢复与缓存
+
+先完成以上基础初始化。在服务进程启动前按需启用；同一终端的设置会传给 API，凭据仍使用本地受保护配置。
+
+```sh
+.venv/bin/python -m pip install -r requirements-langgraph.txt
+PYTHONPATH=src .venv/bin/python scripts/provision_hitl.py
+export DATAQUERY_SUPERVISOR=1 DATAQUERY_HITL=1
+.venv/bin/python -m pip install -r requirements-redis.txt
+docker compose -f compose.redis.yaml up -d redis
+export DATAQUERY_REDIS_URL=redis://127.0.0.1:6381/0
+export DATAQUERY_DATA_VERSION=sqlshed-demo-v1
+.venv/bin/python scripts/local_workspace.py --check
+.venv/bin/python scripts/local_workspace.py
+```
+
+Supervisor 可单独启用，HITL 还需 PostgreSQL Checkpoint 初始化及两项开关。`DATAQUERY_DATA_VERSION` 是发布方对数据快照的显式标记；数据更新时切换此值。Redis TTL 为 60 秒，默认限流为每 Owner 每 10 秒 60 次，宕机回落 SQL 和进程内限流。停止缓存用 `docker compose -f compose.redis.yaml stop redis`。
+
+基础 `--check` 与健康接口无法证明可选组件可用。演示前分别提交合法指标、触发真实澄清、检查已发布 PDF 来源，并确认所需角色权限及 Checkpoint 可访问。[五组演示与本轮验证](FINAL_README_DEMO_RELEASE.md)
