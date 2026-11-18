@@ -1,65 +1,107 @@
 # DataQuery Agent
 
-DataQuery Agent 是一个面向电商经营分析的本地工作台。使用者可以用中文查询订单、商品和渠道指标，按月或按渠道查看图表，追问上一轮结果，并核对计算口径和来源。对于“查 1 月订单量，并引用 PDF 规则”的问题，系统分别返回数据库数值和文档原文，记录各项任务的执行状态。
+面向电商经营分析的本地 AI 工作台。用户可以用中文查询正式指标、进行跨期比较、核对计算口径，并结合经过审核的 PDF 查看真实页码和原文证据。系统以受控 SQL、权限复核和可追溯任务记录支撑业务回答。
 
-SQL Shed 提供 CC0 公开合成电商数据，覆盖 7 张 ODS 表、4 张 DWD 事实表、5 张维度表、6 张 DWS 汇总表和 3 个 ADS 视图。目录收录 38 项指标，26 项已通过数据验证。[数据来源与入库验收](docs/SQLSHED_INGESTION.md)
+SQL Shed 为 CC0 公开合成电商数据，已建设 **7 张 ODS、4 张 DWD、5 张 DIM、6 张 DWS、3 个 ADS 视图**。指标目录包含 **26 项已验证、4 项待验证、8 项不支持**。[数据来源](docs/SQLSHED_INGESTION.md) · [指标目录](metrics/warehouse_catalog_v1.json)
 
-## 核心功能
+## 能力与技术栈
 
-- **自然语言问数**。标准指标、多指标比较与筛选、歧义澄清、会话追问、月度与渠道图表。
-- **可追溯执行**。指标服务使用受控 SQL。部分明细需求通过固定模板或经 SQLGlot 和 Capability 校验的 SQL 执行。History 可查看计划、任务、执行批次、工具和来源。
-- **审核式 PDF 知识库**。本地上传、逐页检查原生提取和 OCR、修订、签名审核及授权发布。问答返回有效版本的真实页码和原文。
-- **SQL 与 PDF 联合分析**。一个正式指标及统计窗口可结合一个明确 PDF 主题。DAG 保留可验证的部分结果和各节点失败原因。
+- **问数与可视化**：正式指标、受支持的多指标比较和排行、澄清及连续追问。订单量支持月度折线图、渠道柱状图，多指标结果保留表格。
+- **SQL + PDF**：一个正式指标及时间窗口可联合一个明确 PDF 主题，返回数据库事实、有效文档引用和各任务状态。
+- **可选 Multi-Agent**：Gemini Supervisor 委派 Data / Knowledge 角色，角色以独立上下文判断执行或暂缓，复用既有受控工具。
+- **持久化 HITL**：指标口径歧义通过真实 LangGraph interrupt 暂停，PostgreSQL Checkpoint 支持服务重启后恢复原 Run。
+- **缓存与治理**：Redis 缓存绑定 Owner、结构化参数及版本，命中仍复核权限；History 保留 Run、Plan、Task、Attempt、Capability 与引用关联。
 
-## 技术与架构
+Python 3.12、FastAPI、Gemini、LangGraph、SQLGlot；PostgreSQL 16、pgvector、Redis；React、TypeScript、Ant Design、ECharts、Vite。pypdf 提取 PDF 文本，macOS Apple Vision 识别扫描页，SQLite 暂存本机文档审核记录。
 
-React、TypeScript、Ant Design 和 ECharts 提供工作台，Vite 同源代理将请求送到 Python 3.12 的 FastAPI。PostgreSQL 16 保存数仓、会话和 pgvector 知识索引，SQLite 保存本机 PDF 暂存记录。pypdf 提取原生文本，macOS Apple Vision 识别扫描页。
+## 当前架构
 
 ```mermaid
-flowchart LR
-    UI["React · ECharts · 文档审核"] --> Proxy["Vite 同源代理"] --> API["FastAPI · 会话与 Owner"]
-    API --> Agent["Unified Agent"]
-    Agent --> LLM["Gemini · 意图与候选计划"]
-    LLM --> Validator["确定性 Validator · Capability"]
-    Agent --> Validator
-    Validator --> DAG["顺序 DAG"]
-    DAG --> Data["Data Analysis Agent · 工具选择"]
-    DAG --> Knowledge["Knowledge Agent · 工具选择"]
-    Data --> SQL["只读指标 SQL"] --> PG["PostgreSQL 数仓"]
-    Knowledge --> Catalog["正式 Catalog 精确查找"]
-    Knowledge --> RAG["Gemini Embedding · pgvector · 原文验证"]
-    API --> PDF["pypdf / Apple Vision · 签名审核"]
+flowchart TB
+    UI["React · ECharts · 文档审核 · History"] --> Proxy["Vite 同源代理 · 服务端 Bearer"]
+    Proxy --> API["FastAPI · Owner · Conversation Manager"]
+    API --> Router["Unified Agent · Fast Router · Metric Entity Resolver"]
+    Router --> Fast["Fast Path · 单指标 / Catalog 精确查找"]
+    Router --> Plan["Gemini 意图 / Business Planner · 确定性 Validator"]
+    Plan --> Graph["可选 LangGraph Supervisor · 真实模型委派"]
+    Graph --> Roles["Data / Knowledge · 独立模型决策"]
+    Roles --> Runtime["既有 Runtime / 顺序 DAG · Task / Attempt"]
+    Plan --> Runtime
+    Fast --> Tools["受控工具 · 执行前 Capability / Owner 复核"]
+    Runtime --> Tools
+    Tools --> SQL["Metric Tool · 固定模板 / 已校验 SQL · 只读角色"]
+    SQL --> Cache["可选 Redis · 版本键 · TTL · 命中 ACL 复核"]
+    Cache --> PG["PostgreSQL · SQL Shed 数仓"]
+    Tools --> Catalog["Catalog Exact Lookup · Hash / 版本验证"]
+    Tools --> RAG["Gemini Embedding · pgvector · 引用校验"]
+    API --> PDF["PDF 提取 / OCR · 修订 · 签名审核 · 授权发布"]
     PDF --> RAG
-    SQL --> Result["结果 · 引用 · Trace"]
-    Catalog --> Result
-    RAG --> Result
+    API --> HITL["歧义澄清 Graph · interrupt / Command resume"]
+    HITL <--> Checkpoint["PostgreSQL Checkpoint · 原 Run"]
+    HITL --> Tools
+    Tools --> Result["结果装配 / Insight · 数值与证据"]
+    Result --> History["Query History · Run / Plan / Task / Attempt / Trace"]
+    History --> UI
 ```
 
-真实 Gemini 调用负责自然语言意图、候选计划、知识摘录及向量计算。专业 Agent 的工具选择与 DAG 调度由确定性代码执行。Capability 验证通过后，数据侧以只读账号取数。知识侧引用审核文档的有效页码及原文，正式指标定义走 Catalog 精确查找。联合请求的汇总节点依赖两个独立任务，数据库事实和文档摘录分别展示。[联合分析数据流](docs/warehouse/SQL_DOCUMENT_HYBRID_V1.md)
+Fast Path 处理简单正式指标和确定性的 Catalog 查询。复杂请求先形成候选计划，Validator 校验正式口径、维度及时间条件。启用 Supervisor 后，模型可在授权角色中做委派与专业决策；工具分发、DAG 状态、权限和结果验证继续由确定性程序执行。LangGraph 管理外层协调状态，既有 Runtime 管理 Task/Attempt。Insight 汇总已验证事实与引文，PDF 规则无法证明实际经营变化的原因。
 
-## 本地运行
+指标工具使用固定模板，受支持的明细路径另经 SQLGlot 与 Capability 校验。正式定义走 Catalog 精确查找，Query Embedding 调用为零。PDF 在审核和显式授权后生成向量，回答前复核当前文档版本、Owner、Hash 和引文。[架构与运行说明](docs/warehouse/FINAL_README_DEMO_RELEASE.md) · [SQL+PDF 数据流](docs/warehouse/SQL_DOCUMENT_HYBRID_V1.md)
 
-准备 Python 3.12、Node 22.12+ 和 Docker Compose。完整扫描 PDF 演示需要 macOS、Apple Vision 与 Xcode Command Line Tools。浏览器验收需要 Chrome。首次初始化后运行：
+## 本地安装与启停
+
+准备 Python 3.12、Node 22.12+、Docker Compose。扫描 PDF 需要 macOS 和 Xcode Command Line Tools。数据库运行于 Docker，API 和前端运行于宿主机。
+
+```sh
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt -r requirements-pdf.txt
+npm --prefix frontend ci
+cp -n .env.example .env
+chmod 600 .env
+```
+
+用本地编辑器填写数据库和 Gemini 配置，再启动 pgvector 数据库。
+
+```sh
+docker compose -f compose.yaml -f compose.rag.yaml up -d --wait db
+```
+
+首次还需下载数据、构建数仓、创建只读及元数据角色、生成本地 Bearer 与 PDF 审核密钥。按[完整首次安装步骤](docs/warehouse/LOCAL_RELEASE.md)完成初始化。Catalog 索引和 PDF 发布涉及外部 Embedding，执行前确认资料授权。
 
 ```sh
 .venv/bin/python scripts/local_workspace.py --check
 .venv/bin/python scripts/local_workspace.py
 ```
 
-打开 [本地工作台](http://127.0.0.1:5173/)。Ctrl-C 停止工作台和 API，数据库可独立停止。[首次安装、启动、停止及故障定位](docs/warehouse/LOCAL_RELEASE.md)
+打开 [127.0.0.1:5173](http://127.0.0.1:5173/) 或 [localhost:5173](http://localhost:5173/)。Ctrl-C 停止 API 和 Vite；数据库可用同一 Compose 配置执行 `stop db`，保留数据卷。
 
-## 三组演示
+**可选功能**：Supervisor 安装 `requirements-langgraph.txt` 并设置 `DATAQUERY_SUPERVISOR=1`。HITL 另执行 `scripts/provision_hitl.py` 并设置 `DATAQUERY_HITL=1`。Redis 安装 `requirements-redis.txt`、启动 `compose.redis.yaml`，设置 `DATAQUERY_REDIS_URL` 和当前 `DATAQUERY_DATA_VERSION`。[完整可选启动命令](docs/warehouse/LOCAL_RELEASE.md#可选编排恢复与缓存)
 
-| 场景 | 操作 | 已核对的结果 |
+## 五个演示
+
+| 场景 | 输入与操作 | 核对点 |
 | --- | --- | --- |
-| 指标、追问与图表 | 查 2025 年 1 月订单量，追问 2 月；查 2025 全年后输入「按月拆分」 | 1 月 **2312**、2 月 **2049**，12 个 ECharts 月度数据点 |
-| 审核式 PDF 问答 | 上传样例，修订并审核发布第 2 页，查询修订行 | 第 2 页、审核文本行号、逐字引文和原件 SHA-256 |
-| SQL 与 PDF | 查 2025 年 1 月订单量，并引用 PDF 扫描页的 Order count 原文 | SQL **2312**，PDF 第 2 页 `Order count: 48`；History 可查看指标、PDF、汇总节点 |
+| 简单指标 | 「2025年1月订单量是多少？」后追问「2月呢？」 | **2312 / 2049**；指标定义、窗口、Trace |
+| 多指标趋势与图表 | 查询 2025 年每月订单量和成功支付金额，再单独查询订单量按月拆分 | 多指标表格保留不同事件时间；单指标 **12 个点**。1 月渠道图为 mobile **685**、partner **207**、phone **83**、web **1337** |
+| SQL + PDF | 审核发布授权样例后问「2025年1月订单量是多少，并引用PDF扫描页的 Order count 原文。」 | SQL **2312**，PDF 第 **2** 页 `Order count: 48`；缺失证据时 partial |
+| Supervisor 委派 | 启用 Supervisor，提交带明确页码和原文范围的 SQL+PDF 请求 | 真实 supervisor、data、knowledge_agent 模型事件及原 DAG 工具记录 |
+| HITL 跨重启 | 启用两项编排开关，问「2025年1月销售额」，暂停后重启服务并选择口径 | 原 Run 恢复，折扣后商品销售金额 **231920.18**；暂停前工具 0 次，恢复后 1 次 |
 
-[完整演示脚本、来源及复现步骤](docs/warehouse/RELEASE_DEMOS.md)
+[五组演示脚本与中文架构讲解](docs/warehouse/FINAL_README_DEMO_RELEASE.md) · [PDF 导入及清理细节](docs/warehouse/RELEASE_DEMOS.md)
 
-## 验收、安全与限制
+## 实测证据与复现范围
 
-发布准备复跑现有 **23/23 个综合场景**并通过 Python 与前端回归。指标结果与独立 ODS 对账，PDF 引用与当前版本、Owner 权限和原件 Hash 核对。报告分别记录真实 Gemini 调用与受控故障注入。[发布验收](docs/warehouse/RELEASE_ACCEPTANCE_V1.md) · [既有 23 场景基线](reports/warehouse/sql_document_hybrid_v1.json)
+| 实测 | 结果与条件 |
+| --- | --- |
+| Router 配对 | 同一组 58 条 Development/Validation，工具路由 **33/43 → 38/43**，E2E **46/58 → 51/58**；已用于诊断。[报告](docs/warehouse/ROUTING_ABLATION_V2.md) |
+| 真实 Gemini 专业委派 | 完整结构化组 **3/4**；明确联合题 PDF 页码后复测，按题末次为 **4/4**。包含题目收紧，13 次生成、3813 Token。[报告](docs/warehouse/LANGGRAPH_MULTI_AGENT_V1.md) |
+| Redis 聚合缓存 | **并发 5，每种模式三轮合计 360 请求**，P95 **140.34 → 118.08 ms**，完成 QPS **43.71 → 52.79**，指标 SQL **2481 → 0**，保留 **360 次 ACL**。[报告](docs/warehouse/REDIS_PERFORMANCE_V2.md) |
+| 历史综合验收 | 发布阶段 **23/23**，适用 ODS **10/10**、Catalog **4/4**、PDF **3/3**；版本与模型条件见[原报告](docs/warehouse/RELEASE_ACCEPTANCE_V1.md)。 |
 
-服务绑定环回地址。Vite 保管本地 Bearer 并校验 Host、Origin 及精确路由。发布检查 Owner、版本和审核签名，明确授权后才发送审核文本生成向量。原始 PDF 留在本机。项目适合单人本地演示，合成数据缺少实际利润、退款到账等口径。完整扫描 OCR 依赖 macOS。已知 Document ID 可在刷新后重开。首次上传回执丢失且没有 ID 时，需人工确认是否已创建。知识检索以标题作为线索，当前范围没有 Document ID 定向检索或完整文档列表。[安全核查与版本行为](docs/warehouse/RELEASE_ACCEPTANCE_V1.md)
+Redis 数据来自 Apple M4、16 GB、本机 PostgreSQL 16.15 / Redis 7.4.7 的真实 HTTP 压测，使用固定意图隔离模型成本。它测量已验证查询的缓存收益。简单查询同档 P95 为 111.54 → 116.67 ms。真实 Gemini 评测与这些 HTTP QPS 独立统计。本轮启动及回归验证记录在[整理报告](docs/warehouse/FINAL_README_DEMO_RELEASE.md)。
+
+## 安全与已知限制
+
+API 仅限环回本地单人环境，Vite 校验 Host、Origin 与路由白名单，Bearer 留在服务端。每次工具执行保留 Owner、Capability、只读 SQL、文档审核和引用校验。Redis 数据版本由运维显式切换。HITL 支持约定的指标澄清，恢复预占后崩溃需要人工排查。跨期维度贡献、经营因果归因、完整多指标图表、公网多用户部署仍待后续工作。Planner v3 未合并候选排除在此功能清单之外。
+
+OCR 为机器识别，需人工审核；完整流程依赖 macOS。文档列表和 Document ID 定向检索尚缺，刷新后凭已保存的导入 ID 重开；首次上传回执丢失需要人工核实。[文档与安全验收](docs/warehouse/RELEASE_ACCEPTANCE_V1.md)
