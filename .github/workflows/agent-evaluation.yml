@@ -1,0 +1,46 @@
+name: Manual Gemini Golden Evaluation
+on:
+  workflow_dispatch:
+    inputs:
+      approve_external_calls:
+        description: 'Authorize Gemini generation and embeddings of the public Catalog and synthetic refund Golden fixture'
+        required: true
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: paid-agent-evaluation
+  cancel-in-progress: false
+jobs:
+  evaluate:
+    if: inputs.approve_external_calls && github.ref == 'refs/heads/main'
+    environment: agent-evaluation
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      POSTGRES_USER: dataquery_ci_admin
+      POSTGRES_PASSWORD: ci-only-not-production
+      POSTGRES_DB: olist
+      COMPOSE_PROJECT_NAME: dataquery-live-ci
+      COMPOSE_FILE: compose.yaml:compose.rag.yaml:compose.redis.yaml:compose.ci.yaml
+    steps:
+      - uses: actions/checkout@v4
+      - run: mkdir -p artifacts && chmod 777 artifacts
+      - run: docker compose build check
+      - run: docker compose up -d --wait db redis
+      - name: Evaluate with explicit model authorization
+        env:
+          CI_GEMINI_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CI_SOURCE_SHA: ${{ github.sha }}
+        run: |
+          test -n "$CI_GEMINI_KEY"
+          docker compose run --rm -e CI_NO_EXTERNAL_MODELS=0 -e CI_SOURCE_SHA check python scripts/ci/live.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: real-gemini-golden-report
+          path: artifacts/
+          retention-days: 7
+      - run: docker compose down --volumes --remove-orphans
+        if: always()

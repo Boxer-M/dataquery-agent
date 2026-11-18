@@ -1,0 +1,43 @@
+# Merge after compose.yaml, compose.rag.yaml and compose.redis.yaml.
+# All services share the isolated DB network namespace, matching existing loopback clients.
+services:
+  db:
+    ports: !reset []
+    # Recovery fixtures compare whole-cluster MVCC snapshots; disable maintenance transactions.
+    command: ["postgres", "-p", "5433", "-c", "autovacuum=off"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -p 5433 -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  redis:
+    ports: !reset []
+    network_mode: service:db
+    command: ["redis-server", "--port", "6381", "--save", "", "--appendonly", "no"]
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "6381", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  check:
+    build:
+      context: .
+      target: ci
+    network_mode: service:db
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      CI_ISOLATED: "1"
+      CI_NO_EXTERNAL_MODELS: "1"
+      CI_POSTGRES_USER: ${POSTGRES_USER:?test user required}
+      CI_POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?test password required}
+      CI_SOURCE_SHA: ${CI_SOURCE_SHA:-local}
+      CI_GEMINI_KEY: ${CI_GEMINI_KEY:-}
+    volumes:
+      - ./artifacts:/app/artifacts

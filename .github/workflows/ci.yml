@@ -1,0 +1,76 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main, 'codex/ci-cd-engineering-v1']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CI_NO_EXTERNAL_MODELS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt -r requirements-pdf.txt -r requirements-langgraph.txt -r requirements-redis.txt -r requirements-ci.txt
+      - run: python -m pip check
+      - run: python scripts/ci/security.py
+      - run: python -m pytest --junitxml=artifacts/unit.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: python-results
+          path: artifacts/*.xml
+          retention-days: 7
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/dist
+          retention-days: 7
+  integration-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      POSTGRES_USER: dataquery_ci_admin
+      POSTGRES_PASSWORD: ci-only-not-production
+      POSTGRES_DB: olist
+      CI_SOURCE_SHA: ${{ github.sha }}
+      COMPOSE_PROJECT_NAME: dataquery-ci
+      COMPOSE_FILE: compose.yaml:compose.rag.yaml:compose.redis.yaml:compose.ci.yaml
+    steps:
+      - uses: actions/checkout@v4
+      - run: mkdir -p artifacts && chmod 777 artifacts
+      - run: docker compose up --build --abort-on-container-exit --exit-code-from check check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-smoke-results
+          path: artifacts/
+          retention-days: 7
+      - run: docker compose down --volumes --remove-orphans
+        if: always()

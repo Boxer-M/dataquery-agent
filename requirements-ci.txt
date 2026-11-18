@@ -1,0 +1,3 @@
+# Test-only tools; runtime dependencies remain in their existing files.
+pytest==8.4.2
+PyYAML==6.0.3
