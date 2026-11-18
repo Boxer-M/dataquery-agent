@@ -1,10 +1,10 @@
-FROM python:3.12-slim AS runtime
+FROM python:3.12-slim@sha256:646fb0bca3dd3ea1bcc6feb72c17ed16eed6e10cffc732fcc1478bd3e7f02d7b AS runtime
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONPATH=/app/src:/app/tests
 WORKDIR /app
-COPY requirements*.txt ./
-RUN pip install --no-cache-dir -r requirements.txt -r requirements-pdf.txt -r requirements-langgraph.txt -r requirements-redis.txt && pip check
+COPY requirements*.txt requirements-container.lock ./
+RUN --mount=type=cache,target=/root/.cache/pip pip install --timeout 60 --retries 2 -r requirements-container.lock && pip check
 ENV PYTHONPATH=/app/src:/app/tests:/app
-RUN useradd --create-home app && chown app:app /app
+RUN useradd --create-home app && mkdir -p /run/config /run/frontend && chown app:app /app /run/config /run/frontend
 COPY --chown=app:app src src
 COPY --chown=app:app scripts scripts
 COPY --chown=app:app sql sql

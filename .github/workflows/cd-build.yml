@@ -1,0 +1,55 @@
+name: Container Delivery Validation
+on:
+  pull_request:
+  push:
+    branches: ['codex/cd-engineering-v1']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cd-build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  images-and-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      BACKEND_IMAGE: dataquery-backend:sha-${{ github.sha }}
+      FRONTEND_IMAGE: dataquery-frontend:sha-${{ github.sha }}
+      RELEASE_COMMIT: ${{ github.sha }}
+      COMPOSE_PROJECT_NAME: dataquery-cd-${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: runtime
+          load: true
+          push: false
+          tags: ${{ env.BACKEND_IMAGE }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+          cache-from: type=gha,scope=cd-backend
+          cache-to: type=gha,mode=max,scope=cd-backend
+      - uses: docker/build-push-action@v6
+        with:
+          context: frontend
+          load: true
+          push: false
+          tags: ${{ env.FRONTEND_IMAGE }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+          cache-from: type=gha,scope=cd-frontend
+          cache-to: type=gha,mode=max,scope=cd-frontend
+      - run: bash scripts/cd/validate.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: container-delivery-validation
+          path: artifacts/cd-smoke.json
+          retention-days: 7

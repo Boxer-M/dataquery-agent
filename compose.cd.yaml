@@ -1,0 +1,57 @@
+# Apply after the existing four CI Compose files; no host ports are published.
+services:
+  init:
+    image: ${BACKEND_IMAGE:?backend image required}
+    network_mode: service:db
+    command: ["python", "scripts/cd/prepare.py"]
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      CI_ISOLATED: "1"
+      CI_POSTGRES_USER: ${POSTGRES_USER:?test user required}
+      CI_POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?test password required}
+    volumes:
+      - cd_config:/run/config
+      - cd_frontend_token:/run/frontend
+  backend:
+    image: ${BACKEND_IMAGE:?backend image required}
+    network_mode: service:db
+    command: ["python", "scripts/cd/start_backend.py"]
+    environment:
+      DATAQUERY_REDIS_URL: redis://127.0.0.1:6381/0
+      DATAQUERY_DATA_VERSION: ${RELEASE_COMMIT:?source commit required}
+    volumes:
+      - cd_config:/run/config:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health',timeout=2)"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  frontend:
+    image: ${FRONTEND_IMAGE:?frontend image required}
+    network_mode: service:db
+    read_only: true
+    volumes:
+      - cd_frontend_token:/run/frontend:ro
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5173/api/health',{headers:{'X-DataQuery-Client':'workspace'}}).then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  check:
+    build: !reset null
+    image: ${BACKEND_IMAGE:?backend image required}
+    command: ["python", "scripts/cd/smoke.py"]
+    environment:
+      RELEASE_COMMIT: ${RELEASE_COMMIT:?source commit required}
+      BACKEND_IMAGE: ${BACKEND_IMAGE:?backend image required}
+      FRONTEND_IMAGE: ${FRONTEND_IMAGE:?frontend image required}
+    volumes:
+      - cd_config:/run/config:ro
+      - ./artifacts:/app/artifacts
+volumes:
+  cd_config:
+  cd_frontend_token:

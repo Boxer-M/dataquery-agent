@@ -2,7 +2,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main, 'codex/ci-cd-engineering-v1']
+    branches: [main, 'codex/ci-cd-engineering-v1', 'codex/cd-engineering-v1']
   workflow_dispatch:
 permissions:
   contents: read
