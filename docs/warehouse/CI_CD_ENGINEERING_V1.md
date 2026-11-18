@@ -60,10 +60,16 @@ docker compose down --volumes --remove-orphans
 - 本地 pytest 的总分母和隔离集成分母有重叠，应分别引用。原有图表 chunk 大于 500 kB 的构建警告仍存在。
 
 
-### 尚未完成的远端验收
+### Catalog 恢复波动的复现与隔离
 
-文档提交 `8a8a42b` 触发的 [44235944726](https://github.com/Boxer-M/dataquery-agent/actions/runs/44235944726)中，Python 与前端通过，integration-smoke 再次失败，并生成了 integration-smoke-results Artifact。该提交只改说明文档，现有证据无法确认失败根因，不能把上一轮绿色运行当成最终稳定性结论。
+用户提供的 04:14 运行日志确认 [44235944726](https://github.com/Boxer-M/dataquery-agent/actions/runs/44235944726)为 **119 通过、1 失败**，失败位于 `test_catalog_recovery` 的恢复检查点断言。两个指标 SQL 都成功，缺失 Catalog 也返回预期 partial，但没有生成 recovery。随后文档提交对应的 [44237170739](https://github.com/Boxer-M/dataquery-agent/actions/runs/44237170739)又通过，说明原环境存在波动，单次绿色不足以确认解决。
 
-另一次数据库/测试容器各 1 CPU、2 GB 的本地全新隔离复验仍为 120/120 通过，HTTP 冒烟通过。资源对照没有证明远端失败与资源相关。上述临时环境均已清理。
+源码在查询前后同时比较源数据/合同指纹和 PostgreSQL 全局 MVCC snapshot。受控 PostgreSQL 实验在第一次指标查询后提交一个仅调用 `pg_current_xact_id()` 的管理事务，得到快照 `876:876:` → `877:877:`；数据与合同指纹一致，但 recovery 被拒绝。这证明独立事务可以触发该保守保护。远端历史日志没有两次 proof，也没有具体后台 writer 记录，无法回溯证明当时一定是 autovacuum。
 
-公开日志接口返回 403，浏览器读取被已保存的权限设置阻止；当前没有可用的本分支 PR 供专用检查诊断工具关联。已请求用户提供失败步骤末尾日志。需先定位并修复这一远端失败，再验收 PR 自动触发并建议合并。手动真实 Gemini 评测继续保持未触发状态。本报告保留失败，不通过重复重跑获得绿色结论。
+修正范围为一次性 CI 数据库：`compose.ci.yaml` 设置 `autovacuum=off`，bootstrap 校验该条件，并继续在导入后显式 ANALYZE。生产 Compose 与全部 Agent、安全、Owner、SQL 和恢复逻辑保持现有实现。这样消除已知的后台维护事务源，正常恢复用例仍保留原断言。
+
+新增真实 PostgreSQL 回归主动提交一次事务，验证两个 SQL 成功、源数据/合同指纹不变、快照发生变化时，结果仍 partial 且 History 无 recovery。它证明测试环境隔离没有绕过保护。真实服务遇到无法确认一致性的状态，仍可能保守地不提供恢复入口，面向来源的版本证明可作为独立后续设计。
+
+本次镜像测试依赖下载曾遇到一次 PyPI 读取超时，测试尚未启动；原构建日志保留，之后一次有界重试完成下载。费用模型评测继续未触发。PR 实际触发待用户创建 PR 后验证。
+
+本轮本地无密钥 pytest 为 **153 通过、79 跳过**。完整无源码挂载镜像在新测试卷中 **121/121** 集成通过（26.56 秒），真实 HTTP 冒烟通过，随后 10 轮 Catalog 恢复专项各 3 项全部通过。另一个同版本依赖镜像加只读测试源码的独立环境也 **121/121** 通过（26.43 秒）。重复轮次用于稳定性检查，不能加总为新增独立用例。新增主动事务拒绝用例在本机真实 PostgreSQL 单独验证通过。上述验证未调用 Gemini。远端结果以本次修正提交关联的 Actions 为准。

@@ -35,6 +35,8 @@ def bootstrap():
     audit(source)
     with psycopg.connect(host="127.0.0.1", port=5433, dbname="postgres", user=user,
                          password=password, autocommit=True) as pg:
+        if pg.execute("SHOW autovacuum").fetchone()[0] != "off":
+            raise RuntimeError("CI requires autovacuum=off in its disposable database")
         pg.execute("CREATE DATABASE sqlshed")
     with psycopg.connect(host="127.0.0.1", port=5433, dbname="sqlshed", user=user,
                          password=password, autocommit=True) as pg:

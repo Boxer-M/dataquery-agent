@@ -8,6 +8,7 @@ from uuid import uuid4
 import psycopg
 
 from dataquery_agent.api_models import public_response
+from dataquery_agent.catalog_recovery import sql_checkpoint
 from dataquery_agent.conversation_manager import local_manager
 from dataquery_agent.conversation_store import owner_hash
 from dataquery_agent.performance import Performance
@@ -88,6 +89,44 @@ class CatalogRecoveryTests(unittest.TestCase):
                 "metric_calls_initial": 2, "metric_calls_during_recovery": query.call_count - 2,
                 "denied_owner": denied["code"], "changed_catalog": stale["code"],
             }, ensure_ascii=False, default=str, indent=2) + "\n")
+
+    def test_concurrent_transaction_still_prevents_recovery_checkpoint(self):
+        manager, _ = local_manager()
+        owner = token_hex(32)
+        manager.generate = lambda _: json.dumps(PROPOSE)
+        cid = manager.create_conversation(owner)["conversation_id"]
+        service, proofs = manager.agent.service, []
+        query = service.query
+        committed = False
+
+        def capture(*args, **kwargs):
+            proof = sql_checkpoint(*args, **kwargs)
+            proofs.append(proof)
+            return proof
+
+        def execute(request):
+            nonlocal committed
+            result = query(request)
+            if not committed:
+                # Assign and commit an XID without changing any warehouse rows.
+                with manager.store.transaction() as pg:
+                    pg.execute("SELECT pg_current_xact_id()")
+                committed = True
+            return result
+
+        with patch("dataquery_agent.catalog_recovery.sql_checkpoint", side_effect=capture), \
+                patch.object(service, "query", side_effect=execute) as calls, \
+                patch.object(manager.agent.knowledge.retriever.store, "catalog_chunks", return_value=[]):
+            result = manager.process_message(owner, cid, QUESTION, uuid4(), today=TODAY)
+        self.assertEqual(result["status"], "partial", result)
+        self.assertEqual(calls.call_count, 2)
+        self.assertEqual(len(proofs), 2)
+        self.assertTrue(all(proofs))
+        self.assertNotEqual(proofs[0]["snapshot"], proofs[1]["snapshot"])
+        contents = [{key: value for key, value in proof.items() if key != "snapshot"} for proof in proofs]
+        self.assertEqual(contents[0], contents[1])
+        self.assertNotIn("recovery", result["result"])
+        self.assertNotIn("recovery", manager.get_query(owner, result["query_id"]))
 
     def test_catalog_failures_are_distinct(self):
         manager, owner = local_manager()
