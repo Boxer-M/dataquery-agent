@@ -126,3 +126,21 @@ npm --prefix frontend run build
 PR 执行前后端生产镜像构建与隔离部署冒烟。合并 main 后，原 CI 全部成功才允许推送 GHCR；发布任务拉取新镜像的 digest，重新启动临时 PostgreSQL/Redis、FastAPI 和前端生产静态服务，验证通过后保存稳定版本清单与上一版本引用。
 
 镜像使用完整 SHA 加运行号 Tag，部署及手动回退使用不可变 digest 对。运行配置在容器启动时注入，Bearer 留在前端服务端。临时验证默认 0 次 Gemini 调用，不发布宿主端口，保持现有环回安全边界。[CD 构建、配置、版本清单、验证状态与手动回退](docs/warehouse/CD_ENGINEERING_V1.md)
+
+## Skill 注册与离线加载（阶段 A）
+
+`skills/registry.json` 是受代码审查保护的可信清单。`SkillRegistry` 只读取文本，不执行代码，也未接入 Agent、Planner 或工具权限。`business-metric-analysis` 为已检查并启用的指令骨架；`xlsx` 仅登记上游来源，尚未下载、固定 Commit 或审核，保持禁用且无工具范围。自研骨架的 reviewed 不代表经营分析执行已经验收。
+
+```python
+from dataquery_agent.skill_registry import SkillRegistry
+
+registry = SkillRegistry()
+summaries = registry.list_skill_summaries()  # 仅名称、描述、版本，不读取正文
+candidates = registry.select_candidates("生成Excel经营报告")  # xlsx，available=False
+instructions = registry.load_skill_instructions("business-metric-analysis")
+reference = registry.load_skill_resource("business-metric-analysis", "contracts")
+```
+
+指令与资源每次读取都校验 SHA-256，拒绝未知、未审核、禁用及篡改内容。路径限定仓库 `skills/`，逐级拒绝符号链接，单文件上限 64 KiB。Hash 用于核对受信清单的一致性，不能替代对清单本身的 Git 审查。工具范围仅为声明，不构成授权；构造器的 repo_root 仅供可信应用配置及离线测试使用。
+
+候选选择使用保守的确定性规则，不确定、否定和简单指标问题保持原有路径。当前不自动注入模型上下文，不执行经营分析，不生成或下载 Excel。离线验收：`CI_NO_EXTERNAL_MODELS=1 .venv/bin/python -m pytest tests/test_skill_registry.py -q`。后续接入应继续复用原 Validator、Capability 与 Run/Task/Attempt，不新增调度器。
