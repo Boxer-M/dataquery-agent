@@ -1,0 +1,268 @@
+{
+  "phase": "before",
+  "mode": "live",
+  "baseline_commit": "fc269bd",
+  "generation_model_configured": "models/gemini-3.5-flash-lite",
+  "embedding_model": "gemini-embedding-001",
+  "dataset_sha256": "7537a7a271957421425d0dad7d6d8c74d00b2cd7f7489a742d7a95c081dc2294",
+  "cases": [
+    {
+      "id": "historical",
+      "question": "从2025-04-01至2025-06-30按品类同时列折扣前商品记录金额、商品行折扣金额；分别保留两列。",
+      "http_status": 200,
+      "response": {
+        "xlsx_export": {
+          "eligible": false,
+          "code": "query_export_unavailable",
+          "message": "此查询尚未完成或不符合当前导出格式。"
+        },
+        "status": "clarification_required",
+        "conversation_id": "b6f9750b-d6d0-4238-a6af-d72cb0feeef4",
+        "message_id": "e537ed9d-75e8-4668-800d-e984b22d02fd",
+        "query_id": "0a793cd6-cc40-4fc3-86db-ac505e69cc22",
+        "answer": "模型提案与原文时间不一致，请确认窗口。",
+        "rows": [],
+        "rows_truncated": false,
+        "row_count": 0,
+        "citations": [],
+        "definitions": [],
+        "clarification_choices": [],
+        "trace": {
+          "routing": {
+            "rule": "complex_business_proposal",
+            "plan_validation": {
+              "status": "clarify",
+              "code": "window_mismatch"
+            },
+            "final_route": "business",
+            "reason": "window_mismatch",
+            "model_called": true,
+            "model_stages": [
+              "planning"
+            ],
+            "context_operation": "new",
+            "query_rewrite": false,
+            "inherited": {},
+            "modified": {}
+          },
+          "skills": [],
+          "orchestration": [],
+          "interrupt_required": false,
+          "run_id": "0a793cd6-cc40-4fc3-86db-ac505e69cc22",
+          "trace_id": "98e6c156589245e6bf23bc68dcd3a444",
+          "tasks": [],
+          "capability": [],
+          "tools": []
+        },
+        "replayed": false,
+        "visualization_unavailable_reason": "query_not_completed"
+      },
+      "answer": {
+        "task": "business",
+        "routes": [],
+        "match": {
+          "method": "exact",
+          "original_evidence": [
+            "折扣前商品记录金额",
+            "商品行折扣金额"
+          ],
+          "candidate_ids": [
+            "item_gross_sales_amount",
+            "item_discount_amount"
+          ],
+          "model_proposal": [],
+          "confirmed": [
+            "item_gross_sales_amount",
+            "item_discount_amount"
+          ]
+        },
+        "event_time_hint": null,
+        "status": "clarify",
+        "code": "window_mismatch",
+        "answer_zh": "模型提案与原文时间不一致，请确认窗口。",
+        "choices": [],
+        "result": {
+          "status": "clarify",
+          "code": "window_mismatch",
+          "message": "模型提案与原文时间不一致，请确认窗口。"
+        },
+        "trace": {
+          "trace_id": "98e6c156589245e6bf23bc68dcd3a444",
+          "model_attempts": [
+            {
+              "stage": "planning",
+              "attempt": 1,
+              "prompt_version": "business-plan-v1",
+              "model": "gemini-3.5-flash-lite",
+              "usage": {
+                "prompt": 819,
+                "output": 146,
+                "total": 965
+              },
+              "status": "received",
+              "elapsed_ms": 8223
+            }
+          ],
+          "tools": [],
+          "routing": {
+            "rule": "complex_business_proposal",
+            "plan_validation": {
+              "status": "clarify",
+              "code": "window_mismatch"
+            },
+            "final_route": "business",
+            "reason": "window_mismatch",
+            "model_called": true,
+            "model_stages": [
+              "planning"
+            ],
+            "context_operation": "new",
+            "query_rewrite": false,
+            "inherited": {},
+            "modified": {}
+          },
+          "elapsed_ms": 8224
+        },
+        "conversation_id": "b6f9750b-d6d0-4238-a6af-d72cb0feeef4",
+        "message_id": "e537ed9d-75e8-4668-800d-e984b22d02fd",
+        "xlsx_export": {
+          "eligible": false,
+          "code": "query_export_unavailable",
+          "message": "此查询尚未完成或不符合当前导出格式。"
+        },
+        "query_id": "0a793cd6-cc40-4fc3-86db-ac505e69cc22",
+        "context_operation": "new",
+        "state_version": 1,
+        "replayed": false
+      },
+      "model_outputs": [
+        {
+          "prompt_version": "business-plan-v1",
+          "model_output": "{\n  \"analysis_type\": \"summary\",\n  \"metric_ids\": [\n    \"item_gross_sales_amount\",\n    \"item_discount_amount\"\n  ],\n  \"time_windows\": [\n    \"2025-04-01至2025-06-30\"\n  ],\n  \"group_by\": [\n    \"按品类\"\n  ],\n  \"filters\": [],\n  \"comparison_type\": null,\n  \"sort_rule\": null,\n  \"limit\": null,\n  \"conditions\": [],\n  \"unresolved_business_rules\": []\n}"
+        }
+      ],
+      "checks": {
+        "completed": false,
+        "history_trace": true,
+        "category_and_two_columns": false,
+        "window_and_grain": false
+      },
+      "business_metric_sql": 0,
+      "expected_ods": {
+        "1": {
+          "item_gross_sales_amount": "48698.90",
+          "item_discount_amount": "486.30"
+        },
+        "2": {
+          "item_gross_sales_amount": "26051.35",
+          "item_discount_amount": "272.09"
+        },
+        "3": {
+          "item_gross_sales_amount": "11739.23",
+          "item_discount_amount": "131.41"
+        },
+        "4": {
+          "item_gross_sales_amount": "18029.54",
+          "item_discount_amount": "187.26"
+        },
+        "5": {
+          "item_gross_sales_amount": "13914.97",
+          "item_discount_amount": "182.80"
+        },
+        "6": {
+          "item_gross_sales_amount": "14652.58",
+          "item_discount_amount": "132.76"
+        },
+        "7": {
+          "item_gross_sales_amount": "23267.31",
+          "item_discount_amount": "248.13"
+        },
+        "8": {
+          "item_gross_sales_amount": "8517.16",
+          "item_discount_amount": "63.40"
+        },
+        "9": {
+          "item_gross_sales_amount": "14184.80",
+          "item_discount_amount": "132.71"
+        },
+        "10": {
+          "item_gross_sales_amount": "15967.37",
+          "item_discount_amount": "124.20"
+        },
+        "11": {
+          "item_gross_sales_amount": "10365.63",
+          "item_discount_amount": "83.82"
+        },
+        "12": {
+          "item_gross_sales_amount": "58761.63",
+          "item_discount_amount": "537.15"
+        },
+        "13": {
+          "item_gross_sales_amount": "7477.80",
+          "item_discount_amount": "87.36"
+        },
+        "14": {
+          "item_gross_sales_amount": "6888.95",
+          "item_discount_amount": "60.89"
+        },
+        "15": {
+          "item_gross_sales_amount": "90718.01",
+          "item_discount_amount": "919.28"
+        },
+        "16": {
+          "item_gross_sales_amount": "56847.71",
+          "item_discount_amount": "554.68"
+        },
+        "17": {
+          "item_gross_sales_amount": "16419.48",
+          "item_discount_amount": "103.55"
+        },
+        "18": {
+          "item_gross_sales_amount": "11067.09",
+          "item_discount_amount": "90.42"
+        },
+        "19": {
+          "item_gross_sales_amount": "53948.51",
+          "item_discount_amount": "592.38"
+        },
+        "20": {
+          "item_gross_sales_amount": "115026.10",
+          "item_discount_amount": "1065.52"
+        },
+        "21": {
+          "item_gross_sales_amount": "19908.02",
+          "item_discount_amount": "200.10"
+        },
+        "22": {
+          "item_gross_sales_amount": "15512.49",
+          "item_discount_amount": "109.13"
+        },
+        "23": {
+          "item_gross_sales_amount": "13179.01",
+          "item_discount_amount": "129.60"
+        },
+        "24": {
+          "item_gross_sales_amount": "19159.49",
+          "item_discount_amount": "192.37"
+        }
+      },
+      "elapsed_ms": 8325
+    }
+  ],
+  "generation_events": [
+    {
+      "stage": "business-plan-v1",
+      "mode": "live",
+      "status": "ok",
+      "model": "gemini-3.5-flash-lite",
+      "usage": {
+        "prompt": 819,
+        "output": 146,
+        "total": 965
+      },
+      "elapsed_ms": 8222
+    }
+  ],
+  "embedding_batches": [],
+  "errors": []
+}

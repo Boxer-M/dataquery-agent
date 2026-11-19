@@ -1,0 +1,40 @@
+{
+  "mode": "fixed recorded model proposal, no database/model calls",
+  "baseline_commit": "fc269bd",
+  "original_question": "从2025-04-01至2025-06-30按品类同时列折扣前商品记录金额、商品行折扣金额；分别保留两列。",
+  "model_proposal": {
+    "analysis_type": "summary",
+    "metric_ids": [
+      "item_gross_sales_amount",
+      "item_discount_amount"
+    ],
+    "time_windows": [
+      "2025-04-01至2025-06-30"
+    ],
+    "group_by": [
+      "按品类"
+    ],
+    "filters": [],
+    "comparison_type": null,
+    "sort_rule": null,
+    "limit": null,
+    "conditions": [],
+    "unresolved_business_rules": []
+  },
+  "validator_comparison": {
+    "source_expressions": [
+      "从2025-04-01至2025-06-30"
+    ],
+    "proposal_expressions": [
+      "2025-04-01至2025-06-30"
+    ],
+    "comparison": "set(source_expressions) != set(proposal.time_windows)"
+  },
+  "result": {
+    "status": "clarify",
+    "code": "window_mismatch",
+    "message": "模型提案与原文时间不一致，请确认窗口。"
+  },
+  "business_metric_sql": 0,
+  "real_model_calls": 0
+}
