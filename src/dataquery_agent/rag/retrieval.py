@@ -1,4 +1,4 @@
-"""Retrieve visible active chunks using pgvector cosine distance and exact terms."""
+"""Owner-scoped pgvector and independent PostgreSQL FTS candidates, fused by RRF."""
 from datetime import date
 from time import monotonic
 from uuid import uuid4
@@ -8,13 +8,38 @@ import unicodedata
 from .documents import KnowledgeError, ensure_safe
 from .store import CHUNKS, DOCS, VERSIONS
 
-STRATEGY = "pgvector-cosine-exact-v1"
+STRATEGY = "pgvector-postgres-fts-rrf-v1"
+
+
+def keyword_terms(text):
+    """Explicit CJK bigrams plus simple English/numeric lexemes, not a Chinese word segmenter."""
+    terms = re.findall(r"[a-z0-9_]{2,}", text.lower())
+    terms += [run[i:i + 2] for run in re.findall(r"[\u4e00-\u9fff]+", text) for i in range(len(run) - 1)]
+    return list(dict.fromkeys(terms))[:100]
+
+
+def rrf(vector_rows, keyword_rows, constant=60):
+    scores, by_id = {}, {}
+    for channel, rows in (("vector", vector_rows), ("keyword", keyword_rows)):
+        seen = set()
+        for rank, row in enumerate(rows, 1):
+            key = row["chunk_id"]
+            if key in seen:
+                continue
+            seen.add(key)
+            by_id.setdefault(key, dict(row))[channel + "_rank"] = rank
+            scores[key] = scores.get(key, 0) + 1 / (constant + rank)
+    return [dict(by_id[key], rrf_score=scores[key]) for key in sorted(
+        by_id, key=lambda key: (by_id[key]["evidence_date_status"] != "active", -scores[key], key))]
 
 
 class Retriever:
-    def __init__(self, store, embedding):
+    def __init__(self, store, embedding, *, mode="hybrid"):
+        if mode not in {"vector", "hybrid"}:
+            raise KnowledgeError("invalid_retrieval_mode")
         self.store = store
         self.embedding = embedding
+        self.mode = mode
 
     def search(self, question, *, today, owner=None, synthetic=False, topics=None, rules=False, top_k=6, reviewed_pdf=False, include_reviewed_pdf=False):
         if not isinstance(question, str) or not 1 <= len(question.strip()) <= 500 or type(top_k) is not int or not 1 <= top_k <= 10:
@@ -38,8 +63,12 @@ class Retriever:
         started = monotonic()
         values = self.embedding.embed([query], query=True)[0]
         exact_terms = re.findall(r"[a-z][a-z0-9_]{3,}|[\u4e00-\u9fff]{2,}", query.lower())[:10]
+        terms = keyword_terms(query)
+        params = {"embedding": values, "terms": exact_terms, "today": today, "version": self.embedding.version,
+                  "model": self.embedding.model, "pdf_only": reviewed_pdf, "allow_pdf": allow_pdf, "topics": topics,
+                  "rules": rules, "limit": min(3 * top_k, 30), "lexical": " | ".join(terms)}
         with self.store.transaction(owner, synthetic=synthetic) as pg:
-            rows = pg.execute(f"""
+            scored = f"""
                 WITH scored AS (
                     SELECT d.document_id,d.source_type,d.source_uri,d.owner_scope <> '' AS private,
                            v.document_version,v.title,v.topic,v.authority_level,v.effective_date,v.expires_on,
@@ -59,13 +88,34 @@ class Retriever:
                       AND (%(topics)s::text[] IS NULL OR (d.source_type='catalog' AND v.topic=ANY(%(topics)s)))
                       AND (NOT %(rules)s OR d.source_type IN ('business_rule','synthetic_fixture','reviewed_pdf'))
                 )
+            """
+            vector_rows = pg.execute(scored + """
                 SELECT * FROM scored
                 ORDER BY (evidence_date_status='active') DESC,
-                         (retrieval_score + CASE WHEN exact_match THEN 0.08 ELSE 0 END) DESC, chunk_id
+                         retrieval_score DESC, chunk_id
                 LIMIT %(limit)s
-            """, {"embedding": values, "terms": exact_terms, "today": today, "version": self.embedding.version,
-                  "model": self.embedding.model, "pdf_only": reviewed_pdf, "allow_pdf": allow_pdf, "topics": topics, "rules": rules, "limit": min(3 * top_k, 30)}).fetchall()
-            if not rows:
+            """, params).fetchall()
+            vector_pool_ids = [row["chunk_id"] for row in vector_rows]
+            has_compatible_index = bool(vector_rows)
+            vector_rows = [row for row in vector_rows if topics is not None or row["retrieval_score"] >= 0.43]
+            keyword_rows = []
+            if self.mode == "hybrid" and terms:
+                # Independent query against ALL visible chunks, never the vector LIMIT result.
+                # The SQL tokenizer mirrors keyword_terms; no extension or unreviewed dictionary required.
+                keyword_rows = pg.execute(scored + """
+                    , lexical AS (
+                      SELECT scored.*,to_tsvector('pg_catalog.simple',title || ' ' || chunk_text || ' ' ||
+                        coalesce((SELECT string_agg(substr(title || ' ' || chunk_text,i,2),' ')
+                          FROM generate_series(1,length(title || ' ' || chunk_text)-1) i
+                          WHERE substr(title || ' ' || chunk_text,i,2) ~ '^[一-鿿]{2}$'),'')) AS lexemes
+                      FROM scored WHERE evidence_date_status='active'
+                    )
+                    SELECT lexical.*,ts_rank_cd(lexemes,to_tsquery('pg_catalog.simple',%(lexical)s)) AS keyword_score
+                    FROM lexical WHERE lexemes @@ to_tsquery('pg_catalog.simple',%(lexical)s)
+                    ORDER BY keyword_score DESC,chunk_id LIMIT %(limit)s
+                """, params).fetchall()
+            rows = rrf(vector_rows, keyword_rows) if self.mode == "hybrid" else vector_rows
+            if not rows and not has_compatible_index:
                 compatible = pg.execute(f"""
                     SELECT EXISTS (SELECT 1 FROM {CHUNKS} c JOIN {DOCS} d USING(document_id)
                         JOIN {VERSIONS} v USING(document_id,document_version)
@@ -84,13 +134,18 @@ class Retriever:
             for key in ("effective_date", "expires_on"):
                 if row[key]:
                     row[key] = row[key].isoformat()
-        rows = [row for row in rows if topics is not None or row["exact_match"] or row["retrieval_score"] >= 0.43]
         trace = {
-            "trace_id": uuid4().hex, "strategy": STRATEGY, "query_embedding_called": True, "embedding_model": self.embedding.model,
+            "trace_id": uuid4().hex, "strategy": STRATEGY if self.mode == "hybrid" else "pgvector-cosine-v2", "query_embedding_called": True, "embedding_model": self.embedding.model,
+            "mode": self.mode, "fusion": "rrf" if self.mode == "hybrid" else None, "rrf_constant": 60,
+            "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1" if self.mode == "hybrid" else None,
+            "keyword_terms": terms if self.mode == "hybrid" else [],
+            "channels": {"vector_pool": vector_pool_ids, "vector": [r["chunk_id"] for r in vector_rows], "keyword": [r["chunk_id"] for r in keyword_rows]},
+            "top_k": top_k, "returned_chunk_ids": [row["chunk_id"] for row in rows[:top_k]],
             "embedding_version": self.embedding.version, "index_incompatible": incompatible,
             "query": query, "includes_reviewed_pdf": allow_pdf, "scope": "reviewed_pdf" if reviewed_pdf else "rules" if rules else "catalog" if topics else "all", "elapsed_ms": round((monotonic() - started) * 1000),
             "candidates": [{key: row[key] for key in ("document_id", "document_version", "chunk_id", "retrieval_score",
                                                      "exact_match", "evidence_date_status", "source_location", "heading_path", "source_type")}
+                           | {key: row[key] for key in ("rrf_score", "vector_rank", "keyword_rank") if key in row}
                            for row in rows],
         }
         return rows[:top_k], trace

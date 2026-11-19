@@ -72,6 +72,9 @@ class UnifiedAgent:
         except ModelUnavailable:
             result = outcome("error", "model_unavailable", "模型暂时不可用，请稍后重试。")
         trace["elapsed_ms"] = round((monotonic() - started) * 1000)
+        trace.setdefault("routing", {"rule": "validated_model_intent"})
+        trace["routing"].update(final_route=frame["task"], reason=result.get("code"),
+                                model_called=bool(runtime.attempts), model_stages=[e["stage"] for e in runtime.attempts])
         return {
             **frame, "status": result["status"], "code": result.get("code"),
             "answer_zh": result.get("answer_zh") or result.get("message") or result.get("reason") or "",
@@ -84,6 +87,7 @@ class UnifiedAgent:
         if not isinstance(question, str) or not question.strip() or len(question) > 500:
             return outcome("clarify", "invalid_question", "请提供不超过 500 字的电商问题。")
         if INJECTION.search(question):
+            trace["routing"] = {"rule": "input_safety"}
             frame["task"] = "blocked"
             return outcome("unsupported", "unsafe_request", "请直接描述业务需求。")
         # Relative observation horizons require clarification before knowledge or SQL dispatch.
@@ -100,6 +104,11 @@ class UnifiedAgent:
             routed = route_knowledge(self, question, runtime, frame, trace, today, knowledge_owner)
             if routed is not None:
                 return routed
+        if re.search(r"(?:退款|退货).*(?:最多|最高|排行|排名)", question) and not re.search(r"金额|笔数|记录数|条数|次数|退货率|退款率|利润|净收入|毛利|到账", question):
+            trace["routing"] = {"rule": "return_measure_conflict"}
+            frame["task"] = "clarification"
+            clarified = self.semantic.clarify_metric(("return_record_count", "return_record_amount"))
+            return dict(clarified, message="要比较退货记录数还是退货记录金额？当前不支持实际退款到账口径。")
         mentions = list(dict.fromkeys(match.group() for match in self.semantic.metric_pattern.finditer(question)))
         analysis = self.recognize_analysis(question, mentions)
         if analysis in {"refund_settled_at", "browse_conversion_rate", "payment_amount_by_category"}:
@@ -158,10 +167,24 @@ class UnifiedAgent:
             if set(ids) - allowed:
                 return outcome("unsupported", "mixed_detail_scope", "请单独描述明细条件与标准指标需求。")
         elif len(ids) > 1 or COMPLEX.search(question) or len(list(TIME.finditer(question))) > 1:
+            trace["routing"] = {"rule": "complex_business_proposal"}
             frame["task"] = "business"
             return self.business(question, runtime, frame, trace, today)
         else:
             frame["task"] = "single"
+
+        if not analysis and len(ids) == 1 and re.search(r"查询|统计|查看|是多少", question):
+            periods = list(TIME.finditer(question))
+            groups = [m.group() for m in self.semantic.group_pattern.finditer(question)]
+            channels = [m.group() for m in self.semantic.channel_pattern.finditer(question)]
+            remainder = question
+            for fragment in [*mentions, *groups, *channels, *(m.group() for m in periods)]:
+                remainder = remainder.replace(fragment, "")
+            if len(periods) == 1 and re.fullmatch(r"(?:请|查询|统计|查看|是多少|的|渠道|[\s，,。？?])*", remainder):
+                trace["routing"] = {"rule": "exact_metric_explicit_window"}
+                resolved = self.semantic.resolve(question, {"metrics": mentions, "time": periods[0].group(),
+                    "groups": groups, "filters": channels, "type": "metric", "missing": []}, today)
+                return self.run_metric_request(resolved["request"], frame, trace) if resolved["status"] == "ready" else resolved
 
         predicate = SEQUENCE.search(question) if analysis == "payment_failure_then_capture" else None
         try:
@@ -360,6 +383,8 @@ class UnifiedAgent:
         prepared = self.planner.prepare(
             question, generate, today,
             pdf_question=pdf_question)
+        trace.setdefault("routing", {"rule": "business_proposal"})["plan_validation"] = {
+            "status": prepared["status"], "code": prepared.get("code")}
         if prepared["status"] != "ready":
             if prepared.get("code") == "invalid_model_output":
                 runtime.invalid_output()

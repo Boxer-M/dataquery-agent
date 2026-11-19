@@ -85,7 +85,9 @@ class SpecialistPostgresTests(unittest.TestCase):
         self.assertEqual(single["status"], "ok", single)
         self.assertEqual(single["task"], "single")
         self.assertFalse(single["trace"].get("agent_calls"))
-        self.assertEqual(len(single["trace"]["model_attempts"]), 1)
+        self.assertEqual(single["trace"]["model_attempts"], [])
+        manager.generate.assert_not_called()
+        self.assertEqual(single["trace"]["routing"]["rule"], "exact_metric_explicit_window")
         self.assertEqual(int(single["result"]["query_result"]["results"][0]["value"]), expected["order_count"])
         if path := os.getenv("SPECIALIST_REPORT"):
             from pathlib import Path

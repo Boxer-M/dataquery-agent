@@ -108,6 +108,30 @@ class KnowledgePostgresTests(unittest.TestCase):
         return (retriever or self.retriever).search(question, today=TODAY, owner=owner or self.owner,
                                                    synthetic=synthetic, rules=True)
 
+    def test_fts_rrf_outside_vector_limit_without_ocr(self):
+        class ChannelProbe(FixedEmbedding):
+            def embed(self, texts, *, query=False):
+                return [vector(([1, 0] if query or "站内信" not in text else [0, 1])
+                               + [0] * (DIMENSIONS - 2)) for text in texts]
+        embedding = ChannelProbe()
+        passages = tuple(Passage(f"审核状态在管理页面展示，测试记录{i}。", (), f"lines:{i+1}-{i+1}")
+                         for i in range(7)) + (Passage("退款审核结果通过站内信通知。", (), "lines:8-8"),)
+        indexed = self.index(replace(fixture_doc(origin="ci-fts"), passages=passages), embedding=embedding)
+        try:
+            scope = dict(today=TODAY, owner=self.owner, synthetic=True, rules=True, top_k=2)
+            vector_rows, _ = Retriever(self.reader, embedding, mode="vector").search("站内信", **scope)
+            rows, trace = Retriever(self.reader, embedding).search("站内信", **scope)
+            self.assertFalse(any("站内信" in row["chunk_text"] for row in vector_rows))
+            target = next(row for row in rows if "站内信" in row["chunk_text"])
+            self.assertNotIn(target["chunk_id"], trace["channels"]["vector_pool"])
+            self.assertIn(target["chunk_id"], trace["channels"]["keyword"])
+            self.assertEqual(target["source_location"], "lines:8-8")
+            self.assertIn("站内", trace["keyword_terms"])
+            self.assertEqual(Retriever(self.reader, embedding).search("站内信", **(scope | {"owner": token_hex(32)}))[0], [])
+        finally:
+            self.writer.delete(indexed["document_id"], owner=self.owner)
+        self.assertEqual(Retriever(self.reader, embedding).search("站内信", **scope)[0], [])
+
     def test_owner_scope_and_synthetic_isolation_enforced_by_database(self):
         doc = self.index(fixture_doc())
         for owner, synthetic in ((token_hex(32), True), (self.owner, False), (None, True)):

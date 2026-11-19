@@ -88,6 +88,7 @@ class MetricDefinition(BaseModel):
 
 
 class TraceStep(BaseModel):
+    retrieval: dict[str, JsonValue] | None = None
     cache: str | None = None
     trace_id: str | None = None
     plan_id: str | None = None
@@ -155,6 +156,7 @@ def skill_steps(items):
 
 
 class PublicTrace(BaseModel):
+    routing: dict[str, JsonValue] = Field(default_factory=dict)
     skills: list[SkillTrace] = Field(default_factory=list)
     orchestration: list[OrchestrationStep] = Field(default_factory=list)
     interrupt_required: bool = False
@@ -246,6 +248,7 @@ def steps(items):
                       kind=text(item.get("kind") or ("metric" if item.get("request", {}).get("metric_id") else None), 120),
                       tool=text(details.get("tool") or item.get("tool") or item.get("strategy"), 120),
                       code=text(item.get("code") or item.get("error_code") or item.get("reason_code"), 120))
+        fields["retrieval"] = item.get("retrieval")
         if type(item.get("includes_reviewed_pdf")) is bool:
             fields["includes_reviewed_pdf"] = item["includes_reviewed_pdf"]
         fields["sources"] = [text(source, 150) for source in item.get("sources", [])[:10] if isinstance(source, str)]
@@ -329,6 +332,7 @@ def public_response(data, *, history=False):
                      saved.get("definitions", [primary] if "query_result" in result else tasks)[:12] if item.get("definition")],
         clarification_choices=[projection(MetricDefinition, item) for item in (hitl["choices"] if hitl and hitl["status"] == "paused" else saved.get("clarification_choices", data.get("choices", [])))[:8]],
         trace=PublicTrace(run_id=evidence["run_id"],
+                          routing=evidence["routing"],
                           skills=skill_steps(evidence["skills"]),
                           orchestration=[projection(OrchestrationStep, item)
                                          for item in graph.get("orchestration", [])[:8]],

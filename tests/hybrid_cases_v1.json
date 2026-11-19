@@ -1,0 +1,110 @@
+{
+  "version": "hybrid-v1-frozen",
+  "baseline_commit": "77f86db",
+  "frozen_at": "2026-11-19T02:04:09.592154+00:00",
+  "top_k": 2,
+  "routing": [
+    {
+      "id": "metric",
+      "question": "2025年1月订单量是多少？",
+      "route": "single",
+      "status": "ok",
+      "metric": "order_count"
+    },
+    {
+      "id": "followup",
+      "question": "那 2 月呢",
+      "after": "metric",
+      "route": "single",
+      "status": "ok",
+      "metric": "order_count",
+      "month": 2
+    },
+    {
+      "id": "explicit_edit",
+      "question": "那 2 月，只看mobile渠道",
+      "after": "metric",
+      "route": "single",
+      "status": "ok",
+      "metric": "order_count",
+      "month": 2,
+      "channel": "mobile"
+    },
+    {
+      "id": "ambiguous",
+      "question": "退款最多",
+      "route": "clarification",
+      "status": "clarify"
+    },
+    {
+      "id": "conflict",
+      "question": "那2月和3月呢",
+      "after": "metric",
+      "status": "clarify"
+    },
+    {
+      "id": "native",
+      "question": "PDF 中带有 Native verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。",
+      "route": "knowledge",
+      "status": "ok",
+      "page": 1,
+      "quote": "Order count: 24"
+    },
+    {
+      "id": "ocr",
+      "question": "PDF 中带有 Scanned verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。",
+      "route": "knowledge",
+      "status": "ok",
+      "page": 2,
+      "quote": "Order count: 48"
+    },
+    {
+      "id": "joint",
+      "question": "2025年1月订单量是多少，并引用PDF扫描页的 Order count 原文。",
+      "route": "hybrid",
+      "status": "ok",
+      "metric": "order_count",
+      "page": 2,
+      "quote": "Order count: 48"
+    },
+    {
+      "id": "historical",
+      "question": "从2025-04-01至2025-06-30按品类同时列折扣前商品记录金额、商品行折扣金额；分别保留两列。",
+      "route": "business",
+      "status": "ok"
+    }
+  ],
+  "retrieval": [
+    {
+      "id": "exact",
+      "question": "Order count: 48",
+      "page": 2,
+      "quote": "Order count: 48"
+    },
+    {
+      "id": "paraphrase",
+      "question": "扫描核验页面记载了多少订单？",
+      "page": 2,
+      "quote": "Order count: 48"
+    },
+    {
+      "id": "absent",
+      "question": "实际退款何时到账银行卡？",
+      "page": null,
+      "quote": null
+    },
+    {
+      "id": "foreign",
+      "question": "Order count: 48",
+      "foreign": true,
+      "page": null
+    },
+    {
+      "id": "withdrawn",
+      "question": "Order count: 48",
+      "withdrawn": true,
+      "page": null
+    }
+  ],
+  "citation_support_rule": "Expected exact quote on authorized current PDF page; absence cases require no supported answer; not a general semantic entailment classifier."
+}

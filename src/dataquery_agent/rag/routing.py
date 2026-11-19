@@ -50,6 +50,7 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
     formal_definition = bool(FORMAL_DEFINITION.search(question) and not negates_definition)
     if not bare_id and not suffix and not EXPLANATION.search(question) and not mentions_pdf:
         return None
+    trace["routing"] = {"rule": "pdf_document" if mentions_pdf else "catalog_or_knowledge"}
     service = agent.knowledge
     periods = list(TIME.finditer(question))
     pdf_clause = re.search(r"(?:并|同时)\s*(?:请\s*)?(?:引用|摘录|结合|对照|参考)\s*(?P<subject>.+)",
@@ -60,6 +61,7 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
         if (entities["metric_ids"] or entities["unknown_ids"]
                 or (TIME.search(numeric) and re.search(r"查询|统计|多少", numeric))):
             frame["task"] = "hybrid"
+            trace["routing"]["rule"] = "sql_pdf_joint"
             subject = pdf_clause["subject"].strip()
             if FORMAL_DEFINITION.search(subject):
                 return outcome("clarify", "pdf_formal_definition", "正式指标定义来自指标目录。请指定另需引用的 PDF 主题。")
@@ -92,6 +94,7 @@ def route_knowledge(agent, question, runtime, frame, trace, today, owner):
         frame["task"] = "hybrid"
         return agent.business(numeric, runtime, frame, trace, today, catalog=resolution, owner=owner)
     if periods and NUMERIC.search(question) and not formal_definition and not mentions_pdf and not NO_VALUE.search(question):
+        trace.pop("routing", None)
         return None
     frame["task"] = "knowledge"
     definition_question = not negates_definition and (formal_definition or DEFINITION.search(question))

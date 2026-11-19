@@ -1,0 +1,815 @@
+{
+  "phase": "candidate-final-code",
+  "commit": "77f86db",
+  "generation_model_configured": "models/gemini-3.5-flash-lite",
+  "embedding_model": "gemini-embedding-001",
+  "embedding_batches": [
+    {
+      "task_type": "RETRIEVAL_DOCUMENT",
+      "elapsed_ms": 1152,
+      "token_counts": [
+        null,
+        null
+      ]
+    },
+    {
+      "task_type": "RETRIEVAL_QUERY",
+      "elapsed_ms": 2240,
+      "token_counts": [
+        null
+      ]
+    }
+  ],
+  "source": {
+    "document_id": "d2a87ae47dcf191b24618895937b77343ce9060e8c812abbcaff1d7e56a5d165",
+    "hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+    "chunks": 2,
+    "locations": [
+      "page:1;lines:1-3",
+      "page:2;lines:1-3"
+    ]
+  },
+  "scores": {
+    "history": true,
+    "sql_numeric": true,
+    "sql_provenance": true,
+    "pdf_citation": true,
+    "dag": true,
+    "sql_plus_pdf": true,
+    "joint_model_proposal": true
+  },
+  "ods": {
+    "order_count": 2312
+  },
+  "answer": {
+    "task": "hybrid",
+    "routes": [
+      {
+        "trace_id": "16645ffc9629413583ea0479a5271022",
+        "metadata_source": "PostgreSQL pg_catalog",
+        "metadata_version": "9fbb8f6783ad6a160ffba478c1e8f5462c6fbdeb421f641844c025ab2a4800ea",
+        "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+        "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+        "contract_version": "1.0.0",
+        "metric_version": "1.1.1-ads",
+        "selected_source": "dws.order_day",
+        "candidate_sources": [
+          {
+            "source": "dws.order_day",
+            "reason": "满足口径、键及权限检查。",
+            "selected": true
+          }
+        ],
+        "required_fields": {
+          "dws.order_day": [
+            "channel",
+            "item_discount_amount",
+            "item_gross_amount",
+            "item_net_sales_amount",
+            "order_count",
+            "order_date",
+            "order_item_count",
+            "ordered_unit_count",
+            "status"
+          ]
+        },
+        "dimensions": [],
+        "join_paths": [],
+        "risks": [],
+        "status": "STANDARD_METRIC",
+        "metric_id": "order_count",
+        "metric_request": {
+          "metric_id": "order_count",
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "group_by": [],
+          "filters": {}
+        },
+        "metric_definition": "时间窗内创建的订单记录数，含取消订单。",
+        "time_constraints": {
+          "event_time": "order_time",
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "boundary": "[start_date,end_date)",
+          "physical_fields": {
+            "order_time": "order_date"
+          }
+        },
+        "grain": [
+          "order_date",
+          "channel",
+          "status"
+        ],
+        "reason_code": "verified_metric_service",
+        "reason": "标准模板满足已验证指标口径、时间和维度。",
+        "plan_id": "1ebdd50310754889a4fa0b82f1229d17",
+        "task_id": "1ebdd50310754889a4fa0b82f1229d17/1",
+        "attempt_id": "8e0c12ac7a454214858f37cbccbe71db",
+        "authorization_subject": {
+          "metric_id": "order_count",
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "group_by": [],
+          "filters": {}
+        },
+        "capability_phase": "preflight"
+      },
+      {
+        "trace_id": "1ed2642a259d47c5b14efade2ed07c90",
+        "metadata_source": "PostgreSQL pg_catalog",
+        "metadata_version": "9fbb8f6783ad6a160ffba478c1e8f5462c6fbdeb421f641844c025ab2a4800ea",
+        "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+        "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+        "contract_version": "1.0.0",
+        "metric_version": "1.1.1-ads",
+        "selected_source": "dws.order_day",
+        "candidate_sources": [
+          {
+            "source": "dws.order_day",
+            "reason": "满足口径、键及权限检查。",
+            "selected": true
+          }
+        ],
+        "required_fields": {
+          "dws.order_day": [
+            "channel",
+            "item_discount_amount",
+            "item_gross_amount",
+            "item_net_sales_amount",
+            "order_count",
+            "order_date",
+            "order_item_count",
+            "ordered_unit_count",
+            "status"
+          ]
+        },
+        "dimensions": [],
+        "join_paths": [],
+        "risks": [],
+        "status": "STANDARD_METRIC",
+        "metric_id": "order_count",
+        "metric_request": {
+          "metric_id": "order_count",
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "group_by": [],
+          "filters": {}
+        },
+        "metric_definition": "时间窗内创建的订单记录数，含取消订单。",
+        "time_constraints": {
+          "event_time": "order_time",
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "boundary": "[start_date,end_date)",
+          "physical_fields": {
+            "order_time": "order_date"
+          }
+        },
+        "grain": [
+          "order_date",
+          "channel",
+          "status"
+        ],
+        "reason_code": "verified_metric_service",
+        "reason": "标准模板满足已验证指标口径、时间和维度。",
+        "plan_id": "1ebdd50310754889a4fa0b82f1229d17",
+        "task_id": "1ebdd50310754889a4fa0b82f1229d17/1",
+        "attempt_id": "8e0c12ac7a454214858f37cbccbe71db",
+        "authorization_subject": {
+          "metric_id": "order_count",
+          "start_date": "2025-01-01",
+          "end_date": "2025-02-01",
+          "group_by": [],
+          "filters": {}
+        },
+        "capability_phase": "execution_recheck"
+      }
+    ],
+    "match": null,
+    "event_time_hint": null,
+    "status": "ok",
+    "code": null,
+    "answer_zh": "数据库结果\n统计窗口 [2025-01-01, 2025-02-01)。\n汇总：订单量 2312。\n订单量按orders.ordered_at统计。时间窗内创建的订单记录数，含取消订单。\n步骤 1 · 来源 dws.order_day · Trace 29771bfbf47e4c81ac765b642f0b968a\n\nPDF 证据\n原文摘录：“Order count: 48” [1] Synthetic PDF verification · PDF 第 2 页 · 审核文本第 1–3 行 · 版本 pdf-cad6706670682adc9a64ba934e247f8d1061c45fe198ac84",
+    "choices": [],
+    "result": {
+      "status": "ok",
+      "plan": {
+        "analysis_type": "summary",
+        "metric_ids": [
+          "order_count"
+        ],
+        "time_windows": [
+          {
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01"
+          }
+        ],
+        "group_by": [],
+        "filters": {},
+        "comparison_type": null,
+        "sort_rule": null,
+        "limit": null,
+        "conditions": [],
+        "required_tool_calls": [
+          {
+            "step": 1,
+            "window_index": 0,
+            "request": {
+              "metric_id": "order_count",
+              "start_date": "2025-01-01",
+              "end_date": "2025-02-01",
+              "group_by": [],
+              "filters": {}
+            }
+          }
+        ],
+        "unresolved_business_rules": [],
+        "pdf_question": "PDF扫描页的 Order count 原文。"
+      },
+      "tools": [
+        {
+          "step": 1,
+          "window_index": 0,
+          "request": {
+            "metric_id": "order_count",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "filters": {}
+          },
+          "status": "ok",
+          "elapsed_ms": 19,
+          "trace_id": "29771bfbf47e4c81ac765b642f0b968a",
+          "sources": [
+            "dws.order_day"
+          ],
+          "agent_call": {
+            "agent": "data_analysis",
+            "tool": "metric_query_service",
+            "reason": "standard_metric_capability",
+            "executed": true,
+            "model_calls": 0,
+            "elapsed_ms": 19.414
+          },
+          "row_count": 1,
+          "definition": "时间窗内创建的订单记录数，含取消订单。",
+          "event_time": "orders.ordered_at",
+          "task_id": "1ebdd50310754889a4fa0b82f1229d17/1",
+          "kind": "metric",
+          "attempt_id": "8e0c12ac7a454214858f37cbccbe71db",
+          "depends_on": [],
+          "schedule_position": 1,
+          "metric_id": "order_count",
+          "plan_id": "1ebdd50310754889a4fa0b82f1229d17"
+        }
+      ],
+      "results": [
+        {
+          "month": null,
+          "bucket": "all",
+          "metrics": {
+            "order_count": {
+              "value": "2312"
+            }
+          }
+        }
+      ],
+      "notice": null,
+      "answer_zh": "数据库结果\n统计窗口 [2025-01-01, 2025-02-01)。\n汇总：订单量 2312。\n订单量按orders.ordered_at统计。时间窗内创建的订单记录数，含取消订单。\n步骤 1 · 来源 dws.order_day · Trace 29771bfbf47e4c81ac765b642f0b968a\n\nPDF 证据\n原文摘录：“Order count: 48” [1] Synthetic PDF verification · PDF 第 2 页 · 审核文本第 1–3 行 · 版本 pdf-cad6706670682adc9a64ba934e247f8d1061c45fe198ac84",
+      "plan_id": "1ebdd50310754889a4fa0b82f1229d17",
+      "attempt_id": "8e0c12ac7a454214858f37cbccbe71db",
+      "subtasks": [
+        {
+          "step": 1,
+          "window_index": 0,
+          "request": {
+            "metric_id": "order_count",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "filters": {}
+          },
+          "status": "ok",
+          "elapsed_ms": 19,
+          "trace_id": "29771bfbf47e4c81ac765b642f0b968a",
+          "sources": [
+            "dws.order_day"
+          ],
+          "agent_call": {
+            "agent": "data_analysis",
+            "tool": "metric_query_service",
+            "reason": "standard_metric_capability",
+            "executed": true,
+            "model_calls": 0,
+            "elapsed_ms": 19.414
+          },
+          "row_count": 1,
+          "definition": "时间窗内创建的订单记录数，含取消订单。",
+          "event_time": "orders.ordered_at",
+          "task_id": "1ebdd50310754889a4fa0b82f1229d17/1",
+          "kind": "metric",
+          "attempt_id": "8e0c12ac7a454214858f37cbccbe71db",
+          "depends_on": [],
+          "schedule_position": 1,
+          "metric_id": "order_count",
+          "plan_id": "1ebdd50310754889a4fa0b82f1229d17"
+        },
+        {
+          "status": "ok",
+          "error_code": null,
+          "agent_call": {
+            "agent": "knowledge",
+            "tool": "rag_retrieval",
+            "reason": "unstructured_knowledge_requires_retrieval",
+            "executed": true,
+            "model_calls": 1,
+            "elapsed_ms": 12525.191
+          },
+          "trace_id": "7b7dd9fe8a0c4af48d6e972abbd55abe",
+          "elapsed_ms": 2278,
+          "sources": [
+            "reviewed-pdf:integrated-99a6d0c839ac8a11"
+          ],
+          "task_id": "1ebdd50310754889a4fa0b82f1229d17/2",
+          "kind": "pdf",
+          "attempt_id": "8e0c12ac7a454214858f37cbccbe71db",
+          "depends_on": [],
+          "schedule_position": 2,
+          "plan_id": "1ebdd50310754889a4fa0b82f1229d17"
+        },
+        {
+          "status": "ok",
+          "task_id": "1ebdd50310754889a4fa0b82f1229d17/3",
+          "kind": "summary",
+          "attempt_id": "8e0c12ac7a454214858f37cbccbe71db",
+          "depends_on": [
+            "1ebdd50310754889a4fa0b82f1229d17/1",
+            "1ebdd50310754889a4fa0b82f1229d17/2"
+          ],
+          "schedule_position": 3,
+          "plan_id": "1ebdd50310754889a4fa0b82f1229d17"
+        }
+      ],
+      "catalog_results": [],
+      "code": null,
+      "path": "sql_document_hybrid",
+      "knowledge_result": {
+        "status": "ok",
+        "answer_zh": "原文摘录：“Order count: 48” [1] Synthetic PDF verification · PDF 第 2 页 · 审核文本第 1–3 行 · 版本 pdf-cad6706670682adc9a64ba934e247f8d1061c45fe198ac84",
+        "evidence_status": "supported",
+        "citations": [
+          {
+            "document_id": "d2a87ae47dcf191b24618895937b77343ce9060e8c812abbcaff1d7e56a5d165",
+            "document_version": "pdf-cad6706670682adc9a64ba934e247f8d1061c45fe198ac84",
+            "chunk_id": "1ca96e86edafb9a46de1cb1eef2002b56832d70db57b4468dbd84dded1e90c46",
+            "title": "Synthetic PDF verification",
+            "source_uri": "reviewed-pdf:integrated-99a6d0c839ac8a11",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "retrieval_score": 0.8216571562988446,
+            "authority_level": 1,
+            "source_type": "reviewed_pdf",
+            "effective_date": null,
+            "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+            "content_hash": "55f360db19e75fe3da58a348ff2b596095128aca65d38c566a20bee034d07007",
+            "page_number": 2,
+            "line_start": 1,
+            "line_end": 3,
+            "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+            "extraction_method": "ocr",
+            "access_scope": "owner",
+            "quote": "Order count: 48"
+          }
+        ],
+        "retrieval_trace": {
+          "trace_id": "7b7dd9fe8a0c4af48d6e972abbd55abe",
+          "strategy": "pgvector-postgres-fts-rrf-v1",
+          "query_embedding_called": true,
+          "embedding_model": "gemini-embedding-001",
+          "mode": "hybrid",
+          "fusion": "rrf",
+          "rrf_constant": 60,
+          "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+          "keyword_terms": [
+            "pdf",
+            "order",
+            "count",
+            "扫描",
+            "描页",
+            "页的",
+            "原文"
+          ],
+          "channels": {
+            "vector": [
+              "1ca96e86edafb9a46de1cb1eef2002b56832d70db57b4468dbd84dded1e90c46",
+              "8e010f88b24bea2ec26729982e9258a31ed706827158c7512041463b827dda3d"
+            ],
+            "keyword": [
+              "1ca96e86edafb9a46de1cb1eef2002b56832d70db57b4468dbd84dded1e90c46",
+              "8e010f88b24bea2ec26729982e9258a31ed706827158c7512041463b827dda3d"
+            ]
+          },
+          "top_k": 6,
+          "returned_chunk_ids": [
+            "1ca96e86edafb9a46de1cb1eef2002b56832d70db57b4468dbd84dded1e90c46",
+            "8e010f88b24bea2ec26729982e9258a31ed706827158c7512041463b827dda3d"
+          ],
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "index_incompatible": false,
+          "query": "PDF扫描页的 Order count 原文。",
+          "includes_reviewed_pdf": true,
+          "scope": "reviewed_pdf",
+          "elapsed_ms": 2278,
+          "candidates": [
+            {
+              "document_id": "d2a87ae47dcf191b24618895937b77343ce9060e8c812abbcaff1d7e56a5d165",
+              "document_version": "pdf-cad6706670682adc9a64ba934e247f8d1061c45fe198ac84",
+              "chunk_id": "1ca96e86edafb9a46de1cb1eef2002b56832d70db57b4468dbd84dded1e90c46",
+              "retrieval_score": 0.8216571562988446,
+              "exact_match": true,
+              "evidence_date_status": "active",
+              "source_location": "page:2;lines:1-3",
+              "heading_path": [],
+              "source_type": "reviewed_pdf",
+              "rrf_score": 0.03278688524590164,
+              "vector_rank": 1,
+              "keyword_rank": 1
+            },
+            {
+              "document_id": "d2a87ae47dcf191b24618895937b77343ce9060e8c812abbcaff1d7e56a5d165",
+              "document_version": "pdf-cad6706670682adc9a64ba934e247f8d1061c45fe198ac84",
+              "chunk_id": "8e010f88b24bea2ec26729982e9258a31ed706827158c7512041463b827dda3d",
+              "retrieval_score": 0.79894990911632,
+              "exact_match": true,
+              "evidence_date_status": "active",
+              "source_location": "page:1;lines:1-3",
+              "heading_path": [],
+              "source_type": "reviewed_pdf",
+              "rrf_score": 0.03225806451612903,
+              "vector_rank": 2,
+              "keyword_rank": 2
+            }
+          ]
+        },
+        "answer_prompt_version": "knowledge-extractive-v1",
+        "agent_call": {
+          "agent": "knowledge",
+          "tool": "rag_retrieval",
+          "reason": "unstructured_knowledge_requires_retrieval",
+          "executed": true,
+          "model_calls": 1,
+          "elapsed_ms": 12525.191
+        }
+      }
+    },
+    "trace": {
+      "trace_id": "fb8eaf9828d24bca92183b3e3ceb6010",
+      "model_attempts": [
+        {
+          "stage": "planning",
+          "attempt": 1,
+          "prompt_version": "business-plan-v1",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 834,
+            "output": 126,
+            "total": 960
+          },
+          "status": "received",
+          "elapsed_ms": 9290
+        },
+        {
+          "stage": "knowledge",
+          "attempt": 1,
+          "prompt_version": "knowledge-extractive-v1",
+          "model": "gemini-3.5-flash-lite",
+          "usage": {
+            "prompt": 304,
+            "output": 102,
+            "total": 406
+          },
+          "status": "received",
+          "elapsed_ms": 10237
+        }
+      ],
+      "tools": [
+        {
+          "request": {
+            "metric_id": "order_count",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "filters": {}
+          },
+          "capability_trace_id": "1ed2642a259d47c5b14efade2ed07c90",
+          "plan_id": "1ebdd50310754889a4fa0b82f1229d17",
+          "task_id": "1ebdd50310754889a4fa0b82f1229d17/1",
+          "attempt_id": "8e0c12ac7a454214858f37cbccbe71db",
+          "authorization_subject": {
+            "metric_id": "order_count",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "filters": {}
+          },
+          "capability_phase": "execution_recheck",
+          "status": "ok",
+          "code": null,
+          "trace_id": "29771bfbf47e4c81ac765b642f0b968a",
+          "sources": [
+            "dws.order_day"
+          ],
+          "elapsed_ms": 19
+        },
+        {
+          "trace_id": "7b7dd9fe8a0c4af48d6e972abbd55abe",
+          "strategy": "pgvector-postgres-fts-rrf-v1",
+          "query_embedding_called": true,
+          "embedding_model": "gemini-embedding-001",
+          "mode": "hybrid",
+          "fusion": "rrf",
+          "rrf_constant": 60,
+          "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+          "keyword_terms": [
+            "pdf",
+            "order",
+            "count",
+            "扫描",
+            "描页",
+            "页的",
+            "原文"
+          ],
+          "channels": {
+            "vector": [
+              "1ca96e86edafb9a46de1cb1eef2002b56832d70db57b4468dbd84dded1e90c46",
+              "8e010f88b24bea2ec26729982e9258a31ed706827158c7512041463b827dda3d"
+            ],
+            "keyword": [
+              "1ca96e86edafb9a46de1cb1eef2002b56832d70db57b4468dbd84dded1e90c46",
+              "8e010f88b24bea2ec26729982e9258a31ed706827158c7512041463b827dda3d"
+            ]
+          },
+          "top_k": 6,
+          "returned_chunk_ids": [
+            "1ca96e86edafb9a46de1cb1eef2002b56832d70db57b4468dbd84dded1e90c46",
+            "8e010f88b24bea2ec26729982e9258a31ed706827158c7512041463b827dda3d"
+          ],
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "index_incompatible": false,
+          "query": "PDF扫描页的 Order count 原文。",
+          "includes_reviewed_pdf": true,
+          "scope": "reviewed_pdf",
+          "elapsed_ms": 2278,
+          "candidates": [
+            {
+              "document_id": "d2a87ae47dcf191b24618895937b77343ce9060e8c812abbcaff1d7e56a5d165",
+              "document_version": "pdf-cad6706670682adc9a64ba934e247f8d1061c45fe198ac84",
+              "chunk_id": "1ca96e86edafb9a46de1cb1eef2002b56832d70db57b4468dbd84dded1e90c46",
+              "retrieval_score": 0.8216571562988446,
+              "exact_match": true,
+              "evidence_date_status": "active",
+              "source_location": "page:2;lines:1-3",
+              "heading_path": [],
+              "source_type": "reviewed_pdf",
+              "rrf_score": 0.03278688524590164,
+              "vector_rank": 1,
+              "keyword_rank": 1
+            },
+            {
+              "document_id": "d2a87ae47dcf191b24618895937b77343ce9060e8c812abbcaff1d7e56a5d165",
+              "document_version": "pdf-cad6706670682adc9a64ba934e247f8d1061c45fe198ac84",
+              "chunk_id": "8e010f88b24bea2ec26729982e9258a31ed706827158c7512041463b827dda3d",
+              "retrieval_score": 0.79894990911632,
+              "exact_match": true,
+              "evidence_date_status": "active",
+              "source_location": "page:1;lines:1-3",
+              "heading_path": [],
+              "source_type": "reviewed_pdf",
+              "rrf_score": 0.03225806451612903,
+              "vector_rank": 2,
+              "keyword_rank": 2
+            }
+          ],
+          "plan_id": "1ebdd50310754889a4fa0b82f1229d17",
+          "task_id": "1ebdd50310754889a4fa0b82f1229d17/2",
+          "attempt_id": "8e0c12ac7a454214858f37cbccbe71db",
+          "kind": "pdf",
+          "status": "ok",
+          "error_code": null,
+          "sources": [
+            "reviewed-pdf:integrated-99a6d0c839ac8a11"
+          ],
+          "agent": "knowledge",
+          "tool": "rag_retrieval"
+        }
+      ],
+      "routing": {
+        "rule": "sql_pdf_joint",
+        "plan_validation": {
+          "status": "ready",
+          "code": null
+        },
+        "final_route": "hybrid",
+        "reason": null,
+        "model_called": true,
+        "model_stages": [
+          "planning",
+          "knowledge"
+        ],
+        "context_operation": "new",
+        "query_rewrite": false,
+        "inherited": {},
+        "modified": {}
+      },
+      "capability_records": [
+        {
+          "trace_id": "16645ffc9629413583ea0479a5271022",
+          "metadata_source": "PostgreSQL pg_catalog",
+          "metadata_version": "9fbb8f6783ad6a160ffba478c1e8f5462c6fbdeb421f641844c025ab2a4800ea",
+          "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+          "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+          "contract_version": "1.0.0",
+          "metric_version": "1.1.1-ads",
+          "selected_source": "dws.order_day",
+          "candidate_sources": [
+            {
+              "source": "dws.order_day",
+              "reason": "满足口径、键及权限检查。",
+              "selected": true
+            }
+          ],
+          "required_fields": {
+            "dws.order_day": [
+              "channel",
+              "item_discount_amount",
+              "item_gross_amount",
+              "item_net_sales_amount",
+              "order_count",
+              "order_date",
+              "order_item_count",
+              "ordered_unit_count",
+              "status"
+            ]
+          },
+          "dimensions": [],
+          "join_paths": [],
+          "risks": [],
+          "status": "STANDARD_METRIC",
+          "metric_id": "order_count",
+          "metric_request": {
+            "metric_id": "order_count",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "filters": {}
+          },
+          "metric_definition": "时间窗内创建的订单记录数，含取消订单。",
+          "time_constraints": {
+            "event_time": "order_time",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "boundary": "[start_date,end_date)",
+            "physical_fields": {
+              "order_time": "order_date"
+            }
+          },
+          "grain": [
+            "order_date",
+            "channel",
+            "status"
+          ],
+          "reason_code": "verified_metric_service",
+          "reason": "标准模板满足已验证指标口径、时间和维度。",
+          "plan_id": "1ebdd50310754889a4fa0b82f1229d17",
+          "task_id": "1ebdd50310754889a4fa0b82f1229d17/1",
+          "attempt_id": "8e0c12ac7a454214858f37cbccbe71db",
+          "authorization_subject": {
+            "metric_id": "order_count",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "filters": {}
+          },
+          "capability_phase": "preflight"
+        },
+        {
+          "trace_id": "1ed2642a259d47c5b14efade2ed07c90",
+          "metadata_source": "PostgreSQL pg_catalog",
+          "metadata_version": "9fbb8f6783ad6a160ffba478c1e8f5462c6fbdeb421f641844c025ab2a4800ea",
+          "schema_version": "92a0991560297e742a03a8f2a098eb17c7ccb9098e0571982bd1458d2d2b6093",
+          "access_version": "0c94be24d1a204729e312c8fc620892da55e415ddd2f1358161ec93057979b55",
+          "contract_version": "1.0.0",
+          "metric_version": "1.1.1-ads",
+          "selected_source": "dws.order_day",
+          "candidate_sources": [
+            {
+              "source": "dws.order_day",
+              "reason": "满足口径、键及权限检查。",
+              "selected": true
+            }
+          ],
+          "required_fields": {
+            "dws.order_day": [
+              "channel",
+              "item_discount_amount",
+              "item_gross_amount",
+              "item_net_sales_amount",
+              "order_count",
+              "order_date",
+              "order_item_count",
+              "ordered_unit_count",
+              "status"
+            ]
+          },
+          "dimensions": [],
+          "join_paths": [],
+          "risks": [],
+          "status": "STANDARD_METRIC",
+          "metric_id": "order_count",
+          "metric_request": {
+            "metric_id": "order_count",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "filters": {}
+          },
+          "metric_definition": "时间窗内创建的订单记录数，含取消订单。",
+          "time_constraints": {
+            "event_time": "order_time",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "boundary": "[start_date,end_date)",
+            "physical_fields": {
+              "order_time": "order_date"
+            }
+          },
+          "grain": [
+            "order_date",
+            "channel",
+            "status"
+          ],
+          "reason_code": "verified_metric_service",
+          "reason": "标准模板满足已验证指标口径、时间和维度。",
+          "plan_id": "1ebdd50310754889a4fa0b82f1229d17",
+          "task_id": "1ebdd50310754889a4fa0b82f1229d17/1",
+          "attempt_id": "8e0c12ac7a454214858f37cbccbe71db",
+          "authorization_subject": {
+            "metric_id": "order_count",
+            "start_date": "2025-01-01",
+            "end_date": "2025-02-01",
+            "group_by": [],
+            "filters": {}
+          },
+          "capability_phase": "execution_recheck"
+        }
+      ],
+      "agent_calls": [
+        {
+          "agent": "data_analysis",
+          "tool": "metric_query_service",
+          "reason": "standard_metric_capability",
+          "executed": true,
+          "model_calls": 0,
+          "elapsed_ms": 19.414,
+          "plan_id": "1ebdd50310754889a4fa0b82f1229d17",
+          "task_id": "1ebdd50310754889a4fa0b82f1229d17/1",
+          "attempt_id": "8e0c12ac7a454214858f37cbccbe71db"
+        },
+        {
+          "agent": "knowledge",
+          "tool": "rag_retrieval",
+          "reason": "unstructured_knowledge_requires_retrieval",
+          "executed": true,
+          "model_calls": 1,
+          "elapsed_ms": 12525.191,
+          "plan_id": "1ebdd50310754889a4fa0b82f1229d17",
+          "task_id": "1ebdd50310754889a4fa0b82f1229d17/2",
+          "attempt_id": "8e0c12ac7a454214858f37cbccbe71db"
+        }
+      ],
+      "elapsed_ms": 21849
+    },
+    "conversation_id": "ce27a2da-90b6-47a4-b4b8-8da775069b7e",
+    "message_id": "6e71ac88-43ff-4fed-921a-c4b18760c637",
+    "xlsx_export": {
+      "eligible": true,
+      "code": "xlsx_export_available",
+      "message": "支持导出"
+    },
+    "query_id": "3afeb9da-fe56-4cba-b431-02667a48e2ea",
+    "context_operation": "new",
+    "state_version": 1,
+    "replayed": false
+  },
+  "model_outputs": [
+    {
+      "prompt_version": "business-plan-v1",
+      "model_output": "{\n  \"analysis_type\": \"summary\",\n  \"metric_ids\": [\n    \"order_count\"\n  ],\n  \"time_windows\": [\n    \"2025年1月\"\n  ],\n  \"group_by\": [],\n  \"filters\": [],\n  \"comparison_type\": null,\n  \"sort_rule\": null,\n  \"limit\": null,\n  \"conditions\": [],\n  \"unresolved_business_rules\": [],\n  \"pdf_question\": \"PDF扫描页的 Order count 原文。\"\n}"
+    },
+    {
+      "prompt_version": "knowledge-extractive-v1",
+      "model_output": "{\n  \"status\": \"supported\",\n  \"claims\": [\n    {\n      \"chunk_id\": \"[已脱敏]\",\n      \"quote\": \"Order count: 48\"\n    }\n  ]\n}"
+    }
+  ],
+  "elapsed_ms": 21946
+}

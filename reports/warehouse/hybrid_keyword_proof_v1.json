@@ -1,0 +1,305 @@
+{
+  "mode": "real PostgreSQL/OCR/PDF + fixed orthogonal vectors, not real Embedding",
+  "trace": {
+    "trace_id": "9ab029c5b9824b86870f986310b0541a",
+    "strategy": "pgvector-postgres-fts-rrf-v1",
+    "query_embedding_called": true,
+    "embedding_model": "fixed-channel-independence-proof",
+    "mode": "hybrid",
+    "fusion": "rrf",
+    "rrf_constant": 60,
+    "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+    "keyword_terms": [
+      "48"
+    ],
+    "channels": {
+      "vector_pool": [
+        "35bb2ee2e9234a44ca67be312cd4ff791dc09412a7c2a3b306cf3ddf9c1e0be2",
+        "4bf0415c3afce49eddb60b4091b615f5155f8a93277527833658d60046652b0a",
+        "7ace31ade958d449d94e087f60bf37aa48bfc15383004d777c0f6892432358ba",
+        "9b9d88130ff8d20a9b420bf1ce85b5e9e32d03ba5acac7dc46a023ecf310edf3",
+        "b47f032954817f294e6c645325fabc69058d57d3f5b45c7add35d1d41a3f8c29",
+        "c8bdadb6194c078e978374e292c7accafbdb22559ad032c2ba9a6f552e9b6758"
+      ],
+      "vector": [
+        "35bb2ee2e9234a44ca67be312cd4ff791dc09412a7c2a3b306cf3ddf9c1e0be2",
+        "4bf0415c3afce49eddb60b4091b615f5155f8a93277527833658d60046652b0a",
+        "7ace31ade958d449d94e087f60bf37aa48bfc15383004d777c0f6892432358ba",
+        "9b9d88130ff8d20a9b420bf1ce85b5e9e32d03ba5acac7dc46a023ecf310edf3",
+        "b47f032954817f294e6c645325fabc69058d57d3f5b45c7add35d1d41a3f8c29",
+        "c8bdadb6194c078e978374e292c7accafbdb22559ad032c2ba9a6f552e9b6758"
+      ],
+      "keyword": [
+        "37307c3dee9daeae87696812e4e019bd6e56020811fb8a037408b0b264633eb3",
+        "9dfb9b4a795b3f6de4dd42784d9276770c12ce7bf8c0b82d75d6c7295b90b74f",
+        "a04f8990cd040f0657d3738cf854cb91e43a5ddfc36b9f9c42043c791e0c6386",
+        "c4b52c91968e6d97d62d0aae21c86c9cbcb217498578eabc7dac2c09ba4a129b",
+        "c8c22c4309d34b5cc27e95fe0803a40b987f7a893d49a1230adcaa18e5a1d2c2",
+        "ce8f92730df40a3698a0a63c1ba0ff567977006fbb2faa0c2604c379d9484927"
+      ]
+    },
+    "top_k": 2,
+    "returned_chunk_ids": [
+      "35bb2ee2e9234a44ca67be312cd4ff791dc09412a7c2a3b306cf3ddf9c1e0be2",
+      "37307c3dee9daeae87696812e4e019bd6e56020811fb8a037408b0b264633eb3"
+    ],
+    "embedding_version": "fixed-channel-independence-proof-v1",
+    "index_incompatible": false,
+    "query": "48",
+    "includes_reviewed_pdf": true,
+    "scope": "reviewed_pdf",
+    "elapsed_ms": 15,
+    "candidates": [
+      {
+        "document_id": "d1c7ce22f89377ad6373301bd5d2c719554795d3bc365f1b13eebf5c933112db",
+        "document_version": "pdf-52747f829b441d497a857dfca544259e4aa241ec726b71b3",
+        "chunk_id": "35bb2ee2e9234a44ca67be312cd4ff791dc09412a7c2a3b306cf3ddf9c1e0be2",
+        "retrieval_score": 1.0,
+        "exact_match": false,
+        "evidence_date_status": "active",
+        "source_location": "page:1;lines:1-3",
+        "heading_path": [],
+        "source_type": "reviewed_pdf",
+        "rrf_score": 0.01639344262295082,
+        "vector_rank": 1
+      },
+      {
+        "document_id": "f8c5127347961c3105f60b868a5df3bd10ff7ae38248c0a63e3f9fd16225de98",
+        "document_version": "pdf-c72a77c4984465d544db97e664653b15a698c32bab6f7c27",
+        "chunk_id": "37307c3dee9daeae87696812e4e019bd6e56020811fb8a037408b0b264633eb3",
+        "retrieval_score": 0.0,
+        "exact_match": false,
+        "evidence_date_status": "active",
+        "source_location": "page:2;lines:1-3",
+        "heading_path": [],
+        "source_type": "reviewed_pdf",
+        "rrf_score": 0.01639344262295082,
+        "keyword_rank": 1
+      },
+      {
+        "document_id": "816f17d50bef213ecf232409c595c6403ba584f846aaabe077e964102440fbe1",
+        "document_version": "pdf-4b439ae4782a4c4595be0c9899c86bf15604a13e2b3dab8b",
+        "chunk_id": "4bf0415c3afce49eddb60b4091b615f5155f8a93277527833658d60046652b0a",
+        "retrieval_score": 1.0,
+        "exact_match": false,
+        "evidence_date_status": "active",
+        "source_location": "page:1;lines:1-3",
+        "heading_path": [],
+        "source_type": "reviewed_pdf",
+        "rrf_score": 0.016129032258064516,
+        "vector_rank": 2
+      },
+      {
+        "document_id": "87221348a5a7fe0ec1f370fc396e323d3816d46956d2aecb411ee7155bba35b9",
+        "document_version": "pdf-6a427b5f39db56bbe7120be243b7133f3d9ddcb96b09ff8d",
+        "chunk_id": "9dfb9b4a795b3f6de4dd42784d9276770c12ce7bf8c0b82d75d6c7295b90b74f",
+        "retrieval_score": 0.0,
+        "exact_match": false,
+        "evidence_date_status": "active",
+        "source_location": "page:2;lines:1-3",
+        "heading_path": [],
+        "source_type": "reviewed_pdf",
+        "rrf_score": 0.016129032258064516,
+        "keyword_rank": 2
+      },
+      {
+        "document_id": "de62d7d84ba3681e48d819966a8acc61b967774ee8bf9f9598e9836b8c9e8221",
+        "document_version": "pdf-0bebb894437b0c45eb9b28d125d4e7d96a615a006ce73468",
+        "chunk_id": "7ace31ade958d449d94e087f60bf37aa48bfc15383004d777c0f6892432358ba",
+        "retrieval_score": 1.0,
+        "exact_match": false,
+        "evidence_date_status": "active",
+        "source_location": "page:1;lines:1-3",
+        "heading_path": [],
+        "source_type": "reviewed_pdf",
+        "rrf_score": 0.015873015873015872,
+        "vector_rank": 3
+      },
+      {
+        "document_id": "de62d7d84ba3681e48d819966a8acc61b967774ee8bf9f9598e9836b8c9e8221",
+        "document_version": "pdf-0bebb894437b0c45eb9b28d125d4e7d96a615a006ce73468",
+        "chunk_id": "a04f8990cd040f0657d3738cf854cb91e43a5ddfc36b9f9c42043c791e0c6386",
+        "retrieval_score": 0.0,
+        "exact_match": false,
+        "evidence_date_status": "active",
+        "source_location": "page:2;lines:1-3",
+        "heading_path": [],
+        "source_type": "reviewed_pdf",
+        "rrf_score": 0.015873015873015872,
+        "keyword_rank": 3
+      },
+      {
+        "document_id": "f8c5127347961c3105f60b868a5df3bd10ff7ae38248c0a63e3f9fd16225de98",
+        "document_version": "pdf-c72a77c4984465d544db97e664653b15a698c32bab6f7c27",
+        "chunk_id": "9b9d88130ff8d20a9b420bf1ce85b5e9e32d03ba5acac7dc46a023ecf310edf3",
+        "retrieval_score": 1.0,
+        "exact_match": false,
+        "evidence_date_status": "active",
+        "source_location": "page:1;lines:1-3",
+        "heading_path": [],
+        "source_type": "reviewed_pdf",
+        "rrf_score": 0.015625,
+        "vector_rank": 4
+      },
+      {
+        "document_id": "670a71ac81f3de32e37697a36ff58dd8419a2ed53e2ce9fc61eb9ce4d914ecb4",
+        "document_version": "pdf-cff54b3eb18d8a7ea48e6f77be0c659ff65064212e30f2e5",
+        "chunk_id": "c4b52c91968e6d97d62d0aae21c86c9cbcb217498578eabc7dac2c09ba4a129b",
+        "retrieval_score": 0.0,
+        "exact_match": false,
+        "evidence_date_status": "active",
+        "source_location": "page:2;lines:1-3",
+        "heading_path": [],
+        "source_type": "reviewed_pdf",
+        "rrf_score": 0.015625,
+        "keyword_rank": 4
+      },
+      {
+        "document_id": "670a71ac81f3de32e37697a36ff58dd8419a2ed53e2ce9fc61eb9ce4d914ecb4",
+        "document_version": "pdf-cff54b3eb18d8a7ea48e6f77be0c659ff65064212e30f2e5",
+        "chunk_id": "b47f032954817f294e6c645325fabc69058d57d3f5b45c7add35d1d41a3f8c29",
+        "retrieval_score": 1.0,
+        "exact_match": false,
+        "evidence_date_status": "active",
+        "source_location": "page:1;lines:1-3",
+        "heading_path": [],
+        "source_type": "reviewed_pdf",
+        "rrf_score": 0.015384615384615385,
+        "vector_rank": 5
+      },
+      {
+        "document_id": "d1c7ce22f89377ad6373301bd5d2c719554795d3bc365f1b13eebf5c933112db",
+        "document_version": "pdf-52747f829b441d497a857dfca544259e4aa241ec726b71b3",
+        "chunk_id": "c8c22c4309d34b5cc27e95fe0803a40b987f7a893d49a1230adcaa18e5a1d2c2",
+        "retrieval_score": 0.0,
+        "exact_match": false,
+        "evidence_date_status": "active",
+        "source_location": "page:2;lines:1-3",
+        "heading_path": [],
+        "source_type": "reviewed_pdf",
+        "rrf_score": 0.015384615384615385,
+        "keyword_rank": 5
+      },
+      {
+        "document_id": "87221348a5a7fe0ec1f370fc396e323d3816d46956d2aecb411ee7155bba35b9",
+        "document_version": "pdf-6a427b5f39db56bbe7120be243b7133f3d9ddcb96b09ff8d",
+        "chunk_id": "c8bdadb6194c078e978374e292c7accafbdb22559ad032c2ba9a6f552e9b6758",
+        "retrieval_score": 1.0,
+        "exact_match": false,
+        "evidence_date_status": "active",
+        "source_location": "page:1;lines:1-3",
+        "heading_path": [],
+        "source_type": "reviewed_pdf",
+        "rrf_score": 0.015151515151515152,
+        "vector_rank": 6
+      },
+      {
+        "document_id": "816f17d50bef213ecf232409c595c6403ba584f846aaabe077e964102440fbe1",
+        "document_version": "pdf-4b439ae4782a4c4595be0c9899c86bf15604a13e2b3dab8b",
+        "chunk_id": "ce8f92730df40a3698a0a63c1ba0ff567977006fbb2faa0c2604c379d9484927",
+        "retrieval_score": 0.0,
+        "exact_match": false,
+        "evidence_date_status": "active",
+        "source_location": "page:2;lines:1-3",
+        "heading_path": [],
+        "source_type": "reviewed_pdf",
+        "rrf_score": 0.015151515151515152,
+        "keyword_rank": 6
+      }
+    ]
+  },
+  "keyword_only": [
+    "37307c3dee9daeae87696812e4e019bd6e56020811fb8a037408b0b264633eb3",
+    "9dfb9b4a795b3f6de4dd42784d9276770c12ce7bf8c0b82d75d6c7295b90b74f",
+    "a04f8990cd040f0657d3738cf854cb91e43a5ddfc36b9f9c42043c791e0c6386",
+    "c4b52c91968e6d97d62d0aae21c86c9cbcb217498578eabc7dac2c09ba4a129b",
+    "c8c22c4309d34b5cc27e95fe0803a40b987f7a893d49a1230adcaa18e5a1d2c2",
+    "ce8f92730df40a3698a0a63c1ba0ff567977006fbb2faa0c2604c379d9484927"
+  ],
+  "citations": [
+    {
+      "document_id": "f8c5127347961c3105f60b868a5df3bd10ff7ae38248c0a63e3f9fd16225de98",
+      "document_version": "pdf-c72a77c4984465d544db97e664653b15a698c32bab6f7c27",
+      "chunk_id": "37307c3dee9daeae87696812e4e019bd6e56020811fb8a037408b0b264633eb3",
+      "title": "验收原件",
+      "source_uri": "reviewed-pdf:hybrid-proof-667f38022c79f093",
+      "source_location": "page:2;lines:1-3",
+      "heading_path": [],
+      "retrieval_score": 0.0,
+      "authority_level": 1,
+      "source_type": "reviewed_pdf",
+      "effective_date": null,
+      "embedding_version": "fixed-channel-independence-proof-v1",
+      "content_hash": "55f360db19e75fe3da58a348ff2b596095128aca65d38c566a20bee034d07007",
+      "page_number": 2,
+      "line_start": 1,
+      "line_end": 3,
+      "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+      "extraction_method": "ocr",
+      "access_scope": "owner",
+      "quote": "Order count: 48"
+    }
+  ],
+  "chinese_lexemes": {
+    "raw": "'退款审核':1",
+    "segmented": "'审核':3 '款审':2 '退款':1"
+  },
+  "chinese_retrieval": {
+    "trace_id": "9847c87fc93646a38447754013ca68b1",
+    "strategy": "pgvector-postgres-fts-rrf-v1",
+    "query_embedding_called": true,
+    "embedding_model": "fixed-channel-independence-proof",
+    "mode": "hybrid",
+    "fusion": "rrf",
+    "rrf_constant": 60,
+    "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+    "keyword_terms": [
+      "退款",
+      "款审",
+      "审核",
+      "核如",
+      "如何",
+      "何通",
+      "通知"
+    ],
+    "channels": {
+      "vector_pool": [
+        "92bb1186535f939d9909e31e56e3b450d58861e5144661016bf349afab733dfb"
+      ],
+      "vector": [
+        "92bb1186535f939d9909e31e56e3b450d58861e5144661016bf349afab733dfb"
+      ],
+      "keyword": [
+        "92bb1186535f939d9909e31e56e3b450d58861e5144661016bf349afab733dfb"
+      ]
+    },
+    "top_k": 6,
+    "returned_chunk_ids": [
+      "92bb1186535f939d9909e31e56e3b450d58861e5144661016bf349afab733dfb"
+    ],
+    "embedding_version": "fixed-channel-independence-proof-v1",
+    "index_incompatible": false,
+    "query": "退款审核如何通知",
+    "includes_reviewed_pdf": false,
+    "scope": "rules",
+    "elapsed_ms": 11,
+    "candidates": [
+      {
+        "document_id": "c789caed02a27710905f980de97daa867652f835d832551ab86695cc23694156",
+        "document_version": "1",
+        "chunk_id": "92bb1186535f939d9909e31e56e3b450d58861e5144661016bf349afab733dfb",
+        "retrieval_score": 1.0,
+        "exact_match": false,
+        "evidence_date_status": "active",
+        "source_location": "lines:2-2",
+        "heading_path": [
+          "退款"
+        ],
+        "source_type": "synthetic_fixture",
+        "rrf_score": 0.03278688524590164,
+        "vector_rank": 1,
+        "keyword_rank": 1
+      }
+    ]
+  }
+}
