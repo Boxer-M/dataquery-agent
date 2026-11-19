@@ -9,6 +9,23 @@ const request = {
 }
 const withHeaders = headers => ({ ...request, headers: { ...request.headers, ...headers } })
 
+test('only approved artifact export/download methods and local origins are accepted', () => {
+  const id = '2f074dc9-2d98-4824-a765-09fc65ead286'
+  const exportUrl = `/api/queries/${id}/artifacts/xlsx`
+  const downloadUrl = `/api/artifacts/${id}/download`
+  assert.equal(checkAccess({ ...request, url: exportUrl }), undefined)
+  assert.equal(checkAccess({ ...request, method: 'GET', url: downloadUrl }), undefined)
+  assert.equal(checkAccess({ ...request, method: 'GET', url: exportUrl })[0], 405)
+  assert.equal(checkAccess({ ...request, url: downloadUrl })[0], 405)
+  for (const url of [downloadUrl + '?owner=foreign', exportUrl + '/extra', '/api/artifacts/unknown/download']) {
+    assert.equal(checkAccess({ ...request, url })[0], 404)
+  }
+  assert.equal(checkAccess({ ...withHeaders({ 'content-type': 'text/plain' }), url: exportUrl })[0], 415)
+  assert.equal(checkAccess({ ...withHeaders({ origin: 'https://example.invalid' }), url: exportUrl })[0], 403)
+  assert.equal(checkAccess({ ...withHeaders({ host: 'example.invalid' }), method: 'GET', url: downloadUrl })[0], 403)
+  assert.equal(checkAccess({ ...withHeaders({ host: 'localhost:5173', origin: 'http://localhost:5173' }), url: exportUrl }), undefined)
+})
+
 test('allows only the same-origin routes and intended methods', () => {
   assert.equal(checkAccess(request), undefined)
   assert.equal(checkAccess({ ...request, method: 'GET', url: '/api/health' }), undefined)

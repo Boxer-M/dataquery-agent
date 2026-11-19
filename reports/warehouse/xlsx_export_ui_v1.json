@@ -1,0 +1,46 @@
+{
+  "mode": "real Chrome + fixed model proposal + PostgreSQL; fault injections labelled below",
+  "query_id": "50428d18-f5cb-4b4e-bad8-0f505455c4ae",
+  "artifact": {
+    "artifact_id": "2456c4aa-eb44-4455-b157-1d36e272c41e",
+    "query_id": "50428d18-f5cb-4b4e-bad8-0f505455c4ae",
+    "filename": "metrics-2456c4aa-eb44-4455-b157-1d36e272c41e.xlsx",
+    "created_at": "2026-11-19T00:30:01.805620Z",
+    "sha256": "a855f2f1934781950ab4e314909e6e17d4640a738a540b8c2a570d9032c26a8b",
+    "byte_size": 5083
+  },
+  "downloaded_file": "metrics-2456c4aa-eb44-4455-b157-1d36e272c41e.xlsx",
+  "initial_query": {
+    "mode": "fixed proposal + real PostgreSQL, cache off, Supervisor off",
+    "business_metric_sql": 2,
+    "proposal_calls": 1,
+    "real_gemini_calls": 0
+  },
+  "after_export": {
+    "mode": "fixed proposal + real PostgreSQL, cache off, Supervisor off",
+    "business_metric_sql": 2,
+    "proposal_calls": 1,
+    "real_gemini_calls": 0
+  },
+  "export_business_metric_sql": 0,
+  "export_gemini_calls": 0,
+  "fault_injection": {
+    "snapshot_409": true,
+    "access_404": true,
+    "download_network_failure_then_retry": true
+  },
+  "actual_artifact_creates": 1,
+  "download_attempts": 2,
+  "rapid_double_click_deduplicated": true,
+  "browser_authorization_header_absent": true,
+  "saved_bytes_match_download": true,
+  "xlsx_readback": {
+    "sheet": "经营指标",
+    "order_count": "2312",
+    "captured_payment_amount": "230864.57",
+    "amount_format": "0.00",
+    "cell_type": "n"
+  },
+  "bearer_absent_from_build": true,
+  "normal_api_after_restore_download_matches": true
+}

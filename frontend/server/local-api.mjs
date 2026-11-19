@@ -8,6 +8,9 @@ const origins = new Map([
 const uuid = '[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}'
 const resumePath = new RegExp(`^/api/queries/${uuid}/resume$`)
 const queryPath = new RegExp(`^/api/queries/${uuid}$`)
+const exportPath = new RegExp(`^/api/queries/${uuid}/artifacts/xlsx$`)
+const downloadPath = new RegExp(`^/api/artifacts/${uuid}/download$`)
+const xlsxType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 const docRoot = '/api/documents'
 const pdfRoute = new RegExp(`^${docRoot}(?:/${uuid}/versions)?$`)
 const reviewRoute = new RegExp(`^${docRoot}/${uuid}/review$`)
@@ -39,8 +42,8 @@ export function checkAccess(req) {
   const pdf = pdfRoute.test(url)
   const review = reviewRoute.test(url)
   const publish = publishRoute.test(url)
-  const allowedMethod = routes.get(url) ?? (pdf || review || publish || resumePath.test(url) ? 'POST'
-    : queryPath.test(url) || previewRoute.test(url) ? 'GET' : undefined)
+  const allowedMethod = routes.get(url) ?? (pdf || review || publish || resumePath.test(url) || exportPath.test(url) ? 'POST'
+    : queryPath.test(url) || previewRoute.test(url) || downloadPath.test(url) ? 'GET' : undefined)
   if (!allowedMethod) return [404, 'proxy_route_not_found', '此接口未开放。']
   if (allowedMethod !== method) return [405, 'proxy_method_not_allowed', '请求方法不受支持。']
   if (method === 'POST' && headers.origin !== origin) {
@@ -50,7 +53,7 @@ export function checkAccess(req) {
   if (pdf && mediaType !== 'application/pdf') {
     return [415, 'proxy_pdf_required', '请提交 PDF 请求体。']
   }
-  if ((url === '/api/chat' || review || publish) && mediaType !== 'application/json') {
+  if ((url === '/api/chat' || review || publish || exportPath.test(url)) && mediaType !== 'application/json') {
     return [415, 'proxy_json_required', '请提交 JSON 请求。']
   }
 }
@@ -83,7 +86,8 @@ export function createLocalApiHandler(tokenFile) {
       res.once('close', () => { writingDocument = false })
     }
     const requestLimit = pdf ? pdfBytes : review ? reviewBytes : 8192
-    const responseLimit = previewRoute.test(req.url) ? 8 * 1024 * 1024 : 256 * 1024
+    const download = downloadPath.test(req.url)
+    const responseLimit = download ? 1024 * 1024 : previewRoute.test(req.url) ? 8 * 1024 * 1024 : 256 * 1024
     const chunks = []
     let size = 0
     const uploadDeadline = pdf || review ? setTimeout(() => {
@@ -103,7 +107,7 @@ export function createLocalApiHandler(tokenFile) {
       clearTimeout(uploadDeadline)
     }
 
-    const headers = { Accept: 'application/json' }
+    const headers = { Accept: download ? xlsxType : 'application/json' }
     if (req.url !== '/api/health') {
       let token
       try {
@@ -134,15 +138,20 @@ export function createLocalApiHandler(tokenFile) {
       })
       response.on('end', () => {
         if (res.writableEnded) return
-        if (response.headers['content-type']?.split(';')[0] !== 'application/json') {
+        const binary = download && response.statusCode === 200
+        const disposition = response.headers['content-disposition']
+        if (response.headers['content-type']?.split(';')[0] !== (binary ? xlsxType : 'application/json')
+            || (binary && (typeof disposition !== 'string'
+              || !new RegExp(`^attachment; filename="metrics-${uuid}\\.xlsx"$`).test(disposition)))) {
           return error(res, 502, 'invalid_upstream_response', '后端返回了无效响应。')
         }
         const retryAfter = response.headers['retry-after']
         res.writeHead(response.statusCode ?? 502, {
           ...(response.statusCode === 429 && typeof retryAfter === 'string' && /^\d+$/.test(retryAfter)
             ? { 'Retry-After': retryAfter } : {}),
-          'Content-Type': 'application/json',
+          'Content-Type': binary ? xlsxType : 'application/json',
           'Cache-Control': 'no-store',
+          ...(binary ? { 'Content-Disposition': disposition, 'X-Content-Type-Options': 'nosniff' } : {}),
         })
         res.end(Buffer.concat(parts))
       })
