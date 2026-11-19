@@ -160,7 +160,14 @@ class HitlResponse(BaseModel):
     events: list[HitlEvent]
 
 
+class XlsxExport(BaseModel):
+    eligible: bool
+    code: str
+    message: str
+
+
 class QueryResponse(BaseModel):
+    xlsx_export: XlsxExport | None = None
     hitl: HitlResponse | None = None
     status: Status
     conversation_id: UUID | None = None
@@ -255,6 +262,7 @@ def metric_row(row):
 
 
 def public_response(data, *, history=False):
+    from .export_eligibility import xlsx_export
     hitl = data.get("hitl")
     if hitl and hitl["status"] == "paused" and datetime.fromisoformat(hitl["expires_at"]) <= datetime.now(timezone.utc):
         hitl = dict(hitl, status="expired")
@@ -284,6 +292,7 @@ def public_response(data, *, history=False):
         summary_only=history or bool(data.get("replayed")),
     )
     return QueryResponse(
+        xlsx_export=xlsx_export(data)[0] if history else data.get("xlsx_export"),
         hitl=HitlResponse.model_validate(hitl) if hitl else None,
         visualization=visualization, visualization_unavailable_reason=visualization_reason,
         status=status, query_id=data.get("query_id"), conversation_id=data.get("conversation_id"),

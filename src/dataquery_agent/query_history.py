@@ -126,7 +126,9 @@ def build_record(claim, message, answer, operation, elapsed_ms, *, query_id=None
 
 
 def replay_summary(record, answer):
+    from .export_eligibility import xlsx_export
     return {
+        "xlsx_export": xlsx_export(record)[0],
         **({"hitl": record["hitl"]} if "hitl" in record else {}),
         "status": answer["status"], "code": answer.get("code"), "query_id": record["query_id"],
         "trace_id": record["trace_id"], "result_summary": record["result_summary"],

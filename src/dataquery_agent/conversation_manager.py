@@ -85,7 +85,8 @@ class ConversationManager:
             record = build_record(claim, message, answer, "failed", round((monotonic() - began) * 1000),
                                   query_id=query_id)
         try:
-            self.store.finish(claim, context, pending, record, replay_summary(record, answer))
+            replay = replay_summary(record, answer)
+            self.store.finish(claim, context, pending, record, replay)
         except (psycopg.Error, ConversationError) as error:
             try:
                 self.store.abort(claim)
@@ -93,7 +94,7 @@ class ConversationManager:
                 pass  # The bounded lease still prevents permanent lockout.
             code = error.code if isinstance(error, ConversationError) else "history_write_failed"
             return {**response("error", code, "查询状态和历史未提交，请使用新消息重试。"), **ids}
-        return {**answer, **ids, "query_id": record["query_id"], "context_operation": record["context_operation"],
+        return {**answer, **ids, "xlsx_export": replay["xlsx_export"], "query_id": record["query_id"], "context_operation": record["context_operation"],
                 "state_version": claim["state"]["state_version"] + 1, "replayed": False}
 
     def resume_catalog(self, owner, state, target, today):

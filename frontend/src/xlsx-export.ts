@@ -3,6 +3,10 @@ export type Artifact = {
   artifact_id: string; query_id: string; filename: string; sha256: string; byte_size: number; created_at: string
 }
 export type ExportStage = 'idle' | 'creating' | 'downloading' | 'completed' | 'failed'
+export function exportControl(eligibility?: { eligible: boolean; message: string }) {
+  return { disabled: eligibility?.eligible !== true,
+    message: eligibility?.eligible === true ? '' : eligibility?.message ?? '服务端未提供导出资格，请查看查询历史或确认服务版本。' }
+}
 const uuid = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i
 
 export function artifactReceipt(value: unknown, queryId: string): Artifact {

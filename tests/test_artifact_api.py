@@ -112,6 +112,38 @@ class ArtifactApiTests(unittest.IsolatedAsyncioTestCase):
         with self.store.connect() as db:
             self.assertEqual(db.execute('SELECT count(*) FROM artifacts').fetchone()[0], 0)
 
+    async def test_export_eligibility_matches_history_and_direct_api(self):
+        from dataquery_agent.export_eligibility import xlsx_export
+        from dataquery_agent.api_models import public_response
+        original = deepcopy(self.record)
+        async with client(self.app) as http:
+            for name, groups, snapshot, code in (
+                ('summary', [], True, 'xlsx_export_available'),
+                ('month', ['month'], False, 'query_export_grouped'),
+                ('channel', ['channel'], False, 'query_export_grouped'),
+                ('one_group_row', ['channel'], True, 'query_export_grouped'),
+                ('legacy', [], False, 'query_export_snapshot_missing'),
+            ):
+                with self.subTest(name=name):
+                    self.record = deepcopy(original)
+                    self.record['resolved_request']['group_by'] = groups
+                    if not snapshot:
+                        self.record.pop('export_snapshot')
+                    eligibility = xlsx_export(self.record)[0]
+                    self.assertEqual(eligibility['code'], code)
+                    # Even an otherwise valid scalar snapshot cannot override grouping semantics.
+                    live = public_response({'status': 'ok', 'xlsx_export': eligibility})
+                    history = await http.get(f'/api/queries/{self.qid}', headers=AUTH)
+                    self.assertEqual(history.json()['xlsx_export'], live.xlsx_export.model_dump())
+                    created = await http.post(self.export_url, json={}, headers=AUTH)
+                    self.assertEqual(created.status_code, 201 if name == 'summary' else 409)
+                    if name != 'summary':
+                        self.assertEqual(created.json()['error']['code'], code)
+            with self.store.connect() as db:
+                self.assertEqual(db.execute('SELECT count(*) FROM artifacts').fetchone()[0], 1)
+        self.manager.agent.service.query.assert_not_called()
+        self.manager.generate.assert_not_called()
+
     async def test_missing_blob_and_missing_storage_return_not_found(self):
         async with client(self.app) as http:
             metadata = (await http.post(self.export_url, json={}, headers=AUTH)).json()
@@ -165,7 +197,10 @@ class ArtifactPostgresTests(unittest.IsolatedAsyncioTestCase):
                     chat = await http.post('/api/chat', json={'conversation_id': cid, 'message_id': str(uuid4()),
                                                             'question': QUESTION}, headers=AUTH)
                     self.assertEqual(chat.json()['status'], 'completed', chat.text)
+                    self.assertTrue(chat.json()['xlsx_export']['eligible'])
                     qid = chat.json()['query_id']
+                    saved = await http.get(f'/api/queries/{qid}', headers=AUTH)
+                    self.assertEqual(saved.json()['xlsx_export'], chat.json()['xlsx_export'])
                     self.assertEqual(query.call_count, 2)
                     created = await http.post(f'/api/queries/{qid}/artifacts/xlsx', json={}, headers=AUTH)
                     self.assertEqual(created.status_code, 201, created.text)

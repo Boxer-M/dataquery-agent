@@ -48,6 +48,7 @@ export type Visualization = {
 }
 
 export type ChatResponse = {
+  xlsx_export?: { eligible: boolean; code: string; message: string }
   hitl?: { status: 'paused' | 'resuming' | 'completed' | 'failed' | 'expired'; prompt: string;
     expires_at: string; events: { status: string; at?: string; metric_id?: string; code?: string }[] }
   status: Status

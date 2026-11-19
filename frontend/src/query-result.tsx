@@ -158,6 +158,6 @@ export function QueryResult({ result, busy, onClarify }: {
       {result.query_id && <span>查询 ID <code>{result.query_id}</code></span>}
       {result.replayed && <span>已重放原查询回执</span>}
     </div>
-    {result.status === 'completed' && result.query_id && <ExportExcel key={result.query_id} queryId={result.query_id} />}
+    {result.status === 'completed' && result.query_id && <ExportExcel key={result.query_id} queryId={result.query_id} eligibility={result.xlsx_export} />}
   </>
 }
