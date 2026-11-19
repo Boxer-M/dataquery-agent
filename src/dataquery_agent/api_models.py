@@ -32,6 +32,28 @@ class ConversationResponse(BaseModel):
     conversation_id: UUID
 
 
+class ConversationItem(ConversationResponse):
+    title: str
+    updated_at: datetime
+
+
+class ConversationPage(BaseModel):
+    conversations: list[ConversationItem]
+    has_more: bool
+
+
+class SavedMessage(BaseModel):
+    query_id: UUID
+    message_id: UUID
+    started_at: datetime
+    question: str
+
+
+class MessagePage(BaseModel):
+    messages: list[SavedMessage]
+    has_more: bool
+
+
 class HealthResponse(BaseModel):
     status: Literal["ok"] = "ok"
 
@@ -160,7 +182,14 @@ class HitlResponse(BaseModel):
     events: list[HitlEvent]
 
 
+class XlsxExport(BaseModel):
+    eligible: bool
+    code: str
+    message: str
+
+
 class QueryResponse(BaseModel):
+    xlsx_export: XlsxExport | None = None
     hitl: HitlResponse | None = None
     status: Status
     conversation_id: UUID | None = None
@@ -255,6 +284,7 @@ def metric_row(row):
 
 
 def public_response(data, *, history=False):
+    from .export_eligibility import xlsx_export
     hitl = data.get("hitl")
     if hitl and hitl["status"] == "paused" and datetime.fromisoformat(hitl["expires_at"]) <= datetime.now(timezone.utc):
         hitl = dict(hitl, status="expired")
@@ -265,9 +295,12 @@ def public_response(data, *, history=False):
     primary = result.get("query_result") or result
     rows = primary.get("results", []) if not history and ("query_result" in result or "plan" in result) else []
     summary = data.get("result_summary", {})
+    saved = data.get("display_snapshot", {}) if history else {}
     stored_rows = data.get("recovery", {}).get("results", []) if history else []
     if history or data.get("replayed"):
         rows = stored_rows or ([summary["scalar"]] if summary.get("scalar") else [])
+    if saved:
+        rows = saved.get("rows", rows)
     tasks = evidence["subtasks"]
     status = STATUS.get(data.get("execution_status" if history else "status"), "failed")
     code = identifier(data.get("error_code") if history else data.get("code"))
@@ -278,22 +311,23 @@ def public_response(data, *, history=False):
                             positive_ints={"page_number", "line_start", "line_end"})
                  for item in knowledge.get("citations", [])[:10]]
     public_rows = [metric_row(row) for row in rows[:MAX_ROWS] if isinstance(row, dict)]
-    truncated = bool(len(rows) > MAX_ROWS or summary.get("truncated") or primary.get("truncated"))
+    truncated = bool(len(rows) > MAX_ROWS or summary.get("truncated") or primary.get("truncated") or saved.get("rows_truncated"))
     visualization, visualization_reason = chart_metadata(
         result, public_rows, status=status, truncated=truncated,
         summary_only=history or bool(data.get("replayed")),
     )
     return QueryResponse(
+        xlsx_export=xlsx_export(data)[0] if history else data.get("xlsx_export"),
         hitl=HitlResponse.model_validate(hitl) if hitl else None,
         visualization=visualization, visualization_unavailable_reason=visualization_reason,
         status=status, query_id=data.get("query_id"), conversation_id=data.get("conversation_id"),
-        message_id=data.get("message_id"), answer=text(data.get("answer_zh") or (hitl or {}).get("answer")) if status != "failed" else None,
+        message_id=data.get("message_id"), answer=text(saved.get("answer") or data.get("answer_zh") or (hitl or {}).get("answer")) if status != "failed" else None,
         error=error, rows=public_rows, rows_truncated=truncated,
         row_count=summary.get("row_count", len(rows)), citations=citations,
         evidence_status=text(knowledge.get("evidence_status"), 40),
         definitions=[projection(MetricDefinition, item) for item in
-                     ([primary] if "query_result" in result else tasks)[:12] if item.get("definition")],
-        clarification_choices=[projection(MetricDefinition, item) for item in (hitl["choices"] if hitl and hitl["status"] == "paused" else data.get("choices", []))[:8]],
+                     saved.get("definitions", [primary] if "query_result" in result else tasks)[:12] if item.get("definition")],
+        clarification_choices=[projection(MetricDefinition, item) for item in (hitl["choices"] if hitl and hitl["status"] == "paused" else saved.get("clarification_choices", data.get("choices", [])))[:8]],
         trace=PublicTrace(run_id=evidence["run_id"],
                           skills=skill_steps(evidence["skills"]),
                           orchestration=[projection(OrchestrationStep, item)

@@ -8,7 +8,7 @@
 body { margin: 0; min-width: 320px; }
 button { font: inherit; }
 .workspace { display: grid; grid-template-columns: 246px minmax(0, 1fr); height: 100dvh; }
-.sidebar { background: #102b34; color: #e4f0ef; padding: 31px 20px 20px; display: flex; flex-direction: column; gap: 14px; }
+.sidebar { min-height: 0; overflow: auto; background: #102b34; color: #e4f0ef; padding: 31px 20px 20px; display: flex; flex-direction: column; gap: 14px; }
 .brand { display: flex; align-items: center; gap: 11px; padding: 0 5px 21px; }
 .brand b { font-size: 21px; letter-spacing: -.45px; line-height: 1.1; }
 .brand div span { display: block; color: #9eb9b8; margin-top: 5px; font-size: 12px; }
@@ -93,9 +93,10 @@ button { font: inherit; }
 .choices { display: grid; gap: 8px; line-height: 1.7; }
 .choices > div { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
 
-.session-history { display: grid; gap: 5px; overflow: auto; }
+.session-history { display: grid; gap: 5px; overflow: auto; max-height: 38dvh; min-height: 0; flex-shrink: 0; }
 .session-history .sidebar-label { padding-top: 4px; }
 .session-history button { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; color: inherit; background: #214049; border: 0; border-radius: 7px; padding: 7px 9px; cursor: pointer; }
+.session-history button[aria-current="true"] { background: #087b6a; }
 .history-id, .trace-details dd { overflow-wrap: anywhere; }
 .history-summary { display: grid; gap: 9px; }
 .history-summary h3, .history-summary h4, .history-summary p { margin: 6px 0; }

@@ -48,6 +48,7 @@ export type Visualization = {
 }
 
 export type ChatResponse = {
+  xlsx_export?: { eligible: boolean; code: string; message: string }
   hitl?: { status: 'paused' | 'resuming' | 'completed' | 'failed' | 'expired'; prompt: string;
     expires_at: string; events: { status: string; at?: string; metric_id?: string; code?: string }[] }
   status: Status
@@ -121,6 +122,15 @@ export async function createConversation() {
     throw new RequestError('API 未返回会话 ID。', false)
   }
   return value.conversation_id
+}
+
+export type ConversationItem = { conversation_id: string; title: string; updated_at: string }
+export async function listConversations(offset = 0) {
+  return jsonRequest<{ conversations: ConversationItem[]; has_more: boolean }>(`/api/conversations?offset=${offset}`, 'GET')
+}
+export async function listMessages(conversationId: string, offset = 0) {
+  return jsonRequest<{ messages: { message_id: string; query_id: string; question: string }[]; has_more: boolean }>(
+    `/api/conversations/${encodeURIComponent(conversationId)}/messages?offset=${offset}`, 'GET')
 }
 
 export async function sendQuestion(body: ChatRequest) {

@@ -157,6 +157,15 @@ class ApiPostgresTests(unittest.IsolatedAsyncioTestCase):
             saved_single = await http.get(f"/api/queries/{single['query_id']}", headers=AUTH)
             self.assertEqual(saved_single.status_code, 200)
             self.assertEqual(saved_single.json()["trace"], single["trace"])
+            for question in ("按月拆分", "按渠道拆分"):
+                _, grouped = await ask(question)
+                self.assertEqual(grouped["status"], "completed", grouped)
+                self.assertEqual(grouped["xlsx_export"]["code"], "query_export_grouped")
+                if question == "按月拆分":
+                    self.assertEqual(grouped["row_count"], 1)
+                rejected = await http.post(f"/api/queries/{grouped['query_id']}/artifacts/xlsx", json={}, headers=AUTH)
+                self.assertEqual(rejected.status_code, 409)
+                self.assertEqual(rejected.json()["error"]["code"], "query_export_grouped")
             trace = single["trace"]
             self.assertEqual(trace["run_id"], single["query_id"])
             task, = trace["tasks"]

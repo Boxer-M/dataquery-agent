@@ -122,6 +122,28 @@ class ConversationStore:
             return {"state": state, "conversation_id": cid, "message_id": mid, "claim_id": claim_id,
                     "started_at": started, "owner_hash": owner_key}
 
+    def list_conversations(self, owner, offset=0):
+        with self.transaction() as pg:
+            return pg.execute("""
+                SELECT c.conversation_id,c.updated_at,COALESCE((
+                    SELECT left(h.record->>'original_question',80) FROM agent_meta.query_history h
+                    WHERE h.conversation_id=c.conversation_id ORDER BY h.started_at,h.query_id LIMIT 1
+                ),'新会话') AS title
+                FROM agent_meta.conversations c WHERE c.owner_hash=%s
+                ORDER BY c.updated_at DESC,c.conversation_id DESC LIMIT 21 OFFSET %s
+            """, (owner_hash(owner), offset)).fetchall()
+
+    def list_messages(self, owner, conversation_id, offset=0):
+        self.get(owner, conversation_id)  # Unknown and foreign conversations have the same error.
+        with self.transaction() as pg:
+            return pg.execute("""
+                SELECT h.query_id,h.message_id,h.started_at,
+                       h.record->>'original_question' AS question
+                FROM agent_meta.query_history h JOIN agent_meta.conversations c USING(conversation_id)
+                WHERE c.conversation_id=%s AND c.owner_hash=%s
+                ORDER BY h.started_at,h.query_id LIMIT 21 OFFSET %s
+            """, (identifier(conversation_id), owner_hash(owner), offset)).fetchall()
+
     def finish(self, claim, context, pending, record, response):
         cid, mid = claim["conversation_id"], claim["message_id"]
         with self.transaction() as pg:

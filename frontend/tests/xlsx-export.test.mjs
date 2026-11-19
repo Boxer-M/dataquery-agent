@@ -1,6 +1,18 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { artifactReceipt, exportSession } from '../src/xlsx-export.ts'
+import { artifactReceipt, exportControl, exportSession } from '../src/xlsx-export.ts'
+
+test('server eligibility disables grouped and legacy records without inferring row count', () => {
+  const grouped = '当前 Excel 导出仅支持汇总结果，暂不支持分组明细'
+  const legacy = '此查询缺少导出快照，请重新运行查询后再导出'
+  for (const [name, eligible, message] of [['summary', true, '支持导出'],
+    ['month', false, grouped], ['channel', false, grouped],
+    ['one_group_row', false, grouped], ['legacy', false, legacy]]) {
+    assert.deepEqual(exportControl({ eligible, message }),
+      { disabled: !eligible, message: eligible ? '' : message }, name)
+  }
+  assert.equal(exportControl().disabled, true)
+})
 
 const query = '2f074dc9-2d98-4824-a765-09fc65ead286'
 const id = '3f074dc9-2d98-4824-a765-09fc65ead286'

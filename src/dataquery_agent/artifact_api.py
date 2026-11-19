@@ -10,7 +10,7 @@ from pydantic import BaseModel, ConfigDict
 
 from .artifact_store import ArtifactError
 from .conversation_store import ConversationError
-from .xlsx_report import generate_metric_xlsx
+from .export_eligibility import xlsx_export
 
 XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
@@ -55,13 +55,9 @@ def artifact_router(identity, *, store, failure):
         manager, owner = context
         def action():
             record = source(manager, owner, query_id)
-            snapshot = record.get("export_snapshot")
-            if record.get("execution_status") != "ok" or not isinstance(snapshot, dict) or snapshot.get("version") != 1:
-                return failure(409, "query_export_unavailable", "该查询未保存可导出的完整汇总结果。")
-            try:
-                content = generate_metric_xlsx(snapshot["result"], snapshot["metrics"])
-            except (ValueError, KeyError, TypeError):
-                return failure(409, "query_export_unavailable", "该结果不符合当前报表格式或精度要求。")
+            eligibility, content = xlsx_export(record)
+            if not eligibility["eligible"]:
+                return failure(409, eligibility["code"], eligibility["message"])
             return store.create(owner, query_id, content)
         return operation(action)
 

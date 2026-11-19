@@ -8,6 +8,7 @@ const origins = new Map([
 const uuid = '[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}'
 const resumePath = new RegExp(`^/api/queries/${uuid}/resume$`)
 const queryPath = new RegExp(`^/api/queries/${uuid}$`)
+const conversationRead = new RegExp(`^/api/conversations(?:/${uuid}/messages)?(?:\\?offset=(?:0|[1-9][0-9]{0,3}))?$`)
 const exportPath = new RegExp(`^/api/queries/${uuid}/artifacts/xlsx$`)
 const downloadPath = new RegExp(`^/api/artifacts/${uuid}/download$`)
 const xlsxType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -42,7 +43,7 @@ export function checkAccess(req) {
   const pdf = pdfRoute.test(url)
   const review = reviewRoute.test(url)
   const publish = publishRoute.test(url)
-  const allowedMethod = routes.get(url) ?? (pdf || review || publish || resumePath.test(url) || exportPath.test(url) ? 'POST'
+  const allowedMethod = conversationRead.test(url) && !(url === '/api/conversations' && method === 'POST') ? 'GET' : routes.get(url) ?? (pdf || review || publish || resumePath.test(url) || exportPath.test(url) ? 'POST'
     : queryPath.test(url) || previewRoute.test(url) || downloadPath.test(url) ? 'GET' : undefined)
   if (!allowedMethod) return [404, 'proxy_route_not_found', '此接口未开放。']
   if (allowedMethod !== method) return [405, 'proxy_method_not_allowed', '请求方法不受支持。']
