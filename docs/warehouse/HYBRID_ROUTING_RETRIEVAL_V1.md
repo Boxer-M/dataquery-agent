@@ -118,3 +118,20 @@ CI_NO_EXTERNAL_MODELS=1 HYBRID_POSTGRES_TESTS=1 KNOWLEDGE_POSTGRES_TESTS=1 HITL_
 可用于简历：实现带Owner/版本治理的pgvector与PostgreSQL全文RRF检索，支持中文二元组；
 9条固定提案路由对照由6/9到9/9，真实Gemini联合查询通过独立ODS和PDF页码核验。
 不要把受控正交向量测试写成真实Embedding召回率提升。
+
+## PR #66 CI 补充修复
+
+用户提供的运行日志 `44516352272`：142 passed、1 failed，唯一失败为
+`SpecialistPostgresTests.test_two_specialists_and_single_metric_fast_path`。
+原断言要求单指标有1次模型调用，但新确定性Fast Path实际为0；SQL数值检查已经通过。
+修复断言为零模型调用，并显式检查命中 `exact_metric_explicit_window`，没有跳过测试或放宽执行门。
+Node.js 20提示为独立警告，不是本次退出原因。
+
+补充不依赖macOS OCR的PostgreSQL全文/RRF集成用例：中文关键词命中向量原始LIMIT池之外的片段，
+跨Owner和撤销后均不可读。该方法放在CI原本启用的KnowledgePostgresTests中。
+同时将已合并的会话历史API测试纳入CI集成清单。所有模型和向量均固定，不调用Gemini。
+本地原失败专项及知识测试15 passed；默认Python回归241 passed、85 skipped；安全检查通过。
+完整Compose隔离项目 `dataquery-ci-pr66-fix` 使用与CI相同的四份配置，146项集成全部通过，
+真实HTTP冒烟返回2312且History Trace一致，外部模型调用0，check容器退出码0。
+本地为Linux ARM64容器，并非GitHub托管runner的新运行；云端结果以修复提交后的检查为准。
+`smoke.source_commit` 为构建时基线77f1cbf，镜像已包含本次工作区测试修补。
