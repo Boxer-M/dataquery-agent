@@ -114,6 +114,31 @@ class ConversationManager:
         return answer, active, pending, "catalog_recovery"
 
     def dispatch(self, message, state, today, *, owner=None):
+        from .preference_memory import channel_scope, preference_command
+
+        command = preference_command(message)
+        if command and owner is not None:
+            answer = response("ok", None, "")
+            answer["task"] = "preference"
+            if command["action"] == "invalid":
+                answer.update(status="clarify", code="invalid_channel", answer_zh="请使用 web、mobile、partner 或 phone 渠道。")
+            else:
+                answer["trace"]["routing"] = {"rule": "explicit_preference", "preference_operation": command}
+                if command["action"] == "get":
+                    value = self.store.preference(owner)
+                    command["saved"] = value
+                    answer["answer_zh"] = f"默认渠道：{value['channel']}。" if value else "尚未保存默认渠道。"
+                else:
+                    answer["answer_zh"] = f"已保存默认渠道：{command['channel']}。" if command["action"] == "set" else "已删除默认渠道。"
+            return answer, state["active_query_context"], state["pending_clarification"], "preference"
+        began = monotonic()
+        preference = self.store.preference(owner) if owner is not None else None
+        with channel_scope(preference, state["active_query_context"], message,
+                           round((monotonic()-began)*1000, 3),
+                           bool(self.agent.semantic.channel_pattern.search(message))):
+            return self._dispatch(message, state, today, owner=owner)
+
+    def _dispatch(self, message, state, today, *, owner=None):
         active = state["active_query_context"]
         pending = state["pending_clarification"]
         if redact(message) != message:
@@ -164,6 +189,8 @@ class ConversationManager:
         return not MONTH.fullmatch(text) and bool(TIME.search(text)) and len(remainder) >= 2
 
     def structured(self, operation, payload):
+        from .preference_memory import mark_structured
+        mark_structured(operation)
         started = monotonic()
         answer = response("ok", None, "")
         answer["task"] = "business" if operation == "comparison" else "single"
@@ -184,12 +211,18 @@ class ConversationManager:
             return None
         result, routes = answer["result"], answer.get("routes", [])
         if "query_result" in result and len(routes) == 1 and routes[0].get("metric_request"):
+            conditions = answer.get("trace", {}).get("routing", {}).get("channel_conditions", [])
             return {"kind": "standard", "context_protocol": CONTEXT_VERSION, "request": routes[0]["metric_request"],
+                    "channel_origin": ("all_channels" if conditions and conditions[-1].get("suppressed") else
+                                       conditions[-1]["source"] if conditions and conditions[-1]["applied"] else "request"),
                     "confirmed_definition": result["query_result"].get("definition"),
                     "source_models": result["query_result"].get("sources", []),
                     "metadata_version": routes[0].get("metadata_version")}
         if "plan" in result:
-            return {"kind": "business", "context_protocol": CONTEXT_VERSION, "plan": result["plan"]}
+            conditions = answer.get("trace", {}).get("routing", {}).get("channel_conditions", [])
+            return {"kind": "business", "context_protocol": CONTEXT_VERSION, "plan": result["plan"],
+                    "channel_origin": ("all_channels" if conditions and conditions[-1].get("suppressed") else
+                                       conditions[-1]["source"] if conditions and conditions[-1]["applied"] else "request")}
         if "detail_result" in result:
             detail = result["detail_result"]
             return {"kind": "detail", "context_protocol": CONTEXT_VERSION, "analysis_id": detail["analysis_id"],

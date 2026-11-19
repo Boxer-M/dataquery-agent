@@ -60,6 +60,7 @@ def bootstrap():
                                          "SQLSHED_PASSWORD": reader_password})
     for name in ("metric_reader", "detail_reader", "dynamic_reader", "agent_meta", "query_assets", "knowledge", "hitl"):
         command(f"provision_{name}.py")
+    command("provision_preferences.py")
     subprocess.run([sys.executable, "-m", "dataquery_agent.rag.pdf_cli", "init-key"], check=True)
     from dataquery_agent.rag.documents import catalog_documents
     from dataquery_agent.metric_query_service import MetricQueryService
