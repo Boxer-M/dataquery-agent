@@ -29,6 +29,14 @@ test('only approved artifact export/download methods and local origins are accep
 test('allows only the same-origin routes and intended methods', () => {
   assert.equal(checkAccess(request), undefined)
   assert.equal(checkAccess({ ...request, method: 'GET', url: '/api/health' }), undefined)
+  for (const url of ['/api/conversations', '/api/conversations?offset=20',
+    '/api/conversations/2f074dc9-2d98-4824-a765-09fc65ead286/messages?offset=0']) {
+    assert.equal(checkAccess({ ...request, method: 'GET', url }), undefined)
+  }
+  for (const url of ['/api/conversations?owner=foreign', '/api/conversations?offset=-1',
+    '/api/conversations?offset=10000', '/api/conversations/unknown/messages']) {
+    assert.equal(checkAccess({ ...request, method: 'GET', url })[0], 404)
+  }
   const url = '/api/queries/2f074dc9-2d98-4824-a765-09fc65ead286'
   assert.equal(checkAccess({ ...request, method: 'GET', url }), undefined)
   assert.equal(checkAccess({ ...request, url })[0], 405)

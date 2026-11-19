@@ -124,6 +124,15 @@ export async function createConversation() {
   return value.conversation_id
 }
 
+export type ConversationItem = { conversation_id: string; title: string; updated_at: string }
+export async function listConversations(offset = 0) {
+  return jsonRequest<{ conversations: ConversationItem[]; has_more: boolean }>(`/api/conversations?offset=${offset}`, 'GET')
+}
+export async function listMessages(conversationId: string, offset = 0) {
+  return jsonRequest<{ messages: { message_id: string; query_id: string; question: string }[]; has_more: boolean }>(
+    `/api/conversations/${encodeURIComponent(conversationId)}/messages?offset=${offset}`, 'GET')
+}
+
 export async function sendQuestion(body: ChatRequest) {
   const value = await jsonRequest<ChatResponse>('/api/chat', 'POST', body)
   if (!['completed', 'partial', 'clarification_required', 'failed'].includes(value.status)

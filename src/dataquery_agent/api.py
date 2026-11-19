@@ -8,14 +8,15 @@ from time import perf_counter_ns
 from uuid import UUID
 
 from dotenv import dotenv_values
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, Response
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from .api_models import (
-    ApiError, ChatRequest, ConversationResponse, HealthResponse, QueryResponse, ResumeRequest, public_response,
+    ApiError, ChatRequest, ConversationResponse, ConversationPage, MessagePage,
+    HealthResponse, QueryResponse, ResumeRequest, public_response, text,
 )
 from .conversation_manager import local_manager
 from .conversation_store import ConversationError
@@ -138,6 +139,25 @@ def create_app(*, token, manager_factory=local_manager, document_staging=None, p
     def create_conversation(context=Depends(identity)):
         manager, owner = context
         return ConversationResponse(conversation_id=manager.create_conversation(owner)["conversation_id"])
+
+    @app.get("/api/conversations", response_model=ConversationPage)
+    def conversations(offset: int = Query(0, ge=0, le=9999), context=Depends(identity)):
+        manager, owner = context
+        rows = manager.store.list_conversations(owner, offset)
+        return ConversationPage(conversations=[dict(row, title=text(row["title"], 80) or "新会话")
+                                               for row in rows[:20]], has_more=len(rows) > 20)
+
+    @app.get("/api/conversations/{conversation_id}/messages", response_model=MessagePage)
+    def messages(conversation_id: UUID, offset: int = Query(0, ge=0, le=9999), context=Depends(identity)):
+        manager, owner = context
+        try:
+            rows = manager.store.list_messages(owner, conversation_id, offset)
+        except ConversationError as error:
+            if error.code == "conversation_not_found":
+                raise HTTPException(404) from None
+            raise
+        return MessagePage(messages=[dict(row, question=text(row["question"], 500) or "已保存查询")
+                                     for row in rows[:20]], has_more=len(rows) > 20)
 
     def throttled(retry_after, code="rate_limited"):
         result = failure(429, code, "请求过多，请稍后重试。")

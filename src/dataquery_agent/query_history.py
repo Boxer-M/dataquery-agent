@@ -91,7 +91,7 @@ def build_record(claim, message, answer, operation, elapsed_ms, *, query_id=None
     evidence = trace_view(answer)
     evidence.pop("run_id")  # Persist the canonical query_id only.
     snapshot = export_snapshot(answer, metrics or {})
-    return {
+    record = {
         **({"export_snapshot": snapshot} if snapshot else {}),
         **{key: value for key, value in evidence.items()
            if value or key in {"trace_id", "tool_traces"}},
@@ -123,6 +123,11 @@ def build_record(claim, message, answer, operation, elapsed_ms, *, query_id=None
         "result_summary": {"row_count": len(rows), "truncated": bool(payload.get("truncated")), "scalar": scalar},
         "latency_ms": elapsed_ms, "error_code": answer.get("code"),
     }
+    from .api_models import public_response
+    view = public_response(answer).model_dump(mode="json", exclude_none=True)
+    record["display_snapshot"] = {key: view[key] for key in (
+        "answer", "rows", "rows_truncated", "definitions", "clarification_choices") if key in view}
+    return record
 
 
 def replay_summary(record, answer):

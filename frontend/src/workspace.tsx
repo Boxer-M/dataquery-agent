@@ -4,8 +4,8 @@ import {
   ApartmentOutlined, ArrowUpOutlined, BarChartOutlined, CalendarOutlined,
   FileTextOutlined, MessageOutlined, PlusOutlined, ReloadOutlined,
 } from '@ant-design/icons'
-import { createConversation, health, readQuery, RequestError, resumeQuery, sendQuestion } from './api'
-import type { ChatRequest, ChatResponse } from './api'
+import { createConversation, health, listConversations, listMessages, readQuery, RequestError, resumeQuery, sendQuestion } from './api'
+import type { ChatRequest, ChatResponse, ConversationItem } from './api'
 
 const QueryResult = lazy(() => import('./query-result').then(module => ({ default: module.QueryResult })))
 const QueryHistory = lazy(() => import('./query-history').then(module => ({ default: module.QueryHistory })))
@@ -13,8 +13,9 @@ const QueryHistory = lazy(() => import('./query-history').then(module => ({ defa
 const DocumentWorkbench = lazy(() => import('./document-workbench'))
 
 const HITL_RUN = "dataquery.pendingClarification"
+const ACTIVE_CONVERSATION = 'dataquery.activeConversation'
 
-type Message = { request: ChatRequest; response?: ChatResponse; error?: string; retryable?: boolean }
+type Message = { request: ChatRequest; response?: ChatResponse; error?: string; retryable?: boolean; historical?: boolean }
 
 const starterQuestions = [
   { label: '查询订单量', icon: <BarChartOutlined />, question: '2025年1月订单量是多少？' },
@@ -25,6 +26,11 @@ const starterQuestions = [
 export function App() {
   const [connection, setConnection] = useState<'checking' | 'online' | 'offline'>('checking')
   const [conversation, setConversation] = useState<string>()
+  const [sessions, setSessions] = useState<ConversationItem[]>([])
+  const [moreSessions, setMoreSessions] = useState(false)
+  const [moreMessages, setMoreMessages] = useState(false)
+  const [messageOffset, setMessageOffset] = useState(0)
+  const cached = useRef(new Map<string, Message[]>())
   const [messages, setMessages] = useState<Message[]>([])
   const [historyId, setHistoryId] = useState<string>()
   const [restored, setRestored] = useState<ChatResponse>()
@@ -44,18 +50,19 @@ export function App() {
 
   useEffect(() => {
     void refreshHealth()
-    const runId = sessionStorage.getItem(HITL_RUN)
-    if (!runId) return
-    let mounted = true
-    void readQuery(runId).then(result => {
-      if (mounted) {
-        setRestored(result)
-        setConversation(current => current ?? result.conversation_id)
+    void run(async () => {
+      await refreshSessions()
+      const pending = sessionStorage.getItem(HITL_RUN)
+      const paused = pending ? await readQuery(pending) : undefined
+      const id = paused?.conversation_id ?? sessionStorage.getItem(ACTIVE_CONVERSATION)
+      if (id) {
+        try {
+          const loaded = await openConversation(id)
+          if (paused && !loaded.some(item => item.response?.query_id === paused.query_id)) setRestored(paused)
+        }
+        catch (error) { sessionStorage.removeItem(ACTIVE_CONVERSATION); throw error }
       }
-    }).catch(error => {
-      if (mounted) setNotice(error.message)
     })
-    return () => { mounted = false }
   }, [])
   useEffect(() => { end.current?.scrollIntoView({ block: 'nearest' }) }, [messages, busy])
 
@@ -76,6 +83,50 @@ export function App() {
     setMessages(items => items.map(item => item.request.message_id === id ? { ...item, ...changes } : item))
   }
 
+  async function refreshSessions(offset = 0) {
+    const page = await listConversations(offset)
+    setSessions(items => offset ? [...items, ...page.conversations] : page.conversations)
+    setMoreSessions(page.has_more)
+  }
+
+  function remember() {
+    if (conversation) cached.current.set(conversation, messages)
+  }
+
+  async function savedMessages(id: string, offset = 0) {
+    const page = await listMessages(id, offset)
+    const saved = await Promise.all(page.messages.map(async item => ({
+      request: { conversation_id: id, message_id: item.message_id, question: item.question },
+      response: await readQuery(item.query_id), historical: true,
+    })))
+    return { messages: saved, more: page.has_more, offset: offset + saved.length }
+  }
+
+  async function openConversation(id: string) {
+    remember()
+    const saved = await savedMessages(id) // Always recheck access, even for a previously opened conversation.
+    setConversation(id)
+    sessionStorage.setItem(ACTIVE_CONVERSATION, id) // Only the opaque ID, never message text or credentials.
+    setMessages([...saved.messages, ...(cached.current.get(id) ?? []).filter(item =>
+      !item.response && !saved.messages.some(next => next.request.message_id === item.request.message_id))])
+    setMoreMessages(saved.more)
+    setMessageOffset(saved.offset)
+    setRestored(undefined)
+    setHistoryId(undefined)
+    setDraft('')
+    return saved.messages
+  }
+
+  async function loadMoreMessages() {
+    if (!conversation) return
+    const saved = await savedMessages(conversation, messageOffset)
+    setMessages(items => [...items.filter(item => item.historical),
+      ...saved.messages.filter(next => !items.some(item => item.request.message_id === next.request.message_id)),
+      ...items.filter(item => !item.historical)])
+    setMoreMessages(saved.more)
+    setMessageOffset(saved.offset)
+  }
+
   async function execute(request: ChatRequest) {
     update(request.message_id, { error: undefined, retryable: false, response: undefined })
     try {
@@ -85,6 +136,7 @@ export function App() {
       }
       update(request.message_id, { response, retryable: response.error?.code === 'conversation_busy' })
       setConnection('online')
+      await refreshSessions().catch(() => setNotice('查询已保存，但会话列表刷新失败，请稍后重试。'))
     } catch (error) {
       update(request.message_id, {
         error: error instanceof Error ? error.message : '请求失败。',
@@ -113,6 +165,7 @@ export function App() {
     void run(async () => {
       const active = conversation ?? await createConversation()
       setConversation(active)
+      sessionStorage.setItem(ACTIVE_CONVERSATION, active)
       const request = { conversation_id: active, message_id: crypto.randomUUID(), question }
       setMessages(items => [...items, { request }])
       setDraft('')
@@ -123,13 +176,18 @@ export function App() {
   function restart() {
     void run(async () => {
       const active = await createConversation()
+      remember()
       setConversation(active)
+      sessionStorage.setItem(ACTIVE_CONVERSATION, active)
       setMessages([])
+      setMoreMessages(false)
+      setMessageOffset(0)
       setRestored(undefined)
       sessionStorage.removeItem(HITL_RUN)
       setHistoryId(undefined)
       setDraft('')
       setConnection('online')
+      await refreshSessions()
     })
   }
 
@@ -138,6 +196,14 @@ export function App() {
       <div className="brand"><span className="mark"><BarChartOutlined /></span><div><b>DataQuery</b><span>分析工作台</span></div></div>
       <Button className="new-session" icon={<PlusOutlined />} onClick={restart} disabled={busy}>新建会话</Button>
       <Button className="document-entry" icon={<FileTextOutlined />} onClick={() => setDocuments('open')}>文档知识库</Button>
+      <div className="session-history" aria-label="已保存会话">
+        <div className="sidebar-label">已保存会话（30天保留策略）</div>
+        {sessions.map(item => <button type="button" key={item.conversation_id} disabled={busy}
+          aria-current={conversation === item.conversation_id ? 'true' : undefined}
+          title={item.conversation_id} onClick={() => void run(async () => { await openConversation(item.conversation_id) })}>{item.title}</button>)}
+        {moreSessions && <button disabled={busy} onClick={() => void run(() => refreshSessions(sessions.length))}>加载更多会话</button>}
+        <button disabled={busy} onClick={() => void run(() => refreshSessions())}>刷新会话列表</button>
+      </div>
       <div className="sidebar-label">当前会话</div>
       <div className="session"><MessageOutlined /><div><strong>{conversation ? '数据问答' : '尚未开始'}</strong>
         {conversation && <small title={conversation}>{conversation}</small>}
@@ -156,6 +222,8 @@ export function App() {
     <main className="main">
       <header className="topbar"><span>工作台</span><span className="topbar-divider">/</span><strong>数据问答</strong></header>
       <div className={`thread ${messages.length ? 'has-messages' : ''}`} aria-live="polite">
+        {messages.some(item => item.historical) && <Alert type="info" title="已保存会话：只读取历史，不重新查询。旧记录可能仅保留摘要。" />}
+        {moreMessages && <Button disabled={busy} onClick={() => void run(loadMoreMessages)}>加载更多已保存消息</Button>}
         {!messages.length && !restored && <div className="empty-state">
           <div className="empty-icon"><BarChartOutlined /></div>
           <h1>数据问答</h1>
