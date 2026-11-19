@@ -147,6 +147,10 @@ class ConversationStore:
     def finish(self, claim, context, pending, record, response):
         cid, mid = claim["conversation_id"], claim["message_id"]
         with self.transaction() as pg:
+            if record.get("context_operation") == "preference":
+                change = record["routing"].get("preference_operation")
+                if change and change["action"] in {"set", "delete"}:
+                    change["saved"] = self.write_preference(pg, claim["owner_hash"], change)
             changed = pg.execute(
                 "UPDATE agent_meta.conversations SET active_query_context=%s,pending_clarification=%s,"
                 "last_message_id=%s,last_query_id=%s,state_version=state_version+1,updated_at=now(),"
@@ -167,6 +171,24 @@ class ConversationStore:
             pg.execute("INSERT INTO agent_meta.query_history(query_id,conversation_id,message_id,trace_id,record,started_at) "
                        "VALUES (%s,%s,%s,%s,%s,%s)",
                        (record["query_id"], cid, mid, record["trace_id"], Jsonb(record), claim["started_at"]))
+
+    def preference(self, owner):
+        with self.transaction() as pg:
+            return pg.execute("SELECT channel,source,version,updated_at::text FROM agent_meta.preferences "
+                              "WHERE owner_hash=%s", (owner_hash(owner),)).fetchone()
+
+    @staticmethod
+    def write_preference(pg, owner_key, change):
+        if change["action"] == "delete":
+            pg.execute("DELETE FROM agent_meta.preferences WHERE owner_hash=%s", (owner_key,))
+            return None
+        from .intent_semantic_resolver import CHANNELS
+        if change.get("channel") not in set(CHANNELS.values()):
+            raise ConversationError("invalid_channel")
+        return pg.execute("""INSERT INTO agent_meta.preferences(owner_hash,channel,source)
+            VALUES (%s,%s,'explicit_chat') ON CONFLICT(owner_hash) DO UPDATE
+            SET channel=excluded.channel,version=agent_meta.preferences.version+1,updated_at=now()
+            RETURNING channel,source,version,updated_at::text""", (owner_key, change["channel"])).fetchone()
 
     def abort(self, claim):
         with self.transaction() as pg:

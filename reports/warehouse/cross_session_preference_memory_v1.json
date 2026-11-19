@@ -1,0 +1,324 @@
+{
+  "mode": "fixed Fast Path and real PostgreSQL via HTTP ASGI",
+  "cases": [
+    {
+      "question": "2025年4月订单量是多少？",
+      "request": {
+        "filters": {
+          "channel": "web"
+        },
+        "end_date": "2025-05-01",
+        "metric_id": "order_count",
+        "start_date": "2025-04-01"
+      },
+      "channel_trace": {
+        "metric_id": "order_count",
+        "channel": "web",
+        "source": "preference",
+        "applied": true,
+        "preference_read_ms": 6.579,
+        "preference_version": 1
+      },
+      "actual": "1286",
+      "expected_ods": 1286
+    },
+    {
+      "question": "只看mobile渠道",
+      "request": {
+        "filters": {
+          "channel": "mobile"
+        },
+        "end_date": "2025-05-01",
+        "metric_id": "order_count",
+        "start_date": "2025-04-01"
+      },
+      "channel_trace": {
+        "metric_id": "order_count",
+        "channel": "mobile",
+        "source": "request",
+        "applied": true,
+        "preference_read_ms": 5.773
+      },
+      "actual": "708",
+      "expected_ods": 708
+    },
+    {
+      "question": "那5月呢",
+      "request": {
+        "filters": {
+          "channel": "mobile"
+        },
+        "end_date": "2025-06-01",
+        "metric_id": "order_count",
+        "start_date": "2025-05-01"
+      },
+      "channel_trace": {
+        "metric_id": "order_count",
+        "channel": "mobile",
+        "source": "conversation",
+        "applied": true,
+        "preference_read_ms": 5.516
+      },
+      "actual": "716",
+      "expected_ods": 716
+    },
+    {
+      "question": "2025年6月订单量是多少？",
+      "request": {
+        "filters": {
+          "channel": "mobile"
+        },
+        "end_date": "2025-07-01",
+        "metric_id": "order_count",
+        "start_date": "2025-06-01"
+      },
+      "channel_trace": {
+        "metric_id": "order_count",
+        "channel": "mobile",
+        "source": "conversation",
+        "applied": true,
+        "preference_read_ms": 5.298
+      },
+      "actual": "716",
+      "expected_ods": 716
+    },
+    {
+      "question": "2025年4月订单量是多少？",
+      "request": {
+        "filters": {
+          "channel": "web"
+        },
+        "end_date": "2025-05-01",
+        "metric_id": "order_count",
+        "start_date": "2025-04-01"
+      },
+      "channel_trace": {
+        "metric_id": "order_count",
+        "channel": "web",
+        "source": "preference",
+        "applied": true,
+        "preference_read_ms": 4.935,
+        "preference_version": 1
+      },
+      "actual": "1286",
+      "expected_ods": 1286
+    },
+    {
+      "question": "2025年4月订单量是多少？",
+      "request": {
+        "filters": {
+          "channel": "phone"
+        },
+        "end_date": "2025-05-01",
+        "metric_id": "order_count",
+        "start_date": "2025-04-01"
+      },
+      "channel_trace": {
+        "metric_id": "order_count",
+        "channel": "phone",
+        "source": "preference",
+        "applied": true,
+        "preference_read_ms": 6.279,
+        "preference_version": 2
+      },
+      "actual": "92",
+      "expected_ods": 92
+    },
+    {
+      "question": "那5月呢",
+      "request": {
+        "filters": {
+          "channel": "phone"
+        },
+        "end_date": "2025-06-01",
+        "metric_id": "order_count",
+        "start_date": "2025-05-01"
+      },
+      "channel_trace": {
+        "metric_id": "order_count",
+        "channel": "phone",
+        "source": "preference",
+        "applied": true,
+        "preference_read_ms": 5.266,
+        "preference_version": 2
+      },
+      "actual": "93",
+      "expected_ods": 93
+    },
+    {
+      "question": "2025年4月订单量是多少？",
+      "request": {
+        "filters": {},
+        "end_date": "2025-05-01",
+        "metric_id": "order_count",
+        "start_date": "2025-04-01"
+      },
+      "channel_trace": {
+        "metric_id": "order_count",
+        "channel": null,
+        "source": "none",
+        "applied": false,
+        "preference_read_ms": 4.925
+      },
+      "actual": "2251",
+      "expected_ods": 2251
+    },
+    {
+      "question": "2025年4月订单量是多少？",
+      "request": {
+        "filters": {},
+        "end_date": "2025-05-01",
+        "metric_id": "order_count",
+        "start_date": "2025-04-01"
+      },
+      "channel_trace": {
+        "metric_id": "order_count",
+        "channel": null,
+        "source": "none",
+        "applied": false,
+        "preference_read_ms": 4.865
+      },
+      "actual": "2251",
+      "expected_ods": 2251
+    },
+    {
+      "question": "那6月呢",
+      "request": {
+        "filters": {},
+        "end_date": "2025-07-01",
+        "metric_id": "order_count",
+        "start_date": "2025-06-01"
+      },
+      "channel_trace": {
+        "metric_id": "order_count",
+        "channel": null,
+        "source": "none",
+        "applied": false,
+        "preference_read_ms": 5.267
+      },
+      "actual": "2275",
+      "expected_ods": 2275
+    },
+    {
+      "question": "2025年4月订单量和支付尝试次数分别是多少？",
+      "plan": {
+        "limit": null,
+        "filters": {
+          "channel": "web"
+        },
+        "group_by": [],
+        "sort_rule": null,
+        "conditions": [],
+        "metric_ids": [
+          "order_count",
+          "payment_attempt_count"
+        ],
+        "time_windows": [
+          {
+            "end_date": "2025-05-01",
+            "start_date": "2025-04-01"
+          }
+        ],
+        "analysis_type": "summary",
+        "comparison_type": null,
+        "required_tool_calls": [
+          {
+            "step": 1,
+            "request": {
+              "filters": {
+                "channel": "web"
+              },
+              "end_date": "2025-05-01",
+              "group_by": [],
+              "metric_id": "order_count",
+              "start_date": "2025-04-01"
+            },
+            "window_index": 0
+          },
+          {
+            "step": 2,
+            "request": {
+              "filters": {
+                "channel": "web"
+              },
+              "end_date": "2025-05-01",
+              "group_by": [],
+              "metric_id": "payment_attempt_count",
+              "start_date": "2025-04-01"
+            },
+            "window_index": 0
+          }
+        ],
+        "unresolved_business_rules": []
+      },
+      "channel_trace": [
+        {
+          "metric_id": "order_count",
+          "channel": "web",
+          "source": "preference",
+          "applied": true,
+          "preference_read_ms": 5.194,
+          "preference_version": 1
+        },
+        {
+          "metric_id": "payment_attempt_count",
+          "channel": "web",
+          "source": "preference",
+          "applied": true,
+          "preference_read_ms": 5.194,
+          "preference_version": 1
+        }
+      ],
+      "actual": [
+        {
+          "bucket": "all",
+          "month": null,
+          "metrics": {
+            "order_count": {
+              "value": "1286"
+            },
+            "payment_attempt_count": {
+              "value": "1376"
+            }
+          }
+        }
+      ],
+      "expected_ods_payment_attempts": 1376,
+      "expected_ods_order_count": 1286
+    }
+  ],
+  "real_model_calls": 0,
+  "fixed_proposal_calls": 1,
+  "metric_sql": 12,
+  "save_replay_version": 1,
+  "update_version": 2,
+  "atomic_failure_rolled_back": true,
+  "owner_isolation": true,
+  "history_trace_equal": true,
+  "baseline_commit": "9ef5334d2c7cccf7c4f3f25664e393db528577f5",
+  "offline_regression": {
+    "passed": 249,
+    "skipped": 87
+  },
+  "postgres_related_passed": 49,
+  "frontend": {
+    "passed": 11,
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "preference_read_latency_ms": {
+    "requests": 11,
+    "median": 5.267,
+    "min": 4.865,
+    "max": 6.579
+  },
+  "available_channel_contracts_checked": 26,
+  "unsupported_channel_test": "Simulated service contract; all 26 current metrics accept channel",
+  "source_hashes": {
+    "src/dataquery_agent/preference_memory.py": "f4e011c99054adfd8e2e3a470c2c8b81cd3beae0ac7ebc61b96db90d68756263",
+    "src/dataquery_agent/conversation_manager.py": "4efa1288a61284aceab47b6e79972184dd731e8ee88f056ed80f806ebfc6333a",
+    "src/dataquery_agent/conversation_store.py": "786240079eccbd4293118d63ac935fe3466bfacf8b10585ecbdedaef22559965",
+    "src/dataquery_agent/unified_agent.py": "c1708a08d4b08f0f50e1ef7f77e38d727273f1fdc7aa9c059549c00fdb9631b7",
+    "sql/agent_meta/006_preferences.sql": "af2fc085eeed3461c6f2ceeb3ff6212426798b4f3e9bbcaae9fab556d7b001d6"
+  }
+}

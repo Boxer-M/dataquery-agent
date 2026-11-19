@@ -243,6 +243,8 @@ class UnifiedAgent:
         return self.run_metric_request(resolved["request"], frame, trace)
 
     def run_metric_request(self, request, frame, trace):
+        from .preference_memory import channel_request
+        request = channel_request(request, self.service, trace)
         plan_id, attempt_id = uuid4().hex, uuid4().hex
         task = {"plan_id": plan_id, "task_id": f"{plan_id}/1", "attempt_id": attempt_id,
                 "kind": "metric", "metric_id": request["metric_id"], "depends_on": [],
@@ -485,6 +487,8 @@ class UnifiedAgent:
                     answer_zh=result["answer_zh"] + "\n正式定义\n" + knowledge["answer_zh"])
 
     def run_business_plan(self, plan, frame, trace, *, recovery_proof=None, catalog=None, metric_results=None, document=None, roles=None):
+        from .preference_memory import channel_plan
+        plan = channel_plan(plan, self.service, trace)
         plan_id, attempt_id = uuid4().hex, uuid4().hex
         routes = {}
         def resolve(request, step, phase):
