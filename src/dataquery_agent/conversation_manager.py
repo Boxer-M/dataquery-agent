@@ -72,6 +72,8 @@ class ConversationManager:
 
                 if pause(self, answer, dict(pending, catalog_hash=catalog_hash(self)), query_id):
                     pending = None
+            from .runtime_trace import record_routing
+            record_routing(answer, claim["state"]["active_query_context"], context, operation)
             record = build_record(claim, message, answer, operation, round((monotonic() - began) * 1000),
                                   query_id=query_id, metrics=getattr(getattr(self.agent, "service", None), "metrics", {}))
             if recovery := record.get("recovery"):

@@ -55,7 +55,21 @@ def compare_plan(request):
 
 
 def edit_for_message(message, context, metrics, cutoff):
-    text = message.strip().rstrip("。！？!?")
+    text = re.sub(r"\s+", "", message).rstrip("。！？!?")
+    combined = re.fullmatch(r"(?:那)?(?:([0-9]{4})年)?([0-9]{1,2})月(?:份)?(?:呢)?"
+                            r"[，,]*(?:只看(web|mobile|partner|phone)渠道)?[，,]*(按渠道拆分|按月拆分|不分组)?", text, re.I)
+    if combined and (combined[3] or combined[4]):
+        if not context or context.get("kind") != "standard":
+            raise ContextError("no_compatible_context", "请先执行一项可继续追问的标准指标查询。")
+        request = context["request"]
+        request = month_request(request, int(combined[1] or request["start_date"][:4]), int(combined[2]))
+        if combined[3]:
+            request["filters"] = request.get("filters", {}) | {"channel": combined[3].lower()}
+        if combined[4]:
+            request["group_by"] = GROUPS[combined[4]]
+        return "followup", request
+    if text.startswith("那") and len(re.findall(r"[0-9]{1,2}月", text)) > 1:
+        raise ContextError("conflicting_followup_time", "本次追问包含多个时间，请明确要替换为哪个窗口。")
     month, channel = MONTH.fullmatch(text), CHANNEL.fullmatch(text)
     switch = re.fullmatch(r"换成(.+)", text)
     is_edit = month or channel or switch or text in {*GROUPS, "和上个月比较", "取消渠道筛选", "所有渠道"}

@@ -1,0 +1,224 @@
+{
+  "baseline_commit": "77f86db",
+  "dataset_sha256": "8a1b6887c9df69955b3eae51d86fc1ede1bf14198da2b059e8bf50ef5325ec70",
+  "routing": {
+    "before": {
+      "task": {
+        "numerator": 6,
+        "denominator": 9,
+        "not_applicable": 0
+      },
+      "route": {
+        "numerator": 5,
+        "denominator": 8,
+        "not_applicable": 1
+      },
+      "by_category": {
+        "business": {
+          "numerator": 1,
+          "denominator": 1,
+          "not_applicable": 0
+        },
+        "clarification": {
+          "numerator": 0,
+          "denominator": 1,
+          "not_applicable": 0
+        },
+        "hybrid": {
+          "numerator": 1,
+          "denominator": 1,
+          "not_applicable": 0
+        },
+        "knowledge": {
+          "numerator": 2,
+          "denominator": 2,
+          "not_applicable": 0
+        },
+        "single": {
+          "numerator": 1,
+          "denominator": 3,
+          "not_applicable": 0
+        },
+        "time_conflict": {
+          "numerator": 1,
+          "denominator": 1,
+          "not_applicable": 0
+        }
+      }
+    },
+    "after": {
+      "task": {
+        "numerator": 9,
+        "denominator": 9,
+        "not_applicable": 0
+      },
+      "route": {
+        "numerator": 8,
+        "denominator": 8,
+        "not_applicable": 1
+      },
+      "by_category": {
+        "business": {
+          "numerator": 1,
+          "denominator": 1,
+          "not_applicable": 0
+        },
+        "clarification": {
+          "numerator": 1,
+          "denominator": 1,
+          "not_applicable": 0
+        },
+        "hybrid": {
+          "numerator": 1,
+          "denominator": 1,
+          "not_applicable": 0
+        },
+        "knowledge": {
+          "numerator": 2,
+          "denominator": 2,
+          "not_applicable": 0
+        },
+        "single": {
+          "numerator": 3,
+          "denominator": 3,
+          "not_applicable": 0
+        },
+        "time_conflict": {
+          "numerator": 1,
+          "denominator": 1,
+          "not_applicable": 0
+        }
+      }
+    },
+    "live": {
+      "task": {
+        "numerator": 8,
+        "denominator": 9,
+        "not_applicable": 0
+      },
+      "route": {
+        "numerator": 8,
+        "denominator": 8,
+        "not_applicable": 1
+      },
+      "by_category": {
+        "business": {
+          "numerator": 0,
+          "denominator": 1,
+          "not_applicable": 0
+        },
+        "clarification": {
+          "numerator": 1,
+          "denominator": 1,
+          "not_applicable": 0
+        },
+        "hybrid": {
+          "numerator": 1,
+          "denominator": 1,
+          "not_applicable": 0
+        },
+        "knowledge": {
+          "numerator": 2,
+          "denominator": 2,
+          "not_applicable": 0
+        },
+        "single": {
+          "numerator": 3,
+          "denominator": 3,
+          "not_applicable": 0
+        },
+        "time_conflict": {
+          "numerator": 1,
+          "denominator": 1,
+          "not_applicable": 0
+        }
+      },
+      "plan_validation": {
+        "numerator": 1,
+        "denominator": 2,
+        "not_applicable": 0
+      }
+    }
+  },
+  "retrieval": {
+    "vector": {
+      "recall_at_2": {
+        "numerator": 2,
+        "denominator": 2,
+        "not_applicable": 3
+      },
+      "mrr_at_2": {
+        "numerator": 2.0,
+        "denominator": 2,
+        "not_applicable": 3
+      },
+      "citation_support": {
+        "numerator": 2,
+        "denominator": 2,
+        "not_applicable": 0
+      },
+      "absence_owner_withdrawal": {
+        "numerator": 3,
+        "denominator": 3,
+        "not_applicable": 0
+      },
+      "note": "One labeled PDF-page evidence unit per positive query; negative queries are not recall misses. Tiny two-chunk live corpus."
+    },
+    "hybrid": {
+      "recall_at_2": {
+        "numerator": 2,
+        "denominator": 2,
+        "not_applicable": 3
+      },
+      "mrr_at_2": {
+        "numerator": 2.0,
+        "denominator": 2,
+        "not_applicable": 3
+      },
+      "citation_support": {
+        "numerator": 2,
+        "denominator": 2,
+        "not_applicable": 0
+      },
+      "absence_owner_withdrawal": {
+        "numerator": 3,
+        "denominator": 3,
+        "not_applicable": 0
+      },
+      "note": "One labeled PDF-page evidence unit per positive query; negative queries are not recall misses. Tiny two-chunk live corpus."
+    }
+  },
+  "real_model_adapter_calls": 18,
+  "real_embedding_requests": 18,
+  "usage": {
+    "prompt": 6707,
+    "output": 1465,
+    "total": 8172
+  },
+  "provider_errors": {
+    "504": 2,
+    "503": 1
+  },
+  "live_latency_ms": {
+    "p50": 64,
+    "p95": 30245
+  },
+  "embedding_tokens": null,
+  "next_priority": "Grounded normalization of optional leading 从 in date-window proposals, retaining Validator and ambiguity checks.",
+  "source_sha256": {
+    "src/dataquery_agent/rag/retrieval.py": "a445f4ae4f592ad3fb2a3be82a73fd596eaedc5cce6a84def5f8e4399f2072a2",
+    "src/dataquery_agent/rag/store.py": "67098f5db1f51cb06ac56a8c0fe75a6274cdee9b4c76dec41d5997f3bd2364a6",
+    "src/dataquery_agent/rag/routing.py": "1308ae4b06bb20daa155e9b684d00cd1dd85184a4f741e44edc3b661059926c2",
+    "src/dataquery_agent/runtime_trace.py": "0344f1a504696ec59fedc271c5fec95c7a40378c096211fa22428a026508dd67",
+    "src/dataquery_agent/api_models.py": "7e8b63b1afab0216221fd7c84f174f4ce3d1e4cb18a107c419e89b452a7b91fa",
+    "src/dataquery_agent/conversation_manager.py": "c30045f57f1825c8b960b022c68ac0959b6e18c85b35530a4a8ac569ef87c7e2",
+    "src/dataquery_agent/unified_agent.py": "ec79a9b40ac8f762113ebfc8900d0a0a9ca9b2f730cafadbc4d9933a0297072c",
+    "src/dataquery_agent/conversation_context.py": "407e546b8c6ab8c4bf74133443e40a718047ea255d96355f130b06fb9ffcb195"
+  },
+  "prompt_versions": {
+    "intent": "intent-v3",
+    "resolution": "metric-resolution-v2",
+    "planning": "business-plan-v1",
+    "knowledge": "knowledge-extractive-v1"
+  }
+}

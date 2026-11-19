@@ -13,8 +13,24 @@ def trace_view(data):
         "subtasks": result.get("subtasks", data.get("subtasks", [])),
         "capability_records": trace.get("capability_records", data.get("capability_records", [])),
         "skills": trace.get("skills", data.get("skills", [])),
+        "routing": trace.get("routing", data.get("routing", {})),
         "tool_traces": [tool_event(item) for item in trace.get("tools", data.get("tool_traces", []))],
     }
+
+
+def record_routing(answer, before, after, operation):
+    trace = answer["trace"]
+    route = trace.setdefault("routing", {"rule": "context_" + operation})
+    route.update(context_operation=operation, final_route=answer.get("task"), reason=answer.get("code"),
+                 query_rewrite=operation == "knowledge_followup", model_called=bool(trace.get("model_attempts")))
+    prior, current = (before or {}).get("request", {}), (after or {}).get("request", {})
+    route.update(inherited={}, modified={})
+    if operation in {"time", "channel", "grouping", "metric", "followup", "remove_channel"}:
+        for key in ("metric_id", "start_date", "end_date", "group_by", "filters", "observation_cutoff"):
+            if key in prior and prior.get(key) == current.get(key):
+                route["inherited"][key] = prior[key]
+            elif key in current:
+                route["modified"][key] = {"before": prior.get(key), "after": current[key]}
 
 
 def tool_event(item):
@@ -23,6 +39,11 @@ def tool_event(item):
               "depends_on", "failed_dependencies", "schedule_position", "cache")
     agent_call = item.get("agent_call", {})
     event = {key: item[key] for key in fields if key in item}
+    if "channels" in item:
+        event["retrieval"] = {key: item[key] for key in (
+            "mode", "fusion", "rrf_constant", "keyword_algorithm", "channels", "returned_chunk_ids", "top_k")}
+    elif "retrieval" in item:
+        event["retrieval"] = item["retrieval"]
     for key in ("agent", "tool", "elapsed_ms"):
         if key in agent_call:
             event.setdefault("agent_call", {})[key] = agent_call[key]

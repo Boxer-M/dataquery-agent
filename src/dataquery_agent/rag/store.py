@@ -36,7 +36,7 @@ class KnowledgeStore:
     def transaction(self, owner=None, *, synthetic=False):
         with psycopg.connect(self.dsn, connect_timeout=5, row_factory=dict_row) as pg:
             if self.role == READER:
-                pg.execute("SET TRANSACTION READ ONLY")
+                pg.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY")
             pg.execute("SET LOCAL statement_timeout = '5s'")
             pg.execute("SET LOCAL lock_timeout = '2s'")
             pg.execute("SET LOCAL search_path = pg_catalog")

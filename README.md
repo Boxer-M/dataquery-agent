@@ -12,6 +12,7 @@ SQL Shed 为 CC0 公开合成电商数据，已建设 **7 张 ODS、4 张 DWD、
 - **持久化 HITL**：指标口径歧义通过真实 LangGraph interrupt 暂停，PostgreSQL Checkpoint 支持服务重启后恢复原 Run。
 - **缓存与治理**：Redis 缓存绑定 Owner、结构化参数及版本，命中仍复核权限；History 保留 Run、Plan、Task、Attempt、Capability 与引用关联。
 - **已保存会话**：支持会话列表、切换和同一标签页刷新恢复；查看历史不重跑查询。旧记录可能仅有摘要，新记录保留有界展示快照。[使用与验收](docs/warehouse/CONVERSATION_HISTORY_UI_V1.md)
+- **混合检索与路由**：pgvector 与 PostgreSQL 全文独立召回、RRF 融合；支持中文二元组匹配、短追问条件继承及结构化路由 Trace。[实现与评测](docs/warehouse/HYBRID_ROUTING_RETRIEVAL_V1.md)
 
 Python 3.12、FastAPI、Gemini、LangGraph、SQLGlot；PostgreSQL 16、pgvector、Redis；React、TypeScript、Ant Design、ECharts、Vite。pypdf 提取 PDF 文本，macOS Apple Vision 识别扫描页，SQLite 暂存本机文档审核记录。
 

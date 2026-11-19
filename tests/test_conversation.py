@@ -164,7 +164,7 @@ class ConversationPostgresTests(unittest.TestCase):
         replay = self.send(message, mid)
         self.assertTrue(replay["replayed"])
         self.assertEqual(replay["query_id"], first["query_id"])
-        self.manager.generate.assert_called_once()
+        self.manager.generate.assert_not_called()  # Explicit metric/window now uses the deterministic Fast Path.
         self.assertEqual(self.send("那2月份呢？", mid)["code"], "message_id_reused")
         stranger = token_hex(32)
         with self.assertRaisesRegex(ConversationError, "conversation_not_found"):
