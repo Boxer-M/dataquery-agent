@@ -5,7 +5,7 @@ from datetime import timedelta
 
 from .business_results import RATIO_COMPONENT_METRICS
 from .intent_semantic_resolver import ALIASES, COVERAGE, MODIFIERS, SemanticResolver, alternation, outcome
-from .intent_time import TIME, date_window, next_month
+from .intent_time import TIME, date_boundary_modifier, date_window, next_month
 from .metric_query_service import RequestError
 from .metric_entity import MetricEntityResolver, normalize
 
@@ -126,6 +126,8 @@ class PlanValidator:
         return metrics
 
     def windows(self, question, proposal, today):
+        if date_boundary_modifier(question):
+            reject("unsupported_date_boundary", "日期边界包含规则尚不能可靠解释，请确认起止日期。", "clarify")
         expressions = list(dict.fromkeys(match.group() for match in TIME.finditer(question)))
         if TIME_TAIL.search(TIME.sub("", question)) or not expressions:
             reject("unsupported_time", "请提供完整月份、年份或起止日期。", "clarify")
