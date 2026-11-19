@@ -1,3 +1,5 @@
+import { artifactReceipt, type Artifact } from './xlsx-export'
+
 export type Status = 'completed' | 'partial' | 'clarification_required' | 'failed'
 export type Cell = string | number | boolean | null | Cell[] | { [key: string]: Cell }
 export type Row = Record<string, Cell>
@@ -67,10 +69,12 @@ export type ChatResponse = {
 }
 
 export class RequestError extends Error {
-  constructor(message: string, readonly retryable: boolean) {
+  constructor(message: string, readonly retryable: boolean, readonly status?: number) {
     super(message)
   }
 }
+
+const clientHeaders = { 'X-DataQuery-Client': 'workspace' }
 
 export async function jsonRequest<T>(path: string, method: 'GET' | 'POST', body?: object): Promise<T> {
   const controller = new AbortController()
@@ -81,17 +85,17 @@ export async function jsonRequest<T>(path: string, method: 'GET' | 'POST', body?
       method,
       mode: 'same-origin',
       cache: 'no-store',
-      headers: { 'X-DataQuery-Client': 'workspace', ...(body ? { 'Content-Type': pdf ? 'application/pdf' : 'application/json' } : {}) },
+      headers: { ...clientHeaders, ...(body ? { 'Content-Type': pdf ? 'application/pdf' : 'application/json' } : {}) },
       body: pdf ? body : body ? JSON.stringify(body) : undefined,
       signal: controller.signal,
     })
     const value = await response.json().catch(() => null)
     if (!response.ok) {
       if (path.startsWith('/api/queries/') && (response.status === 403 || response.status === 404)) {
-        throw new RequestError('记录不存在或当前身份无权查看。', false)
+        throw new RequestError('记录不存在或当前身份无权查看。', false, response.status)
       }
       const message = typeof value?.error?.message === 'string' ? value.error.message : `请求失败（HTTP ${response.status}）。`
-      throw new RequestError(message, response.status >= 500)
+      throw new RequestError(message, response.status >= 500, response.status)
     }
     if (!value || typeof value !== 'object') throw new RequestError('API 返回了无效响应。', true)
     return value as T
@@ -148,4 +152,40 @@ export async function readQuery(queryId: string) {
 
 export function resumeQuery(runId: string, metricId: string) {
   return jsonRequest<ChatResponse>(`/api/queries/${encodeURIComponent(runId)}/resume`, 'POST', { metric_id: metricId })
+}
+
+export async function createXlsxArtifact(queryId: string) {
+  return artifactReceipt(await jsonRequest(`/api/queries/${encodeURIComponent(queryId)}/artifacts/xlsx`, 'POST', {}), queryId)
+}
+
+export async function downloadXlsxArtifact(artifact: Artifact): Promise<Blob> {
+  const controller = new AbortController()
+  const deadline = window.setTimeout(() => controller.abort(), 30_000)
+  const type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  try {
+    const response = await fetch(`/api/artifacts/${encodeURIComponent(artifact.artifact_id)}/download`, {
+      method: 'GET', mode: 'same-origin', cache: 'no-store', headers: clientHeaders, signal: controller.signal,
+    })
+    if (!response.ok) {
+      const value = await response.json().catch(() => null)
+      throw new RequestError(value?.error?.message || `下载失败（HTTP ${response.status}）。`, response.status >= 500, response.status)
+    }
+    if (response.headers.get('content-type')?.split(';')[0] !== type
+        || response.headers.get('content-disposition') !== `attachment; filename="${artifact.filename}"`) {
+      throw new RequestError('下载文件类型或文件名与导出回执不匹配。', true)
+    }
+    const bytes = await response.arrayBuffer()
+    if (bytes.byteLength !== artifact.byte_size || new Uint8Array(bytes)[0] !== 0x50 || new Uint8Array(bytes)[1] !== 0x4b) {
+      throw new RequestError('下载文件不完整，请重试下载。', true)
+    }
+    const hash = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)))
+      .map(value => value.toString(16).padStart(2, '0')).join('')
+    if (hash !== artifact.sha256) throw new RequestError('下载文件校验失败，请重试下载。', true)
+    return new Blob([bytes], { type })
+  } catch (error) {
+    if (error instanceof RequestError) throw error
+    throw new RequestError(controller.signal.aborted ? '下载超时，请重试下载。' : '下载连接中断，请重试下载。', true)
+  } finally {
+    window.clearTimeout(deadline)
+  }
 }

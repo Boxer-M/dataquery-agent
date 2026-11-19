@@ -127,9 +127,9 @@ PR 执行前后端生产镜像构建与隔离部署冒烟。合并 main 后，�
 
 镜像使用完整 SHA 加运行号 Tag，部署及手动回退使用不可变 digest 对。运行配置在容器启动时注入，Bearer 留在前端服务端。临时验证默认 0 次 Gemini 调用，不发布宿主端口，保持现有环回安全边界。[CD 构建、配置、版本清单、验证状态与手动回退](docs/warehouse/CD_ENGINEERING_V1.md)
 
-## Skill 注册与经营分析接入（阶段 A / B / C1 / C2.1）
+## Skill 注册与经营分析接入（已完成至 C2.3）
 
-`skills/registry.json` 是受代码审查保护的可信清单。`SkillRegistry` 只读取文本，不执行代码。阶段 B 在 Unified Agent 的适用经营分析路径中，按需把 `business-metric-analysis` 指令加入同一次 Planner 调用；`xlsx` 已固定上游 Commit并完成受限文本审核，可按需加载，工具范围为空；未接入生成或下载。Skill 只能提供业务指导，计划与执行仍由原 Validator、Capability 和受控工具校验。
+`skills/registry.json` 是受代码审查保护的可信清单。`SkillRegistry` 只读取文本，不执行代码。阶段 B 在 Unified Agent 的适用经营分析路径中，按需把 `business-metric-analysis` 指令加入同一次 Planner 调用；`xlsx` 已固定上游 Commit并完成受限文本审核，可按需加载，工具范围为空，不赋予生成或下载工具权限；报表由下方独立入口提供。Skill 只能提供业务指导，计划与执行仍由原 Validator、Capability 和受控工具校验。
 
 ```python
 from dataquery_agent.skill_registry import SkillRegistry
@@ -151,4 +151,6 @@ C1 的 XLSX 适配保留原始许可证、来源和指令存档，只允许加�
 
 C2.1 提供独立 Python 入口 `generate_metric_xlsx(result, metrics) -> bytes`，将已校验、单窗口无分组的经营汇总写入两列工作簿，并自动回读检查精度；不接入聊天。新增锁版依赖仅为 openpyxl 3.1.5 与 et_xmlfile 2.0.0。[输入契约与真实 PostgreSQL 回读验收](docs/warehouse/XLSX_REPORT_GENERATION_V1.md)。
 
-C2.2 新增后端显式导出 `POST /api/queries/{query_id}/artifacts/xlsx` 和授权下载 `GET /api/artifacts/{artifact_id}/download`。新查询通过原History链路保存受限汇总快照，XLSX与元数据以私有SQLite事务持久化；导出、下载不重跑指标SQL或模型。旧历史无快照返回409，源查询无权限时不可下载。前端和代理尚未接入。[API、Owner校验、原子性与真实验收](docs/warehouse/XLSX_ARTIFACT_DOWNLOAD_V1.md)。
+C2.2 新增后端显式导出 `POST /api/queries/{query_id}/artifacts/xlsx` 和授权下载 `GET /api/artifacts/{artifact_id}/download`。新查询通过原History链路保存受限汇总快照，XLSX与元数据以私有SQLite事务持久化；导出、下载不重跑指标SQL或模型。旧历史无快照返回409，源查询无权限时不可下载。前端入口与代理接入见下方 C2.3。[API、Owner校验、原子性与真实验收](docs/warehouse/XLSX_ARTIFACT_DOWNLOAD_V1.md)。
+
+C2.3 在已完成查询结果中提供“导出 Excel”，通过同源代理创建Artifact并下载校验后的工作簿；下载失败复用当前页面保留的Artifact ID，409提示主动重跑，不自动执行查询。[浏览器实测、失败路径与调用统计](docs/warehouse/XLSX_EXPORT_UI_V1.md)。
