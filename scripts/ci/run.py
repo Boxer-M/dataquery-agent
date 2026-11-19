@@ -18,7 +18,7 @@ from bootstrap import bootstrap
 MODULES = ("warehouse_postgres", "ads", "dws", "metric_query_service", "metadata_capability",
            "detail_executor", "dynamic_sql_engine", "business_planner_v2", "business_knowledge",
            "metric_exact_routing", "task_dag", "specialists", "catalog_recovery",
-           "capability_trace_linkage", "api", "conversation", "conversation_history_api", "hitl", "redis_performance", "skill_business", "artifact_api")
+           "capability_trace_linkage", "api", "conversation", "conversation_history_api", "explicit_date_windows", "hitl", "redis_performance", "skill_business", "artifact_api")
 FLAGS = ("WAREHOUSE", "METRIC_QUERY", "CAPABILITY", "DETAIL", "DYNAMIC", "KNOWLEDGE", "API",
          "CONVERSATION", "HITL", "REDIS")
 

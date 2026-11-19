@@ -1,0 +1,47 @@
+{
+  "code_base": "fc269bdf25d555a41c3e60e5be6ca01b54ec1595",
+  "source_hashes": {
+    "src/dataquery_agent/intent_time.py": "16b147cd6aa0b26f5f627562b076437a807a176e21588b6a2e56f4d1479274f2",
+    "src/dataquery_agent/business_query_planner.py": "824341217a160d14c5233d04c061abadc5a69c7d2d60e01442e92ceccae2187c",
+    "src/dataquery_agent/unified_agent.py": "f293a2efec11d1973f977f848961c8ba4fcace432a82176bd0d6c53e9f761e89",
+    "src/dataquery_agent/business_plan.py": "99d106d9d4ef2b52f2fc4661d75eaa87d09c9289cb56d1f03b28df5ece340456"
+  },
+  "snapshot_counts": {
+    "orders": 90000,
+    "items": 215000
+  },
+  "snapshot_limit": "Counts and per-category ODS values, not an immutable database backup",
+  "python_offline": {
+    "passed": 245,
+    "skipped": 86
+  },
+  "postgres_regression": {
+    "passed": 36
+  },
+  "frontend": {
+    "passed": 11,
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "hybrid_fixed": {
+    "cases": 9,
+    "checks_passed": 40,
+    "checks_total": 40,
+    "real_model_calls": 0
+  },
+  "live_after": {
+    "cases": 2,
+    "passed": 2,
+    "generation_calls": 3,
+    "tokens": {
+      "prompt": 1955,
+      "output": 379,
+      "total": 2334
+    },
+    "embedding_batches": 2,
+    "embedding_inputs": 3,
+    "embedding_tokens": null,
+    "retries": 0
+  },
+  "source_hash_note": "Final source hashes; after live run only additional exclusion-phrase denial guards were added and PostgreSQL/offline regressions rerun."
+}

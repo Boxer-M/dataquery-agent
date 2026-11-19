@@ -13,6 +13,7 @@ from .business_results import combine, render, with_precision
 from .intent_semantic_resolver import gemini_generator, outcome
 from .metric_query_service import MetricQueryService
 from .metric_tool import execute_metric
+from .intent_time import normalize_explicit_windows
 from .metrics import ROOT
 from .task_dag import Task, TaskGraphError, execute_tasks
 
@@ -56,15 +57,20 @@ class BusinessQueryPlanner:
             proposal = parse_proposal(raw)
         except (ValueError, RecursionError):
             return outcome("error", "invalid_model_output", "模型未返回有效的查询计划，请重试。")
+        clock = today or datetime.now(ZoneInfo("Asia/Shanghai")).date()
+        proposal, dates = normalize_explicit_windows(question, proposal, clock)
+        if dates["status"] == "rejected":
+            return {**outcome("clarify", dates["reason"], "模型日期窗口或包含规则与原文不一致，请确认。"),
+                    "date_window_validation": dates}
         try:
-            plan = self.validator.validate(question, proposal, today or datetime.now(ZoneInfo("Asia/Shanghai")).date())
+            plan = self.validator.validate(question, proposal, clock)
         except PlanError as error:
-            return error.response
+            return {**error.response, "date_window_validation": dates}
         if pdf_question is not None:
             if len(plan["required_tool_calls"]) != 1 or plan["analysis_type"] != "summary":
                 return outcome("clarify", "pdf_metric_scope", "请指定一个正式指标和一个统计窗口。")
             plan["pdf_question"] = pdf_question
-        return {"status": "ready", "plan": plan}
+        return {"status": "ready", "plan": plan, "date_window_validation": dates}
 
     def execute_plan(self, plan, *, query=None, catalog=None, execution_ids=None, task_query=None, document=None, metric_handler=None):
         """Schedule the validated metric calls and optional evidence tasks."""

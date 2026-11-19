@@ -1,0 +1,55 @@
+{
+  "version": "explicit-date-window-v1",
+  "baseline_commit": "fc269bd",
+  "question": "从2025-04-01至2025-06-30按品类同时列折扣前商品记录金额、商品行折扣金额；分别保留两列。",
+  "recorded_proposal": {
+    "analysis_type": "summary",
+    "metric_ids": [
+      "item_gross_sales_amount",
+      "item_discount_amount"
+    ],
+    "time_windows": [
+      "2025-04-01至2025-06-30"
+    ],
+    "group_by": [
+      "按品类"
+    ],
+    "filters": [],
+    "comparison_type": null,
+    "sort_rule": null,
+    "limit": null,
+    "conditions": [],
+    "unresolved_business_rules": []
+  },
+  "expected": {
+    "start_date": "2025-04-01",
+    "end_date": "2025-07-01",
+    "group_by": [
+      "category"
+    ],
+    "metric_ids": [
+      "item_gross_sales_amount",
+      "item_discount_amount"
+    ]
+  },
+  "negative_windows": {
+    "start_shift": [
+      "2025-04-02至2025-06-30"
+    ],
+    "end_shift": [
+      "2025-04-01至2025-06-29"
+    ],
+    "missing_end": [
+      "2025-04-01"
+    ],
+    "missing_start": [
+      "2025-06-30"
+    ],
+    "exclusive_annotation": [
+      "2025-04-01至2025-06-30（不含结束日）"
+    ],
+    "interval_conflict": [
+      "[2025-04-01,2025-06-30)"
+    ]
+  }
+}

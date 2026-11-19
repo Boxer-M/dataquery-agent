@@ -1,0 +1,653 @@
+{
+  "mode": "fixed recorded proposal + real PostgreSQL + FastAPI",
+  "positive": {
+    "xlsx_export": {
+      "eligible": false,
+      "code": "query_export_grouped",
+      "message": "当前 Excel 导出仅支持汇总结果，暂不支持分组明细"
+    },
+    "status": "completed",
+    "conversation_id": "80b62ce1-3697-41cc-a038-e71e792713a4",
+    "message_id": "aedc5243-6bb5-408e-bf5c-59f9eebb73aa",
+    "query_id": "3f1ddd7f-7915-4808-a75c-591bd125420f",
+    "answer": "统计窗口 [2025-04-01, 2025-07-01)。\n1：折扣前商品记录金额 48698.90；商品行折扣金额 486.30。\n10：折扣前商品记录金额 15967.37；商品行折扣金额 124.20。\n11：折扣前商品记录金额 10365.63；商品行折扣金额 83.82。\n12：折扣前商品记录金额 58761.63；商品行折扣金额 537.15。\n13：折扣前商品记录金额 7477.80；商品行折扣金额 87.36。\n14：折扣前商品记录金额 6888.95；商品行折扣金额 60.89。\n15：折扣前商品记录金额 90718.01；商品行折扣金额 919.28。\n16：折扣前商品记录金额 56847.71；商品行折扣金额 554.68。\n另有 16 组见结构化结果。\n折扣前商品记录金额按orders.ordered_at统计。按下单时间合计成交数量乘明细成交单价，尚未扣除行折扣。\n商品行折扣金额按orders.ordered_at统计。按下单时间合计每条商品明细的整行折扣金额，不再乘数量。\n步骤 1 · 来源 dim.product、dws.product_sales_day · Trace 17b9db7eca70411687af843b4e246d8c\n步骤 2 · 来源 dim.product、dws.product_sales_day · Trace c2bf316b589a4b67b817ce788cd04bfa",
+    "rows": [
+      {
+        "bucket": "1",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "48698.90"
+          },
+          "item_discount_amount": {
+            "value": "486.30"
+          }
+        }
+      },
+      {
+        "bucket": "10",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "15967.37"
+          },
+          "item_discount_amount": {
+            "value": "124.20"
+          }
+        }
+      },
+      {
+        "bucket": "11",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "10365.63"
+          },
+          "item_discount_amount": {
+            "value": "83.82"
+          }
+        }
+      },
+      {
+        "bucket": "12",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "58761.63"
+          },
+          "item_discount_amount": {
+            "value": "537.15"
+          }
+        }
+      },
+      {
+        "bucket": "13",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "7477.80"
+          },
+          "item_discount_amount": {
+            "value": "87.36"
+          }
+        }
+      },
+      {
+        "bucket": "14",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "6888.95"
+          },
+          "item_discount_amount": {
+            "value": "60.89"
+          }
+        }
+      },
+      {
+        "bucket": "15",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "90718.01"
+          },
+          "item_discount_amount": {
+            "value": "919.28"
+          }
+        }
+      },
+      {
+        "bucket": "16",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "56847.71"
+          },
+          "item_discount_amount": {
+            "value": "554.68"
+          }
+        }
+      },
+      {
+        "bucket": "17",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "16419.48"
+          },
+          "item_discount_amount": {
+            "value": "103.55"
+          }
+        }
+      },
+      {
+        "bucket": "18",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "11067.09"
+          },
+          "item_discount_amount": {
+            "value": "90.42"
+          }
+        }
+      },
+      {
+        "bucket": "19",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "53948.51"
+          },
+          "item_discount_amount": {
+            "value": "592.38"
+          }
+        }
+      },
+      {
+        "bucket": "2",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "26051.35"
+          },
+          "item_discount_amount": {
+            "value": "272.09"
+          }
+        }
+      },
+      {
+        "bucket": "20",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "115026.10"
+          },
+          "item_discount_amount": {
+            "value": "1065.52"
+          }
+        }
+      },
+      {
+        "bucket": "21",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "19908.02"
+          },
+          "item_discount_amount": {
+            "value": "200.10"
+          }
+        }
+      },
+      {
+        "bucket": "22",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "15512.49"
+          },
+          "item_discount_amount": {
+            "value": "109.13"
+          }
+        }
+      },
+      {
+        "bucket": "23",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "13179.01"
+          },
+          "item_discount_amount": {
+            "value": "129.60"
+          }
+        }
+      },
+      {
+        "bucket": "24",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "19159.49"
+          },
+          "item_discount_amount": {
+            "value": "192.37"
+          }
+        }
+      },
+      {
+        "bucket": "3",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "11739.23"
+          },
+          "item_discount_amount": {
+            "value": "131.41"
+          }
+        }
+      },
+      {
+        "bucket": "4",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "18029.54"
+          },
+          "item_discount_amount": {
+            "value": "187.26"
+          }
+        }
+      },
+      {
+        "bucket": "5",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "13914.97"
+          },
+          "item_discount_amount": {
+            "value": "182.80"
+          }
+        }
+      },
+      {
+        "bucket": "6",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "14652.58"
+          },
+          "item_discount_amount": {
+            "value": "132.76"
+          }
+        }
+      },
+      {
+        "bucket": "7",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "23267.31"
+          },
+          "item_discount_amount": {
+            "value": "248.13"
+          }
+        }
+      },
+      {
+        "bucket": "8",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "8517.16"
+          },
+          "item_discount_amount": {
+            "value": "63.40"
+          }
+        }
+      },
+      {
+        "bucket": "9",
+        "month": null,
+        "metrics": {
+          "item_gross_sales_amount": {
+            "value": "14184.80"
+          },
+          "item_discount_amount": {
+            "value": "132.71"
+          }
+        }
+      }
+    ],
+    "rows_truncated": false,
+    "row_count": 24,
+    "citations": [],
+    "definitions": [
+      {
+        "metric_id": "item_gross_sales_amount",
+        "definition": "按下单时间合计成交数量乘明细成交单价，尚未扣除行折扣。"
+      },
+      {
+        "metric_id": "item_discount_amount",
+        "definition": "按下单时间合计每条商品明细的整行折扣金额，不再乘数量。"
+      }
+    ],
+    "clarification_choices": [],
+    "trace": {
+      "routing": {
+        "rule": "complex_business_proposal",
+        "plan_validation": {
+          "status": "ready",
+          "code": null
+        },
+        "date_window_validation": {
+          "status": "normalized",
+          "reason": "equivalent_explicit_date_boundaries",
+          "original_question": "从2025-04-01至2025-06-30按品类同时列折扣前商品记录金额、商品行折扣金额；分别保留两列。",
+          "original_proposal": {
+            "analysis_type": "summary",
+            "metric_ids": [
+              "item_gross_sales_amount",
+              "item_discount_amount"
+            ],
+            "time_windows": [
+              "2025-04-01至2025-06-30"
+            ],
+            "group_by": [
+              "按品类"
+            ],
+            "filters": [],
+            "comparison_type": null,
+            "sort_rule": null,
+            "limit": null,
+            "conditions": [],
+            "unresolved_business_rules": []
+          },
+          "source_expressions": [
+            "从2025-04-01至2025-06-30"
+          ],
+          "model_expressions": [
+            "2025-04-01至2025-06-30"
+          ],
+          "normalized_expressions": [
+            "从2025-04-01至2025-06-30"
+          ],
+          "policy": "calendar_dates_inclusive_to_half_open_v1",
+          "source_boundaries": {
+            "start_date": "2025-04-01",
+            "end_date": "2025-07-01",
+            "start_inclusive": true,
+            "end_exclusive": true,
+            "input_end_inclusive": true
+          },
+          "model_boundaries": {
+            "start_date": "2025-04-01",
+            "end_date": "2025-07-01",
+            "start_inclusive": true,
+            "end_exclusive": true,
+            "input_end_inclusive": true
+          }
+        },
+        "final_route": "business",
+        "reason": null,
+        "model_called": true,
+        "model_stages": [
+          "planning"
+        ],
+        "context_operation": "new",
+        "query_rewrite": false,
+        "inherited": {},
+        "modified": {}
+      },
+      "skills": [],
+      "orchestration": [],
+      "interrupt_required": false,
+      "run_id": "3f1ddd7f-7915-4808-a75c-591bd125420f",
+      "trace_id": "2e9def9f7dd54702ab75fe70470bfe40",
+      "plan_id": "a0883d5e51844ec0897293869f37dd47",
+      "attempt_id": "0dff30cee3394f5eae3cb8841e3e8776",
+      "tasks": [
+        {
+          "trace_id": "17b9db7eca70411687af843b4e246d8c",
+          "task_id": "a0883d5e51844ec0897293869f37dd47/1",
+          "attempt_id": "0dff30cee3394f5eae3cb8841e3e8776",
+          "metric_id": "item_gross_sales_amount",
+          "kind": "metric",
+          "status": "ok",
+          "sources": [
+            "dim.product",
+            "dws.product_sales_day"
+          ],
+          "depends_on": [],
+          "schedule_position": 1,
+          "elapsed_ms": 13
+        },
+        {
+          "trace_id": "c2bf316b589a4b67b817ce788cd04bfa",
+          "task_id": "a0883d5e51844ec0897293869f37dd47/2",
+          "attempt_id": "0dff30cee3394f5eae3cb8841e3e8776",
+          "metric_id": "item_discount_amount",
+          "kind": "metric",
+          "status": "ok",
+          "sources": [
+            "dim.product",
+            "dws.product_sales_day"
+          ],
+          "depends_on": [],
+          "schedule_position": 2,
+          "elapsed_ms": 12
+        }
+      ],
+      "capability": [
+        {
+          "trace_id": "f6ba29d2d1914109a7839f29a1d05f2c",
+          "plan_id": "a0883d5e51844ec0897293869f37dd47",
+          "task_id": "a0883d5e51844ec0897293869f37dd47/1",
+          "attempt_id": "0dff30cee3394f5eae3cb8841e3e8776",
+          "capability_phase": "preflight",
+          "metric_id": "item_gross_sales_amount",
+          "status": "STANDARD_METRIC",
+          "code": "verified_metric_service",
+          "sources": []
+        },
+        {
+          "trace_id": "0abfac05a1f145f2b5347791a7b95e83",
+          "plan_id": "a0883d5e51844ec0897293869f37dd47",
+          "task_id": "a0883d5e51844ec0897293869f37dd47/2",
+          "attempt_id": "0dff30cee3394f5eae3cb8841e3e8776",
+          "capability_phase": "preflight",
+          "metric_id": "item_discount_amount",
+          "status": "STANDARD_METRIC",
+          "code": "verified_metric_service",
+          "sources": []
+        }
+      ],
+      "tools": [
+        {
+          "trace_id": "17b9db7eca70411687af843b4e246d8c",
+          "plan_id": "a0883d5e51844ec0897293869f37dd47",
+          "task_id": "a0883d5e51844ec0897293869f37dd47/1",
+          "attempt_id": "0dff30cee3394f5eae3cb8841e3e8776",
+          "capability_trace_id": "f6ba29d2d1914109a7839f29a1d05f2c",
+          "capability_phase": "preflight",
+          "metric_id": "item_gross_sales_amount",
+          "kind": "metric",
+          "status": "ok",
+          "sources": [
+            "dim.product",
+            "dws.product_sales_day"
+          ],
+          "elapsed_ms": 13
+        },
+        {
+          "trace_id": "c2bf316b589a4b67b817ce788cd04bfa",
+          "plan_id": "a0883d5e51844ec0897293869f37dd47",
+          "task_id": "a0883d5e51844ec0897293869f37dd47/2",
+          "attempt_id": "0dff30cee3394f5eae3cb8841e3e8776",
+          "capability_trace_id": "0abfac05a1f145f2b5347791a7b95e83",
+          "capability_phase": "preflight",
+          "metric_id": "item_discount_amount",
+          "kind": "metric",
+          "status": "ok",
+          "sources": [
+            "dim.product",
+            "dws.product_sales_day"
+          ],
+          "elapsed_ms": 12
+        }
+      ]
+    },
+    "replayed": false,
+    "visualization_unavailable_reason": "unsupported_query_shape"
+  },
+  "expected_ods": [
+    {
+      "category": "1",
+      "gross": "48698.90",
+      "discount": "486.30"
+    },
+    {
+      "category": "2",
+      "gross": "26051.35",
+      "discount": "272.09"
+    },
+    {
+      "category": "3",
+      "gross": "11739.23",
+      "discount": "131.41"
+    },
+    {
+      "category": "4",
+      "gross": "18029.54",
+      "discount": "187.26"
+    },
+    {
+      "category": "5",
+      "gross": "13914.97",
+      "discount": "182.80"
+    },
+    {
+      "category": "6",
+      "gross": "14652.58",
+      "discount": "132.76"
+    },
+    {
+      "category": "7",
+      "gross": "23267.31",
+      "discount": "248.13"
+    },
+    {
+      "category": "8",
+      "gross": "8517.16",
+      "discount": "63.40"
+    },
+    {
+      "category": "9",
+      "gross": "14184.80",
+      "discount": "132.71"
+    },
+    {
+      "category": "10",
+      "gross": "15967.37",
+      "discount": "124.20"
+    },
+    {
+      "category": "11",
+      "gross": "10365.63",
+      "discount": "83.82"
+    },
+    {
+      "category": "12",
+      "gross": "58761.63",
+      "discount": "537.15"
+    },
+    {
+      "category": "13",
+      "gross": "7477.80",
+      "discount": "87.36"
+    },
+    {
+      "category": "14",
+      "gross": "6888.95",
+      "discount": "60.89"
+    },
+    {
+      "category": "15",
+      "gross": "90718.01",
+      "discount": "919.28"
+    },
+    {
+      "category": "16",
+      "gross": "56847.71",
+      "discount": "554.68"
+    },
+    {
+      "category": "17",
+      "gross": "16419.48",
+      "discount": "103.55"
+    },
+    {
+      "category": "18",
+      "gross": "11067.09",
+      "discount": "90.42"
+    },
+    {
+      "category": "19",
+      "gross": "53948.51",
+      "discount": "592.38"
+    },
+    {
+      "category": "20",
+      "gross": "115026.10",
+      "discount": "1065.52"
+    },
+    {
+      "category": "21",
+      "gross": "19908.02",
+      "discount": "200.10"
+    },
+    {
+      "category": "22",
+      "gross": "15512.49",
+      "discount": "109.13"
+    },
+    {
+      "category": "23",
+      "gross": "13179.01",
+      "discount": "129.60"
+    },
+    {
+      "category": "24",
+      "gross": "19159.49",
+      "discount": "192.37"
+    }
+  ],
+  "category_count": 24,
+  "checked_cells": 48,
+  "negative": [
+    {
+      "case": "start_shift",
+      "status": "clarification_required",
+      "reason": "window_mismatch",
+      "business_metric_sql": 0
+    },
+    {
+      "case": "end_shift",
+      "status": "clarification_required",
+      "reason": "window_mismatch",
+      "business_metric_sql": 0
+    },
+    {
+      "case": "missing_end",
+      "status": "clarification_required",
+      "reason": "window_mismatch",
+      "business_metric_sql": 0
+    },
+    {
+      "case": "missing_start",
+      "status": "clarification_required",
+      "reason": "window_mismatch",
+      "business_metric_sql": 0
+    },
+    {
+      "case": "exclusive_annotation",
+      "status": "clarification_required",
+      "reason": "unsupported_date_boundary",
+      "business_metric_sql": 0
+    },
+    {
+      "case": "interval_conflict",
+      "status": "clarification_required",
+      "reason": "unsupported_date_boundary",
+      "business_metric_sql": 0
+    },
+    {
+      "case": "user_exclusive_boundary",
+      "status": "clarification_required",
+      "business_metric_sql": 0
+    }
+  ],
+  "real_gemini_calls": 0
+}

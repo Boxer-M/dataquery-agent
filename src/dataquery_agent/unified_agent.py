@@ -385,6 +385,8 @@ class UnifiedAgent:
             pdf_question=pdf_question)
         trace.setdefault("routing", {"rule": "business_proposal"})["plan_validation"] = {
             "status": prepared["status"], "code": prepared.get("code")}
+        if "date_window_validation" in prepared:
+            trace["routing"]["date_window_validation"] = prepared["date_window_validation"]
         if prepared["status"] != "ready":
             if prepared.get("code") == "invalid_model_output":
                 runtime.invalid_output()
