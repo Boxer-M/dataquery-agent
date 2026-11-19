@@ -18,6 +18,17 @@ from test_api import AUTH, TOKEN, client
 
 FROZEN = json.loads((ROOT/'tests/date_window_cases_v1.json').read_text())
 TODAY = date(2025,3,10)
+BOUNDARY_QUESTIONS = [FROZEN['question'].replace('按品类',f'（{text}）按品类') for text in (
+    '结束日不包含', '不计算最后一天', '起始日不包含', '不计算第一天',
+    '包含结束日但不计算最后一天')]
+BOUNDARY_QUESTIONS += [
+    '不计算最后一天；'+FROZEN['question'],
+    FROZEN['question']+'结束日不包含。',
+    FROZEN['question'].replace('至2025-06-30','（不计算第一天）至2025-06-30')]
+
+
+def retained_window(question):
+    return question.replace('按品类同时列折扣前商品记录金额、商品行折扣金额；分别保留两列。','')
 
 
 class ExplicitDateTests(unittest.TestCase):
@@ -77,6 +88,23 @@ class ExplicitDateTests(unittest.TestCase):
             self.assertNotEqual(result['status'],'ready')
         self.service.query.assert_not_called()
 
+    def test_source_boundary_guard_does_not_depend_on_model_retention(self):
+        for question in BOUNDARY_QUESTIONS:
+            for windows in (self.proposal['time_windows'],[retained_window(question)]):
+                proposal = self.proposal | {'time_windows':windows}
+                result = self.planner.prepare(question,lambda _:json.dumps(proposal),TODAY)
+                self.assertEqual(result['code'],'unsupported_date_boundary',result)
+                self.assertEqual(result['status'],'clarify')
+                self.assertEqual(result['date_window_validation']['boundary_modifier']['source'],'user_question')
+                with self.assertRaises(PlanError) as caught:
+                    self.planner.validator.windows(question,proposal,TODAY)
+                self.assertEqual(caught.exception.response['code'],'unsupported_date_boundary')
+        business_question = self.question+'不含退款。'
+        result = self.planner.prepare(business_question,lambda _:json.dumps(self.proposal),TODAY)
+        self.assertEqual(result['code'],'unsupported_filter',result)
+        self.assertEqual(result['date_window_validation']['status'],'normalized')
+        self.service.query.assert_not_called()
+
 
 @unittest.skipUnless(os.getenv('CONVERSATION_POSTGRES_TESTS')=='1','Real PostgreSQL opt-in')
 class ExplicitDatePostgresTests(unittest.IsolatedAsyncioTestCase):
@@ -133,6 +161,21 @@ class ExplicitDatePostgresTests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(denied['status'],'clarification_required')
                 self.assertEqual(manager.agent.service.execute.call_count,before)
                 records.append({'case':'user_exclusive_boundary','status':denied['status'],'business_metric_sql':0})
+                for question in BOUNDARY_QUESTIONS:
+                    for retained in (False,True):
+                        proposal = FROZEN['recorded_proposal']
+                        if retained:
+                            proposal = proposal | {'time_windows':[retained_window(question)]}
+                        before = manager.agent.service.execute.call_count
+                        denied = await ask(proposal,question)
+                        self.assertEqual(denied['status'],'clarification_required',denied)
+                        self.assertEqual(manager.agent.service.execute.call_count,before)
+                        event = denied['trace']['routing']['date_window_validation']
+                        self.assertEqual(event['reason'],'unsupported_date_boundary')
+                        saved = (await http.get(f"/api/queries/{denied['query_id']}",headers=AUTH)).json()
+                        self.assertEqual(saved['trace'],denied['trace'])
+                        records.append({'question':question,'model_retained_boundary':retained,
+                            'date_trace':event,'status':denied['status'],'business_metric_sql':0})
                 if destination:=os.getenv('DATE_WINDOW_REPORT'):
                     Path(destination).write_text(json.dumps({'mode':'fixed recorded proposal + real PostgreSQL + FastAPI',
                         'positive':actual,'expected_ods':expected,'category_count':len(expected),'checked_cells':2*len(expected),

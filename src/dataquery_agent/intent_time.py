@@ -11,12 +11,21 @@ TIME = re.compile(
 )
 EXPLICIT_RANGE = re.compile(rf"(?:从\s*)?{DAY}\s*(?:至|到|~|～)\s*{DAY}")
 BOUNDARY_OVERRIDE = re.compile(
-    r"(?:不含|不包括|包括|包含|含|排除|剔除|不计入)\s*(?:首尾|两端|端点|首日|末日|第一天|最后一天|起始日|开始日|结束日|截止日|当日|当天)|"
-    r"(?:首日|末日|起始日|结束日)\s*(?:不含|不包括)|"
+    # Boundary nouns are unsupported even when their inclusion verb is unfamiliar,
+    # moved, or contradictory. Business exclusions such as 不含退款 are not nouns here.
+    r"首尾|两端|端点|首日|末日|第一天|最后一天|起始日|开始日|结束日|截止日|"
+    r"(?:不含|不包括|包括|包含|含|排除|剔除|不计入)\s*(?:当日|当天)|"
     r"左开|右开|左闭|右闭|开区间|闭区间|半开|inclusive|exclusive|"
     rf"(?:不含|不包括)\s*{DAY}|{DAY}\s*(?:不含|不包括)|"
     rf"{DAY}\s*[（(]\s*(?:含|不含|包含|不包括)\s*[）)]|"
     rf"[\[(（]\s*{DAY}.*{DAY}\s*[\])）]", re.I)
+
+
+def date_boundary_modifier(question):
+    """Locate unsupported calendar-boundary wording in the user source, not business filters."""
+    if len(re.findall(DAY, question)) >= 2 and (match := BOUNDARY_OVERRIDE.search(question)):
+        return {"source": "user_question", "text": match.group(), "start": match.start(), "end": match.end()}
+    return None
 
 
 def normalize_explicit_windows(question, proposal, today):
@@ -28,8 +37,9 @@ def normalize_explicit_windows(question, proposal, today):
              "original_proposal": deepcopy(proposal), "source_expressions": expressions,
              "model_expressions": list(model), "normalized_expressions": None,
              "policy": "calendar_dates_inclusive_to_half_open_v1"}
-    if len(re.findall(DAY, question)) >= 2 and BOUNDARY_OVERRIDE.search(question):
+    if modifier := date_boundary_modifier(question):
         audit["reason"] = "unsupported_date_boundary"
+        audit["boundary_modifier"] = modifier
         return proposal, audit
     if len(expressions) != 1 or not EXPLICIT_RANGE.fullmatch(expressions[0]):
         return proposal, event
