@@ -90,6 +90,11 @@ class UnifiedAgent:
             trace["routing"] = {"rule": "input_safety"}
             frame["task"] = "blocked"
             return outcome("unsupported", "unsafe_request", "请直接描述业务需求。")
+        from .metric_lineage import route_lineage
+        lineage = route_lineage(question, self.capability, trace)
+        if lineage is not None:
+            frame['task'] = 'lineage'
+            return lineage
         # Relative observation horizons require clarification before knowledge or SQL dispatch.
         if (re.search(r"(?:下单|购买)后\s*\d+\s*天", question)
                 and re.search(r"商品明细.{0,28}退货率", question)
