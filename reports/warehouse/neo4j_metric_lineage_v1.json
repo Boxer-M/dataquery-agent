@@ -1,0 +1,725 @@
+{
+  "mode": "real Neo4j and PostgreSQL History through HTTP ASGI",
+  "first_import": {
+    "nodes": 11,
+    "relationships": 12,
+    "version": "discount-lineage-v1:2fc1697ab3445fe5"
+  },
+  "second_import": {
+    "nodes": 11,
+    "relationships": 12,
+    "version": "discount-lineage-v1:2fc1697ab3445fe5"
+  },
+  "graph_result": {
+    "status": "ok",
+    "field": "ods.order_items.discount_amount",
+    "version": "discount-lineage-v1:2fc1697ab3445fe5",
+    "coverage": [
+      "item_net_sales_amount",
+      "item_discount_amount",
+      "order_item_count"
+    ],
+    "impacts": [
+      {
+        "metric_id": "item_discount_amount",
+        "impact_type": "DELETE",
+        "path": [
+          "ods.order_items.discount_amount",
+          "build:dwd.order_item_fact",
+          "build:dws.product_sales_day",
+          "item_discount_amount"
+        ],
+        "evidence": [
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "DELETE",
+            "from_id": "ods.order_items.discount_amount",
+            "expression": "SELECT i.order_item_id, i.order_id, i.product_id, i.quantity,\n       i.unit_price, i.discount_amount,\n       i.quantity * i.unit_price - i.discount_amount AS net_item_amount,\n       o.ordered_at AS order_purchase_time, o.status AS order_status,\n       i.quantity <= 0 AS dq_nonpositive_quantity,\n       i.unit_price < 0 OR i.discount_amount < 0 AS dq_negative_amount,\n       i.discount_amount > i.quantity * i.unit_price AS dq_discount_exceeds_gross,\n       o.status NOT IN ('cancelled','delivered','processing','returned','shipped') AS dq_unknown_order_status,\n       NOT isfinite(o.ordered_at) AS dq_invalid_order_time\nFROM ods.order_items i JOIN ods.orders o ON i.order_id = o.order_id;\n",
+            "to_id": "build:dwd.order_item_fact",
+            "id": "51b46c1a26e452e92f9cbc37a1239183c6831572b5c60d7a1dff01e2e81b289a",
+            "line_start": 1,
+            "file_sha256": "534ee280a62b6fbb2b69301f145f13dd9ee362c0a4763f2dc4f7a2939a3177f1",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_file": "sql/warehouse/transform/dwd/order_item_fact.sql",
+            "line_end": 10
+          },
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "DELETE",
+            "from_id": "build:dwd.order_item_fact",
+            "expression": "SELECT o.ordered_at::date AS order_date,o.channel,i.product_id,count(*) AS order_item_count,\n       sum(i.quantity)::bigint AS ordered_unit_count,sum(i.quantity*i.unit_price) AS item_gross_amount,\n       sum(i.discount_amount) AS item_discount_amount,sum(i.net_item_amount) AS item_net_sales_amount\nFROM dwd.order_item_fact i JOIN dwd.order_fact o USING(order_id) GROUP BY 1,2,3;\n",
+            "to_id": "build:dws.product_sales_day",
+            "id": "61382e04bce4fe8e4481fff8da4150994277aead38adf452a7673cc82c15dd39",
+            "line_start": 1,
+            "file_sha256": "26ddfefeab696fb9e3d8a169561dc2bd5b7dd16ac9fb45e159d76ff6dc962f6e",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_file": "sql/warehouse/transform/dws/product_sales_day.sql",
+            "line_end": 4
+          },
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "DELETE",
+            "from_id": "build:dws.product_sales_day",
+            "expression": "WITH base AS (\nSELECT s.*,p.category_id FROM dws.product_sales_day s JOIN dim.product p USING(product_id) WHERE s.order_date >= %(start)s AND s.order_date < %(end)s AND (%(channel)s::text IS NULL OR s.channel=%(channel)s::text) AND (%(category)s::integer IS NULL OR p.category_id=%(category)s::integer)\n)\nSELECT {bucket} AS bucket, coalesce(sum(item_discount_amount),0) AS value FROM base {group_by};",
+            "to_id": "item_discount_amount",
+            "id": "5156ea98b97854cbd921034cf429cdd0803a12a300891652173435cf864e6062",
+            "line_start": 67,
+            "file_sha256": "85f0598aea31f9fba616b935dec7faacd502013f57fc18bff1e0c972448f4eb8",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "line_end": 72,
+            "source_file": "sql/warehouse/dws_metrics/dws.sql"
+          }
+        ]
+      },
+      {
+        "metric_id": "item_discount_amount",
+        "impact_type": "VALUE",
+        "path": [
+          "ods.order_items.discount_amount",
+          "dwd.order_item_fact.discount_amount",
+          "dws.product_sales_day.item_discount_amount",
+          "item_discount_amount"
+        ],
+        "evidence": [
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "VALUE",
+            "from_id": "ods.order_items.discount_amount",
+            "expression": "i.discount_amount",
+            "to_id": "dwd.order_item_fact.discount_amount",
+            "id": "86541cb750760dbf9557f48c0136c0d40cc09c98cfc88e903706adccf16505d8",
+            "line_start": 2,
+            "file_sha256": "534ee280a62b6fbb2b69301f145f13dd9ee362c0a4763f2dc4f7a2939a3177f1",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_file": "sql/warehouse/transform/dwd/order_item_fact.sql",
+            "line_end": 2
+          },
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "VALUE",
+            "from_id": "dwd.order_item_fact.discount_amount",
+            "expression": "SUM(i.discount_amount) AS item_discount_amount",
+            "to_id": "dws.product_sales_day.item_discount_amount",
+            "id": "0e4e5d4abf9801e4cdc4b122b3902857d82b7a4e3f0b49e60eb55bbe43daa800",
+            "line_start": 3,
+            "file_sha256": "26ddfefeab696fb9e3d8a169561dc2bd5b7dd16ac9fb45e159d76ff6dc962f6e",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_file": "sql/warehouse/transform/dws/product_sales_day.sql",
+            "line_end": 3
+          },
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "VALUE",
+            "from_id": "dws.product_sales_day.item_discount_amount",
+            "expression": "COALESCE(SUM(item_discount_amount), 0) AS value",
+            "to_id": "item_discount_amount",
+            "id": "dbcaa8337ff6c5f4a7c38182ee6ad5525b5c9d89a2675d37b3dd1772ef83170e",
+            "line_start": 67,
+            "file_sha256": "85f0598aea31f9fba616b935dec7faacd502013f57fc18bff1e0c972448f4eb8",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "line_end": 72,
+            "source_file": "sql/warehouse/dws_metrics/dws.sql"
+          }
+        ]
+      },
+      {
+        "metric_id": "item_net_sales_amount",
+        "impact_type": "DELETE",
+        "path": [
+          "ods.order_items.discount_amount",
+          "build:dwd.order_item_fact",
+          "build:dws.product_sales_day",
+          "item_net_sales_amount"
+        ],
+        "evidence": [
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "DELETE",
+            "from_id": "ods.order_items.discount_amount",
+            "expression": "SELECT i.order_item_id, i.order_id, i.product_id, i.quantity,\n       i.unit_price, i.discount_amount,\n       i.quantity * i.unit_price - i.discount_amount AS net_item_amount,\n       o.ordered_at AS order_purchase_time, o.status AS order_status,\n       i.quantity <= 0 AS dq_nonpositive_quantity,\n       i.unit_price < 0 OR i.discount_amount < 0 AS dq_negative_amount,\n       i.discount_amount > i.quantity * i.unit_price AS dq_discount_exceeds_gross,\n       o.status NOT IN ('cancelled','delivered','processing','returned','shipped') AS dq_unknown_order_status,\n       NOT isfinite(o.ordered_at) AS dq_invalid_order_time\nFROM ods.order_items i JOIN ods.orders o ON i.order_id = o.order_id;\n",
+            "to_id": "build:dwd.order_item_fact",
+            "id": "51b46c1a26e452e92f9cbc37a1239183c6831572b5c60d7a1dff01e2e81b289a",
+            "line_start": 1,
+            "file_sha256": "534ee280a62b6fbb2b69301f145f13dd9ee362c0a4763f2dc4f7a2939a3177f1",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_file": "sql/warehouse/transform/dwd/order_item_fact.sql",
+            "line_end": 10
+          },
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "DELETE",
+            "from_id": "build:dwd.order_item_fact",
+            "expression": "SELECT o.ordered_at::date AS order_date,o.channel,i.product_id,count(*) AS order_item_count,\n       sum(i.quantity)::bigint AS ordered_unit_count,sum(i.quantity*i.unit_price) AS item_gross_amount,\n       sum(i.discount_amount) AS item_discount_amount,sum(i.net_item_amount) AS item_net_sales_amount\nFROM dwd.order_item_fact i JOIN dwd.order_fact o USING(order_id) GROUP BY 1,2,3;\n",
+            "to_id": "build:dws.product_sales_day",
+            "id": "61382e04bce4fe8e4481fff8da4150994277aead38adf452a7673cc82c15dd39",
+            "line_start": 1,
+            "file_sha256": "26ddfefeab696fb9e3d8a169561dc2bd5b7dd16ac9fb45e159d76ff6dc962f6e",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_file": "sql/warehouse/transform/dws/product_sales_day.sql",
+            "line_end": 4
+          },
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "DELETE",
+            "from_id": "build:dws.product_sales_day",
+            "expression": "WITH base AS (\nSELECT s.*,p.category_id FROM dws.product_sales_day s JOIN dim.product p USING(product_id) WHERE s.order_date >= %(start)s AND s.order_date < %(end)s AND (%(channel)s::text IS NULL OR s.channel=%(channel)s::text) AND (%(category)s::integer IS NULL OR p.category_id=%(category)s::integer)\n)\nSELECT {bucket} AS bucket, coalesce(sum(item_net_sales_amount),0) AS value FROM base {group_by};",
+            "to_id": "item_net_sales_amount",
+            "id": "e126b9b074a07a607c9dcf8fc2ae365d97a76211b8d29942508e81e980e5b5fa",
+            "line_start": 7,
+            "file_sha256": "85f0598aea31f9fba616b935dec7faacd502013f57fc18bff1e0c972448f4eb8",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "line_end": 12,
+            "source_file": "sql/warehouse/dws_metrics/dws.sql"
+          }
+        ]
+      },
+      {
+        "metric_id": "item_net_sales_amount",
+        "impact_type": "VALUE",
+        "path": [
+          "ods.order_items.discount_amount",
+          "dwd.order_item_fact.net_item_amount",
+          "dws.product_sales_day.item_net_sales_amount",
+          "item_net_sales_amount"
+        ],
+        "evidence": [
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "VALUE",
+            "from_id": "ods.order_items.discount_amount",
+            "expression": "i.quantity * i.unit_price - i.discount_amount AS net_item_amount",
+            "to_id": "dwd.order_item_fact.net_item_amount",
+            "id": "c588e4f36eaf8a0acf94a945264640e46d5916346b705099afd505e1c509d7a4",
+            "line_start": 3,
+            "file_sha256": "534ee280a62b6fbb2b69301f145f13dd9ee362c0a4763f2dc4f7a2939a3177f1",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_file": "sql/warehouse/transform/dwd/order_item_fact.sql",
+            "line_end": 3
+          },
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "VALUE",
+            "from_id": "dwd.order_item_fact.net_item_amount",
+            "expression": "SUM(i.net_item_amount) AS item_net_sales_amount",
+            "to_id": "dws.product_sales_day.item_net_sales_amount",
+            "id": "a8cae403ad6635d39033886cdde9c8da7cb527ffdd08a80769eb0d84739a418d",
+            "line_start": 3,
+            "file_sha256": "26ddfefeab696fb9e3d8a169561dc2bd5b7dd16ac9fb45e159d76ff6dc962f6e",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_file": "sql/warehouse/transform/dws/product_sales_day.sql",
+            "line_end": 3
+          },
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "VALUE",
+            "from_id": "dws.product_sales_day.item_net_sales_amount",
+            "expression": "COALESCE(SUM(item_net_sales_amount), 0) AS value",
+            "to_id": "item_net_sales_amount",
+            "id": "8eef1d87bfbc199a9a45d54efebc8b8efa011de0dc9dccc5d2a7471cf8698e1e",
+            "line_start": 7,
+            "file_sha256": "85f0598aea31f9fba616b935dec7faacd502013f57fc18bff1e0c972448f4eb8",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "line_end": 12,
+            "source_file": "sql/warehouse/dws_metrics/dws.sql"
+          }
+        ]
+      },
+      {
+        "metric_id": "order_item_count",
+        "impact_type": "DELETE",
+        "path": [
+          "ods.order_items.discount_amount",
+          "build:dwd.order_item_fact",
+          "build:dws.product_sales_day",
+          "order_item_count"
+        ],
+        "evidence": [
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "DELETE",
+            "from_id": "ods.order_items.discount_amount",
+            "expression": "SELECT i.order_item_id, i.order_id, i.product_id, i.quantity,\n       i.unit_price, i.discount_amount,\n       i.quantity * i.unit_price - i.discount_amount AS net_item_amount,\n       o.ordered_at AS order_purchase_time, o.status AS order_status,\n       i.quantity <= 0 AS dq_nonpositive_quantity,\n       i.unit_price < 0 OR i.discount_amount < 0 AS dq_negative_amount,\n       i.discount_amount > i.quantity * i.unit_price AS dq_discount_exceeds_gross,\n       o.status NOT IN ('cancelled','delivered','processing','returned','shipped') AS dq_unknown_order_status,\n       NOT isfinite(o.ordered_at) AS dq_invalid_order_time\nFROM ods.order_items i JOIN ods.orders o ON i.order_id = o.order_id;\n",
+            "to_id": "build:dwd.order_item_fact",
+            "id": "51b46c1a26e452e92f9cbc37a1239183c6831572b5c60d7a1dff01e2e81b289a",
+            "line_start": 1,
+            "file_sha256": "534ee280a62b6fbb2b69301f145f13dd9ee362c0a4763f2dc4f7a2939a3177f1",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_file": "sql/warehouse/transform/dwd/order_item_fact.sql",
+            "line_end": 10
+          },
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "DELETE",
+            "from_id": "build:dwd.order_item_fact",
+            "expression": "SELECT o.ordered_at::date AS order_date,o.channel,i.product_id,count(*) AS order_item_count,\n       sum(i.quantity)::bigint AS ordered_unit_count,sum(i.quantity*i.unit_price) AS item_gross_amount,\n       sum(i.discount_amount) AS item_discount_amount,sum(i.net_item_amount) AS item_net_sales_amount\nFROM dwd.order_item_fact i JOIN dwd.order_fact o USING(order_id) GROUP BY 1,2,3;\n",
+            "to_id": "build:dws.product_sales_day",
+            "id": "61382e04bce4fe8e4481fff8da4150994277aead38adf452a7673cc82c15dd39",
+            "line_start": 1,
+            "file_sha256": "26ddfefeab696fb9e3d8a169561dc2bd5b7dd16ac9fb45e159d76ff6dc962f6e",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_file": "sql/warehouse/transform/dws/product_sales_day.sql",
+            "line_end": 4
+          },
+          {
+            "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+            "impact_type": "DELETE",
+            "from_id": "build:dws.product_sales_day",
+            "expression": "WITH base AS (\nSELECT s.*,p.category_id FROM dws.product_sales_day s JOIN dim.product p USING(product_id) WHERE s.order_date >= %(start)s AND s.order_date < %(end)s AND (%(channel)s::text IS NULL OR s.channel=%(channel)s::text) AND (%(category)s::integer IS NULL OR p.category_id=%(category)s::integer)\n)\nSELECT {bucket} AS bucket, coalesce(sum(order_item_count),0) AS value FROM base {group_by};",
+            "to_id": "order_item_count",
+            "id": "8e3c943db583d79da2a7ced3369fca76be91cc4a0c860c22649f5c322c865fe9",
+            "line_start": 49,
+            "file_sha256": "85f0598aea31f9fba616b935dec7faacd502013f57fc18bff1e0c972448f4eb8",
+            "version": "discount-lineage-v1:2fc1697ab3445fe5",
+            "source_file": "sql/warehouse/dws_metrics/dws.sql",
+            "line_end": 54
+          }
+        ]
+      }
+    ]
+  },
+  "http_response": {
+    "xlsx_export": {
+      "eligible": false,
+      "code": "query_export_snapshot_missing",
+      "message": "此查询缺少导出快照，请重新运行查询后再导出"
+    },
+    "status": "completed",
+    "conversation_id": "2e66dca0-090a-444c-95df-50f4e253dadc",
+    "message_id": "3833cfd1-72e8-439f-97ee-f41e30630d51",
+    "query_id": "52d89678-2284-4cb0-bf38-60efc51ae824",
+    "answer": "本轮已核验范围：净额、折扣金额、订单商品明细数；不是全目录影响集合。\n字段值变化：item_discount_amount、item_net_sales_amount。\nods.order_items.discount_amount → dwd.order_item_fact.discount_amount → dws.product_sales_day.item_discount_amount → item_discount_amount；证据：sql/warehouse/transform/dwd/order_item_fact.sql:2-2 i.discount_amount；sql/warehouse/transform/dws/product_sales_day.sql:3-3 SUM(i.discount_amount) AS item_discount_amount；sql/warehouse/dws_metrics/dws.sql:67-72 COALESCE(SUM(item_discount_amount), 0) AS value\nods.order_items.discount_amount → dwd.order_item_fact.net_item_amount → dws.product_sales_day.item_net_sales_amount → item_net_sales_amount；证据：sql/warehouse/transform/dwd/order_item_fact.sql:3-3 i.quantity * i.unit_price - i.discount_amount AS net_item_amount；sql/warehouse/transform/dws/product_sales_day.sql:3-3 SUM(i.net_item_amount) AS item_net_sales_amount；sql/warehouse/dws_metrics/dws.sql:7-12 COALESCE(SUM(item_net_sales_amount), 0) AS value\n字段删除（重建任务依赖）：item_discount_amount、item_net_sales_amount、order_item_count。\nods.order_items.discount_amount → build:dwd.order_item_fact → build:dws.product_sales_day → item_discount_amount；证据：sql/warehouse/transform/dwd/order_item_fact.sql:1-10；sql/warehouse/transform/dws/product_sales_day.sql:1-4；sql/warehouse/dws_metrics/dws.sql:67-72\nods.order_items.discount_amount → build:dwd.order_item_fact → build:dws.product_sales_day → item_net_sales_amount；证据：sql/warehouse/transform/dwd/order_item_fact.sql:1-10；sql/warehouse/transform/dws/product_sales_day.sql:1-4；sql/warehouse/dws_metrics/dws.sql:7-12\nods.order_items.discount_amount → build:dwd.order_item_fact → build:dws.product_sales_day → order_item_count；证据：sql/warehouse/transform/dwd/order_item_fact.sql:1-10；sql/warehouse/transform/dws/product_sales_day.sql:1-4；sql/warehouse/dws_metrics/dws.sql:49-54\n删除影响指当前 SQL 的后续加工/重建会失败，不代表已物化的历史查询立刻失效。",
+    "rows": [],
+    "rows_truncated": false,
+    "row_count": 0,
+    "citations": [],
+    "definitions": [],
+    "clarification_choices": [],
+    "trace": {
+      "routing": {
+        "rule": "field_impact",
+        "lineage": {
+          "status": "ok",
+          "field": "ods.order_items.discount_amount",
+          "version": "discount-lineage-v1:2fc1697ab3445fe5",
+          "coverage": [
+            "item_net_sales_amount",
+            "item_discount_amount",
+            "order_item_count"
+          ],
+          "impacts": [
+            {
+              "metric_id": "item_discount_amount",
+              "impact_type": "DELETE",
+              "path": [
+                "ods.order_items.discount_amount",
+                "build:dwd.order_item_fact",
+                "build:dws.product_sales_day",
+                "item_discount_amount"
+              ],
+              "evidence": [
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "DELETE",
+                  "from_id": "ods.order_items.discount_amount",
+                  "expression": "SELECT i.order_item_id, i.order_id, i.product_id, i.quantity,\n       i.unit_price, i.discount_amount,\n       i.quantity * i.unit_price - i.discount_amount AS net_item_amount,\n       o.ordered_at AS order_purchase_time, o.status AS order_status,\n       i.quantity <= 0 AS dq_nonpositive_quantity,\n       i.unit_price < 0 OR i.discount_amount < 0 AS dq_negative_amount,\n       i.discount_amount > i.quantity * i.unit_price AS dq_discount_exceeds_gross,\n       o.status NOT IN ('cancelled','delivered','processing','returned','shipped') AS dq_unknown_order_status,\n       NOT isfinite(o.ordered_at) AS dq_invalid_order_time\nFROM ods.order_items i JOIN ods.orders o ON i.order_id = o.order_id;\n",
+                  "to_id": "build:dwd.order_item_fact",
+                  "id": "51b46c1a26e452e92f9cbc37a1239183c6831572b5c60d7a1dff01e2e81b289a",
+                  "line_start": 1,
+                  "file_sha256": "534ee280a62b6fbb2b69301f145f13dd9ee362c0a4763f2dc4f7a2939a3177f1",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_file": "sql/warehouse/transform/dwd/order_item_fact.sql",
+                  "line_end": 10
+                },
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "DELETE",
+                  "from_id": "build:dwd.order_item_fact",
+                  "expression": "SELECT o.ordered_at::date AS order_date,o.channel,i.product_id,count(*) AS order_item_count,\n       sum(i.quantity)::bigint AS ordered_unit_count,sum(i.quantity*i.unit_price) AS item_gross_amount,\n       sum(i.discount_amount) AS item_discount_amount,sum(i.net_item_amount) AS item_net_sales_amount\nFROM dwd.order_item_fact i JOIN dwd.order_fact o USING(order_id) GROUP BY 1,2,3;\n",
+                  "to_id": "build:dws.product_sales_day",
+                  "id": "61382e04bce4fe8e4481fff8da4150994277aead38adf452a7673cc82c15dd39",
+                  "line_start": 1,
+                  "file_sha256": "26ddfefeab696fb9e3d8a169561dc2bd5b7dd16ac9fb45e159d76ff6dc962f6e",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_file": "sql/warehouse/transform/dws/product_sales_day.sql",
+                  "line_end": 4
+                },
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "DELETE",
+                  "from_id": "build:dws.product_sales_day",
+                  "expression": "WITH base AS (\nSELECT s.*,p.category_id FROM dws.product_sales_day s JOIN dim.product p USING(product_id) WHERE s.order_date >= %(start)s AND s.order_date < %(end)s AND (%(channel)s::text IS NULL OR s.channel=%(channel)s::text) AND (%(category)s::integer IS NULL OR p.category_id=%(category)s::integer)\n)\nSELECT {bucket} AS bucket, coalesce(sum(item_discount_amount),0) AS value FROM base {group_by};",
+                  "to_id": "item_discount_amount",
+                  "id": "5156ea98b97854cbd921034cf429cdd0803a12a300891652173435cf864e6062",
+                  "line_start": 67,
+                  "file_sha256": "85f0598aea31f9fba616b935dec7faacd502013f57fc18bff1e0c972448f4eb8",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "line_end": 72,
+                  "source_file": "sql/warehouse/dws_metrics/dws.sql"
+                }
+              ]
+            },
+            {
+              "metric_id": "item_discount_amount",
+              "impact_type": "VALUE",
+              "path": [
+                "ods.order_items.discount_amount",
+                "dwd.order_item_fact.discount_amount",
+                "dws.product_sales_day.item_discount_amount",
+                "item_discount_amount"
+              ],
+              "evidence": [
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "VALUE",
+                  "from_id": "ods.order_items.discount_amount",
+                  "expression": "i.discount_amount",
+                  "to_id": "dwd.order_item_fact.discount_amount",
+                  "id": "86541cb750760dbf9557f48c0136c0d40cc09c98cfc88e903706adccf16505d8",
+                  "line_start": 2,
+                  "file_sha256": "534ee280a62b6fbb2b69301f145f13dd9ee362c0a4763f2dc4f7a2939a3177f1",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_file": "sql/warehouse/transform/dwd/order_item_fact.sql",
+                  "line_end": 2
+                },
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "VALUE",
+                  "from_id": "dwd.order_item_fact.discount_amount",
+                  "expression": "SUM(i.discount_amount) AS item_discount_amount",
+                  "to_id": "dws.product_sales_day.item_discount_amount",
+                  "id": "0e4e5d4abf9801e4cdc4b122b3902857d82b7a4e3f0b49e60eb55bbe43daa800",
+                  "line_start": 3,
+                  "file_sha256": "26ddfefeab696fb9e3d8a169561dc2bd5b7dd16ac9fb45e159d76ff6dc962f6e",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_file": "sql/warehouse/transform/dws/product_sales_day.sql",
+                  "line_end": 3
+                },
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "VALUE",
+                  "from_id": "dws.product_sales_day.item_discount_amount",
+                  "expression": "COALESCE(SUM(item_discount_amount), 0) AS value",
+                  "to_id": "item_discount_amount",
+                  "id": "dbcaa8337ff6c5f4a7c38182ee6ad5525b5c9d89a2675d37b3dd1772ef83170e",
+                  "line_start": 67,
+                  "file_sha256": "85f0598aea31f9fba616b935dec7faacd502013f57fc18bff1e0c972448f4eb8",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "line_end": 72,
+                  "source_file": "sql/warehouse/dws_metrics/dws.sql"
+                }
+              ]
+            },
+            {
+              "metric_id": "item_net_sales_amount",
+              "impact_type": "DELETE",
+              "path": [
+                "ods.order_items.discount_amount",
+                "build:dwd.order_item_fact",
+                "build:dws.product_sales_day",
+                "item_net_sales_amount"
+              ],
+              "evidence": [
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "DELETE",
+                  "from_id": "ods.order_items.discount_amount",
+                  "expression": "SELECT i.order_item_id, i.order_id, i.product_id, i.quantity,\n       i.unit_price, i.discount_amount,\n       i.quantity * i.unit_price - i.discount_amount AS net_item_amount,\n       o.ordered_at AS order_purchase_time, o.status AS order_status,\n       i.quantity <= 0 AS dq_nonpositive_quantity,\n       i.unit_price < 0 OR i.discount_amount < 0 AS dq_negative_amount,\n       i.discount_amount > i.quantity * i.unit_price AS dq_discount_exceeds_gross,\n       o.status NOT IN ('cancelled','delivered','processing','returned','shipped') AS dq_unknown_order_status,\n       NOT isfinite(o.ordered_at) AS dq_invalid_order_time\nFROM ods.order_items i JOIN ods.orders o ON i.order_id = o.order_id;\n",
+                  "to_id": "build:dwd.order_item_fact",
+                  "id": "51b46c1a26e452e92f9cbc37a1239183c6831572b5c60d7a1dff01e2e81b289a",
+                  "line_start": 1,
+                  "file_sha256": "534ee280a62b6fbb2b69301f145f13dd9ee362c0a4763f2dc4f7a2939a3177f1",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_file": "sql/warehouse/transform/dwd/order_item_fact.sql",
+                  "line_end": 10
+                },
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "DELETE",
+                  "from_id": "build:dwd.order_item_fact",
+                  "expression": "SELECT o.ordered_at::date AS order_date,o.channel,i.product_id,count(*) AS order_item_count,\n       sum(i.quantity)::bigint AS ordered_unit_count,sum(i.quantity*i.unit_price) AS item_gross_amount,\n       sum(i.discount_amount) AS item_discount_amount,sum(i.net_item_amount) AS item_net_sales_amount\nFROM dwd.order_item_fact i JOIN dwd.order_fact o USING(order_id) GROUP BY 1,2,3;\n",
+                  "to_id": "build:dws.product_sales_day",
+                  "id": "61382e04bce4fe8e4481fff8da4150994277aead38adf452a7673cc82c15dd39",
+                  "line_start": 1,
+                  "file_sha256": "26ddfefeab696fb9e3d8a169561dc2bd5b7dd16ac9fb45e159d76ff6dc962f6e",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_file": "sql/warehouse/transform/dws/product_sales_day.sql",
+                  "line_end": 4
+                },
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "DELETE",
+                  "from_id": "build:dws.product_sales_day",
+                  "expression": "WITH base AS (\nSELECT s.*,p.category_id FROM dws.product_sales_day s JOIN dim.product p USING(product_id) WHERE s.order_date >= %(start)s AND s.order_date < %(end)s AND (%(channel)s::text IS NULL OR s.channel=%(channel)s::text) AND (%(category)s::integer IS NULL OR p.category_id=%(category)s::integer)\n)\nSELECT {bucket} AS bucket, coalesce(sum(item_net_sales_amount),0) AS value FROM base {group_by};",
+                  "to_id": "item_net_sales_amount",
+                  "id": "e126b9b074a07a607c9dcf8fc2ae365d97a76211b8d29942508e81e980e5b5fa",
+                  "line_start": 7,
+                  "file_sha256": "85f0598aea31f9fba616b935dec7faacd502013f57fc18bff1e0c972448f4eb8",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "line_end": 12,
+                  "source_file": "sql/warehouse/dws_metrics/dws.sql"
+                }
+              ]
+            },
+            {
+              "metric_id": "item_net_sales_amount",
+              "impact_type": "VALUE",
+              "path": [
+                "ods.order_items.discount_amount",
+                "dwd.order_item_fact.net_item_amount",
+                "dws.product_sales_day.item_net_sales_amount",
+                "item_net_sales_amount"
+              ],
+              "evidence": [
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "VALUE",
+                  "from_id": "ods.order_items.discount_amount",
+                  "expression": "i.quantity * i.unit_price - i.discount_amount AS net_item_amount",
+                  "to_id": "dwd.order_item_fact.net_item_amount",
+                  "id": "c588e4f36eaf8a0acf94a945264640e46d5916346b705099afd505e1c509d7a4",
+                  "line_start": 3,
+                  "file_sha256": "534ee280a62b6fbb2b69301f145f13dd9ee362c0a4763f2dc4f7a2939a3177f1",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_file": "sql/warehouse/transform/dwd/order_item_fact.sql",
+                  "line_end": 3
+                },
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "VALUE",
+                  "from_id": "dwd.order_item_fact.net_item_amount",
+                  "expression": "SUM(i.net_item_amount) AS item_net_sales_amount",
+                  "to_id": "dws.product_sales_day.item_net_sales_amount",
+                  "id": "a8cae403ad6635d39033886cdde9c8da7cb527ffdd08a80769eb0d84739a418d",
+                  "line_start": 3,
+                  "file_sha256": "26ddfefeab696fb9e3d8a169561dc2bd5b7dd16ac9fb45e159d76ff6dc962f6e",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_file": "sql/warehouse/transform/dws/product_sales_day.sql",
+                  "line_end": 3
+                },
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "VALUE",
+                  "from_id": "dws.product_sales_day.item_net_sales_amount",
+                  "expression": "COALESCE(SUM(item_net_sales_amount), 0) AS value",
+                  "to_id": "item_net_sales_amount",
+                  "id": "8eef1d87bfbc199a9a45d54efebc8b8efa011de0dc9dccc5d2a7471cf8698e1e",
+                  "line_start": 7,
+                  "file_sha256": "85f0598aea31f9fba616b935dec7faacd502013f57fc18bff1e0c972448f4eb8",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "line_end": 12,
+                  "source_file": "sql/warehouse/dws_metrics/dws.sql"
+                }
+              ]
+            },
+            {
+              "metric_id": "order_item_count",
+              "impact_type": "DELETE",
+              "path": [
+                "ods.order_items.discount_amount",
+                "build:dwd.order_item_fact",
+                "build:dws.product_sales_day",
+                "order_item_count"
+              ],
+              "evidence": [
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "DELETE",
+                  "from_id": "ods.order_items.discount_amount",
+                  "expression": "SELECT i.order_item_id, i.order_id, i.product_id, i.quantity,\n       i.unit_price, i.discount_amount,\n       i.quantity * i.unit_price - i.discount_amount AS net_item_amount,\n       o.ordered_at AS order_purchase_time, o.status AS order_status,\n       i.quantity <= 0 AS dq_nonpositive_quantity,\n       i.unit_price < 0 OR i.discount_amount < 0 AS dq_negative_amount,\n       i.discount_amount > i.quantity * i.unit_price AS dq_discount_exceeds_gross,\n       o.status NOT IN ('cancelled','delivered','processing','returned','shipped') AS dq_unknown_order_status,\n       NOT isfinite(o.ordered_at) AS dq_invalid_order_time\nFROM ods.order_items i JOIN ods.orders o ON i.order_id = o.order_id;\n",
+                  "to_id": "build:dwd.order_item_fact",
+                  "id": "51b46c1a26e452e92f9cbc37a1239183c6831572b5c60d7a1dff01e2e81b289a",
+                  "line_start": 1,
+                  "file_sha256": "534ee280a62b6fbb2b69301f145f13dd9ee362c0a4763f2dc4f7a2939a3177f1",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_file": "sql/warehouse/transform/dwd/order_item_fact.sql",
+                  "line_end": 10
+                },
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "DELETE",
+                  "from_id": "build:dwd.order_item_fact",
+                  "expression": "SELECT o.ordered_at::date AS order_date,o.channel,i.product_id,count(*) AS order_item_count,\n       sum(i.quantity)::bigint AS ordered_unit_count,sum(i.quantity*i.unit_price) AS item_gross_amount,\n       sum(i.discount_amount) AS item_discount_amount,sum(i.net_item_amount) AS item_net_sales_amount\nFROM dwd.order_item_fact i JOIN dwd.order_fact o USING(order_id) GROUP BY 1,2,3;\n",
+                  "to_id": "build:dws.product_sales_day",
+                  "id": "61382e04bce4fe8e4481fff8da4150994277aead38adf452a7673cc82c15dd39",
+                  "line_start": 1,
+                  "file_sha256": "26ddfefeab696fb9e3d8a169561dc2bd5b7dd16ac9fb45e159d76ff6dc962f6e",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_file": "sql/warehouse/transform/dws/product_sales_day.sql",
+                  "line_end": 4
+                },
+                {
+                  "source_version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+                  "impact_type": "DELETE",
+                  "from_id": "build:dws.product_sales_day",
+                  "expression": "WITH base AS (\nSELECT s.*,p.category_id FROM dws.product_sales_day s JOIN dim.product p USING(product_id) WHERE s.order_date >= %(start)s AND s.order_date < %(end)s AND (%(channel)s::text IS NULL OR s.channel=%(channel)s::text) AND (%(category)s::integer IS NULL OR p.category_id=%(category)s::integer)\n)\nSELECT {bucket} AS bucket, coalesce(sum(order_item_count),0) AS value FROM base {group_by};",
+                  "to_id": "order_item_count",
+                  "id": "8e3c943db583d79da2a7ced3369fca76be91cc4a0c860c22649f5c322c865fe9",
+                  "line_start": 49,
+                  "file_sha256": "85f0598aea31f9fba616b935dec7faacd502013f57fc18bff1e0c972448f4eb8",
+                  "version": "discount-lineage-v1:2fc1697ab3445fe5",
+                  "source_file": "sql/warehouse/dws_metrics/dws.sql",
+                  "line_end": 54
+                }
+              ]
+            }
+          ]
+        },
+        "final_route": "lineage",
+        "reason": null,
+        "model_called": false,
+        "model_stages": [],
+        "context_operation": "new",
+        "query_rewrite": false,
+        "inherited": {},
+        "modified": {}
+      },
+      "skills": [],
+      "orchestration": [],
+      "interrupt_required": false,
+      "run_id": "52d89678-2284-4cb0-bf38-60efc51ae824",
+      "trace_id": "933d71f3b92c489db653b36ea7435d1c",
+      "tasks": [],
+      "capability": [],
+      "tools": [
+        {
+          "trace_id": "0a557e5b57694954ab7fcb7cb7d733da",
+          "tool": "neo4j_field_impact",
+          "kind": "lineage",
+          "status": "ok",
+          "sources": [],
+          "elapsed_ms": 26
+        }
+      ]
+    },
+    "replayed": false,
+    "visualization_unavailable_reason": "insufficient_rows"
+  },
+  "history_trace_equal": true,
+  "real_model_calls": 0,
+  "metric_sql": 0,
+  "unknown_field": "field_not_found",
+  "real_http_auth_failure": {
+    "code": "lineage_unavailable",
+    "message": "请求未能完成。"
+  },
+  "real_disconnect": {
+    "actual_container_stopped": "dataquery-lineage-v1-neo4j-1",
+    "response": {
+      "xlsx_export": {
+        "eligible": false,
+        "code": "query_export_unavailable",
+        "message": "此查询尚未完成或不符合当前导出格式。"
+      },
+      "status": "failed",
+      "conversation_id": "a1f07b8d-289c-4a0a-b14c-eef7445122d9",
+      "message_id": "0902c987-a8f6-4af5-afab-4d70f1378194",
+      "query_id": "2c10c12e-eefd-49fb-8043-faf0e2c0863b",
+      "error": {
+        "code": "lineage_unavailable",
+        "message": "请求未能完成。"
+      },
+      "rows": [],
+      "rows_truncated": false,
+      "row_count": 0,
+      "citations": [],
+      "definitions": [],
+      "clarification_choices": [],
+      "trace": {
+        "routing": {
+          "rule": "field_impact",
+          "lineage": {
+            "status": "error",
+            "code": "lineage_unavailable"
+          },
+          "final_route": "lineage",
+          "reason": "lineage_unavailable",
+          "model_called": false,
+          "model_stages": [],
+          "context_operation": "new",
+          "query_rewrite": false,
+          "inherited": {},
+          "modified": {}
+        },
+        "skills": [],
+        "orchestration": [],
+        "interrupt_required": false,
+        "run_id": "2c10c12e-eefd-49fb-8043-faf0e2c0863b",
+        "trace_id": "2c07937849e44db9bc5607e1a22b9dec",
+        "tasks": [],
+        "capability": [],
+        "tools": [
+          {
+            "trace_id": "1370dc513efa4d86bd90aa984aecc474",
+            "tool": "neo4j_field_impact",
+            "kind": "lineage",
+            "status": "error",
+            "sources": [],
+            "elapsed_ms": 17
+          }
+        ]
+      },
+      "replayed": false,
+      "visualization_unavailable_reason": "query_not_completed"
+    },
+    "history_trace_equal": true,
+    "metric_sql": 0,
+    "real_model_calls": 0,
+    "restart_graph_query": "ok"
+  },
+  "environment": {
+    "neo4j_version": "5.26.33",
+    "image": "neo4j:5.26-community@sha256:577eb43120e8688e62e753e962c47d30044ecaa95147ee5386c29f226b878008",
+    "http": "127.0.0.1:7474",
+    "memory_limit": "1 GiB",
+    "python": "3.12",
+    "baseline_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5"
+  },
+  "regression": {
+    "neo4j_specialized_passed": 5,
+    "python_offline_passed": 253,
+    "python_offline_skipped": 88,
+    "related_integration_passed": 54,
+    "frontend_passed": 11,
+    "typecheck": "passed",
+    "build": "passed",
+    "chrome": "not run",
+    "real_gemini_calls": 0,
+    "embedding_calls": 0
+  },
+  "source_hashes": {
+    "src/dataquery_agent/lineage_evidence.py": "50e2a61b9c27bad1759017b94cfc9200890aac0bb5a0b3f3e355d9dbc52d6912",
+    "src/dataquery_agent/metric_lineage.py": "2b428746519c521b58aada8f0d83db71521e6fb88e1bea37aa08901a7905e2a6",
+    "src/dataquery_agent/unified_agent.py": "18321720d37c815c3e01d4a58b2a016241f642beade4cdfabc299dc14d0aa3e2",
+    "warehouse/lineage_discount_v1.json": "2fc1697ab3445fe5fa047eb0c62a1e5ce2d59030fc08fb3a324bdefbea3616bc"
+  }
+}

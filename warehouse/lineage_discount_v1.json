@@ -1,0 +1,16 @@
+{
+  "version": "discount-lineage-v1",
+  "source_commit": "4a06a49e18c63709ca549662973ab17d7b675fd5",
+  "scope": "One source field; audited net, discount amount and item count only; not an exhaustive catalog graph",
+  "reviewed_inputs": {
+    "metrics/warehouse_catalog_v1.json": "73084c50f8b1f4137e3580947eb9d7ef0c1f7d1014fdfd9dd2fbedc6487be473",
+    "sql/warehouse/ddl/dwd/order_item_fact.sql": "081af104bdec5c387650426c640b7dca4a986646cd6c72882e8861e47acd3547",
+    "sql/warehouse/ddl/dws/product_sales_day.sql": "056e1d7f0431848f4a51e923810643d52a0124a4613053836ea3377930d2faaf",
+    "sql/warehouse/dws_metrics/dws.sql": "85f0598aea31f9fba616b935dec7faacd502013f57fc18bff1e0c972448f4eb8",
+    "sql/warehouse/transform/dwd/order_item_fact.sql": "534ee280a62b6fbb2b69301f145f13dd9ee362c0a4763f2dc4f7a2939a3177f1",
+    "sql/warehouse/transform/dws/product_sales_day.sql": "26ddfefeab696fb9e3d8a169561dc2bd5b7dd16ac9fb45e159d76ff6dc962f6e",
+    "warehouse/ads_models.json": "39438e316d2238e5f61b4c3375316be85abee48b822070d91d4d7ec80bac668d",
+    "warehouse/dws_models.json": "9b568027715e468425b5c5aed4135bbde4e80156cfe0284525f64f81deda8691",
+    "warehouse/models.json": "976168750cf04849b72d8a631c29493d53fcbd06612a63930be719fb5889d685"
+  }
+}
