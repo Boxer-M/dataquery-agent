@@ -1,0 +1,2201 @@
+{
+  "mode": "real Milvus + pgvector, reused existing Gemini document vectors, fresh query vectors",
+  "golden_sha256": "cdb2ffd1611a09ff35447da33802f8e933adb7422ce2f269c4d3713e095a7519",
+  "top_k": 2,
+  "cases": [
+    {
+      "id": "exact",
+      "question": "Order count: 48",
+      "backend": "pgvector",
+      "mode": "vector",
+      "hit": true,
+      "reciprocal_rank": 1.0,
+      "citation_support": true,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+          "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "title": "Synthetic PDF verification",
+          "source_uri": "reviewed-pdf:integrated-eeab3592c52c5028",
+          "source_location": "page:2;lines:1-3",
+          "heading_path": [],
+          "retrieval_score": 0.7667722473510461,
+          "authority_level": 1,
+          "source_type": "reviewed_pdf",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "55f360db19e75fe3da58a348ff2b596095128aca65d38c566a20bee034d07007",
+          "page_number": 2,
+          "line_start": 1,
+          "line_end": 3,
+          "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "extraction_method": "ocr",
+          "access_scope": "owner",
+          "quote": "Order count: 48"
+        }
+      ],
+      "trace": {
+        "trace_id": "cf60d4cf3ab34a42864ef448cb8c6e9f",
+        "strategy": "pgvector-cosine-v2",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "vector",
+        "fusion": null,
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "pgvector",
+          "actual": "pgvector",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": null,
+        "keyword_terms": [],
+        "channels": {
+          "vector_pool": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "vector": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "keyword": []
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "Order count: 48",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 25,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.7667722473510461,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.7423656054466017,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          }
+        ]
+      },
+      "elapsed_ms": 34
+    },
+    {
+      "id": "exact",
+      "question": "Order count: 48",
+      "backend": "milvus",
+      "mode": "vector",
+      "hit": true,
+      "reciprocal_rank": 1.0,
+      "citation_support": true,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+          "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "title": "Synthetic PDF verification",
+          "source_uri": "reviewed-pdf:integrated-eeab3592c52c5028",
+          "source_location": "page:2;lines:1-3",
+          "heading_path": [],
+          "retrieval_score": 0.7667722473510461,
+          "authority_level": 1,
+          "source_type": "reviewed_pdf",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "55f360db19e75fe3da58a348ff2b596095128aca65d38c566a20bee034d07007",
+          "page_number": 2,
+          "line_start": 1,
+          "line_end": 3,
+          "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "extraction_method": "ocr",
+          "access_scope": "owner",
+          "quote": "Order count: 48"
+        }
+      ],
+      "trace": {
+        "trace_id": "28aa3adfe8444bcdad5d377ff5295707",
+        "strategy": "milvus-cosine-v2",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "vector",
+        "fusion": null,
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "milvus",
+          "actual": "milvus",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "visible_versions": 1,
+          "milvus_candidate_ids": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "pg_rejected_ids": [],
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": null,
+        "keyword_terms": [],
+        "channels": {
+          "vector_pool": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "vector": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "keyword": []
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "Order count: 48",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 38,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.7667722473510461,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.7423656054466017,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          }
+        ]
+      },
+      "elapsed_ms": 45
+    },
+    {
+      "id": "exact",
+      "question": "Order count: 48",
+      "backend": "pgvector",
+      "mode": "hybrid",
+      "hit": true,
+      "reciprocal_rank": 1.0,
+      "citation_support": true,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+          "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "title": "Synthetic PDF verification",
+          "source_uri": "reviewed-pdf:integrated-eeab3592c52c5028",
+          "source_location": "page:2;lines:1-3",
+          "heading_path": [],
+          "retrieval_score": 0.7667722473510461,
+          "authority_level": 1,
+          "source_type": "reviewed_pdf",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "55f360db19e75fe3da58a348ff2b596095128aca65d38c566a20bee034d07007",
+          "page_number": 2,
+          "line_start": 1,
+          "line_end": 3,
+          "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "extraction_method": "ocr",
+          "access_scope": "owner",
+          "quote": "Order count: 48"
+        }
+      ],
+      "trace": {
+        "trace_id": "73b9178c785d493689fd62472701f706",
+        "strategy": "pgvector-postgres-fts-rrf-v1",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "hybrid",
+        "fusion": "rrf",
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "pgvector",
+          "actual": "pgvector",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+        "keyword_terms": [
+          "order",
+          "count",
+          "48"
+        ],
+        "channels": {
+          "vector_pool": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "vector": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "keyword": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ]
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "Order count: 48",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 29,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.7667722473510461,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.03278688524590164,
+            "vector_rank": 1,
+            "keyword_rank": 1
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.7423656054466017,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.03225806451612903,
+            "vector_rank": 2,
+            "keyword_rank": 2
+          }
+        ]
+      },
+      "elapsed_ms": 40
+    },
+    {
+      "id": "exact",
+      "question": "Order count: 48",
+      "backend": "milvus",
+      "mode": "hybrid",
+      "hit": true,
+      "reciprocal_rank": 1.0,
+      "citation_support": true,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+          "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "title": "Synthetic PDF verification",
+          "source_uri": "reviewed-pdf:integrated-eeab3592c52c5028",
+          "source_location": "page:2;lines:1-3",
+          "heading_path": [],
+          "retrieval_score": 0.7667722473510461,
+          "authority_level": 1,
+          "source_type": "reviewed_pdf",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "55f360db19e75fe3da58a348ff2b596095128aca65d38c566a20bee034d07007",
+          "page_number": 2,
+          "line_start": 1,
+          "line_end": 3,
+          "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "extraction_method": "ocr",
+          "access_scope": "owner",
+          "quote": "Order count: 48"
+        }
+      ],
+      "trace": {
+        "trace_id": "5ce4b9df8c0341efbe70c1d888e730d6",
+        "strategy": "milvus-postgres-fts-rrf-v1",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "hybrid",
+        "fusion": "rrf",
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "milvus",
+          "actual": "milvus",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "visible_versions": 1,
+          "milvus_candidate_ids": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "pg_rejected_ids": [],
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+        "keyword_terms": [
+          "order",
+          "count",
+          "48"
+        ],
+        "channels": {
+          "vector_pool": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "vector": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "keyword": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ]
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "Order count: 48",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 92,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.7667722473510461,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.03278688524590164,
+            "vector_rank": 1,
+            "keyword_rank": 1
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.7423656054466017,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.03225806451612903,
+            "vector_rank": 2,
+            "keyword_rank": 2
+          }
+        ]
+      },
+      "elapsed_ms": 142
+    },
+    {
+      "id": "paraphrase",
+      "question": "扫描核验页面记载了多少订单？",
+      "backend": "pgvector",
+      "mode": "vector",
+      "hit": true,
+      "reciprocal_rank": 1.0,
+      "citation_support": true,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+          "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "title": "Synthetic PDF verification",
+          "source_uri": "reviewed-pdf:integrated-eeab3592c52c5028",
+          "source_location": "page:2;lines:1-3",
+          "heading_path": [],
+          "retrieval_score": 0.7867449287550204,
+          "authority_level": 1,
+          "source_type": "reviewed_pdf",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "55f360db19e75fe3da58a348ff2b596095128aca65d38c566a20bee034d07007",
+          "page_number": 2,
+          "line_start": 1,
+          "line_end": 3,
+          "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "extraction_method": "ocr",
+          "access_scope": "owner",
+          "quote": "Order count: 48"
+        }
+      ],
+      "trace": {
+        "trace_id": "6aca5c02df4b4428be31be5591321ebf",
+        "strategy": "pgvector-cosine-v2",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "vector",
+        "fusion": null,
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "pgvector",
+          "actual": "pgvector",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": null,
+        "keyword_terms": [],
+        "channels": {
+          "vector_pool": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "vector": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "keyword": []
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "扫描核验页面记载了多少订单?",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 43,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.7867449287550204,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.7678422422268014,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          }
+        ]
+      },
+      "elapsed_ms": 53
+    },
+    {
+      "id": "paraphrase",
+      "question": "扫描核验页面记载了多少订单？",
+      "backend": "milvus",
+      "mode": "vector",
+      "hit": true,
+      "reciprocal_rank": 1.0,
+      "citation_support": true,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+          "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "title": "Synthetic PDF verification",
+          "source_uri": "reviewed-pdf:integrated-eeab3592c52c5028",
+          "source_location": "page:2;lines:1-3",
+          "heading_path": [],
+          "retrieval_score": 0.7867449287550204,
+          "authority_level": 1,
+          "source_type": "reviewed_pdf",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "55f360db19e75fe3da58a348ff2b596095128aca65d38c566a20bee034d07007",
+          "page_number": 2,
+          "line_start": 1,
+          "line_end": 3,
+          "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "extraction_method": "ocr",
+          "access_scope": "owner",
+          "quote": "Order count: 48"
+        }
+      ],
+      "trace": {
+        "trace_id": "1e2cff4fb4a04315a266eb5f8492261f",
+        "strategy": "milvus-cosine-v2",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "vector",
+        "fusion": null,
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "milvus",
+          "actual": "milvus",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "visible_versions": 1,
+          "milvus_candidate_ids": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "pg_rejected_ids": [],
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": null,
+        "keyword_terms": [],
+        "channels": {
+          "vector_pool": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "vector": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "keyword": []
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "扫描核验页面记载了多少订单?",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 28,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.7867449287550204,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.7678422422268014,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          }
+        ]
+      },
+      "elapsed_ms": 34
+    },
+    {
+      "id": "paraphrase",
+      "question": "扫描核验页面记载了多少订单？",
+      "backend": "pgvector",
+      "mode": "hybrid",
+      "hit": true,
+      "reciprocal_rank": 1.0,
+      "citation_support": true,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+          "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "title": "Synthetic PDF verification",
+          "source_uri": "reviewed-pdf:integrated-eeab3592c52c5028",
+          "source_location": "page:2;lines:1-3",
+          "heading_path": [],
+          "retrieval_score": 0.7867449287550204,
+          "authority_level": 1,
+          "source_type": "reviewed_pdf",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "55f360db19e75fe3da58a348ff2b596095128aca65d38c566a20bee034d07007",
+          "page_number": 2,
+          "line_start": 1,
+          "line_end": 3,
+          "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "extraction_method": "ocr",
+          "access_scope": "owner",
+          "quote": "Order count: 48"
+        }
+      ],
+      "trace": {
+        "trace_id": "2e28243a6e9f46c4aa99f1f5d29a26e0",
+        "strategy": "pgvector-postgres-fts-rrf-v1",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "hybrid",
+        "fusion": "rrf",
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "pgvector",
+          "actual": "pgvector",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+        "keyword_terms": [
+          "扫描",
+          "描核",
+          "核验",
+          "验页",
+          "页面",
+          "面记",
+          "记载",
+          "载了",
+          "了多",
+          "多少",
+          "少订",
+          "订单"
+        ],
+        "channels": {
+          "vector_pool": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "vector": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "keyword": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ]
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "扫描核验页面记载了多少订单?",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 17,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.7867449287550204,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.03278688524590164,
+            "vector_rank": 1,
+            "keyword_rank": 1
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.7678422422268014,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.03225806451612903,
+            "vector_rank": 2,
+            "keyword_rank": 2
+          }
+        ]
+      },
+      "elapsed_ms": 25
+    },
+    {
+      "id": "paraphrase",
+      "question": "扫描核验页面记载了多少订单？",
+      "backend": "milvus",
+      "mode": "hybrid",
+      "hit": true,
+      "reciprocal_rank": 1.0,
+      "citation_support": true,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+          "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "title": "Synthetic PDF verification",
+          "source_uri": "reviewed-pdf:integrated-eeab3592c52c5028",
+          "source_location": "page:2;lines:1-3",
+          "heading_path": [],
+          "retrieval_score": 0.7867449287550204,
+          "authority_level": 1,
+          "source_type": "reviewed_pdf",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "55f360db19e75fe3da58a348ff2b596095128aca65d38c566a20bee034d07007",
+          "page_number": 2,
+          "line_start": 1,
+          "line_end": 3,
+          "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "extraction_method": "ocr",
+          "access_scope": "owner",
+          "quote": "Order count: 48"
+        }
+      ],
+      "trace": {
+        "trace_id": "8321561ac9b944ab96bcff0df06594ed",
+        "strategy": "milvus-postgres-fts-rrf-v1",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "hybrid",
+        "fusion": "rrf",
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "milvus",
+          "actual": "milvus",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "visible_versions": 1,
+          "milvus_candidate_ids": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "pg_rejected_ids": [],
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+        "keyword_terms": [
+          "扫描",
+          "描核",
+          "核验",
+          "验页",
+          "页面",
+          "面记",
+          "记载",
+          "载了",
+          "了多",
+          "多少",
+          "少订",
+          "订单"
+        ],
+        "channels": {
+          "vector_pool": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "vector": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ],
+          "keyword": [
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+          ]
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "扫描核验页面记载了多少订单?",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 30,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.7867449287550204,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.03278688524590164,
+            "vector_rank": 1,
+            "keyword_rank": 1
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.7678422422268014,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.03225806451612903,
+            "vector_rank": 2,
+            "keyword_rank": 2
+          }
+        ]
+      },
+      "elapsed_ms": 38
+    },
+    {
+      "id": "native",
+      "question": "PDF 中带有 Native verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。",
+      "backend": "pgvector",
+      "mode": "vector",
+      "hit": true,
+      "reciprocal_rank": 1.0,
+      "citation_support": true,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+          "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+          "title": "Synthetic PDF verification",
+          "source_uri": "reviewed-pdf:integrated-eeab3592c52c5028",
+          "source_location": "page:1;lines:1-3",
+          "heading_path": [],
+          "retrieval_score": 0.8440408017659681,
+          "authority_level": 1,
+          "source_type": "reviewed_pdf",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "14c641c0446181104f2967ae2f3ad4e971306dc9bf9bd4acd622b3f092d8da07",
+          "page_number": 1,
+          "line_start": 1,
+          "line_end": 3,
+          "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "extraction_method": "native_text",
+          "access_scope": "owner",
+          "quote": "Order count: 24"
+        }
+      ],
+      "trace": {
+        "trace_id": "f5908ed5b11049849ef1e43994e946b7",
+        "strategy": "pgvector-cosine-v2",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "vector",
+        "fusion": null,
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "pgvector",
+          "actual": "pgvector",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": null,
+        "keyword_terms": [],
+        "channels": {
+          "vector_pool": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "vector": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "keyword": []
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "PDF 中带有 Native verification page 标题的页面,请逐字摘录该页的 Order count 那一整行。",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 19,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.8440408017659681,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.8116843216607393,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          }
+        ]
+      },
+      "elapsed_ms": 26
+    },
+    {
+      "id": "native",
+      "question": "PDF 中带有 Native verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。",
+      "backend": "milvus",
+      "mode": "vector",
+      "hit": true,
+      "reciprocal_rank": 1.0,
+      "citation_support": true,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+          "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+          "title": "Synthetic PDF verification",
+          "source_uri": "reviewed-pdf:integrated-eeab3592c52c5028",
+          "source_location": "page:1;lines:1-3",
+          "heading_path": [],
+          "retrieval_score": 0.8440408017659681,
+          "authority_level": 1,
+          "source_type": "reviewed_pdf",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "14c641c0446181104f2967ae2f3ad4e971306dc9bf9bd4acd622b3f092d8da07",
+          "page_number": 1,
+          "line_start": 1,
+          "line_end": 3,
+          "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "extraction_method": "native_text",
+          "access_scope": "owner",
+          "quote": "Order count: 24"
+        }
+      ],
+      "trace": {
+        "trace_id": "62dfb1d7b7d54fcfae100b0d62f316ba",
+        "strategy": "milvus-cosine-v2",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "vector",
+        "fusion": null,
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "milvus",
+          "actual": "milvus",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "visible_versions": 1,
+          "milvus_candidate_ids": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "pg_rejected_ids": [],
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": null,
+        "keyword_terms": [],
+        "channels": {
+          "vector_pool": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "vector": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "keyword": []
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "PDF 中带有 Native verification page 标题的页面,请逐字摘录该页的 Order count 那一整行。",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 25,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.8440408017659681,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.8116843216607393,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          }
+        ]
+      },
+      "elapsed_ms": 32
+    },
+    {
+      "id": "native",
+      "question": "PDF 中带有 Native verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。",
+      "backend": "pgvector",
+      "mode": "hybrid",
+      "hit": true,
+      "reciprocal_rank": 1.0,
+      "citation_support": true,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+          "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+          "title": "Synthetic PDF verification",
+          "source_uri": "reviewed-pdf:integrated-eeab3592c52c5028",
+          "source_location": "page:1;lines:1-3",
+          "heading_path": [],
+          "retrieval_score": 0.8440408017659681,
+          "authority_level": 1,
+          "source_type": "reviewed_pdf",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "14c641c0446181104f2967ae2f3ad4e971306dc9bf9bd4acd622b3f092d8da07",
+          "page_number": 1,
+          "line_start": 1,
+          "line_end": 3,
+          "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "extraction_method": "native_text",
+          "access_scope": "owner",
+          "quote": "Order count: 24"
+        }
+      ],
+      "trace": {
+        "trace_id": "aff1d0a60b694496b00e0df35fe2d9c5",
+        "strategy": "pgvector-postgres-fts-rrf-v1",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "hybrid",
+        "fusion": "rrf",
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "pgvector",
+          "actual": "pgvector",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+        "keyword_terms": [
+          "pdf",
+          "native",
+          "verification",
+          "page",
+          "order",
+          "count",
+          "中带",
+          "带有",
+          "标题",
+          "题的",
+          "的页",
+          "页面",
+          "请逐",
+          "逐字",
+          "字摘",
+          "摘录",
+          "录该",
+          "该页",
+          "页的",
+          "那一",
+          "一整",
+          "整行"
+        ],
+        "channels": {
+          "vector_pool": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "vector": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "keyword": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ]
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "PDF 中带有 Native verification page 标题的页面,请逐字摘录该页的 Order count 那一整行。",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 21,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.8440408017659681,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.03278688524590164,
+            "vector_rank": 1,
+            "keyword_rank": 1
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.8116843216607393,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.03225806451612903,
+            "vector_rank": 2,
+            "keyword_rank": 2
+          }
+        ]
+      },
+      "elapsed_ms": 28
+    },
+    {
+      "id": "native",
+      "question": "PDF 中带有 Native verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。",
+      "backend": "milvus",
+      "mode": "hybrid",
+      "hit": true,
+      "reciprocal_rank": 1.0,
+      "citation_support": true,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+          "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+          "title": "Synthetic PDF verification",
+          "source_uri": "reviewed-pdf:integrated-eeab3592c52c5028",
+          "source_location": "page:1;lines:1-3",
+          "heading_path": [],
+          "retrieval_score": 0.8440408017659681,
+          "authority_level": 1,
+          "source_type": "reviewed_pdf",
+          "effective_date": null,
+          "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+          "content_hash": "14c641c0446181104f2967ae2f3ad4e971306dc9bf9bd4acd622b3f092d8da07",
+          "page_number": 1,
+          "line_start": 1,
+          "line_end": 3,
+          "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "extraction_method": "native_text",
+          "access_scope": "owner",
+          "quote": "Order count: 24"
+        }
+      ],
+      "trace": {
+        "trace_id": "edc45f66cf7f46f68ffa7dc9bdaeced1",
+        "strategy": "milvus-postgres-fts-rrf-v1",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "hybrid",
+        "fusion": "rrf",
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "milvus",
+          "actual": "milvus",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "visible_versions": 1,
+          "milvus_candidate_ids": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "pg_rejected_ids": [],
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+        "keyword_terms": [
+          "pdf",
+          "native",
+          "verification",
+          "page",
+          "order",
+          "count",
+          "中带",
+          "带有",
+          "标题",
+          "题的",
+          "的页",
+          "页面",
+          "请逐",
+          "逐字",
+          "字摘",
+          "摘录",
+          "录该",
+          "该页",
+          "页的",
+          "那一",
+          "一整",
+          "整行"
+        ],
+        "channels": {
+          "vector_pool": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "vector": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "keyword": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ]
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "PDF 中带有 Native verification page 标题的页面,请逐字摘录该页的 Order count 那一整行。",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 29,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.8440408017659681,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.03278688524590164,
+            "vector_rank": 1,
+            "keyword_rank": 1
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.8116843216607393,
+            "exact_match": true,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.03225806451612903,
+            "vector_rank": 2,
+            "keyword_rank": 2
+          }
+        ]
+      },
+      "elapsed_ms": 35
+    },
+    {
+      "id": "absent",
+      "question": "实际退款何时到账银行卡？",
+      "backend": "pgvector",
+      "mode": "vector",
+      "hit": null,
+      "reciprocal_rank": null,
+      "citation_support": null,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [],
+      "trace": {
+        "trace_id": "12ce5bd0abf44670a7298b9412c11cfa",
+        "strategy": "pgvector-cosine-v2",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "vector",
+        "fusion": null,
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "pgvector",
+          "actual": "pgvector",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": null,
+        "keyword_terms": [],
+        "channels": {
+          "vector_pool": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "vector": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "keyword": []
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "实际退款何时到账银行卡?",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 15,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.5445980701090143,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.5244960443086554,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          }
+        ]
+      },
+      "elapsed_ms": 16
+    },
+    {
+      "id": "absent",
+      "question": "实际退款何时到账银行卡？",
+      "backend": "milvus",
+      "mode": "vector",
+      "hit": null,
+      "reciprocal_rank": null,
+      "citation_support": null,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [],
+      "trace": {
+        "trace_id": "29d70ed127844d1c9f96fbe12f0b8125",
+        "strategy": "milvus-cosine-v2",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "vector",
+        "fusion": null,
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "milvus",
+          "actual": "milvus",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "visible_versions": 1,
+          "milvus_candidate_ids": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "pg_rejected_ids": [],
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": null,
+        "keyword_terms": [],
+        "channels": {
+          "vector_pool": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "vector": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "keyword": []
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "实际退款何时到账银行卡?",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 27,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.5445980701090143,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.5244960443086554,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf"
+          }
+        ]
+      },
+      "elapsed_ms": 27
+    },
+    {
+      "id": "absent",
+      "question": "实际退款何时到账银行卡？",
+      "backend": "pgvector",
+      "mode": "hybrid",
+      "hit": null,
+      "reciprocal_rank": null,
+      "citation_support": null,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [],
+      "trace": {
+        "trace_id": "6520ee0095fa42b9ae3f8bb2516aebd9",
+        "strategy": "pgvector-postgres-fts-rrf-v1",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "hybrid",
+        "fusion": "rrf",
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "pgvector",
+          "actual": "pgvector",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+        "keyword_terms": [
+          "实际",
+          "际退",
+          "退款",
+          "款何",
+          "何时",
+          "时到",
+          "到账",
+          "账银",
+          "银行",
+          "行卡"
+        ],
+        "channels": {
+          "vector_pool": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "vector": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "keyword": []
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "实际退款何时到账银行卡?",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 19,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.5445980701090143,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.01639344262295082,
+            "vector_rank": 1
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.5244960443086554,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.016129032258064516,
+            "vector_rank": 2
+          }
+        ]
+      },
+      "elapsed_ms": 19
+    },
+    {
+      "id": "absent",
+      "question": "实际退款何时到账银行卡？",
+      "backend": "milvus",
+      "mode": "hybrid",
+      "hit": null,
+      "reciprocal_rank": null,
+      "citation_support": null,
+      "citation_method": "fixed attribution + verbatim/page validation",
+      "citations": [],
+      "trace": {
+        "trace_id": "0a5986e6a655434b9344d8007245708f",
+        "strategy": "milvus-postgres-fts-rrf-v1",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "hybrid",
+        "fusion": "rrf",
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "milvus",
+          "actual": "milvus",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "visible_versions": 1,
+          "milvus_candidate_ids": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "pg_rejected_ids": [],
+          "final_pg_rejected_ids": []
+        },
+        "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+        "keyword_terms": [
+          "实际",
+          "际退",
+          "退款",
+          "款何",
+          "何时",
+          "时到",
+          "到账",
+          "账银",
+          "银行",
+          "行卡"
+        ],
+        "channels": {
+          "vector_pool": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "vector": [
+            "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+          ],
+          "keyword": []
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [
+          "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+          "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+        ],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "实际退款何时到账银行卡?",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 28,
+        "candidates": [
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+            "retrieval_score": 0.5445980701090143,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:1;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.01639344262295082,
+            "vector_rank": 1
+          },
+          {
+            "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+            "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+            "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+            "retrieval_score": 0.5244960443086554,
+            "exact_match": false,
+            "evidence_date_status": "active",
+            "source_location": "page:2;lines:1-3",
+            "heading_path": [],
+            "source_type": "reviewed_pdf",
+            "rrf_score": 0.016129032258064516,
+            "vector_rank": 2
+          }
+        ]
+      },
+      "elapsed_ms": 28
+    }
+  ],
+  "lifecycle": {
+    "foreign_owner_rejected": true,
+    "updated_version_empty_without_sync": {
+      "old_vectors_still_present": 2,
+      "new_version": "pdf-4505e1fbb5d4a5b912b99067b20be3faad1c1948fcf1d06f",
+      "trace": {
+        "trace_id": "c312b3303e3742389cb1537dc885664e",
+        "strategy": "milvus-cosine-v2",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "vector",
+        "fusion": null,
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "milvus",
+          "actual": "milvus",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "visible_versions": 1,
+          "milvus_candidate_ids": [],
+          "pg_rejected_ids": []
+        },
+        "keyword_algorithm": null,
+        "keyword_terms": [],
+        "channels": {
+          "vector_pool": [],
+          "vector": [],
+          "keyword": []
+        },
+        "top_k": 2,
+        "returned_chunk_ids": [],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "Order count: 48",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 18,
+        "candidates": []
+      }
+    },
+    "old_version_excluded": true,
+    "actual_stopped_fallback": {
+      "trace_id": "8ca74f63f24a4fc297068ac3251b7dd1",
+      "strategy": "pgvector-postgres-fts-rrf-v1",
+      "query_embedding_called": true,
+      "embedding_model": "gemini-embedding-001",
+      "mode": "hybrid",
+      "fusion": "rrf",
+      "rrf_constant": 60,
+      "vector_backend": {
+        "requested": "milvus",
+        "actual": "pgvector",
+        "fallback_reason": "milvus_connection_error",
+        "compatible_index": true,
+        "visible_versions": 1,
+        "final_pg_rejected_ids": []
+      },
+      "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+      "keyword_terms": [
+        "order",
+        "count",
+        "48"
+      ],
+      "channels": {
+        "vector_pool": [
+          "74461289aa2b2ec4993ca75dfb4db3d8a7b3d20b6fdf88632afb667c8b4dbf61",
+          "e8f73f1210a5504d6ca3155d4faefd2fc02638f91e4b9f0d482f55fe8a5934f9"
+        ],
+        "vector": [
+          "74461289aa2b2ec4993ca75dfb4db3d8a7b3d20b6fdf88632afb667c8b4dbf61",
+          "e8f73f1210a5504d6ca3155d4faefd2fc02638f91e4b9f0d482f55fe8a5934f9"
+        ],
+        "keyword": [
+          "74461289aa2b2ec4993ca75dfb4db3d8a7b3d20b6fdf88632afb667c8b4dbf61",
+          "e8f73f1210a5504d6ca3155d4faefd2fc02638f91e4b9f0d482f55fe8a5934f9"
+        ]
+      },
+      "top_k": 2,
+      "returned_chunk_ids": [
+        "74461289aa2b2ec4993ca75dfb4db3d8a7b3d20b6fdf88632afb667c8b4dbf61",
+        "e8f73f1210a5504d6ca3155d4faefd2fc02638f91e4b9f0d482f55fe8a5934f9"
+      ],
+      "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+      "index_incompatible": false,
+      "query": "Order count: 48",
+      "includes_reviewed_pdf": true,
+      "scope": "reviewed_pdf",
+      "elapsed_ms": 58,
+      "candidates": [
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-4505e1fbb5d4a5b912b99067b20be3faad1c1948fcf1d06f",
+          "chunk_id": "74461289aa2b2ec4993ca75dfb4db3d8a7b3d20b6fdf88632afb667c8b4dbf61",
+          "retrieval_score": 0.7667722473510461,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:2;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03278688524590164,
+          "vector_rank": 1,
+          "keyword_rank": 1
+        },
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-4505e1fbb5d4a5b912b99067b20be3faad1c1948fcf1d06f",
+          "chunk_id": "e8f73f1210a5504d6ca3155d4faefd2fc02638f91e4b9f0d482f55fe8a5934f9",
+          "retrieval_score": 0.7423656054466017,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:1;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03225806451612903,
+          "vector_rank": 2,
+          "keyword_rank": 2
+        }
+      ]
+    },
+    "restart_attempts": [
+      {
+        "error_type": "MilvusUnavailable"
+      },
+      {
+        "requested": "milvus",
+        "actual": "pgvector",
+        "fallback_reason": "milvus_timeout",
+        "compatible_index": true,
+        "visible_versions": 1,
+        "final_pg_rejected_ids": []
+      },
+      {
+        "requested": "milvus",
+        "actual": "pgvector",
+        "fallback_reason": "milvus_timeout",
+        "compatible_index": true,
+        "visible_versions": 1,
+        "final_pg_rejected_ids": []
+      },
+      {
+        "requested": "milvus",
+        "actual": "milvus",
+        "fallback_reason": null,
+        "compatible_index": true,
+        "visible_versions": 1,
+        "milvus_candidate_ids": [
+          "74461289aa2b2ec4993ca75dfb4db3d8a7b3d20b6fdf88632afb667c8b4dbf61",
+          "e8f73f1210a5504d6ca3155d4faefd2fc02638f91e4b9f0d482f55fe8a5934f9"
+        ],
+        "pg_rejected_ids": [],
+        "final_pg_rejected_ids": []
+      }
+    ],
+    "restored_actual_backend": "milvus",
+    "withdrawn_during_search": {
+      "trace": {
+        "trace_id": "8e9a36850e5d41a18d85323ca166b6a2",
+        "strategy": "milvus-postgres-fts-rrf-v1",
+        "query_embedding_called": true,
+        "embedding_model": "gemini-embedding-001",
+        "mode": "hybrid",
+        "fusion": "rrf",
+        "rrf_constant": 60,
+        "vector_backend": {
+          "requested": "milvus",
+          "actual": "milvus",
+          "fallback_reason": null,
+          "compatible_index": true,
+          "visible_versions": 1,
+          "milvus_candidate_ids": [
+            "74461289aa2b2ec4993ca75dfb4db3d8a7b3d20b6fdf88632afb667c8b4dbf61",
+            "e8f73f1210a5504d6ca3155d4faefd2fc02638f91e4b9f0d482f55fe8a5934f9"
+          ],
+          "pg_rejected_ids": [],
+          "final_pg_rejected_ids": [
+            "74461289aa2b2ec4993ca75dfb4db3d8a7b3d20b6fdf88632afb667c8b4dbf61",
+            "e8f73f1210a5504d6ca3155d4faefd2fc02638f91e4b9f0d482f55fe8a5934f9"
+          ]
+        },
+        "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+        "keyword_terms": [
+          "order",
+          "count",
+          "48"
+        ],
+        "channels": {
+          "vector_pool": [
+            "74461289aa2b2ec4993ca75dfb4db3d8a7b3d20b6fdf88632afb667c8b4dbf61",
+            "e8f73f1210a5504d6ca3155d4faefd2fc02638f91e4b9f0d482f55fe8a5934f9"
+          ],
+          "vector": [],
+          "keyword": []
+        },
+        "top_k": 6,
+        "returned_chunk_ids": [],
+        "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+        "index_incompatible": false,
+        "query": "Order count: 48",
+        "includes_reviewed_pdf": true,
+        "scope": "reviewed_pdf",
+        "elapsed_ms": 45,
+        "candidates": []
+      },
+      "physical_old_vectors_still_present": 4,
+      "model_calls": 0
+    },
+    "withdrawn_excluded": true
+  },
+  "generation_events": [
+    {
+      "stage": "knowledge-extractive-v1",
+      "status": "ok",
+      "model": "gemini-3.5-flash-lite",
+      "usage": {
+        "prompt": 321,
+        "output": 104,
+        "total": 425
+      },
+      "elapsed_ms": 2252
+    }
+  ],
+  "errors": [],
+  "embedding_batches": [
+    {
+      "task_type": "RETRIEVAL_QUERY",
+      "elapsed_ms": 1651,
+      "token_counts": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "document": {
+    "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+    "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+    "source_sha256": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+    "pages": [
+      "page:1;lines:1-3",
+      "page:2;lines:1-3"
+    ],
+    "document_vector_inputs_reused": 2
+  },
+  "query_vector_sha256": {
+    "Order count: 48": "a86d0b8fa8c44c1aa6ea3571689e61306e140e1b5ade69d3558276757dee4ffa",
+    "扫描核验页面记载了多少订单?": "906d3e0317e48b8daa4b754a76fb732ac73344413638bb4a43e2fe5607700ea0",
+    "PDF 中带有 Native verification page 标题的页面,请逐字摘录该页的 Order count 那一整行。": "890d712671ce205738544bed682a1883d4292b87bd110fbf318acea6ccf6354c",
+    "实际退款何时到账银行卡?": "69356152ff1dbaa565f430b214f129b747d9cf9a1ad94a5812171e96127104f2",
+    "PDF 中带有 Scanned verification page 标题的页面,请逐字摘录该页的 Order count 那一整行。": "d749bbfe5f29b817a9b4a0cfe2dd35664012ad20d09157deadf8a0ca3b430e5f"
+  },
+  "imports": {
+    "first": {
+      "upserted": 2,
+      "chunk_ids": [
+        "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+        "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+      ]
+    },
+    "second": {
+      "upserted": 2,
+      "chunk_ids": [
+        "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3",
+        "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638"
+      ]
+    },
+    "logical_records_first": 2,
+    "logical_records_second": 2
+  },
+  "live_request": {
+    "response": {
+      "xlsx_export": {
+        "eligible": false,
+        "code": "query_export_snapshot_missing",
+        "message": "此查询缺少导出快照，请重新运行查询后再导出"
+      },
+      "status": "completed",
+      "conversation_id": "6f38014a-c988-4a64-8be2-5d9a6c570f86",
+      "message_id": "91467b36-594e-45d5-b8d4-15a5dd248b21",
+      "query_id": "f63d5a41-87b1-49d0-8273-5245fdf1966a",
+      "answer": "原文摘录：“Order count: 48” [1] Synthetic PDF verification · PDF 第 2 页 · 审核文本第 1–3 行 · 版本 pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+      "rows": [],
+      "rows_truncated": false,
+      "row_count": 0,
+      "evidence_status": "supported",
+      "citations": [
+        {
+          "document_id": "72d000adbf08904050082d2b8f1121fdf915d29498467e08303102e6cd9027a7",
+          "document_version": "pdf-c75d871e73ec280ebd1e98b3cdc0caf57030e1fd89ede2d1",
+          "chunk_id": "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+          "title": "Synthetic PDF verification",
+          "source_uri": "reviewed-pdf:integrated-eeab3592c52c5028",
+          "source_location": "page:2;lines:1-3",
+          "source_type": "reviewed_pdf",
+          "quote": "Order count: 48",
+          "source_hash": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+          "page_number": 2,
+          "line_start": 1,
+          "line_end": 3,
+          "extraction_method": "ocr",
+          "access_scope": "owner"
+        }
+      ],
+      "definitions": [],
+      "clarification_choices": [],
+      "trace": {
+        "routing": {
+          "rule": "pdf_document",
+          "final_route": "knowledge",
+          "reason": null,
+          "model_called": true,
+          "model_stages": [
+            "knowledge"
+          ],
+          "context_operation": "new",
+          "query_rewrite": false,
+          "inherited": {},
+          "modified": {}
+        },
+        "skills": [],
+        "orchestration": [],
+        "interrupt_required": false,
+        "run_id": "f63d5a41-87b1-49d0-8273-5245fdf1966a",
+        "trace_id": "76165061c6fd4e5d96a119da7d8bf353",
+        "plan_id": "af30e38b61ef4105aeafe0b3025f968f",
+        "attempt_id": "d755bebc51694153a0128a6d645f716d",
+        "tasks": [
+          {
+            "trace_id": "ef6e57e1a6be427db3fbddbe2da5a0f8",
+            "plan_id": "af30e38b61ef4105aeafe0b3025f968f",
+            "task_id": "af30e38b61ef4105aeafe0b3025f968f/1",
+            "attempt_id": "d755bebc51694153a0128a6d645f716d",
+            "agent": "knowledge",
+            "tool": "rag_retrieval",
+            "kind": "knowledge",
+            "status": "ok",
+            "sources": [],
+            "agent_elapsed_ms": 2309.096
+          }
+        ],
+        "capability": [],
+        "tools": [
+          {
+            "retrieval": {
+              "mode": "hybrid",
+              "fusion": "rrf",
+              "rrf_constant": 60,
+              "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+              "channels": {
+                "vector_pool": [
+                  "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+                  "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+                ],
+                "vector": [
+                  "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+                  "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+                ],
+                "keyword": [
+                  "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+                  "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+                ]
+              },
+              "returned_chunk_ids": [
+                "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+                "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+              ],
+              "top_k": 6,
+              "vector_backend": {
+                "requested": "milvus",
+                "actual": "milvus",
+                "fallback_reason": null,
+                "compatible_index": true,
+                "visible_versions": 1,
+                "milvus_candidate_ids": [
+                  "d58a39eb6d5b39ef31f962eb4d85fca35dfd89ad9fdc2e8137e4d38a2eb40638",
+                  "5513d3cb9e5ccd7ce3258ee180808250b4eb0ba6583e9f0513d983aaa048b6e3"
+                ],
+                "pg_rejected_ids": [],
+                "final_pg_rejected_ids": []
+              }
+            },
+            "trace_id": "ef6e57e1a6be427db3fbddbe2da5a0f8",
+            "plan_id": "af30e38b61ef4105aeafe0b3025f968f",
+            "task_id": "af30e38b61ef4105aeafe0b3025f968f/1",
+            "attempt_id": "d755bebc51694153a0128a6d645f716d",
+            "agent": "knowledge",
+            "tool": "rag_retrieval",
+            "kind": "knowledge",
+            "status": "ok",
+            "sources": [],
+            "elapsed_ms": 33,
+            "scope": "reviewed_pdf",
+            "includes_reviewed_pdf": true
+          }
+        ]
+      },
+      "replayed": false,
+      "visualization_unavailable_reason": "insufficient_rows"
+    },
+    "history_trace_equal": true,
+    "model_outputs": [
+      {
+        "prompt_version": "knowledge-extractive-v1",
+        "model_output": "{\n  \"status\": \"supported\",\n  \"claims\": [\n    {\n      \"chunk_id\": \"[已脱敏]\",\n      \"quote\": \"Order count: 48\"\n    }\n  ]\n}"
+      }
+    ],
+    "pdf_supported": true
+  },
+  "summary": {
+    "vector_pgvector": {
+      "recall_hits": 3,
+      "denominator": 3,
+      "reciprocal_rank_sum": 3.0,
+      "citation_support": 3,
+      "na": 1
+    },
+    "vector_milvus": {
+      "recall_hits": 3,
+      "denominator": 3,
+      "reciprocal_rank_sum": 3.0,
+      "citation_support": 3,
+      "na": 1
+    },
+    "hybrid_pgvector": {
+      "recall_hits": 3,
+      "denominator": 3,
+      "reciprocal_rank_sum": 3.0,
+      "citation_support": 3,
+      "na": 1
+    },
+    "hybrid_milvus": {
+      "recall_hits": 3,
+      "denominator": 3,
+      "reciprocal_rank_sum": 3.0,
+      "citation_support": 3,
+      "na": 1
+    }
+  },
+  "evaluated_on": "2026-11-20",
+  "report_assembled_on": "2026-11-23",
+  "baseline_commit": "1d5371ceff3a45756ae9e01ea05531ff28c04bcc",
+  "sample_counts": {
+    "quality_questions": 4,
+    "positive_labeled_questions": 3,
+    "negative_questions": 1,
+    "paired_executions": 16,
+    "active_corpus_chunks": 2,
+    "real_chat_requests": 1
+  },
+  "model_calls": {
+    "real_query_embedding_batches": 1,
+    "real_query_embedding_inputs": 5,
+    "real_document_embedding_calls": 0,
+    "real_generation_calls": 1,
+    "fixed_attribution_checks": 16
+  },
+  "environment": {
+    "milvus_image": "milvusdb/milvus:v2.6.26@sha256:f43e0cd0c9912c35379c349f7f3a3a806b9308462d43d1bfa18d007c6642d693",
+    "index": "FLAT",
+    "metric": "COSINE",
+    "dimensions": 768,
+    "normalization": "gemini-embedding-001-768-unit-retrieval-v1",
+    "container_memory_limit": "3 GiB"
+  },
+  "regression": {
+    "offline_passed": 257,
+    "offline_skipped": 88,
+    "related_postgres_passed": 66,
+    "frontend_passed": 11,
+    "typecheck": "passed",
+    "build": "passed",
+    "new_chrome_test": "not run"
+  },
+  "limitations": [
+    "Two chunks and K=2 cannot establish general retrieval quality or speed improvements.",
+    "Negative query retrieved irrelevant pages; real LLM refusal for that query was not tested.",
+    "Citation support metrics use fixed attribution and exact quote/page validation, not generated answer accuracy.",
+    "Version update test changes signed review revision with unchanged text; no new content embedding regeneration measured.",
+    "Real model results are from Nov 20, not fresh calls during Nov 23 report assembly."
+  ],
+  "final_hardening_note": "After the live run, reader-only export and optional legacy trace projection guards were added; Reader empty-scope sync and deterministic regressions passed. Successful retrieval logic unchanged.",
+  "source_hashes": {
+    "src/dataquery_agent/rag/retrieval.py": "06ca81966ce592a98ff7a76ab005fda708727f233e8374d174d950364cba9993",
+    "src/dataquery_agent/rag/milvus.py": "0e569bfdd34a2b68779691e79073cc6bd31a02853b0b1d9aeb4aa22d103fd25e",
+    "src/dataquery_agent/rag/vector_candidates.py": "5962586f3006d81b6ed78a47a6d3f0e7c40beb09645368dbe2f708a467f78adf",
+    "src/dataquery_agent/runtime_trace.py": "529d9826dd51eb433032b13b272eb013c3f7ccdc0629c84bbba9e0d0530812fb",
+    "tests/evaluate_milvus.py": "38f35f8c4d23cf60ab3d6f655a67360bcdf48949dfed44023d30b4b1e6f37970",
+    "tests/milvus_cases_v1.json": "cdb2ffd1611a09ff35447da33802f8e933adb7422ce2f269c4d3713e095a7519"
+  }
+}

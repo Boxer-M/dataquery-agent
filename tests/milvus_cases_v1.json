@@ -1,0 +1,13 @@
+{
+  "version": "milvus-paired-v1",
+  "top_k": 2,
+  "source_pdf_sha256": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+  "cases": [
+    {"id":"exact","question":"Order count: 48","page":2,"quote":"Order count: 48"},
+    {"id":"paraphrase","question":"扫描核验页面记载了多少订单？","page":2,"quote":"Order count: 48"},
+    {"id":"native","question":"PDF 中带有 Native verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。","page":1,"quote":"Order count: 24"},
+    {"id":"absent","question":"实际退款何时到账银行卡？","page":null,"quote":null}
+  ],
+  "live_question":"PDF 中带有 Scanned verification page 标题的页面，请逐字摘录该页的 Order count 那一整行。",
+  "support_rule":"Expected verbatim quote on the independently labeled page, not LLM answer accuracy."
+}

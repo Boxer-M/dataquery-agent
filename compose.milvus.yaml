@@ -1,0 +1,29 @@
+name: dataquery-milvus-v1
+services:
+  milvus:
+    image: milvusdb/milvus:v2.6.26@sha256:f43e0cd0c9912c35379c349f7f3a3a806b9308462d43d1bfa18d007c6642d693
+    command: [milvus, run, standalone]
+    environment:
+      ETCD_USE_EMBED: "true"
+      ETCD_DATA_DIR: /var/lib/milvus/etcd
+      ETCD_CONFIG_PATH: /milvus/configs/embedEtcd.yaml
+      COMMON_STORAGETYPE: local
+      COMMON_SECURITY_AUTHORIZATIONENABLED: "true"
+      COMMON_SECURITY_DEFAULTROOTPASSWORD: ${MILVUS_PASSWORD:?Use ignored .env.milvus}
+      DEPLOY_MODE: STANDALONE
+      GOMAXPROCS: "2"
+      KNOWHERE_OMP_NUM_THREADS: "2"
+    ports:
+      - "127.0.0.1:19530:19530"
+    volumes:
+      - milvus_data:/var/lib/milvus
+      - ./infra/milvus/embedEtcd.yaml:/milvus/configs/embedEtcd.yaml:ro
+    mem_limit: 3g
+    cpus: 2
+    healthcheck:
+      test: [CMD, curl, -f, http://localhost:9091/healthz]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+volumes:
+  milvus_data:

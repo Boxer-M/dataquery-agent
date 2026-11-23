@@ -4,9 +4,13 @@ from time import monotonic
 from uuid import uuid4
 import re
 import unicodedata
+import os
+from dotenv import dotenv_values
 
 from .documents import KnowledgeError, ensure_safe
 from .store import CHUNKS, DOCS, VERSIONS
+from ..metrics import ROOT
+from .vector_candidates import PgVectorCandidates,MilvusCandidates
 
 STRATEGY = "pgvector-postgres-fts-rrf-v1"
 
@@ -34,12 +38,16 @@ def rrf(vector_rows, keyword_rows, constant=60):
 
 
 class Retriever:
-    def __init__(self, store, embedding, *, mode="hybrid"):
+    def __init__(self, store, embedding, *, mode="hybrid", backend=None, milvus=None):
         if mode not in {"vector", "hybrid"}:
             raise KnowledgeError("invalid_retrieval_mode")
         self.store = store
         self.embedding = embedding
         self.mode = mode
+        backend=backend or os.getenv('RAG_VECTOR_BACKEND') or dotenv_values(ROOT/'.env.milvus').get('RAG_VECTOR_BACKEND','pgvector')
+        if backend not in {'pgvector','milvus'}:
+            raise KnowledgeError('invalid_vector_backend')
+        self.candidates=PgVectorCandidates() if backend=='pgvector' else MilvusCandidates(milvus)
 
     def search(self, question, *, today, owner=None, synthetic=False, topics=None, rules=False, top_k=6, reviewed_pdf=False, include_reviewed_pdf=False):
         if not isinstance(question, str) or not 1 <= len(question.strip()) <= 500 or type(top_k) is not int or not 1 <= top_k <= 10:
@@ -73,7 +81,7 @@ class Retriever:
                     SELECT d.document_id,d.source_type,d.source_uri,d.owner_scope <> '' AS private,
                            v.document_version,v.title,v.topic,v.authority_level,v.effective_date,v.expires_on,
                            v.content_hash AS document_hash,c.chunk_id,c.chunk_text,c.heading_path,c.source_location{pdf_provenance},
-                           c.content_hash,c.embedding_model,c.embedding_version,
+                           c.content_hash,c.embedding_model,c.embedding_version,c.index_version,
                            1-(c.embedding OPERATOR(rag_vector.<=>) %(embedding)s::rag_vector.vector) AS retrieval_score,
                            EXISTS (SELECT 1 FROM unnest(%(terms)s::text[]) term
                                    WHERE strpos(lower(v.title || ' ' || c.chunk_text), term) > 0) AS exact_match,
@@ -89,14 +97,9 @@ class Retriever:
                       AND (NOT %(rules)s OR d.source_type IN ('business_rule','synthetic_fixture','reviewed_pdf'))
                 )
             """
-            vector_rows = pg.execute(scored + """
-                SELECT * FROM scored
-                ORDER BY (evidence_date_status='active') DESC,
-                         retrieval_score DESC, chunk_id
-                LIMIT %(limit)s
-            """, params).fetchall()
+            vector_rows,backend_trace=self.candidates.search(pg,scored,params)
             vector_pool_ids = [row["chunk_id"] for row in vector_rows]
-            has_compatible_index = bool(vector_rows)
+            has_compatible_index = backend_trace['compatible_index']
             vector_rows = [row for row in vector_rows if topics is not None or row["retrieval_score"] >= 0.43]
             keyword_rows = []
             if self.mode == "hybrid" and terms:
@@ -114,8 +117,7 @@ class Retriever:
                     FROM lexical WHERE lexemes @@ to_tsquery('pg_catalog.simple',%(lexical)s)
                     ORDER BY keyword_score DESC,chunk_id LIMIT %(limit)s
                 """, params).fetchall()
-            rows = rrf(vector_rows, keyword_rows) if self.mode == "hybrid" else vector_rows
-            if not rows and not has_compatible_index:
+            if not vector_rows and not keyword_rows and not has_compatible_index:
                 compatible = pg.execute(f"""
                     SELECT EXISTS (SELECT 1 FROM {CHUNKS} c JOIN {DOCS} d USING(document_id)
                         JOIN {VERSIONS} v USING(document_id,document_version)
@@ -128,6 +130,18 @@ class Retriever:
                 incompatible = next(iter(compatible.values()))
             else:
                 incompatible = False
+        # A fresh snapshot after the external call closes the stale-version/withdrawal
+        # window before evidence is handed to the model. Final citation validation remains.
+        ids=list({row['chunk_id'] for row in vector_rows+keyword_rows})
+        if ids:
+            with self.store.transaction(owner,synthetic=synthetic) as pg:
+                current=pg.execute(scored+'SELECT * FROM scored WHERE chunk_id=ANY(%(candidate_ids)s)',
+                                   params|{'candidate_ids':ids}).fetchall()
+            current={row['chunk_id']:row for row in current}
+            backend_trace['final_pg_rejected_ids']=sorted(set(ids)-set(current))
+            vector_rows=[row|current[row['chunk_id']] for row in vector_rows if row['chunk_id'] in current]
+            keyword_rows=[row|current[row['chunk_id']] for row in keyword_rows if row['chunk_id'] in current]
+        rows = rrf(vector_rows, keyword_rows) if self.mode == "hybrid" else vector_rows
         for row in rows:
             if row["evidence_date_status"] != "active":
                 row["chunk_text"] = ""
@@ -135,8 +149,9 @@ class Retriever:
                 if row[key]:
                     row[key] = row[key].isoformat()
         trace = {
-            "trace_id": uuid4().hex, "strategy": STRATEGY if self.mode == "hybrid" else "pgvector-cosine-v2", "query_embedding_called": True, "embedding_model": self.embedding.model,
+            "trace_id": uuid4().hex, "strategy": (STRATEGY if backend_trace['actual']=='pgvector' else 'milvus-postgres-fts-rrf-v1') if self.mode == "hybrid" else backend_trace['actual']+'-cosine-v2', "query_embedding_called": True, "embedding_model": self.embedding.model,
             "mode": self.mode, "fusion": "rrf" if self.mode == "hybrid" else None, "rrf_constant": 60,
+            "vector_backend": backend_trace,
             "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1" if self.mode == "hybrid" else None,
             "keyword_terms": terms if self.mode == "hybrid" else [],
             "channels": {"vector_pool": vector_pool_ids, "vector": [r["chunk_id"] for r in vector_rows], "keyword": [r["chunk_id"] for r in keyword_rows]},
