@@ -15,7 +15,7 @@ SQL Shed 为 CC0 公开合成电商数据，已建设 **7 张 ODS、4 张 DWD、
 - **跨会话渠道偏好**：显式发送“保存默认看Web渠道”，新会话的受支持指标自动使用该渠道；支持查看、更新及删除。当前请求和会话已确认条件优先，Trace 标记来源。首次需运行偏好表迁移。[配置与验收](docs/warehouse/CROSS_SESSION_PREFERENCE_MEMORY_V1.md)
 - **可选 Neo4j 指标血缘**：对已核验的折扣字段，分别返回值变化和删除后重建影响，逐跳附 SQL 来源；首版覆盖净额、折扣金额和明细计数三项，不代表完整指标目录。[配置与验收](docs/warehouse/NEO4J_METRIC_LINEAGE_V1.md)
 - **混合检索与路由**：pgvector 与 PostgreSQL 全文独立召回、RRF 融合；支持中文二元组匹配、短追问条件继承及结构化路由 Trace。[实现与评测](docs/warehouse/HYBRID_ROUTING_RETRIEVAL_V1.md)
-- **可选 Milvus 候选后端**：沿用 768 维 Gemini 向量和余弦口径，支持纯向量及 RRF；PostgreSQL 复核 Owner、有效版本并提供原文。连接失败回退 pgvector，Trace 标记实际后端。[配置与小样本验收](docs/warehouse/MILVUS_VECTOR_BACKEND_V1.md)
+- **可选 Milvus 候选后端**：沿用 768 维 Gemini 向量和余弦口径，支持纯向量及 RRF；PostgreSQL 复核 Owner、有效版本并提供原文。连接失败回退 pgvector，Trace 标记实际后端。[配置与小样本验收](docs/warehouse/MILVUS_VECTOR_BACKEND_V1.md)；多批同步经完整读回及 PostgreSQL 版本检查后才就绪，未就绪回退 pgvector。[就绪状态与故障验收](docs/warehouse/MILVUS_INDEX_READINESS_V1.md)
 
 Python 3.12、FastAPI、Gemini、LangGraph、SQLGlot；PostgreSQL 16、pgvector、Redis；React、TypeScript、Ant Design、ECharts、Vite。pypdf 提取 PDF 文本，macOS Apple Vision 识别扫描页，SQLite 暂存本机文档审核记录。
 
