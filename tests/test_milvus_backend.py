@@ -38,6 +38,30 @@ class MilvusBackendTests(unittest.TestCase):
         self.assertIsNone(trace['fallback_reason'])
         self.assertFalse(any('SELECT * FROM scored' in call.args[0] for call in pg.execute.call_args_list))
 
+    def test_malformed_candidate_response_falls_back(self):
+        row={'chunk_id':'allowed','evidence_date_status':'active','retrieval_score':1}
+        client=Milvus('http://127.0.0.1:19530','local-test-placeholder')
+        for malformed in (None, 'invalid', 42, [], True):
+            with self.subTest(candidate=malformed):
+                pg,_,params=self.setup_backend([row])
+                with patch.object(client,'request',return_value=[malformed]):
+                    rows,trace=MilvusCandidates(client).search(pg,'WITH scored AS (...) ',params)
+                self.assertEqual(rows,[row])
+                self.assertEqual(trace['requested'],'milvus')
+                self.assertEqual(trace['actual'],'pgvector')
+                self.assertEqual(trace['fallback_reason'],'milvus_invalid_response')
+
+    def test_empty_rest_response_does_not_fall_back(self):
+        pg,_,params=self.setup_backend([])
+        client=Milvus('http://127.0.0.1:19530','local-test-placeholder')
+        with patch.object(client,'request',return_value=[]):
+            rows,trace=MilvusCandidates(client).search(pg,'WITH scored AS (...) ',params)
+        self.assertEqual(rows,[])
+        self.assertEqual(trace['requested'],'milvus')
+        self.assertEqual(trace['actual'],'milvus')
+        self.assertIsNone(trace['fallback_reason'])
+        self.assertFalse(any('SELECT * FROM scored' in call.args[0] for call in pg.execute.call_args_list))
+
     def test_server_scope_and_pg_rejection_of_untrusted_hits(self):
         pg,milvus,params=self.setup_backend([],hits=[{'chunk_id':'foreign'}])
         rows,trace=MilvusCandidates(milvus).search(pg,'WITH scored AS (...) ',params)

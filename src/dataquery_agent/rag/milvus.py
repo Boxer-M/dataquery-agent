@@ -94,7 +94,8 @@ class Milvus:
         rows=self.request('entities/search',{'data':[json.loads(embedding)],'annsField':'vector','filter':condition,
             'limit':limit,'outputFields':['chunk_id'],'consistencyLevel':'Strong',
             'searchParams':{'metricType':'COSINE','params':{}}})
-        if not isinstance(rows,list) or any(not isinstance(row.get('chunk_id'),str) for row in rows):
+        if not isinstance(rows,list) or any(
+                not isinstance(row,dict) or not isinstance(row.get('chunk_id'),str) for row in rows):
             raise MilvusUnavailable('milvus_invalid_response')
         return rows
 
