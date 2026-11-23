@@ -1,0 +1,1072 @@
+{
+  "started_at": "2026-11-23T02:33:48.811983+00:00",
+  "external_embedding_calls": 0,
+  "generation_calls": 0,
+  "query_vector_mode": "stored real document embedding as ANN probe",
+  "fixture": "local derivative of previously authorized synthetic PDF; exact text/vector reuse",
+  "source_pdf_sha256": "8716be31f972a13bf13b2f2d1daa84913859c6d327e4d501aa8a7df490400c28",
+  "events": {},
+  "cleanup": [
+    "all fixture documents withdrawn",
+    "all fixture Milvus vectors deleted"
+  ],
+  "expected_chunks": 52,
+  "documents": [
+    {
+      "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+      "version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+      "sha256": "feae12c6e30e5dbb98c666efd6c72ee9e1b6e3ae8ab00a995706654bff12d0a4"
+    },
+    {
+      "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+      "version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+      "sha256": "dcb1c9420233afbb3d551cf79e1897fd824441a25c8922e2542a78d4d0b01904"
+    }
+  ],
+  "first_batch_confirmed": 50,
+  "during_sync": {
+    "trace": {
+      "trace_id": "62efaadc9fe04811a75ed19f7b412501",
+      "strategy": "pgvector-postgres-fts-rrf-v1",
+      "query_embedding_called": true,
+      "embedding_model": "gemini-embedding-001",
+      "mode": "hybrid",
+      "fusion": "rrf",
+      "rrf_constant": 60,
+      "vector_backend": {
+        "requested": "milvus",
+        "actual": "pgvector",
+        "fallback_reason": "milvus_index_not_ready",
+        "compatible_index": true,
+        "visible_versions": 2,
+        "final_pg_rejected_ids": []
+      },
+      "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+      "keyword_terms": [
+        "order",
+        "count",
+        "48"
+      ],
+      "channels": {
+        "vector_pool": [
+          "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+          "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "0f7b2fc319e145f1c482e55a6f27011636357d0f3c2c66559e7d2716fd852bfa",
+          "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "1d6ca6038ef2f328cb353711f8004e9950a62c847d9fda6016a8216bed49f196"
+        ],
+        "vector": [
+          "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+          "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "0f7b2fc319e145f1c482e55a6f27011636357d0f3c2c66559e7d2716fd852bfa",
+          "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "1d6ca6038ef2f328cb353711f8004e9950a62c847d9fda6016a8216bed49f196"
+        ],
+        "keyword": [
+          "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+          "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "0f7b2fc319e145f1c482e55a6f27011636357d0f3c2c66559e7d2716fd852bfa",
+          "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "1d6ca6038ef2f328cb353711f8004e9950a62c847d9fda6016a8216bed49f196"
+        ]
+      },
+      "top_k": 2,
+      "returned_chunk_ids": [
+        "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+        "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed"
+      ],
+      "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+      "index_incompatible": false,
+      "query": "Order count: 48",
+      "includes_reviewed_pdf": true,
+      "scope": "reviewed_pdf",
+      "elapsed_ms": 41,
+      "candidates": [
+        {
+          "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+          "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+          "chunk_id": "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+          "retrieval_score": 1.0,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:12;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03278688524590164,
+          "vector_rank": 1,
+          "keyword_rank": 1
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:40;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03225806451612903,
+          "vector_rank": 2,
+          "keyword_rank": 2
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:4;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.031746031746031744,
+          "vector_rank": 3,
+          "keyword_rank": 3
+        },
+        {
+          "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+          "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+          "chunk_id": "0f7b2fc319e145f1c482e55a6f27011636357d0f3c2c66559e7d2716fd852bfa",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:2;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03125,
+          "vector_rank": 4,
+          "keyword_rank": 4
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:24;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03076923076923077,
+          "vector_rank": 5,
+          "keyword_rank": 5
+        },
+        {
+          "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+          "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+          "chunk_id": "1d6ca6038ef2f328cb353711f8004e9950a62c847d9fda6016a8216bed49f196",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:5;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.030303030303030304,
+          "vector_rank": 6,
+          "keyword_rank": 6
+        }
+      ]
+    },
+    "citation": {
+      "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+      "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+      "chunk_id": "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+      "title": "Synthetic PDF verification",
+      "source_uri": "reviewed-pdf:readiness-ed8f9ed5871cdca6",
+      "source_location": "page:12;lines:1-3",
+      "heading_path": [],
+      "retrieval_score": 1.0,
+      "authority_level": 1,
+      "source_type": "reviewed_pdf",
+      "effective_date": null,
+      "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+      "content_hash": "15350e40d2b45562c9260458ec6a3649bd1f0532449ea772d56f39e0249a932f",
+      "page_number": 12,
+      "line_start": 1,
+      "line_end": 3,
+      "source_hash": "dcb1c9420233afbb3d551cf79e1897fd824441a25c8922e2542a78d4d0b01904",
+      "extraction_method": "ocr",
+      "access_scope": "owner",
+      "quote": "Order count: 48"
+    }
+  },
+  "failed_batch_sizes": [
+    50,
+    2
+  ],
+  "after_failure": {
+    "trace": {
+      "trace_id": "d4da4368e66e4223a54ab7645f0b6c04",
+      "strategy": "pgvector-postgres-fts-rrf-v1",
+      "query_embedding_called": true,
+      "embedding_model": "gemini-embedding-001",
+      "mode": "hybrid",
+      "fusion": "rrf",
+      "rrf_constant": 60,
+      "vector_backend": {
+        "requested": "milvus",
+        "actual": "pgvector",
+        "fallback_reason": "milvus_index_not_ready",
+        "compatible_index": true,
+        "visible_versions": 2,
+        "final_pg_rejected_ids": []
+      },
+      "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+      "keyword_terms": [
+        "order",
+        "count",
+        "48"
+      ],
+      "channels": {
+        "vector_pool": [
+          "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+          "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "0f7b2fc319e145f1c482e55a6f27011636357d0f3c2c66559e7d2716fd852bfa",
+          "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "1d6ca6038ef2f328cb353711f8004e9950a62c847d9fda6016a8216bed49f196"
+        ],
+        "vector": [
+          "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+          "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "0f7b2fc319e145f1c482e55a6f27011636357d0f3c2c66559e7d2716fd852bfa",
+          "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "1d6ca6038ef2f328cb353711f8004e9950a62c847d9fda6016a8216bed49f196"
+        ],
+        "keyword": [
+          "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+          "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "0f7b2fc319e145f1c482e55a6f27011636357d0f3c2c66559e7d2716fd852bfa",
+          "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "1d6ca6038ef2f328cb353711f8004e9950a62c847d9fda6016a8216bed49f196"
+        ]
+      },
+      "top_k": 2,
+      "returned_chunk_ids": [
+        "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+        "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed"
+      ],
+      "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+      "index_incompatible": false,
+      "query": "Order count: 48",
+      "includes_reviewed_pdf": true,
+      "scope": "reviewed_pdf",
+      "elapsed_ms": 29,
+      "candidates": [
+        {
+          "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+          "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+          "chunk_id": "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+          "retrieval_score": 1.0,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:12;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03278688524590164,
+          "vector_rank": 1,
+          "keyword_rank": 1
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:40;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03225806451612903,
+          "vector_rank": 2,
+          "keyword_rank": 2
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:4;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.031746031746031744,
+          "vector_rank": 3,
+          "keyword_rank": 3
+        },
+        {
+          "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+          "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+          "chunk_id": "0f7b2fc319e145f1c482e55a6f27011636357d0f3c2c66559e7d2716fd852bfa",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:2;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03125,
+          "vector_rank": 4,
+          "keyword_rank": 4
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:24;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03076923076923077,
+          "vector_rank": 5,
+          "keyword_rank": 5
+        },
+        {
+          "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+          "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+          "chunk_id": "1d6ca6038ef2f328cb353711f8004e9950a62c847d9fda6016a8216bed49f196",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:5;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.030303030303030304,
+          "vector_rank": 6,
+          "keyword_rank": 6
+        }
+      ]
+    },
+    "citation": {
+      "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+      "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+      "chunk_id": "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+      "title": "Synthetic PDF verification",
+      "source_uri": "reviewed-pdf:readiness-ed8f9ed5871cdca6",
+      "source_location": "page:12;lines:1-3",
+      "heading_path": [],
+      "retrieval_score": 1.0,
+      "authority_level": 1,
+      "source_type": "reviewed_pdf",
+      "effective_date": null,
+      "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+      "content_hash": "15350e40d2b45562c9260458ec6a3649bd1f0532449ea772d56f39e0249a932f",
+      "page_number": 12,
+      "line_start": 1,
+      "line_end": 3,
+      "source_hash": "dcb1c9420233afbb3d551cf79e1897fd824441a25c8922e2542a78d4d0b01904",
+      "extraction_method": "ocr",
+      "access_scope": "owner",
+      "quote": "Order count: 48"
+    }
+  },
+  "failed_states": [
+    {
+      "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+      "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+      "attempt_id": "ca8999d4c68245409177f2168cc47530",
+      "state": "failed",
+      "expected": 40
+    },
+    {
+      "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+      "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+      "attempt_id": "ca8999d4c68245409177f2168cc47530",
+      "state": "failed",
+      "expected": 12
+    }
+  ],
+  "retry": {
+    "upserted": 52,
+    "chunk_ids": [
+      "94bc729dfd9425230ebb830affd7f1367a0870db3e64035bf17061505b26308d",
+      "3a8cf4ee5f7fd80f5c9bfb9739e37abc18337bd7cc10b12085606bfcd505f830",
+      "909f828db0318b1895c96521467a48d75010d2096b9707ee43c5ddf61e452b13",
+      "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+      "b6af222d26387b3a101249874c6ebed532039fca526c9eeaa58361e978f22dba",
+      "ae7fc9cabdcf180e74239311b766a22ef9f18f69b1460e7b1998a402a76237dc",
+      "6b8cdc1770815e8b58ef57bb17d1480c547f4ef36c88741f2b7cf254ca71f51b",
+      "94a9a891610ed0e9ff892e2dd25c087a10dc7b5695077556c901d51cec75bf71",
+      "5a9abd4503056a25a52b1f50ec0254a83ce17a7edb903694a743182fe84846cc",
+      "59b2bff00e69c949cb518ef8141a8a128d76af0d03f7f732a4173d0e52f544ae",
+      "9d34373c8b961359948835bd1d581d6c84d33cbc61382d3eba97d61ac545eb2c",
+      "ecc9f058333d0edf3ca18ae8e13b1751db26c207bd0aee194c9edbe9d3878acd",
+      "a242f13c41db614c074b5baffb3eca22385d49485baa9a4042cb915a62107d4a",
+      "4890003252ec2c737d07a19dc2bb1e18ca923bea14e418b90da78335679fca3d",
+      "7ed86ba0a6c2d3d6b67b1336ecc31a960524c0bbafa47085d62d301f7988ee24",
+      "99507287f31b0f731082f63d1ac2617a891c265c65929711c9863aaf7b5a488e",
+      "cf2e4732b32e79d5eb7488ebc991660d5b6495dae2518a8006cee9574e23ff6f",
+      "e19101cfdd22c23129e1d90f44e75ba7a21a9bb14f4aa52dd4b9298ca600a5d9",
+      "728d2f27d1d795a162e7240175b5b2bbea207065b82ab9e2fd6f6f5732196b36",
+      "409822bb6ae49c562e8b2ab1f4f8fd9f3fdd3d3e98c5b4b40e16bf20d63d848f",
+      "5f579546abfe4c77c926036ab1cfc5d5ebc7242e2279514d39241391ccb59ba6",
+      "abea4a107dfa42a03a861dfc4c1efd263b2bc236cc4abfd870eb72499a442e0a",
+      "23af10317f5311e9e7a229f5a5fdecab76eb66c35e3b6509883a23044b596122",
+      "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+      "b71cf98270d22c21f8077ea476c297e068e7014b2cf6ee63ba4e993f5ba751b6",
+      "5f48664c4d035e64cc2b10154110fcc296528ebc07375d20f1d6e3bf1d14d78d",
+      "d509d57bc46a1a8ec88e34d7fcccd06b5ce46b754e823e17c2dfaeaab07d5546",
+      "e40bdfd06c570cd7fee67005f0043f5f119acfc8f96ac98e3e01639472f710d2",
+      "5516e8a43b7b83cee8f29c2bfa1dff1b24fb50190edb4edca3da2b4d6b208461",
+      "2995532bc25bb2fad71ef901f9e8b3731295f269f90c6b3821abbe0166889091",
+      "528761c59d301cb4456a189177ac3f84e6d86428bef64af64feda753784bfbac",
+      "5dea33f30b0e527382a6148846c3253ef0edb8e260ece02ad9f2f5679c1f3085",
+      "549ab5e9b2a6534915f1f93cdb17fe62518981a6873e08597a8c1a9542852fee",
+      "1f0646125fdcbb982e7032854aee667fb759768f4f8b2104e412c31fdd3f306e",
+      "49a09984246303b1353b18cef5205b73ef0177074fd4e36fb5a15d2dd198b898",
+      "57590e401411fa0843ec443b64cf7812cb867ef718720e01158d6448411525ae",
+      "6532d2844afcff41cd175cc68207aa42840390bf6ef0e0d57ffe8dd28edaf116",
+      "9835ea72dcaad12c18eda6f2c3e742a0077fc695bcfa349d561d2519dc1676ac",
+      "9bf50ec574263c80e5c0be1141763c6b1a86c17cbe0d75f3106cb16c078c7e17",
+      "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+      "298bda25a58f0d90cd347be7f6d3884e36f3ca07d85617edded4e48abd8535b9",
+      "0f7b2fc319e145f1c482e55a6f27011636357d0f3c2c66559e7d2716fd852bfa",
+      "fe97caf36d3b32ae96620d07b79fcd1cae1d778953c7e14c828270956b28c7fe",
+      "c56b5a1e10b2920bb374a1f25bc219062a5abee9eb821943787536365ad693e5",
+      "1d6ca6038ef2f328cb353711f8004e9950a62c847d9fda6016a8216bed49f196",
+      "70735ac65d6fc20a814370b4e83797c031101e3ff881ed94ff7845af93e88a16",
+      "a32321276ec4e0bd45cd254b52aed2f853a68b0d894216c3165f557d503375be",
+      "fd5ce1bc49b7584461900f4cb467bd2e57b52e663a5244e089f6472b55a846d7",
+      "207719df359bdc934003716ccb5bfe1eb1b80a9d3abea62a5c0963ca5966b565",
+      "346f3d9ac9250be9206bbada614d12980bf04c60743f1ac5c5ea2359ece41a97",
+      "866ffbb097422eaec7b26bc806e6748d02dfc6060c4666bec8fd5f5e7c0ce855",
+      "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7"
+    ],
+    "attempt_id": "fad8d32837284a1c8f19351a2728bb34",
+    "state": "ready"
+  },
+  "retry_batch_sizes": [
+    50,
+    2
+  ],
+  "verified_unique_chunks": 52,
+  "after_retry": {
+    "trace": {
+      "trace_id": "a6967c3fb1de43db86d5c7c45fcf521a",
+      "strategy": "milvus-postgres-fts-rrf-v1",
+      "query_embedding_called": true,
+      "embedding_model": "gemini-embedding-001",
+      "mode": "hybrid",
+      "fusion": "rrf",
+      "rrf_constant": 60,
+      "vector_backend": {
+        "requested": "milvus",
+        "actual": "milvus",
+        "fallback_reason": null,
+        "compatible_index": true,
+        "visible_versions": 2,
+        "milvus_candidate_ids": [
+          "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "3a8cf4ee5f7fd80f5c9bfb9739e37abc18337bd7cc10b12085606bfcd505f830",
+          "909f828db0318b1895c96521467a48d75010d2096b9707ee43c5ddf61e452b13",
+          "ae7fc9cabdcf180e74239311b766a22ef9f18f69b1460e7b1998a402a76237dc",
+          "b6af222d26387b3a101249874c6ebed532039fca526c9eeaa58361e978f22dba"
+        ],
+        "pg_rejected_ids": [],
+        "final_pg_rejected_ids": []
+      },
+      "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+      "keyword_terms": [
+        "order",
+        "count",
+        "48"
+      ],
+      "channels": {
+        "vector_pool": [
+          "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "3a8cf4ee5f7fd80f5c9bfb9739e37abc18337bd7cc10b12085606bfcd505f830",
+          "909f828db0318b1895c96521467a48d75010d2096b9707ee43c5ddf61e452b13",
+          "ae7fc9cabdcf180e74239311b766a22ef9f18f69b1460e7b1998a402a76237dc",
+          "b6af222d26387b3a101249874c6ebed532039fca526c9eeaa58361e978f22dba"
+        ],
+        "vector": [
+          "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "3a8cf4ee5f7fd80f5c9bfb9739e37abc18337bd7cc10b12085606bfcd505f830",
+          "909f828db0318b1895c96521467a48d75010d2096b9707ee43c5ddf61e452b13",
+          "ae7fc9cabdcf180e74239311b766a22ef9f18f69b1460e7b1998a402a76237dc",
+          "b6af222d26387b3a101249874c6ebed532039fca526c9eeaa58361e978f22dba"
+        ],
+        "keyword": [
+          "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+          "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "0f7b2fc319e145f1c482e55a6f27011636357d0f3c2c66559e7d2716fd852bfa",
+          "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "1d6ca6038ef2f328cb353711f8004e9950a62c847d9fda6016a8216bed49f196"
+        ]
+      },
+      "top_k": 2,
+      "returned_chunk_ids": [
+        "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+        "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03"
+      ],
+      "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+      "index_incompatible": false,
+      "query": "Order count: 48",
+      "includes_reviewed_pdf": true,
+      "scope": "reviewed_pdf",
+      "elapsed_ms": 56,
+      "candidates": [
+        {
+          "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+          "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+          "chunk_id": "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+          "retrieval_score": 1.0,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:12;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03278688524590164,
+          "vector_rank": 1,
+          "keyword_rank": 1
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:4;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03200204813108039,
+          "vector_rank": 2,
+          "keyword_rank": 3
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:40;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.016129032258064516,
+          "keyword_rank": 2
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "3a8cf4ee5f7fd80f5c9bfb9739e37abc18337bd7cc10b12085606bfcd505f830",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:2;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.015873015873015872,
+          "vector_rank": 3
+        },
+        {
+          "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+          "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+          "chunk_id": "0f7b2fc319e145f1c482e55a6f27011636357d0f3c2c66559e7d2716fd852bfa",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:2;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.015625,
+          "keyword_rank": 4
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "909f828db0318b1895c96521467a48d75010d2096b9707ee43c5ddf61e452b13",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:3;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.015625,
+          "vector_rank": 4
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:24;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.015384615384615385,
+          "keyword_rank": 5
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "ae7fc9cabdcf180e74239311b766a22ef9f18f69b1460e7b1998a402a76237dc",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:6;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.015384615384615385,
+          "vector_rank": 5
+        },
+        {
+          "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+          "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+          "chunk_id": "1d6ca6038ef2f328cb353711f8004e9950a62c847d9fda6016a8216bed49f196",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:5;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.015151515151515152,
+          "keyword_rank": 6
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "b6af222d26387b3a101249874c6ebed532039fca526c9eeaa58361e978f22dba",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:5;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.015151515151515152,
+          "vector_rank": 6
+        }
+      ]
+    },
+    "citation": {
+      "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+      "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+      "chunk_id": "06e0ce4bc7fddad3f96cd11920a011cf00a7b03dfdabe98783583992551300a7",
+      "title": "Synthetic PDF verification",
+      "source_uri": "reviewed-pdf:readiness-ed8f9ed5871cdca6",
+      "source_location": "page:12;lines:1-3",
+      "heading_path": [],
+      "retrieval_score": 1.0,
+      "authority_level": 1,
+      "source_type": "reviewed_pdf",
+      "effective_date": null,
+      "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+      "content_hash": "15350e40d2b45562c9260458ec6a3649bd1f0532449ea772d56f39e0249a932f",
+      "page_number": 12,
+      "line_start": 1,
+      "line_end": 3,
+      "source_hash": "dcb1c9420233afbb3d551cf79e1897fd824441a25c8922e2542a78d4d0b01904",
+      "extraction_method": "ocr",
+      "access_scope": "owner",
+      "quote": "Order count: 48"
+    }
+  },
+  "ready_states": [
+    {
+      "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+      "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+      "attempt_id": "fad8d32837284a1c8f19351a2728bb34",
+      "state": "ready",
+      "expected": 40
+    },
+    {
+      "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+      "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+      "attempt_id": "fad8d32837284a1c8f19351a2728bb34",
+      "state": "ready",
+      "expected": 12
+    }
+  ],
+  "updated_version": "pdf-17f7cb2891275a35c1930c72f054d5fa43bd02c544ecf1dc",
+  "changed_states": [
+    {
+      "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+      "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+      "attempt_id": "e2d5de51e5eb436bbf04a8b424adfdaa",
+      "state": "failed",
+      "expected": 40
+    },
+    {
+      "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+      "document_version": "pdf-93560945ddca46344e033116cc9cd4e13dc77ba7242c896a",
+      "attempt_id": "e2d5de51e5eb436bbf04a8b424adfdaa",
+      "state": "failed",
+      "expected": 12
+    }
+  ],
+  "after_version_change": {
+    "trace": {
+      "trace_id": "a31defbe6b3b474aaa8850e03e09ba96",
+      "strategy": "pgvector-postgres-fts-rrf-v1",
+      "query_embedding_called": true,
+      "embedding_model": "gemini-embedding-001",
+      "mode": "hybrid",
+      "fusion": "rrf",
+      "rrf_constant": 60,
+      "vector_backend": {
+        "requested": "milvus",
+        "actual": "pgvector",
+        "fallback_reason": "milvus_index_not_ready",
+        "compatible_index": true,
+        "visible_versions": 2,
+        "final_pg_rejected_ids": []
+      },
+      "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+      "keyword_terms": [
+        "order",
+        "count",
+        "48"
+      ],
+      "channels": {
+        "vector_pool": [
+          "7ccae8690a2f63bf5fd85b6932ce9177aaae05130e006ea275a47aeaf45c1e91",
+          "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "0cfeae22cd826086a1402c00226ba826176861d4a383ac2e262402e792b7dd83",
+          "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "1f0646125fdcbb982e7032854aee667fb759768f4f8b2104e412c31fdd3f306e"
+        ],
+        "vector": [
+          "7ccae8690a2f63bf5fd85b6932ce9177aaae05130e006ea275a47aeaf45c1e91",
+          "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "0cfeae22cd826086a1402c00226ba826176861d4a383ac2e262402e792b7dd83",
+          "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "1f0646125fdcbb982e7032854aee667fb759768f4f8b2104e412c31fdd3f306e"
+        ],
+        "keyword": [
+          "7ccae8690a2f63bf5fd85b6932ce9177aaae05130e006ea275a47aeaf45c1e91",
+          "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "0cfeae22cd826086a1402c00226ba826176861d4a383ac2e262402e792b7dd83",
+          "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "1f0646125fdcbb982e7032854aee667fb759768f4f8b2104e412c31fdd3f306e"
+        ]
+      },
+      "top_k": 2,
+      "returned_chunk_ids": [
+        "7ccae8690a2f63bf5fd85b6932ce9177aaae05130e006ea275a47aeaf45c1e91",
+        "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed"
+      ],
+      "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+      "index_incompatible": false,
+      "query": "Order count: 48",
+      "includes_reviewed_pdf": true,
+      "scope": "reviewed_pdf",
+      "elapsed_ms": 44,
+      "candidates": [
+        {
+          "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+          "document_version": "pdf-17f7cb2891275a35c1930c72f054d5fa43bd02c544ecf1dc",
+          "chunk_id": "7ccae8690a2f63bf5fd85b6932ce9177aaae05130e006ea275a47aeaf45c1e91",
+          "retrieval_score": 1.0,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:12;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03278688524590164,
+          "vector_rank": 1,
+          "keyword_rank": 1
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:40;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03225806451612903,
+          "vector_rank": 2,
+          "keyword_rank": 2
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:4;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.031746031746031744,
+          "vector_rank": 3,
+          "keyword_rank": 3
+        },
+        {
+          "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+          "document_version": "pdf-17f7cb2891275a35c1930c72f054d5fa43bd02c544ecf1dc",
+          "chunk_id": "0cfeae22cd826086a1402c00226ba826176861d4a383ac2e262402e792b7dd83",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:7;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03125,
+          "vector_rank": 4,
+          "keyword_rank": 4
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:24;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03076923076923077,
+          "vector_rank": 5,
+          "keyword_rank": 5
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "1f0646125fdcbb982e7032854aee667fb759768f4f8b2104e412c31fdd3f306e",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:34;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.030303030303030304,
+          "vector_rank": 6,
+          "keyword_rank": 6
+        }
+      ]
+    },
+    "citation": {
+      "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+      "document_version": "pdf-17f7cb2891275a35c1930c72f054d5fa43bd02c544ecf1dc",
+      "chunk_id": "7ccae8690a2f63bf5fd85b6932ce9177aaae05130e006ea275a47aeaf45c1e91",
+      "title": "Synthetic PDF verification",
+      "source_uri": "reviewed-pdf:readiness-ed8f9ed5871cdca6",
+      "source_location": "page:12;lines:1-3",
+      "heading_path": [],
+      "retrieval_score": 1.0,
+      "authority_level": 1,
+      "source_type": "reviewed_pdf",
+      "effective_date": null,
+      "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+      "content_hash": "15350e40d2b45562c9260458ec6a3649bd1f0532449ea772d56f39e0249a932f",
+      "page_number": 12,
+      "line_start": 1,
+      "line_end": 3,
+      "source_hash": "dcb1c9420233afbb3d551cf79e1897fd824441a25c8922e2542a78d4d0b01904",
+      "extraction_method": "ocr",
+      "access_scope": "owner",
+      "quote": "Order count: 48"
+    }
+  },
+  "withdrawn_states": [
+    {
+      "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+      "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+      "attempt_id": "91aa1a492ad642b6bd94ea20d60e1629",
+      "state": "failed",
+      "expected": 40
+    },
+    {
+      "document_id": "a35a106758f134caea0301c18ccbd5f8fc9d16b98c974c661d5603cf5cddcebf",
+      "document_version": "pdf-17f7cb2891275a35c1930c72f054d5fa43bd02c544ecf1dc",
+      "attempt_id": "91aa1a492ad642b6bd94ea20d60e1629",
+      "state": "failed",
+      "expected": 12
+    }
+  ],
+  "after_withdrawal": {
+    "trace": {
+      "trace_id": "04d28fca827241f0983d2d530ea374be",
+      "strategy": "pgvector-postgres-fts-rrf-v1",
+      "query_embedding_called": true,
+      "embedding_model": "gemini-embedding-001",
+      "mode": "hybrid",
+      "fusion": "rrf",
+      "rrf_constant": 60,
+      "vector_backend": {
+        "requested": "milvus",
+        "actual": "pgvector",
+        "fallback_reason": "milvus_index_not_ready",
+        "compatible_index": true,
+        "visible_versions": 1,
+        "final_pg_rejected_ids": []
+      },
+      "keyword_algorithm": "postgresql-simple-fts-cjk-bigram-v1",
+      "keyword_terms": [
+        "order",
+        "count",
+        "48"
+      ],
+      "channels": {
+        "vector_pool": [
+          "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "1f0646125fdcbb982e7032854aee667fb759768f4f8b2104e412c31fdd3f306e",
+          "23af10317f5311e9e7a229f5a5fdecab76eb66c35e3b6509883a23044b596122",
+          "2995532bc25bb2fad71ef901f9e8b3731295f269f90c6b3821abbe0166889091"
+        ],
+        "vector": [
+          "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "1f0646125fdcbb982e7032854aee667fb759768f4f8b2104e412c31fdd3f306e",
+          "23af10317f5311e9e7a229f5a5fdecab76eb66c35e3b6509883a23044b596122",
+          "2995532bc25bb2fad71ef901f9e8b3731295f269f90c6b3821abbe0166889091"
+        ],
+        "keyword": [
+          "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "1f0646125fdcbb982e7032854aee667fb759768f4f8b2104e412c31fdd3f306e",
+          "23af10317f5311e9e7a229f5a5fdecab76eb66c35e3b6509883a23044b596122",
+          "2995532bc25bb2fad71ef901f9e8b3731295f269f90c6b3821abbe0166889091"
+        ]
+      },
+      "top_k": 2,
+      "returned_chunk_ids": [
+        "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+        "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03"
+      ],
+      "embedding_version": "gemini-embedding-001-768-unit-retrieval-v1",
+      "index_incompatible": false,
+      "query": "Order count: 48",
+      "includes_reviewed_pdf": true,
+      "scope": "reviewed_pdf",
+      "elapsed_ms": 33,
+      "candidates": [
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "00da97cd932cfa7b667b6fd76a6266263b3e83c4cdaea4333b38037b5e1206ed",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:40;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03278688524590164,
+          "vector_rank": 1,
+          "keyword_rank": 1
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "024e2d0923785bb8cff3d7ec4ce39f88c456c8c45a2a7f98962722bea0b10c03",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:4;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03225806451612903,
+          "vector_rank": 2,
+          "keyword_rank": 2
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "12fda1a4ddce0cdbd4c75c604b617821cc66919642df25175828c145d9b2d427",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:24;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.031746031746031744,
+          "vector_rank": 3,
+          "keyword_rank": 3
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "1f0646125fdcbb982e7032854aee667fb759768f4f8b2104e412c31fdd3f306e",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:34;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03125,
+          "vector_rank": 4,
+          "keyword_rank": 4
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "23af10317f5311e9e7a229f5a5fdecab76eb66c35e3b6509883a23044b596122",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:23;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.03076923076923077,
+          "vector_rank": 5,
+          "keyword_rank": 5
+        },
+        {
+          "document_id": "86d540f6631277f635370538a9cfbdd04bac402e870ad5819a1dd26c97c82c14",
+          "document_version": "pdf-beac3c33da969d1ac17852f5c1c27d45458483cdc910f178",
+          "chunk_id": "2995532bc25bb2fad71ef901f9e8b3731295f269f90c6b3821abbe0166889091",
+          "retrieval_score": 0.9513269066810676,
+          "exact_match": true,
+          "evidence_date_status": "active",
+          "source_location": "page:30;lines:1-3",
+          "heading_path": [],
+          "source_type": "reviewed_pdf",
+          "rrf_score": 0.030303030303030304,
+          "vector_rank": 6,
+          "keyword_rank": 6
+        }
+      ]
+    },
+    "withdrawn_document_excluded": true
+  },
+  "base_commit": "54f3e9049225cc926ee707f17b36c75ceee97391",
+  "verification_scope": "Real local PostgreSQL/Milvus + deterministic extractive citation verification; no LLM answer",
+  "regression": {
+    "offline": {
+      "passed": 264,
+      "skipped": 88
+    },
+    "milvus_offline": {
+      "passed": 11
+    },
+    "existing_real_postgres": {
+      "passed": 12
+    }
+  },
+  "earlier_harness_attempt": {
+    "status": "failed",
+    "reason": "acceptance script used citations instead of claims in fixed citation proposal; corrected harness only",
+    "fixture_cleanup_completed": true,
+    "external_calls": 0
+  },
+  "source_hashes": {
+    "src/dataquery_agent/rag/milvus.py": "cd6b2292d1888c3a0e83f8df834699578dcbe6f2ad36da49fdbb8cf8f3c2a90c",
+    "src/dataquery_agent/rag/milvus_readiness.py": "ddfcca7812ec54c220f803d7086cc76c364f24e4ba1670ec3752bf937af3bfd8",
+    "src/dataquery_agent/rag/vector_candidates.py": "db862fd1f95daa5adcf3dcb88ef3f24b17a2ac7873ddc69e40ac5de55d67b254",
+    "sql/agent_meta/007_milvus_readiness.sql": "561460a5fa827f6d7fe6ded702221590dc093189d2d2de11ae0ad7fdc65fcc8b"
+  }
+}

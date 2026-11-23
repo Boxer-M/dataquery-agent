@@ -17,7 +17,7 @@ class MilvusBackendTests(unittest.TestCase):
         def execute(query,params=None):
             result=Mock()
             result.fetchall.return_value=manifest if 'DISTINCT' in query else rows
-            result.fetchone.return_value={'owner':'owner-hash'}
+            result.fetchone.return_value={'owner':'owner-hash','relation':'milvus_readiness','ready':True}
             return result
         pg.execute.side_effect=execute
         milvus=Mock();milvus.search.return_value=hits or []

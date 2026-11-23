@@ -25,6 +25,9 @@ class MilvusCandidates:
         detail={'requested':'milvus','actual':'milvus','fallback_reason':None,
                 'compatible_index':bool(manifest),'visible_versions':len(manifest)}
         try:
+            from .milvus_readiness import index_ready
+            if not index_ready(pg,scored,params):
+                raise MilvusUnavailable('milvus_index_not_ready')
             client=self.client or Milvus.local()
             scope=pg.execute("SELECT current_setting('agent.owner_scope',true) AS owner").fetchone()['owner']
             hits=[]

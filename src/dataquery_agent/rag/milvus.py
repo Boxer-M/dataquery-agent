@@ -85,6 +85,19 @@ class Milvus:
         for start in range(0,len(records),50):
             self.request('entities/upsert',{'data':records[start:start+50]})
 
+    def verify(self,records):
+        for start in range(0,len(records),50):
+            expected={r['chunk_id']:r for r in records[start:start+50]}
+            rows=self.request('entities/query',{'filter':'chunk_id in '+json.dumps(list(expected)),
+                'outputFields':['chunk_id','version_key','owner_scope','embedding_model','embedding_version'],
+                'consistencyLevel':'Strong','limit':50})
+            fields=('version_key','owner_scope','embedding_model','embedding_version')
+            if (not isinstance(rows,list) or any(not isinstance(r,dict)
+                    or not isinstance(r.get('chunk_id'),str) for r in rows)
+                    or len(rows)!=len(expected) or {r.get('chunk_id') for r in rows}!=set(expected)
+                    or any(any(r.get(f)!=expected[r['chunk_id']][f] for f in fields) for r in rows)):
+                raise MilvusUnavailable('milvus_index_incomplete')
+
     def search(self,embedding,keys,scopes,model,version,limit):
         if not keys:return []
         if len(keys)>2000:raise MilvusUnavailable('milvus_scope_limit')
@@ -100,7 +113,7 @@ class Milvus:
         return rows
 
 
-def sync_visible(store,embedding,*,owner=None,document_ids=None,synthetic=False,client=None):
+def sync_visible(store,embedding,*,owner=None,document_ids=None,synthetic=False,client=None,writer=None):
     """Explicit replica import of current approved vectors already stored in PostgreSQL."""
     from .store import CHUNKS,DOCS,VERSIONS,READER
     if store.role!=READER:
@@ -119,10 +132,20 @@ def sync_visible(store,embedding,*,owner=None,document_ids=None,synthetic=False,
               AND (%s::text[] IS NULL OR c.document_id=ANY(%s))
               AND (d.source_type<>'reviewed_pdf' OR (v.pdf_review->>'review_state'='reviewed'
                    AND v.pdf_review->>'file_sha256'=v.content_hash AND v.pdf_review->>'owner_scope'=d.owner_scope))
-            ORDER BY c.chunk_id LIMIT 10001""",(embedding.model,embedding.version,document_ids,document_ids)).fetchall()
+            ORDER BY c.document_id,c.chunk_index LIMIT 10001""",(embedding.model,embedding.version,document_ids,document_ids)).fetchall()
     if len(rows)>10000:raise ValueError('milvus_import_limit')
     records=[dict(row,version_key=version_key(row['document_id'],row['document_version'],row['index_version']),
                   vector=json.loads(row['vector'])) for row in rows]
-    client.prepare()
-    client.upsert(records)
-    return {'upserted':len(records),'chunk_ids':[row['chunk_id'] for row in records]}
+    from .milvus_readiness import Readiness
+    readiness=Readiness(rows,writer)
+    readiness.begin()
+    try:
+        client.prepare()
+        client.upsert(records)
+        client.verify(records)
+        readiness.finish()
+    except Exception:
+        readiness.fail()
+        raise
+    return {'upserted':len(records),'chunk_ids':[row['chunk_id'] for row in records],
+            'attempt_id':readiness.attempt,'state':'ready'}
