@@ -1,0 +1,52 @@
+{
+  "version": "item-evidence-pair-v1",
+  "source_commit": "4a87fc2",
+  "cases": [
+    {
+      "case_id": "grain-jan-distinguish",
+      "question": "根据已审核PDF，2025年1月web渠道的订单量和支付尝试次数分别是多少？",
+      "expected_status": "supported",
+      "items": [
+        {
+          "id": "item_1",
+          "label": "订单量",
+          "question": "2025年1月web渠道的订单量是多少？",
+          "expected_status": "supported",
+          "required_page": 1,
+          "value": "1337"
+        },
+        {
+          "id": "item_2",
+          "label": "支付尝试次数",
+          "question": "2025年1月web渠道的支付尝试次数是多少？",
+          "expected_status": "supported",
+          "required_page": 5,
+          "value": "1408"
+        }
+      ]
+    },
+    {
+      "case_id": "dual-orders-settlement",
+      "question": "根据已审核PDF，2025年1月web渠道订单量和实际退款到账天数分别是多少？",
+      "expected_status": "partial",
+      "items": [
+        {
+          "id": "item_1",
+          "label": "订单量",
+          "question": "2025年1月web渠道的订单量是多少？",
+          "expected_status": "supported",
+          "required_page": 1,
+          "value": "1337"
+        },
+        {
+          "id": "item_2",
+          "label": "实际退款到账天数",
+          "question": "2025年1月web渠道的实际退款到账天数是多少？",
+          "expected_status": "insufficient",
+          "required_page": null,
+          "value": null
+        }
+      ]
+    }
+  ]
+}

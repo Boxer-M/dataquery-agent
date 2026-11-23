@@ -19,6 +19,8 @@ SQL Shed 为 CC0 公开合成电商数据，已建设 **7 张 ODS、4 张 DWD、
 
 Python 3.12、FastAPI、Gemini、LangGraph、SQLGlot；PostgreSQL 16、pgvector、Redis；React、TypeScript、Ant Design、ECharts、Vite。pypdf 提取 PDF 文本，macOS Apple Vision 识别扫描页，SQLite 暂存本机文档审核记录。
 
+明确共享年月和渠道的 PDF 双问支持逐项引用与服务端完整性聚合；首版覆盖范围和两题真实配对见 [逐项证据判定](docs/warehouse/RAG_ITEM_EVIDENCE_V1.md)。
+
 ## 当前架构
 
 ```mermaid

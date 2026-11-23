@@ -85,6 +85,7 @@ def build_record(claim, message, answer, operation, elapsed_ms, *, query_id=None
         "embedding_version": knowledge.get("retrieval_trace", {}).get("embedding_version"),
         "retrieval_trace_id": knowledge.get("retrieval_trace", {}).get("trace_id"),
         "answer_prompt_version": knowledge.get("answer_prompt_version"),
+        **({"evidence_items": knowledge["evidence_items"]} if "evidence_items" in knowledge else {}),
         "metric_results": result.get("metric_results", []),
     }
     agent_calls = trace.get("agent_calls", [])

@@ -9,7 +9,7 @@ TEXT_ARRAY = {"type": "array", "items": {"type": "string"}}
 
 PROMPT_VERSIONS = {"intent": "intent-v3", "resolution": "metric-resolution-v2",
                    "planning": "business-plan-v1", "dynamic_sql": DYNAMIC_VERSION,
-                   "knowledge": "knowledge-extractive-v1", "supervisor": "supervisor-v1",
+                   "knowledge": "knowledge-extractive-v1", "knowledge_items": "knowledge-items-v1", "supervisor": "supervisor-v1",
                    "data": "data-delegation-v1", "knowledge_agent": "knowledge-delegation-v1",
                    "investigation": "investigation-v1"}
 OUTPUT_SCHEMAS = {
@@ -63,6 +63,9 @@ for stage, choices in {
 
 
 def schema_for_prompt(prompt):
+    if prompt.startswith("[knowledge-items-v1]"):
+        from .rag.item_evidence import SCHEMA
+        return SCHEMA
     if prompt.startswith("[knowledge-extractive-v1]"):
         from .rag.answer import ANSWER_SCHEMA
         return ANSWER_SCHEMA
