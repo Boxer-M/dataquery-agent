@@ -161,3 +161,7 @@ C2.1 提供独立 Python 入口 `generate_metric_xlsx(result, metrics) -> bytes`
 C2.2 新增后端显式导出 `POST /api/queries/{query_id}/artifacts/xlsx` 和授权下载 `GET /api/artifacts/{artifact_id}/download`。新查询通过原History链路保存受限汇总快照，XLSX与元数据以私有SQLite事务持久化；导出、下载不重跑指标SQL或模型。旧历史无快照返回409，源查询无权限时不可下载。前端入口与代理接入见下方 C2.3。[API、Owner校验、原子性与真实验收](docs/warehouse/XLSX_ARTIFACT_DOWNLOAD_V1.md)。
 
 C2.3 在已完成查询结果中提供“导出 Excel”，通过同源代理创建Artifact并下载校验后的工作簿；下载失败复用当前页面保留的Artifact ID，409提示主动重跑，不自动执行查询。[浏览器实测、失败路径与调用统计](docs/warehouse/XLSX_EXPORT_UI_V1.md)。
+
+### 可选检索实验
+
+保留 PostgreSQL 全文＋向量＋RRF 默认路径；可显式选择本地 BM25 或独立 Gemini Top-N 精排。精排失败保留 RRF 顺序，前后复核 Owner、当前版本与撤销状态。六页/10题四组对照及真实503回退、延迟与适用范围见 [BM25/Rerank实验报告](docs/warehouse/RAG_BM25_RERANK_V1.md)。默认未启用精排；不把小样本结果视为生产性能保证。
