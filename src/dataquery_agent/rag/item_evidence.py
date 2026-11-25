@@ -23,7 +23,8 @@ def split_pair(question):
     match=PAIR.fullmatch(unicodedata.normalize('NFKC',question).strip())
     if not match:return []
     labels=[match['a'],match['b']]
-    if labels[0]==labels[1] or any(re.search('[和与及]',x) for x in labels):return []
+    # A child with its own time/channel (or unresolved alternative) cannot inherit the prefix.
+    if labels[0]==labels[1] or any(re.search('[和与及年月日]|渠道|或|还是',x) for x in labels):return []
     return [{'id':f'item_{i}','label':label,'question':match['context']+'的'+label+'是多少？'}
             for i,label in enumerate(labels,1)]
 
@@ -98,3 +99,38 @@ def revalidate_result(result,current):
     trace['item_evidence']=audit(questions,items)
     return dict(result,evidence_items=items,citations=citations,evidence_status=status,
                 retrieval_trace=trace,answer_zh=render_evidence(citations,status,items))
+
+
+# First supported evidence format: one complete, explicitly scoped fact per quote.
+# No neighbouring-line/page context or approximate metric-name inference.
+FACT = re.compile(r"Period (?P<month>[0-9]{4}-(?:0[1-9]|1[0-2])); channel "
+    r"(?P<channel>[A-Za-z][A-Za-z0-9_-]{0,20}); (?P<metric>[a-z][a-z0-9_]*): "
+    r"(?P<value>-?[0-9]+(?:\.[0-9]+)?)\.", re.I)
+SCOPE = re.compile(r"(?P<year>[0-9]{4})\s*年\s*(?P<month>0?[1-9]|1[0-2])\s*月\s*"
+                   r"(?P<channel>[A-Za-z][A-Za-z0-9_-]{0,20})\s*渠道")
+
+
+def bind_support(items, catalog, evidence):
+    """Bind already provenance-checked quotes to a server-resolved fact, fail closed."""
+    from ..metric_entity import MetricEntityResolver, normalize
+    from ..intent_semantic_resolver import ALIASES
+    resolver = MetricEntityResolver(catalog, ALIASES)
+    sources = {e['chunk_id']: e['evidence_text'].splitlines() for e in evidence}
+    bound = []
+    for item in items:
+        if item['status'] != 'supported':
+            bound.append(item);continue
+        resolution = resolver.resolve(item['label'])
+        exact = (resolution['status'] == 'unique' and not resolution['unknown_ids']
+                 and any(m['term'] == normalize(item['label']) for m in resolution['matches']))
+        scope = SCOPE.match(unicodedata.normalize('NFKC', item['question']))
+        valid = bool(exact and scope)
+        for citation in item['citations']:
+            fact = FACT.fullmatch(citation['quote'])
+            valid = valid and bool(citation['quote'] in sources.get(citation['chunk_id'], [])
+                and fact and fact['metric'].lower() == resolution['metric_ids'][0]
+                and fact['month'] == f"{scope['year']}-{int(scope['month']):02d}"
+                and fact['channel'].lower() == scope['channel'].lower())
+        bound.append(item if valid else unavailable(
+            {k:item[k] for k in ('id','label','question')}, 'unsupported_item_evidence'))
+    return bound

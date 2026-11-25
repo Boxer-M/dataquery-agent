@@ -114,3 +114,24 @@ PYTHONPATH=src /Users/yxz/Documents/'DataQuery Agent'/.venv/bin/python tests/eva
 两题证明逐项合同和服务端聚合值得在**同样可拆句式**上扩大少量评测；不能宣称通用多问或全部RAG拒答已解决。更复杂句式继续旧路径；模型仍可能错配真实引用或把有据项判无据，不能用引用存在性当作语义证明。本轮到实现、专项测试、两题配对报告和本地提交为止，不扩大评测或改Planner。
 
 本批源代码保持薄接口，测试/冻结标签/完整脱敏报告及既有合成PDF导致总行数超过通常200行，属于本次完整可验收批次的明确例外。下一步仅审查该实现及逐项评分，再决定是否扩展覆盖。
+
+## 2026-11-25：证据绑定与分流审查修复
+
+基于8ec9c1f追加修复，未改Prompt、指标目录或权限规则。新增回归先在原代码运行：4失败、2通过，复现交换引用仍supported、单项错配仍supported及子项另写渠道错误继承。
+
+- `item_evidence.bind_support`复用MetricEntityResolver、正式名称/ID与既有ALIASES；只有完整标签唯一精确匹配才绑定。不引入相似度或新别名。
+- 先执行逐字引用及Owner/当前版本/撤销复核，再校验每项原文中的指标、年月和渠道。失败原因`unsupported_item_evidence`只移除该子项，重新按有效项数聚合0/1/2为insufficient/partial/supported。
+- 首版只支持**完整单行事实**：`Period YYYY-MM; channel CHANNEL; metric_id: NUMBER.`，NUMBER为十进制整数字符串或小数字符串，可带负号，无千分位或科学计数。引用须完整等于来源中的某一行，包含自己的年月、渠道、指标和数值。不会从邻行补上下文，也不会从回答正文取数或重算指标。数值直接来自这条通过逐字复核的事实，不另行断言PDF数值等于实时数据库。
+- 无完整条件的简写、自然语言表格、多行拼接、未知/歧义指标不作“已支持”判定。不是通用语义蕴含验证器；保守拒绝可能增加，需另行评测。
+- 同一Chunk的两条独立原文可分别支持两项；不按Chunk ID排斥复用。交换指标、错月份/渠道、来源不存在的数值或非完整行引用均不放行。
+- 继承前检查子项是否另有年月日/渠道或未解决的选择表达；有则以原问题走旧路径，不拼出冲突条件。数字日期不同的原范围外题仍被原全匹配边界排除。
+
+验收：专项23通过（原15＋新增8），全量离线287通过/89跳过。PostgreSQL固定响应1通过，覆盖实际UnifiedAgent入口、History、跨Owner历史读取拒绝和消息重放幂等。原两条范围外题另以固定响应复核通过。原两个审查复现已由新增测试直接断言修复后的正确行为；本轮生成模型/Embedding调用均0，不改历史真实评测结果。范围外真实A/B仍有一题受503阻断，未宣称已完成。
+
+```sh
+PYTHONPATH=src:tests .venv/bin/python -m pytest tests/test_item_evidence.py tests/test_item_evidence_binding.py -q
+PYTHONPATH=src:tests .venv/bin/python -m pytest -q
+# 独立worktree使用主目录的venv绝对路径；配置目录只作本地读取，不复制凭据。
+ITEM_EVIDENCE_POSTGRES_TESTS=1 DATAQUERY_TEST_CONFIG_ROOT='/Users/yxz/Documents/DataQuery Agent' \
+ PYTHONPATH=src:tests '/Users/yxz/Documents/DataQuery Agent/.venv/bin/python' -m pytest tests/test_item_evidence_postgres.py -q
+```

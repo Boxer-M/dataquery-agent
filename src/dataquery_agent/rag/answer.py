@@ -235,6 +235,10 @@ class KnowledgeService:
                 citations = [item for item in citations if item["source_type"] != "reviewed_pdf"
                              or item in current]
                 status = "partial" if citations else "insufficient"
+        if evidence_items is not None:
+            # Provenance/Owner/current-version checks above precede fact binding.
+            evidence_items = item_evidence.bind_support(evidence_items, self.catalog, evidence)
+            status, citations = item_evidence.aggregate(evidence_items)
         if missing and evidence_items is None:
             status = "partial" if citations and status == "supported" else status
         if questions:
