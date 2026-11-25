@@ -41,7 +41,7 @@ def tool_event(item):
     event = {key: item[key] for key in fields if key in item}
     if "channels" in item:
         event["retrieval"] = {key: item[key] for key in (
-            "mode", "fusion", "rrf_constant", "keyword_algorithm", "channels", "returned_chunk_ids", "top_k", "vector_backend") if key in item}
+            "mode", "fusion", "rrf_constant", "keyword_algorithm", "channels", "returned_chunk_ids", "top_k", "vector_backend", "item_evidence") if key in item}
     elif "retrieval" in item:
         event["retrieval"] = item["retrieval"]
     for key in ("agent", "tool", "elapsed_ms"):

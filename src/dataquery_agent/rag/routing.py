@@ -194,8 +194,12 @@ def run_document_plan(agent, plan, runtime, frame, trace, today, owner, *, roles
             except (psycopg.Error, KnowledgeError, OSError, ValueError):
                 current = []
             if len(current) != len(citations):
-                evidence.update(citations=[], answer_zh="PDF 证据版本或权限已变化。",
-                                evidence_status="unavailable", code="pdf_evidence_invalidated")
+                if "evidence_items" in evidence:
+                    from .item_evidence import revalidate_result
+                    evidence = revalidate_result(evidence, current)
+                else:
+                    evidence.update(citations=[], answer_zh="PDF 证据版本或权限已变化。",
+                                    evidence_status="unavailable", code="pdf_evidence_invalidated")
         state = evidence["evidence_status"]
         status = {"supported": "ok", "partial": "partial"}.get(state, "unavailable")
         code = evidence.get("code") or (None if status == "ok" else f"pdf_evidence_{state}")

@@ -114,6 +114,36 @@ def validate_claim(item, by_id):
     return {key: value for key, value in source.items() if key != "evidence_text"} | {"quote": quote}
 
 
+def render_evidence(citations, status, evidence_items=None, missing=None):
+    lines = []
+    groups = evidence_items if evidence_items is not None else [{"citations": citations}]
+    index = 0
+    for group in groups:
+        if evidence_items is not None:
+            lines.append(group["label"] + "：")
+            if group["status"] != "supported":
+                lines.append("证据不足，暂时无法回答此项。")
+        for item in group["citations"]:
+            index += 1
+            title = ("[合成测试] " if item["source_type"] == "synthetic_fixture" else "") + item["title"]
+            if item["source_type"] == "reviewed_pdf":
+                location = f"PDF 第 {item['page_number']} 页 · 审核文本第 {item['line_start']}–{item['line_end']} 行"
+                quote = f"原文摘录：“{item['quote']}”"
+            else:
+                location, quote = item["source_location"], item.get("quote", "发现冲突来源")
+            lines.append(f"{quote} [{index}] {title} · {location}"
+                         f" · 版本 {item['document_version']}")
+    messages = {"conflict": "存在同等权威的冲突来源，需要确认适用规则。",
+                "insufficient": "已接入资料没有足够证据回答这个问题。",
+                "expired": "找到相关资料，但其有效期不覆盖当前日期。",
+                "partial": "部分问题缺少可用依据。"}
+    if status in messages:
+        lines.append(messages[status])
+    if missing:
+        lines.append(missing)
+    return "\n".join(lines)
+
+
 class KnowledgeService:
     def __init__(self, retriever, catalog, *, synthetic=False):
         self.retriever = retriever
@@ -149,6 +179,11 @@ class KnowledgeService:
             return {"status": "error", "code": "embedding_unavailable", "message": "向量服务暂不可用。",
                     "evidence_status": "unavailable", "citations": [],
                     "retrieval_trace": {"trace_id": uuid4().hex, "error_type": type(error).__name__}}
+        from . import item_evidence
+        questions = item_evidence.split_pair(question) if pdf_only else []
+        evidence_items = None
+        prompt_version = PROMPT_VERSION
+        model_stage = 'knowledge'
         citations = []
         if conflicts:
             status = "conflict"
@@ -156,6 +191,8 @@ class KnowledgeService:
                          | {"quote": item["evidence_text"][:300]} for item in conflicts]
         elif not evidence:
             status = "expired" if expired else "insufficient"
+            if questions:
+                evidence_items = [item_evidence.unavailable(q, "no_active_evidence") for q in questions]
         elif topics:
             # Formal definitions are rendered directly from the current catalog and pinned to its indexed chunk.
             status = "supported"
@@ -170,8 +207,17 @@ class KnowledgeService:
                 status = "partial"
         else:
             prompt = answer_prompt(question, evidence)
+            if questions:
+                prompt = item_evidence.prompt(question, questions, evidence)
+                prompt_version = item_evidence.PROMPT_VERSION
+                model_stage = 'knowledge_items'
             try:
-                status, citations = validate_answer(runtime.call("knowledge", prompt), evidence)
+                raw = runtime.call(model_stage, prompt)
+                if questions:
+                    evidence_items = item_evidence.validate(raw, questions, evidence, validate_claim)
+                    status, citations = item_evidence.aggregate(evidence_items)
+                else:
+                    status, citations = validate_answer(raw, evidence)
             except (KnowledgeError, ModelUnavailable) as error:
                 if isinstance(error, KnowledgeError):
                     runtime.invalid_output()
@@ -182,31 +228,25 @@ class KnowledgeService:
                 current = self.retriever.store.current_pdf_citations(pdf_citations, owner=owner)
             except (psycopg.Error, KnowledgeError, OSError, ValueError):
                 current = []
-            if len(current) != len(pdf_citations):
+            if evidence_items is not None:
+                evidence_items = item_evidence.filter_current(evidence_items, current)
+                status, citations = item_evidence.aggregate(evidence_items)
+            elif len(current) != len(pdf_citations):
                 citations = [item for item in citations if item["source_type"] != "reviewed_pdf"
                              or item in current]
                 status = "partial" if citations else "insufficient"
-        if missing:
+        if evidence_items is not None:
+            # Provenance/Owner/current-version checks above precede fact binding.
+            evidence_items = item_evidence.bind_support(evidence_items, self.catalog, evidence)
+            status, citations = item_evidence.aggregate(evidence_items)
+        if missing and evidence_items is None:
             status = "partial" if citations and status == "supported" else status
-        lines = []
-        for index, item in enumerate(citations, 1):
-            title = ("[合成测试] " if item["source_type"] == "synthetic_fixture" else "") + item["title"]
-            if item["source_type"] == "reviewed_pdf":
-                location = f"PDF 第 {item['page_number']} 页 · 审核文本第 {item['line_start']}–{item['line_end']} 行"
-                quote = f"原文摘录：“{item['quote']}”"
-            else:
-                location, quote = item["source_location"], item.get("quote", "发现冲突来源")
-            lines.append(f"{quote} [{index}] {title} · {location}"
-                         f" · 版本 {item['document_version']}")
-        messages = {"conflict": "存在同等权威的冲突来源，需要确认适用规则。",
-                    "insufficient": "已接入资料没有足够证据回答这个问题。",
-                    "expired": "找到相关资料，但其有效期不覆盖当前日期。",
-                    "partial": "部分问题缺少可用依据。"}
-        if status in messages:
-            lines.append(messages[status])
-        if missing:
-            lines.append(missing)
-        return {"status": "ok", "answer_zh": "\n".join(lines), "evidence_status": status,
+        if questions:
+            trace["item_evidence"] = item_evidence.audit(questions, evidence_items)
+        result = {"status": "ok", "answer_zh": render_evidence(citations, status, evidence_items, missing), "evidence_status": status,
                 "citations": citations, "retrieval_trace": trace,
-                "answer_prompt_version": PROMPT_VERSION if runtime.attempts and
-                runtime.attempts[-1]["stage"] == "knowledge" else None}
+                "answer_prompt_version": prompt_version if runtime.attempts and
+                runtime.attempts[-1]["stage"] == model_stage else None}
+        if evidence_items is not None:
+            result["evidence_items"] = evidence_items
+        return result

@@ -1,0 +1,396 @@
+{
+  "version": "rag-hard-evidence-v1",
+  "created_at": "2026-11-23T07:25:41.397886+00:00",
+  "external_authorization": "User explicitly approved new PDF using public SQL Shed aggregates; necessary fragments only; withdraw after evaluation",
+  "pdf_sha256": "3ad006cb6d9aa887f717498bef62dbd9451cddd8e0a2d4fe0ab23317b8ba0d74",
+  "pdf_path": "output/pdf/rag-hard-cases-v1.pdf",
+  "pages": [
+    {
+      "page": 1,
+      "metric_id": "order_count",
+      "month": "2025-01",
+      "channel": "web",
+      "value": 1337,
+      "quote": "Period 2025-01; channel web; order_count: 1337.",
+      "text": "Synthetic evaluation evidence. Public SQL Shed aggregates, not live reporting.\nPeriod 2025-01; channel web; order_count: 1337.\nMetric meaning: All order records, including cancelled orders.\nEvent time: orders.ordered_at.\nWindow is start inclusive, end exclusive. No timezone conversion.\nNo other period, channel, settlement time or causal finding is asserted on this page."
+    },
+    {
+      "page": 2,
+      "metric_id": "order_count",
+      "month": "2025-02",
+      "channel": "web",
+      "value": 1182,
+      "quote": "Period 2025-02; channel web; order_count: 1182.",
+      "text": "Synthetic evaluation evidence. Public SQL Shed aggregates, not live reporting.\nPeriod 2025-02; channel web; order_count: 1182.\nMetric meaning: All order records, including cancelled orders.\nEvent time: orders.ordered_at.\nWindow is start inclusive, end exclusive. No timezone conversion.\nNo other period, channel, settlement time or causal finding is asserted on this page."
+    },
+    {
+      "page": 3,
+      "metric_id": "order_count",
+      "month": "2025-01",
+      "channel": "mobile",
+      "value": 685,
+      "quote": "Period 2025-01; channel mobile; order_count: 685.",
+      "text": "Synthetic evaluation evidence. Public SQL Shed aggregates, not live reporting.\nPeriod 2025-01; channel mobile; order_count: 685.\nMetric meaning: All order records, including cancelled orders.\nEvent time: orders.ordered_at.\nWindow is start inclusive, end exclusive. No timezone conversion.\nNo other period, channel, settlement time or causal finding is asserted on this page."
+    },
+    {
+      "page": 4,
+      "metric_id": "order_count",
+      "month": "2025-02",
+      "channel": "mobile",
+      "value": 626,
+      "quote": "Period 2025-02; channel mobile; order_count: 626.",
+      "text": "Synthetic evaluation evidence. Public SQL Shed aggregates, not live reporting.\nPeriod 2025-02; channel mobile; order_count: 626.\nMetric meaning: All order records, including cancelled orders.\nEvent time: orders.ordered_at.\nWindow is start inclusive, end exclusive. No timezone conversion.\nNo other period, channel, settlement time or causal finding is asserted on this page."
+    },
+    {
+      "page": 5,
+      "metric_id": "payment_attempt_count",
+      "month": "2025-01",
+      "channel": "web",
+      "value": 1408,
+      "quote": "Period 2025-01; channel web; payment_attempt_count: 1408.",
+      "text": "Synthetic evaluation evidence. Public SQL Shed aggregates, not live reporting.\nPeriod 2025-01; channel web; payment_attempt_count: 1408.\nMetric meaning: All payment attempt records, including failures. Not successful orders.\nEvent time: payments.paid_at; channel from the uniquely linked order.\nWindow is start inclusive, end exclusive. No timezone conversion.\nNo other period, channel, settlement time or causal finding is asserted on this page."
+    },
+    {
+      "page": 6,
+      "metric_id": "payment_attempt_count",
+      "month": "2025-02",
+      "channel": "web",
+      "value": 1244,
+      "quote": "Period 2025-02; channel web; payment_attempt_count: 1244.",
+      "text": "Synthetic evaluation evidence. Public SQL Shed aggregates, not live reporting.\nPeriod 2025-02; channel web; payment_attempt_count: 1244.\nMetric meaning: All payment attempt records, including failures. Not successful orders.\nEvent time: payments.paid_at; channel from the uniquely linked order.\nWindow is start inclusive, end exclusive. No timezone conversion.\nNo other period, channel, settlement time or causal finding is asserted on this page."
+    }
+  ],
+  "independent_truth": {
+    "snapshot": {
+      "orders": 90000,
+      "payments": 95000
+    },
+    "orders_sql": "SELECT to_char(ordered_at,'YYYY-MM') AS month,channel,count(*) AS value\nFROM ods.orders WHERE ordered_at >= '2025-01-01' AND ordered_at < '2025-03-01'\nGROUP BY 1,2 ORDER BY 1,2",
+    "payments_sql": "SELECT to_char(p.paid_at,'YYYY-MM') AS month,o.channel,count(*) AS value\nFROM ods.payments p JOIN ods.orders o USING(order_id)\nWHERE p.paid_at >= '2025-01-01' AND p.paid_at < '2025-03-01'\nGROUP BY 1,2 ORDER BY 1,2",
+    "orders": [
+      {
+        "month": "2025-01",
+        "channel": "mobile",
+        "value": 685
+      },
+      {
+        "month": "2025-01",
+        "channel": "partner",
+        "value": 207
+      },
+      {
+        "month": "2025-01",
+        "channel": "phone",
+        "value": 83
+      },
+      {
+        "month": "2025-01",
+        "channel": "web",
+        "value": 1337
+      },
+      {
+        "month": "2025-02",
+        "channel": "mobile",
+        "value": 626
+      },
+      {
+        "month": "2025-02",
+        "channel": "partner",
+        "value": 161
+      },
+      {
+        "month": "2025-02",
+        "channel": "phone",
+        "value": 80
+      },
+      {
+        "month": "2025-02",
+        "channel": "web",
+        "value": 1182
+      }
+    ],
+    "payments": [
+      {
+        "month": "2025-01",
+        "channel": "mobile",
+        "value": 726
+      },
+      {
+        "month": "2025-01",
+        "channel": "partner",
+        "value": 218
+      },
+      {
+        "month": "2025-01",
+        "channel": "phone",
+        "value": 86
+      },
+      {
+        "month": "2025-01",
+        "channel": "web",
+        "value": 1408
+      },
+      {
+        "month": "2025-02",
+        "channel": "mobile",
+        "value": 660
+      },
+      {
+        "month": "2025-02",
+        "channel": "partner",
+        "value": 167
+      },
+      {
+        "month": "2025-02",
+        "channel": "phone",
+        "value": 85
+      },
+      {
+        "month": "2025-02",
+        "channel": "web",
+        "value": 1244
+      }
+    ]
+  },
+  "retrieval": {
+    "backend": "pgvector",
+    "mode": "hybrid",
+    "top_k": 6,
+    "rrf_constant": 60
+  },
+  "split": "evaluation-only exposed diagnostic; not Holdout",
+  "cases": [
+    {
+      "case_id": "scope-feb-web",
+      "semantic_group_id": "hard-scope",
+      "template_id": "lookup_metric_period_channel",
+      "category": "month_channel",
+      "question": "根据已审核PDF，2025年2月web渠道的订单量是多少？",
+      "expected_status": "supported",
+      "required_evidence": [
+        {
+          "page": 2,
+          "quote": "Period 2025-02; channel web; order_count: 1182."
+        }
+      ],
+      "expected_unsupported": [],
+      "review_state": "reviewed_against_independent_ods_and_complete_pdf",
+      "reviewer": "Codex: deterministic ODS verification + PDF inspection",
+      "scope": "evidence answering only, not SQL execution or intent routing"
+    },
+    {
+      "case_id": "scope-jan-mobile",
+      "semantic_group_id": "hard-scope",
+      "template_id": "lookup_metric_period_channel",
+      "category": "month_channel",
+      "question": "根据已审核PDF，2025年1月mobile渠道的订单量是多少？",
+      "expected_status": "supported",
+      "required_evidence": [
+        {
+          "page": 3,
+          "quote": "Period 2025-01; channel mobile; order_count: 685."
+        }
+      ],
+      "expected_unsupported": [],
+      "review_state": "reviewed_against_independent_ods_and_complete_pdf",
+      "reviewer": "Codex: deterministic ODS verification + PDF inspection",
+      "scope": "evidence answering only, not SQL execution or intent routing"
+    },
+    {
+      "case_id": "scope-march-web",
+      "semantic_group_id": "hard-scope",
+      "template_id": "lookup_metric_period_channel",
+      "category": "month_channel",
+      "question": "根据已审核PDF，2025年3月web渠道的订单量是多少？",
+      "expected_status": "insufficient",
+      "required_evidence": [],
+      "expected_unsupported": [
+        "March facts absent; January/February cannot substitute"
+      ],
+      "review_state": "reviewed_against_independent_ods_and_complete_pdf",
+      "reviewer": "Codex: deterministic ODS verification + PDF inspection",
+      "scope": "evidence answering only, not SQL execution or intent routing"
+    },
+    {
+      "case_id": "scope-jan-partner",
+      "semantic_group_id": "hard-scope",
+      "template_id": "lookup_metric_period_channel",
+      "category": "month_channel",
+      "question": "根据已审核PDF，2025年1月partner渠道的订单量是多少？",
+      "expected_status": "insufficient",
+      "required_evidence": [],
+      "expected_unsupported": [
+        "partner channel absent from the PDF"
+      ],
+      "review_state": "reviewed_against_independent_ods_and_complete_pdf",
+      "reviewer": "Codex: deterministic ODS verification + PDF inspection",
+      "scope": "evidence answering only, not SQL execution or intent routing"
+    },
+    {
+      "case_id": "grain-jan-attempts",
+      "semantic_group_id": "hard-grain",
+      "template_id": "lookup_metric_period_channel",
+      "category": "near_numbers_grain",
+      "question": "根据已审核PDF，2025年1月web渠道的支付尝试次数是多少？不要用订单量代替。",
+      "expected_status": "supported",
+      "required_evidence": [
+        {
+          "page": 5,
+          "quote": "Period 2025-01; channel web; payment_attempt_count: 1408."
+        }
+      ],
+      "expected_unsupported": [],
+      "review_state": "reviewed_against_independent_ods_and_complete_pdf",
+      "reviewer": "Codex: deterministic ODS verification + PDF inspection",
+      "scope": "evidence answering only, not SQL execution or intent routing"
+    },
+    {
+      "case_id": "grain-jan-distinguish",
+      "semantic_group_id": "hard-grain",
+      "template_id": "grain-jan-distinguish",
+      "category": "near_numbers_grain",
+      "question": "根据已审核PDF，2025年1月web渠道的订单量和支付尝试次数分别是多少？",
+      "expected_status": "supported",
+      "required_evidence": [
+        {
+          "page": 1,
+          "quote": "Period 2025-01; channel web; order_count: 1337."
+        },
+        {
+          "page": 5,
+          "quote": "Period 2025-01; channel web; payment_attempt_count: 1408."
+        }
+      ],
+      "expected_unsupported": [],
+      "review_state": "reviewed_against_independent_ods_and_complete_pdf",
+      "reviewer": "Codex: deterministic ODS verification + PDF inspection",
+      "scope": "evidence answering only, not SQL execution or intent routing"
+    },
+    {
+      "case_id": "grain-success-orders",
+      "semantic_group_id": "hard-grain",
+      "template_id": "grain-success-orders",
+      "category": "near_numbers_grain",
+      "question": "根据已审核PDF，2025年1月web渠道成功支付的订单数是1408吗？",
+      "expected_status": "insufficient",
+      "required_evidence": [],
+      "expected_unsupported": [
+        "Successful paid order count not asserted; attempts are not paid orders"
+      ],
+      "review_state": "reviewed_against_independent_ods_and_complete_pdf",
+      "reviewer": "Codex: deterministic ODS verification + PDF inspection",
+      "scope": "evidence answering only, not SQL execution or intent routing"
+    },
+    {
+      "case_id": "grain-feb-attempts",
+      "semantic_group_id": "hard-grain",
+      "template_id": "lookup_metric_period_channel",
+      "category": "near_numbers_grain",
+      "question": "根据已审核PDF，2025年2月web渠道的支付尝试次数是多少？",
+      "expected_status": "supported",
+      "required_evidence": [
+        {
+          "page": 6,
+          "quote": "Period 2025-02; channel web; payment_attempt_count: 1244."
+        }
+      ],
+      "expected_unsupported": [],
+      "review_state": "reviewed_against_independent_ods_and_complete_pdf",
+      "reviewer": "Codex: deterministic ODS verification + PDF inspection",
+      "scope": "evidence answering only, not SQL execution or intent routing"
+    },
+    {
+      "case_id": "dual-orders-settlement",
+      "semantic_group_id": "hard-dual",
+      "template_id": "two_questions_known_unknown",
+      "category": "partial_two_questions",
+      "question": "根据已审核PDF，2025年1月web渠道订单量和实际退款到账天数分别是多少？",
+      "expected_status": "partial",
+      "required_evidence": [
+        {
+          "page": 1,
+          "quote": "Period 2025-01; channel web; order_count: 1337."
+        }
+      ],
+      "expected_unsupported": [
+        "Settlement duration absent"
+      ],
+      "review_state": "reviewed_against_independent_ods_and_complete_pdf",
+      "reviewer": "Codex: deterministic ODS verification + PDF inspection",
+      "scope": "evidence answering only, not SQL execution or intent routing"
+    },
+    {
+      "case_id": "dual-attempts-paid",
+      "semantic_group_id": "hard-dual",
+      "template_id": "two_questions_known_unknown",
+      "category": "partial_two_questions",
+      "question": "根据已审核PDF，2025年2月web渠道支付尝试次数和成功支付订单数分别是多少？",
+      "expected_status": "partial",
+      "required_evidence": [
+        {
+          "page": 6,
+          "quote": "Period 2025-02; channel web; payment_attempt_count: 1244."
+        }
+      ],
+      "expected_unsupported": [
+        "Successful paid order count absent"
+      ],
+      "review_state": "reviewed_against_independent_ods_and_complete_pdf",
+      "reviewer": "Codex: deterministic ODS verification + PDF inspection",
+      "scope": "evidence answering only, not SQL execution or intent routing"
+    },
+    {
+      "case_id": "dual-jan-march",
+      "semantic_group_id": "hard-dual",
+      "template_id": "two_questions_known_unknown",
+      "category": "partial_two_questions",
+      "question": "根据已审核PDF，2025年1月mobile渠道订单量和2025年3月mobile渠道订单量分别是多少？",
+      "expected_status": "partial",
+      "required_evidence": [
+        {
+          "page": 3,
+          "quote": "Period 2025-01; channel mobile; order_count: 685."
+        }
+      ],
+      "expected_unsupported": [
+        "March mobile count absent"
+      ],
+      "review_state": "reviewed_against_independent_ods_and_complete_pdf",
+      "reviewer": "Codex: deterministic ODS verification + PDF inspection",
+      "scope": "evidence answering only, not SQL execution or intent routing"
+    },
+    {
+      "case_id": "dual-feb-cause",
+      "semantic_group_id": "hard-dual",
+      "template_id": "two_questions_known_unknown",
+      "category": "partial_two_questions",
+      "question": "根据已审核PDF，2025年2月web渠道订单量和该渠道订单下降的原因分别是什么？",
+      "expected_status": "partial",
+      "required_evidence": [
+        {
+          "page": 2,
+          "quote": "Period 2025-02; channel web; order_count: 1182."
+        }
+      ],
+      "expected_unsupported": [
+        "No causal explanation asserted"
+      ],
+      "review_state": "reviewed_against_independent_ods_and_complete_pdf",
+      "reviewer": "Codex: deterministic ODS verification + PDF inspection",
+      "scope": "evidence answering only, not SQL execution or intent routing"
+    }
+  ],
+  "scoring": "Required source page + literal numeric fact; quote must be a verbatim substring containing the correct numeric value; period/channel/metric must match the prelabelled source page. Additional background-only or wrong-scope citations are errors. Exact status required, including partial for dual questions.",
+  "pdf_visual_review": {
+    "reviewer": "Codex",
+    "pages_inspected": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "result": "Rendered pages inspected; no clipping/overlap/missing text; each quoted fact matches the visible PDF"
+  }
+}
