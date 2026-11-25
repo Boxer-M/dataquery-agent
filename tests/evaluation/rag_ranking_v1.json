@@ -1,0 +1,97 @@
+{
+  "version": "rag-ranking-v1",
+  "frozen_before_calls": true,
+  "top_k": 2,
+  "top_n": 6,
+  "source_pdf_sha256": "3ad006cb6d9aa887f717498bef62dbd9451cddd8e0a2d4fe0ab23317b8ba0d74",
+  "source_labels_commit": "4a87fc2",
+  "cases": [
+    {
+      "case_id": "alias-jan-web",
+      "question": "根据已审核PDF，2025年1月web渠道的下单笔数是多少？",
+      "relevant_pages": [
+        1
+      ],
+      "relevance": "binary exact metric/month/channel; other pages grade0",
+      "expected_quote": "Period 2025-01; channel web; order_count: 1337."
+    },
+    {
+      "case_id": "alias-feb-web",
+      "question": "根据已审核PDF，2025年2月web渠道的订单数是多少？",
+      "relevant_pages": [
+        2
+      ],
+      "relevance": "binary exact metric/month/channel; other pages grade0",
+      "expected_quote": "Period 2025-02; channel web; order_count: 1182."
+    },
+    {
+      "case_id": "jan-mobile",
+      "question": "根据已审核PDF，2025年1月mobile渠道的订单量是多少？",
+      "relevant_pages": [
+        3
+      ],
+      "relevance": "binary exact metric/month/channel; other pages grade0",
+      "expected_quote": "Period 2025-01; channel mobile; order_count: 685."
+    },
+    {
+      "case_id": "feb-mobile",
+      "question": "根据已审核PDF，2025年2月mobile渠道的订单量是多少？",
+      "relevant_pages": [
+        4
+      ],
+      "relevance": "binary exact metric/month/channel; other pages grade0",
+      "expected_quote": "Period 2025-02; channel mobile; order_count: 626."
+    },
+    {
+      "case_id": "jan-attempts",
+      "question": "根据已审核PDF，2025年1月web渠道的支付尝试次数是多少？",
+      "relevant_pages": [
+        5
+      ],
+      "relevance": "binary exact metric/month/channel; other pages grade0",
+      "expected_quote": "Period 2025-01; channel web; payment_attempt_count: 1408."
+    },
+    {
+      "case_id": "feb-attempts",
+      "question": "根据已审核PDF，2025年2月web渠道的支付尝试次数是多少？",
+      "relevant_pages": [
+        6
+      ],
+      "relevance": "binary exact metric/month/channel; other pages grade0",
+      "expected_quote": "Period 2025-02; channel web; payment_attempt_count: 1244."
+    },
+    {
+      "case_id": "exact-order",
+      "question": "根据已审核PDF，2025年2月web渠道的order_count是多少？",
+      "relevant_pages": [
+        2
+      ],
+      "relevance": "binary exact metric/month/channel; other pages grade0",
+      "expected_quote": "Period 2025-02; channel web; order_count: 1182."
+    },
+    {
+      "case_id": "exact-attempts",
+      "question": "根据已审核PDF，2025年1月web渠道的payment_attempt_count是多少？",
+      "relevant_pages": [
+        5
+      ],
+      "relevance": "binary exact metric/month/channel; other pages grade0",
+      "expected_quote": "Period 2025-01; channel web; payment_attempt_count: 1408."
+    },
+    {
+      "case_id": "no-march",
+      "question": "根据已审核PDF，2025年3月web渠道的订单量是多少？",
+      "relevant_pages": [],
+      "relevance": "binary exact metric/month/channel; other pages grade0",
+      "expected_quote": null
+    },
+    {
+      "case_id": "no-settlement",
+      "question": "根据已审核PDF，2025年1月web渠道的实际退款到账天数是多少？",
+      "relevant_pages": [],
+      "relevance": "binary exact metric/month/channel; other pages grade0",
+      "expected_quote": null
+    }
+  ],
+  "review": "Frozen against existing six reviewed pages and independent ODS facts. New diagnostic set, exposed/development only, no Holdout."
+}
